@@ -20,7 +20,7 @@ static NSString const *KSRTCSessionDescriptionSdpKey = @"sdp";
     return [[RTCSessionDescription alloc] initWithType:type sdp:sdp];
 }
 
-- (NSData *)JSONData {
+- (NSData *)jsonData {
     NSString *type = [[self class] stringForType:self.type];
     NSDictionary *json = @{
             KSRTCSessionDescriptionTypeKey: type,
