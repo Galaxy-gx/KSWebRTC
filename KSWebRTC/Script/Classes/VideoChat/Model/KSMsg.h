@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @property(nonatomic,copy)NSString *janus;
 
 + (KSMessageType)typeForMsg:(NSDictionary *)msg;
++ (KSMsg *)deserializeForMsg:(NSDictionary *)msg;
 
 @end
 //ACK
@@ -102,6 +103,11 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 //Request
 @interface KSMessage : KSMsg
 @property(nonatomic,strong)KSBody *body;
+@end
+
+//ACK
+@interface KSWebrtcup : KSMsg
+@property(nonatomic,copy)NSString *sender;
 @end
 
 @interface KSCandidate : NSObject

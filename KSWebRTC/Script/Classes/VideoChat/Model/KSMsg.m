@@ -7,7 +7,7 @@
 //
 
 #import "KSMsg.h"
-
+#import <MJExtension/MJExtension.h>
 @implementation KSMsg
 
 + (KSMessageType)typeForMsg:(NSDictionary *)msg {
@@ -59,6 +59,98 @@
     }
     return KSMessageTypeUnknown;
 }
+
++ (KSMsg *)deserializeForMsg:(NSDictionary *)msg {
+    KSMessageType type = [self typeForMsg:msg];
+    KSMsg *obj = NULL;
+    switch (type) {
+        case KSMessageTypeSuccess:
+        case KSMessageTypeError:
+        case KSMessageTypeAck:
+            obj = [KSSuccess mj_objectWithKeyValues:msg];
+            obj.msgType = type;
+            break;
+        case KSMessageTypeEvent:
+            obj = [KSEvent mj_objectWithKeyValues:msg];
+            obj.msgType = type;
+            break;
+        case KSMessageTypeMedia:
+            obj = [KSMedia mj_objectWithKeyValues:msg];
+            obj.msgType = type;
+            break;
+        case KSMessageTypeWebrtcup:
+            obj = [KSWebrtcup mj_objectWithKeyValues:msg];
+            obj.msgType = type;
+            //break;
+        default:
+            break;
+    }
+    return obj;
+    
+    /*
+     KSMsg *obj = NULL;
+     NSString *janus = msg[@"janus"];
+     if (!janus) {
+     obj = [[KSMsg alloc] init];
+     obj.msgType = KSMessageTypeUnknown;
+     return obj;
+     }
+     
+     if ([janus isEqualToString:@"create"]) {//Reuqest
+     obj.msgType = KSMessageTypeCreate;
+     }
+     else if ([janus isEqualToString:@"success"]) {//ACK
+     obj = [KSSuccess mj_objectWithKeyValues:msg];
+     obj.msgType = KSMessageTypeSuccess;
+     }
+     else if ([janus isEqualToString:@"error"]) {//ACK
+     obj = [KSSuccess mj_objectWithKeyValues:msg];
+     obj.msgType = KSMessageTypeError;
+     }
+     else if ([janus isEqualToString:@"attach"]) {//Reuqest
+     obj.msgType = KSMessageTypeAttach;
+     }
+     else if ([janus isEqualToString:@"message"]) {//Request
+     obj.msgType = KSMessageTypeMessage;
+     }
+     else if ([janus isEqualToString:@"ack"]) {//ACK
+     obj = [KSSuccess mj_objectWithKeyValues:msg];
+     obj.msgType = KSMessageTypeAck;
+     }
+     else if ([janus isEqualToString:@"event"]) {//ACK
+     obj = [KSEvent mj_objectWithKeyValues:msg];
+     obj.msgType = KSMessageTypeEvent;
+     }
+     else if ([janus isEqualToString:@"trickle"]) {//Reuqest
+     obj.msgType = KSMessageTypeTrickle;
+     }
+     else if ([janus isEqualToString:@"media"]) {//ACK
+     obj = [KSMedia mj_objectWithKeyValues:msg];
+     obj.msgType = KSMessageTypeMedia;
+     }
+     else if ([janus isEqualToString:@"webrtcup"]) {//ACK
+     obj.msgType = KSMessageTypeWebrtcup;
+     }
+     else if ([janus isEqualToString:@"keepalive"]) {//Reuqest
+     obj.msgType = KSMessageTypeKeepalive;
+     }
+     else if ([janus isEqualToString:@"slowlink"]) {
+     obj.msgType = KSMessageTypeSlowlink;
+     }
+     else if ([janus isEqualToString:@"hangup"]) {
+     obj.msgType = KSMessageTypeHangup;
+     }
+     else if ([janus isEqualToString:@"detached"]) {
+     obj.msgType = KSMessageTypeDetached;
+     }
+     else{
+     obj = [[KSMsg alloc] init];
+     obj.msgType = KSMessageTypeUnknown;
+     }
+     return obj;
+     */
+}
+
 @end
 
 /*
@@ -111,4 +203,10 @@
 + (NSDictionary *)mj_objectClassInArray {
     return @{@"candidate" : @"KSCandidate"};
 }
+@end
+
+@implementation KSMedia
+@end
+
+@implementation KSWebrtcup
 @end
