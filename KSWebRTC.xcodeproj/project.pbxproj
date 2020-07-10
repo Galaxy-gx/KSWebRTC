@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,9 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A224B854E3004BBA8A /* KSWebSocket.m */; };
+		E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */; };
+		E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A724B85640004BBA8A /* KSVideoChatController.m */; };
 		ECC021D079843342094A3894 /* libPods-KSWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +33,12 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E67BC5A024B854E3004BBA8A /* KSWebSocketConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocketConfigure.h; sourceTree = "<group>"; };
+		E67BC5A124B854E3004BBA8A /* KSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocket.h; sourceTree = "<group>"; };
+		E67BC5A224B854E3004BBA8A /* KSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocket.m; sourceTree = "<group>"; };
+		E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocketConfigure.m; sourceTree = "<group>"; };
+		E67BC5A624B85640004BBA8A /* KSVideoChatController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSVideoChatController.h; sourceTree = "<group>"; };
+		E67BC5A724B85640004BBA8A /* KSVideoChatController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSVideoChatController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +59,6 @@
 				A78CB3FBA8D1E1A07AA6289F /* Pods-KSWebRTC.debug.xcconfig */,
 				DE646ED62E8FCF423BE8CDE2 /* Pods-KSWebRTC.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -83,10 +91,7 @@
 		E6400F3224B8507F004C7060 /* KSWebRTC */ = {
 			isa = PBXGroup;
 			children = (
-				E6400F3324B8507F004C7060 /* AppDelegate.h */,
-				E6400F3424B8507F004C7060 /* AppDelegate.m */,
-				E6400F3624B8507F004C7060 /* ViewController.h */,
-				E6400F3724B8507F004C7060 /* ViewController.m */,
+				E67BC59A24B853C8004BBA8A /* Script */,
 				E6400F3924B8507F004C7060 /* Main.storyboard */,
 				E6400F3C24B85080004C7060 /* Assets.xcassets */,
 				E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */,
@@ -94,6 +99,63 @@
 				E6400F4224B85080004C7060 /* main.m */,
 			);
 			path = KSWebRTC;
+			sourceTree = "<group>";
+		};
+		E67BC59A24B853C8004BBA8A /* Script */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC59B24B853DE004BBA8A /* Classes */,
+			);
+			path = Script;
+			sourceTree = "<group>";
+		};
+		E67BC59B24B853DE004BBA8A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC59E24B85498004BBA8A /* Custom */,
+				E67BC59D24B85424004BBA8A /* VideoChat */,
+				E67BC59C24B853FE004BBA8A /* Main */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		E67BC59C24B853FE004BBA8A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				E6400F3324B8507F004C7060 /* AppDelegate.h */,
+				E6400F3424B8507F004C7060 /* AppDelegate.m */,
+				E6400F3624B8507F004C7060 /* ViewController.h */,
+				E6400F3724B8507F004C7060 /* ViewController.m */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		E67BC59D24B85424004BBA8A /* VideoChat */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC5A624B85640004BBA8A /* KSVideoChatController.h */,
+				E67BC5A724B85640004BBA8A /* KSVideoChatController.m */,
+			);
+			path = VideoChat;
+			sourceTree = "<group>";
+		};
+		E67BC59E24B85498004BBA8A /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC59F24B854A7004BBA8A /* Socket */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
+		E67BC59F24B854A7004BBA8A /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC5A124B854E3004BBA8A /* KSWebSocket.h */,
+				E67BC5A224B854E3004BBA8A /* KSWebSocket.m */,
+				E67BC5A024B854E3004BBA8A /* KSWebSocketConfigure.h */,
+				E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */,
+			);
+			path = Socket;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,8 +273,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
+				E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */,
+				E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
+				E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
