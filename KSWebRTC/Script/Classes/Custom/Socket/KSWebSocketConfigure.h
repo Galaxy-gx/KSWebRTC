@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, KSNetworkReachabilityStatus) {
 /**
 会话ID
 */
-@property (nonatomic, copy  ) NSString                     *sessionId;
+@property (nonatomic, strong  ) NSNumber                   *sessionId;
 /**
 是否建立会话
 */

@@ -182,6 +182,12 @@
 }
 @end
 
+@implementation KSPublishers
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{@"ID":@"id"};
+}
+@end
+
 @implementation KSSuccess
 + (NSDictionary *)mj_objectClassInArray {
     return @{@"data" : NSStringFromClass([KSMessageData class])};

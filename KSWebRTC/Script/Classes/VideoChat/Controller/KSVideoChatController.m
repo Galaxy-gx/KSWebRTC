@@ -173,7 +173,7 @@
     
 }
 
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSString *)handleId {
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
     RTCEAGLVideoView *remoteView = NULL;
     if (_remoteKits[handleId] == nil) {
         remoteView = [self createRemoteView];

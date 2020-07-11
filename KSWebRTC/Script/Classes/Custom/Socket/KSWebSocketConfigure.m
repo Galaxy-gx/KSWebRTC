@@ -13,7 +13,7 @@
 -(instancetype)init {
     if (self = [super init]) {
         self.maxResetCount = 100;
-        self.heartbeatTime = 120;
+        self.heartbeatTime = 30;
         self.intervalTime  = 2;
     }
     return self;

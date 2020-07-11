@@ -30,8 +30,8 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 // ack/keepalive/webrtcup/
 @property(nonatomic,assign)KSMessageType msgType;
 @property(nonatomic,copy)NSString *transaction;
-@property(nonatomic,copy)NSString *session_id;
-@property(nonatomic,copy)NSString *handle_id;
+@property(nonatomic,strong)NSNumber *session_id;
+@property(nonatomic,strong)NSNumber *handle_id;
 @property(nonatomic,copy)NSString *janus;
 
 + (KSMessageType)typeForMsg:(NSDictionary *)msg;
@@ -40,22 +40,22 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @end
 //ACK
 @interface KSPublishers : NSObject
-@property(nonatomic,copy)NSString *ID;//!
+@property(nonatomic,strong)NSNumber *ID;//!
 @property(nonatomic,copy)NSString *display;
-@property(nonatomic,copy)NSString *audio_codec;
-@property(nonatomic,copy)NSString *video_codec;
+@property(nonatomic,strong)NSNumber *audio_codec;
+@property(nonatomic,strong)NSNumber *video_codec;
 @property(nonatomic,assign)BOOL talking;
 @end
+
 //ACK
 @interface KSMessageData : NSObject
 @property(nonatomic,copy)NSString *videoroom;
-@property(nonatomic,copy)NSString *room;
+@property(nonatomic,strong)NSNumber *room;
 @property(nonatomic,copy)NSString *Description;
-@property(nonatomic,copy)NSString *ID;//!
-@property(nonatomic,copy)NSString *private_id;
+@property(nonatomic,strong)NSNumber *ID;//!
+@property(nonatomic,strong)NSNumber *private_id;
 @property(nonatomic,copy)NSString *leaving;
-//@property(nonatomic,copy)NSString *display;
-@property(nonatomic,strong)NSArray *publishers;
+@property(nonatomic,strong)NSMutableArray *publishers;
 @property(nonatomic,assign)BOOL started;
 @end
 
@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @end
 //ACK
 @interface KSEvent : KSMsg
-@property(nonatomic,copy)NSString *sender;
+@property(nonatomic,strong)NSNumber *sender;
 @property(nonatomic,strong)KSPlugindata *plugindata;
 @property(nonatomic,strong)KSJsep *jsep;
 @end
@@ -108,7 +108,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 
 //ACK
 @interface KSWebrtcup : KSMsg
-@property(nonatomic,copy)NSString *sender;
+@property(nonatomic,strong)NSNumber *sender;
 @end
 
 @interface KSCandidate : NSObject
@@ -123,6 +123,6 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 
 //ACK
 @interface KSMedia : KSMsg
-@property(nonatomic,copy)NSString *sender;
+@property(nonatomic,strong)NSNumber *sender;
 @property(nonatomic,assign)BOOL receiving;
 @end
