@@ -13,6 +13,7 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E664F8F324B89CB70092FCE2 /* KSMediaCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = E664F8F224B89CB70092FCE2 /* KSMediaCapture.m */; };
 		E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A224B854E3004BBA8A /* KSWebSocket.m */; };
 		E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */; };
 		E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A724B85640004BBA8A /* KSVideoChatController.m */; };
@@ -38,6 +39,8 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E664F8F124B89CB70092FCE2 /* KSMediaCapture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaCapture.h; sourceTree = "<group>"; };
+		E664F8F224B89CB70092FCE2 /* KSMediaCapture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaCapture.m; sourceTree = "<group>"; };
 		E67BC5A024B854E3004BBA8A /* KSWebSocketConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocketConfigure.h; sourceTree = "<group>"; };
 		E67BC5A124B854E3004BBA8A /* KSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocket.h; sourceTree = "<group>"; };
 		E67BC5A224B854E3004BBA8A /* KSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocket.m; sourceTree = "<group>"; };
@@ -211,6 +214,8 @@
 			children = (
 				E67BC5B924B86171004BBA8A /* KSMsg.h */,
 				E67BC5BA24B86171004BBA8A /* KSMsg.m */,
+				E664F8F124B89CB70092FCE2 /* KSMediaCapture.h */,
+				E664F8F224B89CB70092FCE2 /* KSMediaCapture.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -338,6 +343,7 @@
 				E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */,
 				E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,
+				E664F8F324B89CB70092FCE2 /* KSMediaCapture.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
 				E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */,
 			);
