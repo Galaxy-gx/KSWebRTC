@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WebRTC/WebRTC.h>
 @class KSMsg;
 @class KSMessageHandler;
 @class KSMediaCapture;
 @protocol KSMessageHandlerDelegate <NSObject>
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
 - (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSString *)handleId;
 @end
 
 @interface KSMessageHandler : NSObject

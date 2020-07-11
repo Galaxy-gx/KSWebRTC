@@ -11,9 +11,9 @@
 @class KSMediaConnection;
 @protocol KSPeerConnectionDelegate <NSObject>
 // 收到远端流处理
-- (void)MediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
 // 收到候选者
-- (void)MediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 
 @end
 
@@ -23,6 +23,7 @@
 @property (nonatomic, strong) RTCPeerConnection *connection; // WebRTC连接对象
 @property (nonatomic, strong) RTCVideoTrack *videoTrack;     // 视频轨
 @property (nonatomic, strong) RTCEAGLVideoView *videoView;
+@property (nonatomic, copy) NSString *handleId;
 
 - (RTCPeerConnection *)createPeerConnection:(RTCPeerConnectionFactory *)factory
                                  audioTrack:(RTCAudioTrack *)audioTrack

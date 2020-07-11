@@ -118,11 +118,11 @@
 
 //RTCPeerConnectionDelegate
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream { 
-    [self.delegate MediaConnection:self peerConnection:peerConnection didAddStream:stream];
+    [self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
-    [self.delegate MediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
+    [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {

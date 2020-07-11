@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @property(nonatomic,copy)NSString *Description;
 @property(nonatomic,copy)NSString *ID;//!
 @property(nonatomic,copy)NSString *private_id;
+@property(nonatomic,copy)NSString *leaving;
 //@property(nonatomic,copy)NSString *display;
 @property(nonatomic,strong)NSArray *publishers;
 @property(nonatomic,assign)BOOL started;
