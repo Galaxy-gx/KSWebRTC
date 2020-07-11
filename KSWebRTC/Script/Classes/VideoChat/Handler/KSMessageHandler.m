@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
     if (self) {
         self.socket = [[KSWebSocket alloc] init];
         self.socket.delegate = self;
-        self.opaqueId = [NSString stringWithFormat:@"videoroom-%@", [NSString randomForLength:KSRandomLength]];
+        self.opaqueId = [NSString stringWithFormat:@"videoroomtest-%@", [NSString randomForLength:KSRandomLength]];
         self.connections = [NSMutableDictionary dictionary];
     }
     return self;
@@ -60,18 +60,21 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
     if (!dict) {
         return;
     }
-    NSLog(@"------------------------------------------------------------");
-    NSLog(@"%@",dict);
+    NSLog(@"Received: %@",dict);
     KSMsg *msg = [KSMsg deserializeForMsg:dict];
     if (!msg) {
         return;
     }
-    _sessionId = msg.session_id;
+    
     switch (msg.msgType) {
         case KSMessageTypeSuccess:
         {
             KSSuccess *success = (KSSuccess *)msg;
             if (_nextMessage == KSNextMessageTypeAttach) {
+                _sessionId = success.data.ID;
+                self.socket.configure.sessionId = _sessionId;
+                self.socket.configure.isSession = true;
+                
                 //WebRTC:02
                 _nextMessage = KSNextMessageTypePublisher;
                 [self publisherCreateHandler:@"janus.plugin.videoroom"];
@@ -162,15 +165,15 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
 
 // 自身，即发送者，创建与服务器插件的连接
 - (void)publisherCreateHandler:(NSString *)plugin {
-    NSString *transaction       = [NSString randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"janus"]       = @"attach";
-    sendMessage[@"transaction"] = transaction;
-    sendMessage[@"session_id"]  = _sessionId;
-    sendMessage[@"opaque_id"]   = _opaqueId;
-    sendMessage[@"plugin"]      = plugin;
-
-    [_socket sendMessage:sendMessage];
+    NSString *transaction = [NSString randomForLength:KSRandomLength];
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"janus"]       = @"attach";
+    message[@"transaction"] = transaction;
+    message[@"session_id"]  = _sessionId;
+    message[@"opaque_id"]   = _opaqueId;
+    message[@"plugin"]      = plugin;
+    
+    [_socket sendMessage:message];
 }
 
 // 发布者加入房间成功后创建offer
@@ -301,6 +304,7 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
     self.nextMessage = KSNextMessageTypeAttach;
     [self createSession];
 }
+
 /**
  出现错误/连接失败时调用[如果设置自动重连，则不会调用]
  */

@@ -7,6 +7,7 @@
 //
 
 #import "KSWebSocket.h"
+#import "NSString+Category.h"
 #define KSWeakSelf __weak typeof(self) weakSelf      = self;
 
 static NSString *KS_Notification_WillEnterForeground = @"KS_Notification_WillEnterForeground";
@@ -138,6 +139,7 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
  */
 - (void)close {
     _configure.status = KSWebSocketStatusNone;
+    _configure.isSession = false;
     [self closeConnect];
 }
 /**
@@ -188,12 +190,16 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
  发送心跳消息
  */
 - (void)sendHeartbeatMessage {
-    NSDictionary *msg = @{
+    if (!_configure.isSession) {
+        return;
+    }
+    NSString *transaction = [NSString randomForLength:12];
+    NSMutableDictionary *msg = [@{
         @"janus" : @"keepalive",
-        @"session_id" : @"10000",
-        @"transaction" : @"transaction"
-    };
-    [self.webSocket send:msg];
+        @"session_id" : _configure.sessionId,
+        @"transaction" : transaction
+    } mutableCopy];
+    [self sendMessage:msg];
 }
 
 /**
@@ -227,9 +233,10 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
     if (_webSocket.readyState != SR_OPEN) {
         return;
     }
+    NSLog(@"Send: %@",message);
     NSData *data  = [NSJSONSerialization dataWithJSONObject:message options:NSJSONWritingPrettyPrinted error:nil];
-    //NSString *msg = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    [self.webSocket send:data];
+    NSString *msg = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    [self.webSocket send:msg];
 }
 
 #pragma mark Receive Messages

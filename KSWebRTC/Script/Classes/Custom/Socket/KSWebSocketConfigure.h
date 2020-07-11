@@ -70,5 +70,13 @@ typedef NS_ENUM(NSInteger, KSNetworkReachabilityStatus) {
  */
 @property (nonatomic, assign) int                          intervalTime;
 
+/**
+会话ID
+*/
+@property (nonatomic, copy  ) NSString                     *sessionId;
+/**
+是否建立会话
+*/
+@property (nonatomic, assign) BOOL                         isSession;
 @end
 

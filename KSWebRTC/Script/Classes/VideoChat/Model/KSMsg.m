@@ -174,7 +174,7 @@
  */
 
 @implementation KSMessageData
-+ (NSDictionary *)replacedKeyFromPropertyName {
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
     return @{@"ID":@"id",@"Description":@"description"};
 }
 + (NSDictionary *)mj_objectClassInArray {
@@ -184,7 +184,7 @@
 
 @implementation KSSuccess
 + (NSDictionary *)mj_objectClassInArray {
-    return @{@"data" : @"KSMessageData"};
+    return @{@"data" : NSStringFromClass([KSMessageData class])};
 }
 @end
 

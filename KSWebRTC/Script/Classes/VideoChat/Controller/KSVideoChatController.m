@@ -21,7 +21,7 @@
 
 @property (nonatomic, assign) int kitWidth;
 @property (nonatomic, assign) int kitHeight;
-
+@property (nonatomic, assign) BOOL isConnect;
 @end
 
 @implementation KSVideoChatController
@@ -45,6 +45,7 @@
 }
 
 - (void)initializeKit {
+    self.view.backgroundColor = [UIColor whiteColor];
     _remoteKits = [NSMutableDictionary dictionary];
     _kitWidth  = (self.view.bounds.size.width - 30)/2;
     _kitHeight = _kitWidth * (16.0 / 9.0);
@@ -54,19 +55,22 @@
     [self.view addSubview:localView];
     _localView = localView;
     
+    UIColor *btnColor = [UIColor colorWithRed:100/255.0 green:149/255.0 blue:237/255.0 alpha:1];
     UIButton *connectBtn = [UIButton initWithTitle:@"连接"
                                         titleColor:[UIColor whiteColor]
                                               font:[UIFont systemFontOfSize:14]
-                                   backgroundColor:[UIColor blueColor]
-                                       borderColor:[UIColor blueColor]
+                                   backgroundColor:btnColor
+                                       borderColor:btnColor
                                        borderWidth:2];
+    connectBtn.frame = CGRectMake(50, self.view.bounds.size.height - 60, 100, 44);
     
     UIButton *leaveBtn = [UIButton initWithTitle:@"离开"
                                       titleColor:[UIColor whiteColor]
                                             font:[UIFont systemFontOfSize:14]
-                                 backgroundColor:[UIColor blueColor]
-                                     borderColor:[UIColor blueColor]
+                                 backgroundColor:btnColor
+                                     borderColor:btnColor
                                      borderWidth:2];
+    leaveBtn.frame = CGRectMake(self.view.bounds.size.width - 150, connectBtn.frame.origin.y, 100, 44);
     
     [self.view addSubview:connectBtn];
     [self.view addSubview:leaveBtn];
@@ -100,6 +104,10 @@
 }
 
 - (void)onConnectClick {
+    if (_isConnect) {
+        return;
+    }
+    _isConnect = true;
     [_msgHandler connectServer:@"ws://192.168.9.18:8188"];
 }
 
@@ -175,3 +183,4 @@
 }
 
 @end
+

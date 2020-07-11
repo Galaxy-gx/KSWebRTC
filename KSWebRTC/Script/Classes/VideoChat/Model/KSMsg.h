@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 
 //ACK
 @interface KSSuccess : KSMsg
-@property(nonatomic,copy)KSMessageData *data;
+@property(nonatomic,strong)KSMessageData *data;
 @end
 
 //Request

@@ -24,4 +24,7 @@
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;
 
+//创建会话
+-(void)createSession;
+
 @end
