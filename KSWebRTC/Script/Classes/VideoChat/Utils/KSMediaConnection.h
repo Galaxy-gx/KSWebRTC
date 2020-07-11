@@ -13,8 +13,7 @@
 // 收到远端流处理
 - (void)MediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
 // 收到候选者
-- (void)MediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection
-didGenerateIceCandidate:(RTCIceCandidate *)candidate;
+- (void)MediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 
 @end
 
@@ -29,12 +28,10 @@ didGenerateIceCandidate:(RTCIceCandidate *)candidate;
                                  audioTrack:(RTCAudioTrack *)audioTrack
                                  videoTrack:(RTCVideoTrack *)videoTrack;
 
-- (void)createOfferWithCompletionHandler:
-        (nullable void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
+- (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 
 // 创建answer
-- (void)createAnswerWithCompletionHandler:
-        (nullable void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
+- (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep;
 

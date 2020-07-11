@@ -47,8 +47,7 @@
 }
 
 // 创建answer
-- (void)createAnswerWithCompletionHandler:
-(nullable void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
+- (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     NSDictionary *mandatoryContraints = [self mandatoryConstraints];
     
     RTCMediaConstraints *constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:nil];
@@ -66,8 +65,7 @@
 }
 
 // 创建offer
-- (void)createOfferWithCompletionHandler:
-(nullable void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
+- (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     __weak KSMediaConnection *weakSelf = self;
     [_connection offerForConstraints:[self defaultOfferConstraints]
                    completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
