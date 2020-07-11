@@ -111,11 +111,8 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
     [self closeConnect];//容错
     
     _configure.status                         = KSWebSocketStatusConnecting;
-    NSMutableURLRequest *request              = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:_configure.urlString]];
-    if(_isAuthor){
-        [request setValue:[NSString stringWithFormat:@"Bearer %@",self.configure.authorToken] forHTTPHeaderField:@"Authorization"];
-    }
-    SRWebSocket *socket                       = [[SRWebSocket alloc] initWithURLRequest:request];
+    NSArray<NSString *> *protocols = @[@"janus-protocol"];
+    SRWebSocket *socket                       = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:_configure.urlString] protocols:protocols];
     socket.delegate                           = self;
     NSOperationQueue *delegateQueue           = [[NSOperationQueue alloc] init];
     delegateQueue.maxConcurrentOperationCount = 2;

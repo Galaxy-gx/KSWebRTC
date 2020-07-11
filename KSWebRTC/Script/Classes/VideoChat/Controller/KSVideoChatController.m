@@ -9,20 +9,37 @@
 #import "KSVideoChatController.h"
 #import <WebRTC/WebRTC.h>
 #import "UIButton+Category.h"
+#import "KSMessageHandler.h"
+#import "KSMediaCapture.h"
+
 @interface KSVideoChatController ()
+
 @property (nonatomic, weak) RTCCameraPreviewView *localView;
 @property (nonatomic, weak) RTCEAGLVideoView *remoteView;
-
+@property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, strong) KSMediaCapture *mediaCapture;
 @end
 
 @implementation KSVideoChatController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initializeKit];
+    [self initializeHandler];
+    
     // Do any additional setup after loading the view.
 }
 
-- (void)createVideoLayer {
+- (void)initializeHandler {
+    _mediaCapture = [[KSMediaCapture alloc] init];
+    [_mediaCapture createPeerConnectionFactory];
+    [_mediaCapture captureLocalMedia:_localView];
+    
+    _msgHandler = [[KSMessageHandler alloc] init];
+    [_msgHandler connectServer:@"wss://127.0.0.1:8188"];
+}
+
+- (void)initializeKit {
     CGFloat layerWidth              = 180;
     CGFloat layerHeight             = 320;
     CGFloat layerX                  = self.view.bounds.size.width - layerWidth - 10;
@@ -62,14 +79,5 @@
 - (void)onLeaveClick {
     
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -7,7 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+@class KSMsg;
+@class KSMessageHandler;
+@class KSMediaCapture;
+@protocol KSMessageHandlerDelegate <NSObject>
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
+- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
+@end
 
 @interface KSMessageHandler : NSObject
+
+@property (nonatomic, weak) id<KSMessageHandlerDelegate> delegate;
+
+- (void)connectServer:(NSString *)url;
+- (void)analysisMsg:(id)message;
 
 @end

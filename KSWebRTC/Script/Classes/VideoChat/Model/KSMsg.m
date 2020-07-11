@@ -81,7 +81,7 @@
         case KSMessageTypeWebrtcup:
             obj = [KSWebrtcup mj_objectWithKeyValues:msg];
             obj.msgType = type;
-            //break;
+            break;
         default:
             break;
     }
