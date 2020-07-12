@@ -108,7 +108,7 @@
         return;
     }
     _isConnect = true;
-    [_msgHandler connectServer:@"ws://192.168.9.18:8188"];
+    [_msgHandler connectServer:@"ws://192.168.43.137:8188"];
 }
 
 - (void)onLeaveClick {

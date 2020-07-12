@@ -120,6 +120,7 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
                         //WebRTC:04
                         _nextMessage = KSNextMessageTypeSubscriber;
                         [self publisherCreate];
+
                         [self.publishers removeAllObjects];
                         for (KSPublishers *publisher in event.plugindata.data.publishers) {
                             [self.publishers addObject:publisher.ID];
@@ -207,7 +208,7 @@ typedef NS_ENUM(NSInteger, KSNextMessageType) {
         body[@"request"] = @"configure";
         body[@"audio"] = @YES;
         body[@"video"] = @YES;
-        
+
         NSString *type = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
         jsep[@"type"] = type;

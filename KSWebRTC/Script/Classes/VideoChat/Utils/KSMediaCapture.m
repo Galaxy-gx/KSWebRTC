@@ -19,6 +19,14 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 
 @implementation KSMediaCapture
 
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.isFront = true;
+    }
+    return self;
+}
+
 - (void)createPeerConnectionFactory {
     RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
