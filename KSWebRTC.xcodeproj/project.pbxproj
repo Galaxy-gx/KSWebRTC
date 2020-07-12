@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E61CAC3524BB448A00737527 /* KSMember.m in Sources */ = {isa = PBXBuildFile; fileRef = E61CAC3424BB448A00737527 /* KSMember.m */; };
 		E630B64824B946E200A5CA72 /* KSMediaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E630B64724B946E200A5CA72 /* KSMediaConnection.m */; };
 		E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3424B8507F004C7060 /* AppDelegate.m */; };
 		E6400F3824B8507F004C7060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3724B8507F004C7060 /* ViewController.m */; };
@@ -30,6 +31,8 @@
 		005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KSWebRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A78CB3FBA8D1E1A07AA6289F /* Pods-KSWebRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSWebRTC.debug.xcconfig"; path = "Target Support Files/Pods-KSWebRTC/Pods-KSWebRTC.debug.xcconfig"; sourceTree = "<group>"; };
 		DE646ED62E8FCF423BE8CDE2 /* Pods-KSWebRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSWebRTC.release.xcconfig"; path = "Target Support Files/Pods-KSWebRTC/Pods-KSWebRTC.release.xcconfig"; sourceTree = "<group>"; };
+		E61CAC3324BB448A00737527 /* KSMember.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMember.h; sourceTree = "<group>"; };
+		E61CAC3424BB448A00737527 /* KSMember.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMember.m; sourceTree = "<group>"; };
 		E630B64624B946E200A5CA72 /* KSMediaConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaConnection.h; sourceTree = "<group>"; };
 		E630B64724B946E200A5CA72 /* KSMediaConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaConnection.m; sourceTree = "<group>"; };
 		E6400F3024B8507F004C7060 /* KSWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KSWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -229,6 +232,8 @@
 			children = (
 				E67BC5B924B86171004BBA8A /* KSMsg.h */,
 				E67BC5BA24B86171004BBA8A /* KSMsg.m */,
+				E61CAC3324BB448A00737527 /* KSMember.h */,
+				E61CAC3424BB448A00737527 /* KSMember.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,6 +353,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E67BC5AC24B856D6004BBA8A /* NSString+Category.m in Sources */,
+				E61CAC3524BB448A00737527 /* KSMember.m in Sources */,
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
 				E67BC5AF24B857BA004BBA8A /* RTCSessionDescription+Category.m in Sources */,
 				E630B64824B946E200A5CA72 /* KSMediaConnection.m in Sources */,
