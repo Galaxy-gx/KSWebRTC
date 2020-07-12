@@ -205,6 +205,9 @@
 }
 @end
 
+@implementation KSJsep
+@end
+
 @implementation KSTrickle
 + (NSDictionary *)mj_objectClassInArray {
     return @{@"candidate" : @"KSCandidate"};
