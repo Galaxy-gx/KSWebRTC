@@ -68,23 +68,25 @@
         case KSMessageTypeError:
         case KSMessageTypeAck:
             obj = [KSSuccess mj_objectWithKeyValues:msg];
-            obj.msgType = type;
             break;
         case KSMessageTypeEvent:
             obj = [KSEvent mj_objectWithKeyValues:msg];
-            obj.msgType = type;
             break;
         case KSMessageTypeMedia:
             obj = [KSMedia mj_objectWithKeyValues:msg];
-            obj.msgType = type;
             break;
         case KSMessageTypeWebrtcup:
             obj = [KSWebrtcup mj_objectWithKeyValues:msg];
-            obj.msgType = type;
+            break;
+        case KSMessageTypeDetached:
+        case KSMessageTypeHangup:
+            obj = [KSDetached mj_objectWithKeyValues:msg];
             break;
         default:
+            return NULL;
             break;
     }
+    obj.msgType = type;
     return obj;
 }
 
@@ -147,3 +149,5 @@
 @implementation KSWebrtcup
 @end
 
+@implementation KSDetached
+@end

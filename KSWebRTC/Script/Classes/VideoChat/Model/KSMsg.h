@@ -130,3 +130,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @property(nonatomic,strong)NSNumber *sender;
 @property(nonatomic,assign)BOOL receiving;
 @end
+
+@interface KSDetached : KSMsg
+@property(nonatomic,strong)NSNumber *sender;
+@end

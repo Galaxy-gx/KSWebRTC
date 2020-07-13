@@ -23,6 +23,7 @@
 		E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B124B85CDE004BBA8A /* UIButton+Category.m */; };
 		E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */; };
 		E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5BA24B86171004BBA8A /* KSMsg.m */; };
+		E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */; };
 		ECC021D079843342094A3894 /* libPods-KSWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,8 @@
 		E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
 		E67BC5B924B86171004BBA8A /* KSMsg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
 		E67BC5BA24B86171004BBA8A /* KSMsg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
+		E6A2E7F824BC57120008C53D /* KSEAGLVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSEAGLVideoView.h; sourceTree = "<group>"; };
+		E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSEAGLVideoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +168,7 @@
 		E67BC59D24B85424004BBA8A /* VideoChat */ = {
 			isa = PBXGroup;
 			children = (
+				E6A2E7F724BC56F10008C53D /* View */,
 				E630B64524B946C300A5CA72 /* Utils */,
 				E67BC5B824B86156004BBA8A /* Model */,
 				E67BC5B424B860BE004BBA8A /* Handler */,
@@ -231,6 +235,15 @@
 				E67BC5BA24B86171004BBA8A /* KSMsg.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E6A2E7F724BC56F10008C53D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E6A2E7F824BC57120008C53D /* KSEAGLVideoView.h */,
+				E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,6 +367,7 @@
 				E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */,
 				E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */,
 				E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */,
+				E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */,
 				E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */,
 				E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,

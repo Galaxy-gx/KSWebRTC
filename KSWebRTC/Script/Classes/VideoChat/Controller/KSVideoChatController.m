@@ -11,13 +11,15 @@
 #import "UIButton+Category.h"
 #import "KSMessageHandler.h"
 #import "KSMediaCapture.h"
+#import "KSEAGLVideoView.h"
+#import "KSMsg.h"
 
 @interface KSVideoChatController ()<RTCVideoViewDelegate,KSMessageHandlerDelegate>
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) RTCCameraPreviewView *localView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
-@property (nonatomic, strong) NSMutableDictionary *remoteKits;
+@property (nonatomic, strong) NSMutableArray *remoteKits;
 
 @property (nonatomic, assign) int kitWidth;
 @property (nonatomic, assign) int kitHeight;
@@ -46,7 +48,7 @@
 
 - (void)initializeKit {
     self.view.backgroundColor = [UIColor whiteColor];
-    _remoteKits = [NSMutableDictionary dictionary];
+    _remoteKits = [NSMutableArray array];
     _padding = 0;
     _topOffset = 24;
     _kitWidth  = self.view.bounds.size.width / 2;
@@ -84,8 +86,34 @@
     [leaveBtn addTarget:self action:@selector(onLeaveClick) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (RTCEAGLVideoView *)createRemoteView {
-    int index = (int)_remoteKits.count + 1;
+- (RTCEAGLVideoView *)createRemoteView:(NSNumber *)handleId {
+    CGPoint point= [self remotePointOfIndex:(int)_remoteKits.count + 1];
+    KSEAGLVideoView *remoteView = [[KSEAGLVideoView alloc] initWithFrame:CGRectMake(point.x, point.y, _kitWidth, _kitHeight)];
+    remoteView.delegate = self;
+    remoteView.handleId = handleId;
+    if (point.y + _kitHeight > self.view.bounds.size.height) {
+        _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, point.y + _kitHeight);
+    }
+    [_scrollView addSubview:remoteView];
+    [_remoteKits addObject:remoteView];
+    return remoteView;
+}
+
+-(void)layoutRemoteViews {
+    for (int index = 1; index <= _remoteKits.count; index++) {
+        CGPoint point= [self remotePointOfIndex:(int)_remoteKits.count + 1];
+        KSEAGLVideoView *remoteView = _remoteKits[index];
+        remoteView.frame = CGRectMake(point.x, point.y, _kitWidth, _kitHeight);
+    }
+    if (_remoteKits.lastObject) {
+        KSEAGLVideoView *remoteView = _remoteKits.lastObject;
+        if (remoteView.frame.origin.y + _kitHeight > self.view.bounds.size.height) {
+            _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, remoteView.frame.origin.y + _kitHeight);
+        }
+    }
+}
+
+-(CGPoint)remotePointOfIndex:(int)index {
     int x = 0;
     int y = 0;
     if (index == 1) {
@@ -98,18 +126,7 @@
         }
         y = _topOffset + (index / 2) * _kitHeight + _padding * (index / 2);
     }
-    RTCEAGLVideoView *remoteView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(x, y, _kitWidth, _kitHeight)];
-    remoteView.delegate = self;
-    
-    if (y + _kitHeight > self.view.bounds.size.height) {
-        _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, y + _kitHeight);
-    }
-    [_scrollView addSubview:remoteView];
-    return remoteView;
-}
-
-- (void)onLeaving:(NSString *)handleId {
-    
+    return CGPointMake(x, y);
 }
 
 - (void)onConnectClick {
@@ -174,21 +191,32 @@
 }
 
 //KSMessageHandlerDelegate
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
-    return _mediaCapture;
-}
-
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
     
 }
 
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    RTCEAGLVideoView *remoteView = NULL;
-    if (_remoteKits[handleId] == nil) {
-        remoteView = [self createRemoteView];
-        _remoteKits[handleId] = remoteView;
+- (void)messageHandler:(KSMessageHandler *)messageHandler detached:(KSDetached *)detached {
+    for (KSEAGLVideoView *videoView in _remoteKits) {
+        if (videoView.handleId == detached.sender) {
+            [_remoteKits removeObject:videoView];
+            [videoView removeFromSuperview];
+            break;
+        }
     }
-    return _remoteKits[handleId];
+    [self layoutRemoteViews];
+}
+
+- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
+    return _mediaCapture;
+}
+
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    for (KSEAGLVideoView *videoView in _remoteKits) {
+        if (videoView.handleId == handleId) {
+            return videoView;
+        }
+    }
+    return [self createRemoteView:handleId];
 }
 
 @end

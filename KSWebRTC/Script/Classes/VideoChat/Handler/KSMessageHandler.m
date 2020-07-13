@@ -133,6 +133,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     }
 }
 
+- (void)messageDetached:(KSDetached *)detached {
+    [self onLeaving:detached.sender];
+    [self.delegate messageHandler:self detached:detached];
+}
+
 - (void)analysisMsg:(id)message {
     NSData *jsonData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
@@ -164,7 +169,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             
             break;
         case KSMessageTypeDetached:
-            [self onLeaving:@""];
+        case KSMessageTypeHangup:
+            [self messageDetached:(KSDetached *)msg];
             break;
         default:
             break;
@@ -297,7 +303,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     return mc;
 }
 
-- (void)onLeaving:(NSString *)handleId {
+- (void)onLeaving:(NSNumber *)handleId {
     KSMediaConnection *mc = _connections[handleId];
     [mc close];
     [_connections removeObjectForKey:handleId];

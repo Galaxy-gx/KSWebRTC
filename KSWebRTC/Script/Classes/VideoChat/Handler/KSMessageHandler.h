@@ -11,8 +11,11 @@
 @class KSMsg;
 @class KSMessageHandler;
 @class KSMediaCapture;
+@class KSDetached;
+
 @protocol KSMessageHandlerDelegate <NSObject>
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
+- (void)messageHandler:(KSMessageHandler *)messageHandler detached:(KSDetached *)detached;
 - (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
 - (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
 @end
