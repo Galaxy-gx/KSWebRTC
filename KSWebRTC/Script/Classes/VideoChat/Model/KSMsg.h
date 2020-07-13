@@ -59,6 +59,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @property(nonatomic,strong)NSNumber *leaving;
 @property(nonatomic,strong)NSMutableArray *publishers;
 @property(nonatomic,assign)BOOL started;
+@property(nonatomic,strong)NSNumber *unpublished;
 @end
 
 //ACK

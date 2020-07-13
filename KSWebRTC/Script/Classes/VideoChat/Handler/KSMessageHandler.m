@@ -61,6 +61,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     switch (actionType) {
         case KSActionTypeCreateSession:
             _sessionId = success.data.ID;
+            _socket.configure.sessionId = _sessionId;
+            _socket.configure.isSession = true;
+            
             //WebRTC:02
             [self pluginBinding:KSActionTypePluginBinding transaction:[NSString randomForLength:KSRandomLength]];
             break;
@@ -88,7 +91,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             body[@"room"] = _roomMumber;
             body[@"ptype"] = @"subscriber";
             body[@"feed"] = member.ID;
-            body[@"private_id"] = member.privateId;
+            if (member.privateId) {
+                body[@"private_id"] = member.privateId;
+            }
             [self sendMessage:body jsep:NULL handleId:success.data.ID actionType:KSActionTypeSubscriber];
         }
             break;
@@ -102,20 +107,18 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 - (void)messageEvent:(KSEvent *)event {
-    if ([event.plugindata.data.videoroom isEqualToString:@"joined"]) {
-        if (event.plugindata.data.private_id) {
-            for (KSPublishers *item in event.plugindata.data.publishers) {
+    if (event.plugindata.data.publishers.count > 0) {//videoroom = joined:已经加入的用户//event:有新的加入
+        for (KSPublishers *item in event.plugindata.data.publishers) {
+            if (event.plugindata.data.private_id) {
                 item.privateId = event.plugindata.data.private_id;
-                
-                NSString *transaction = [NSString randomForLength:KSRandomLength];
-                self.subscribers[transaction] = [item copy];
-                
-                //WebRTC:05
-                [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
             }
+            NSString *transaction = [NSString randomForLength:KSRandomLength];
+            self.subscribers[transaction] = [item copy];
+            
+            //WebRTC:05
+            [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
         }
-    }
-    else if (event.jsep) {
+    } else if (event.jsep) {
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
             [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
@@ -125,7 +128,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
         }
     }
-    else if ([event.plugindata.data.leaving intValue] > 0) {
+    else if ([event.plugindata.data.leaving integerValue] > 0) {//用户离开
         
     }
 }
@@ -339,6 +342,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 -(void)socket:(KSWebSocket *)socket isReachable:(BOOL)isReachable {
     
 }
+
 //KSPeerConnectionDelegate
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
