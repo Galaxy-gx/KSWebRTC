@@ -11,21 +11,11 @@
 #import "KSWebSocket.h"
 #import "KSMediaCapture.h"
 #import "KSMediaConnection.h"
-#import "KSMember.h"
 
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
 
 static int const KSRandomLength = 12;
-typedef NS_ENUM(NSInteger, KSNextMessageType) {
-    KSNextMessageTypeUnknown,
-    KSNextMessageTypeAttach,
-    KSNextMessageTypePublisher,
-    KSNextMessageTypeEvent,
-    KSNextMessageTypeSubscriber,
-    KSNextMessageTypeMessageConfigure,
-};
-
 typedef NS_ENUM(NSInteger, KSActionType) {
     KSActionTypeUnknown,
     KSActionTypeCreateSession,
@@ -44,13 +34,10 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 @property (nonatomic, copy) NSString *opaqueId;
 @property(nonatomic,strong)NSNumber *roomMumber;
 @property(nonatomic,strong)NSNumber *myHandleId;
-@property(nonatomic,strong)NSNumber *myPrivateId;
-
 @property (nonatomic, strong) NSMutableDictionary *connections;
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
 @property (nonatomic, strong) RTCPeerConnection *publisherPeerConnection;
-@property (nonatomic, assign) KSNextMessageType nextMessage;
 
 @end
 @implementation KSMessageHandler
@@ -74,41 +61,41 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     switch (actionType) {
         case KSActionTypeCreateSession:
             _sessionId = success.data.ID;
-            //002
+            //WebRTC:02
             [self pluginBinding:KSActionTypePluginBinding transaction:[NSString randomForLength:KSRandomLength]];
             break;
         case KSActionTypePluginBinding:
             _myHandleId = success.data.ID;
-            //003
+            //WebRTC:03
             [self joinRoom:success.data.ID];
             break;
         case KSActionTypeJoinRoom:
-            //005
+            //WebRTC:04
             [self configureRoom:_myHandleId];
             break;
         case KSActionTypeConfigureRoom:
             
             break;
-        case KSActionTypeSubscriber:
-            
-            break;
         case KSActionTypePluginBindingSubscriber:
         {
-            _myHandleId = success.data.ID;
-            KSMember *member = _subscribers[success.transaction];
+            KSPublishers *member = _subscribers[success.transaction];
             if (!member) {
                 return;
             }
-            //006
+            //WebRTC:06
             NSMutableDictionary *body =[NSMutableDictionary dictionary];
             body[@"request"] = @"join";
             body[@"room"] = _roomMumber;
             body[@"ptype"] = @"subscriber";
-            body[@"feed"] = member.feedId;
-            body[@"private_id"] = _myPrivateId;
-            [self sendMessage:body jsep:NULL handleId:_myHandleId actionType:KSActionTypeSubscriber];
+            body[@"feed"] = member.ID;
+            body[@"private_id"] = member.privateId;
+            [self sendMessage:body jsep:NULL handleId:success.data.ID actionType:KSActionTypeSubscriber];
         }
             break;
+        case KSActionTypeSubscriber:
+            
+            break;
+        
         default:
             break;
     }
@@ -117,28 +104,29 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)messageEvent:(KSEvent *)event {
     if ([event.plugindata.data.videoroom isEqualToString:@"joined"]) {
         if (event.plugindata.data.private_id) {
-            _myPrivateId = event.plugindata.data.private_id;
             for (KSPublishers *item in event.plugindata.data.publishers) {
-                KSMember *member = [[KSMember alloc] init];
-                member.ID = event.plugindata.data.ID;
-                member.feedId = item.ID;
-                member.display = item.display;
+                item.privateId = event.plugindata.data.private_id;
                 
                 NSString *transaction = [NSString randomForLength:KSRandomLength];
-                self.subscribers[transaction] = member;
-                //004
+                self.subscribers[transaction] = [item copy];
+                
+                //WebRTC:05
                 [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
             }
         }
     }
     else if (event.jsep) {
-        NSDictionary *jsep = @{@"type" : event.jsep.type,@"sdp" : event.jsep.sdp};
-        if ([event.jsep.type isEqualToString:@"offer"]) {
-            [self subscriberHandlerRemoteJsep:_myHandleId dict:jsep];
+        if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
+            //WebRTC:07
+            [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
         }
-        else if ([event.jsep.type isEqualToString:@"answer"]) {
-            [self onPublisherRemoteJsep:_myHandleId dict:jsep];
+        else if ([event.jsep[@"type"] isEqualToString:@"answer"]) {
+            //WebRTC:08
+            [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
         }
+    }
+    else if ([event.plugindata.data.leaving intValue] > 0) {
+        
     }
 }
 
@@ -151,18 +139,17 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     if (!dict) {
         return;
     }
-    NSLog(@"Received: %@",dict);
+    NSLog(@"Received: %@",message);
     KSMsg *msg = [KSMsg deserializeForMsg:dict];
     if (!msg) {
         return;
     }
     switch (msg.msgType) {
         case KSMessageTypeSuccess:
+        case KSMessageTypeAck:
             [self messageSuccess:(KSSuccess *)msg];
             break;
         case KSMessageTypeError:
-        case KSMessageTypeAck:
-            
             break;
         case KSMessageTypeEvent:
             [self messageEvent:(KSEvent *)msg];
@@ -187,7 +174,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 //Send
-//001创建会话
+// 创建会话
 -(void)createSession {
     NSString *transaction       = [NSString randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
@@ -197,7 +184,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [_socket sendMessage:sendMessage];
 }
 
-//002插件绑定
+// 插件绑定
 - (void)pluginBinding:(KSActionType)type transaction:(NSString *)transaction {
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"janus"]       = @"attach";
@@ -209,7 +196,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [_socket sendMessage:message];
 }
 
-// 003加入房间
+// 加入房间
 - (void)joinRoom:(NSNumber *)handleId{
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
     sendMessage[@"request"] = @"join";
@@ -219,14 +206,10 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [self sendMessage:sendMessage jsep:NULL handleId:handleId actionType:KSActionTypeJoinRoom];
 }
 
-// 004配置房间
+// 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
     KSMediaConnection *mc = [self createMediaConnection];
-    mc.handleId = handleId;
-    
     _publisherPeerConnection = mc.connection;
-    _connections[handleId] = mc;
-    
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -240,9 +223,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         jsep[@"sdp"] = [sdp sdp];
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
     }];
+    mc.handleId = handleId;
+    _connections[handleId] = mc;
 }
 
-// 发布者收到远端媒体信息后的回调
+// 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
     KSMediaConnection *mc = _connections[handleId];
     [mc setRemoteDescriptionWithJsep:jsep];
@@ -261,7 +246,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"start";
         body[@"room"] = weakSelf.roomMumber;
-        body[@"video"] = @YES;
+        //body[@"video"] = @YES;
         
         NSString *type = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
@@ -284,11 +269,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [_socket sendMessage:sendMessage];
 }
 
-// 处理远端发送者的媒体信息
-- (void)subscriberCreateHandle:(NSNumber *)feed display:(NSString *)display plugin:(NSString *)plugin {
-    
-}
-
 // 发送消息通用方法
 - (void)sendMessage:(NSDictionary *)body jsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId actionType:(KSActionType)actionType {
     NSString *transaction = [NSString randomForLength:KSRandomLength];
@@ -301,12 +281,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     if (jsep != NULL) {
         sendMessage[@"jsep"] = jsep;
     }
-    _msgs[transaction] = [NSNumber numberWithInteger:KSActionTypeJoinRoom];
+    _msgs[transaction] = [NSNumber numberWithInteger:actionType];
     [_socket sendMessage:sendMessage];
 }
 
-
-//
+// 创建一个媒体连接
 -(KSMediaConnection *)createMediaConnection {
     KSMediaCapture *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
     KSMediaConnection *mc = [[KSMediaConnection alloc] init];
@@ -327,7 +306,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
-    self.nextMessage = KSNextMessageTypeAttach;
     [self createSession];
 }
 
@@ -386,4 +364,5 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         [self trickleCandidate:mediaConnection.handleId candidate:body];
     }
 }
+
 @end

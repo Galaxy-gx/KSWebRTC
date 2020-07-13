@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
     KSMessageTypeSlowlink,//链路恶化通知
     KSMessageTypeHangup,//挂断通知
     KSMessageTypeDetached,//插件从janus会话分离的通知
+    KSMessageTypeTimeout,//超时
     KSMessageTypeUnknown
 };
 
@@ -39,11 +40,12 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 
 @end
 //ACK
-@interface KSPublishers : NSObject
+@interface KSPublishers : NSObject<NSCopying>
 @property(nonatomic,strong)NSNumber *ID;//!
 @property(nonatomic,copy)NSString *display;
-@property(nonatomic,strong)NSNumber *audio_codec;
-@property(nonatomic,strong)NSNumber *video_codec;
+@property(nonatomic,copy)NSString *audio_codec;
+@property(nonatomic,copy)NSString *video_codec;
+@property(nonatomic,strong)NSNumber *privateId;
 @property(nonatomic,assign)BOOL talking;
 @end
 
@@ -54,7 +56,7 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @property(nonatomic,copy)NSString *Description;
 @property(nonatomic,strong)NSNumber *ID;//!
 @property(nonatomic,strong)NSNumber *private_id;
-@property(nonatomic,copy)NSString *leaving;
+@property(nonatomic,strong)NSNumber *leaving;
 @property(nonatomic,strong)NSMutableArray *publishers;
 @property(nonatomic,assign)BOOL started;
 @end
@@ -77,16 +79,17 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @end
 
 //ACK
-@interface KSJsep : NSObject
-@property(nonatomic,copy)NSString *type;
-@property(nonatomic,copy)NSString *sdp;
+//@interface KSJsep : NSObject
+//@property(nonatomic,copy)NSString *type;
+//@property(nonatomic,copy)NSString *sdp;
+//
+//@end
 
-@end
 //ACK
 @interface KSEvent : KSMsg
 @property(nonatomic,strong)NSNumber *sender;
 @property(nonatomic,strong)KSPlugindata *plugindata;
-@property(nonatomic,strong)KSJsep *jsep;
+@property(nonatomic,strong)NSDictionary *jsep;
 @end
 
 //Request

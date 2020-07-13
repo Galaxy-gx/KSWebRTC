@@ -13,7 +13,7 @@
 #import "KSMediaCapture.h"
 
 @interface KSVideoChatController ()<RTCVideoViewDelegate,KSMessageHandlerDelegate>
-
+@property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) RTCCameraPreviewView *localView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
@@ -21,6 +21,8 @@
 
 @property (nonatomic, assign) int kitWidth;
 @property (nonatomic, assign) int kitHeight;
+@property (nonatomic, assign) int padding;
+@property (nonatomic, assign) int topOffset;
 @property (nonatomic, assign) BOOL isConnect;
 @end
 
@@ -30,15 +32,13 @@
     [super viewDidLoad];
     [self initializeKit];
     [self initializeHandler];
-    
-    // Do any additional setup after loading the view.
 }
 
 - (void)initializeHandler {
-    
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
     [_mediaCapture captureLocalMedia:_localView];
+    //[_mediaCapture.videoTrack.source  adaptOutputFormatToWidth:_kitWidth height:_kitHeight fps:25];
     
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
@@ -47,12 +47,17 @@
 - (void)initializeKit {
     self.view.backgroundColor = [UIColor whiteColor];
     _remoteKits = [NSMutableDictionary dictionary];
-    _kitWidth  = (self.view.bounds.size.width - 30)/2;
-    _kitHeight = _kitWidth * (16.0 / 9.0);
-    int padding = 10;
-    CGFloat topOffset = 64;
-    RTCCameraPreviewView *localView = [[RTCCameraPreviewView alloc] initWithFrame:CGRectMake(padding, topOffset, _kitHeight, _kitHeight)];
-    [self.view addSubview:localView];
+    _padding = 0;
+    _topOffset = 24;
+    _kitWidth  = self.view.bounds.size.width / 2;
+    _kitHeight = self.view.bounds.size.height / 3;
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:scrollView];
+    _scrollView = scrollView;
+    
+    RTCCameraPreviewView *localView = [[RTCCameraPreviewView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight)];
+    [scrollView addSubview:localView];
     _localView = localView;
     
     UIColor *btnColor = [UIColor colorWithRed:100/255.0 green:149/255.0 blue:237/255.0 alpha:1];
@@ -83,19 +88,23 @@
     int index = (int)_remoteKits.count + 1;
     int x = 0;
     int y = 0;
-    if (index < 2) {
-        x = _kitWidth * index;
-    } else if (index < 4) {
-        x = _kitWidth * (index - 2);
-        y = _kitHeight;
-    } else {
-        x = _kitWidth * (index - 3);
-        y = _kitHeight * 2;
+    if (index == 1) {
+        x = _kitWidth + _padding;
+        y = _topOffset;
     }
-
+    else {
+        if ((index % 2) != 0) {
+            x = _kitWidth + _padding;
+        }
+        y = _topOffset + (index / 2) * _kitHeight + _padding * (index / 2);
+    }
     RTCEAGLVideoView *remoteView = [[RTCEAGLVideoView alloc] initWithFrame:CGRectMake(x, y, _kitWidth, _kitHeight)];
     remoteView.delegate = self;
-    [self.view addSubview:remoteView];
+    
+    if (y + _kitHeight > self.view.bounds.size.height) {
+        _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, y + _kitHeight);
+    }
+    [_scrollView addSubview:remoteView];
     return remoteView;
 }
 
@@ -108,7 +117,7 @@
         return;
     }
     _isConnect = true;
-    [_msgHandler connectServer:@"ws://192.168.43.137:8188"];
+    [_msgHandler connectServer:@"ws://192.168.9.97:8188"];
 }
 
 - (void)onLeaveClick {

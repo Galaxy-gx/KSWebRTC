@@ -87,4 +87,5 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     CGFloat fps = [[format videoSupportedFrameRateRanges] firstObject].maxFrameRate;
     [_capture startCaptureWithDevice:device format:format fps:fps];
 }
+
 @end

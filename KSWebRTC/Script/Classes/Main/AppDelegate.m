@@ -20,8 +20,8 @@
     // Override point for customization after application launch.
     [self.window makeKeyAndVisible];
     KSVideoChatController *ctrl = [[KSVideoChatController alloc] init];
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    [UIApplication sharedApplication].keyWindow.rootViewController = navCtrl;
+    //UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [UIApplication sharedApplication].keyWindow.rootViewController = ctrl;
     return YES;
 }
 
