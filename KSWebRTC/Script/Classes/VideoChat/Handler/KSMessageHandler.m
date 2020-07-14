@@ -215,6 +215,23 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [self sendMessage:sendMessage jsep:NULL handleId:handleId actionType:KSActionTypeJoinRoom];
 }
 
+/*
+ https://webrtc.org.cn/webrtc-tutorial-2-signaling-stun-turn/
+ WebRTC 媒体协商的过种。
+ 
+ Amy:remote Bob:Local
+ 
+ 第一步，Amy 调用 createOffer 方法创建 offer 消息。offer 消息中的内容是 Amy 的 SDP 信息。
+ 第二步，Amy 调用 setLocalDescription 方法，将本端的 SDP 信息保存起来。
+ 第三步，Amy 将 offer 消息通过信令服务器传给 Bob。
+ 
+ 第四步，Bob 收到 offer 消息后，调用 setRemoteDescription 方法将其存储起来。
+ 第五步，Bob 调用 createAnswer 方法创建 answer 消息， 同样，answer 消息中的内容是 Bob 的 SDP 信息。
+ 第六步，Bob 调用 setLocalDescription 方法，将本端的 SDP 信息保存起来。
+ 第七步，Bob 将 anwser 消息通过信令服务器传给 Amy。
+ 第八步，Amy 收到 anwser 消息后，调用 setRemoteDescription 方法，将其保存起来。
+ 
+ */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
     KSMediaConnection *mc = [self createMediaConnection];
