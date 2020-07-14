@@ -231,6 +231,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  第七步，Bob 将 anwser 消息通过信令服务器传给 Amy。
  第八步，Amy 收到 anwser 消息后，调用 setRemoteDescription 方法，将其保存起来。
  
+ 通过以上步骤就完成了通信双方媒体能力的交换。
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
@@ -393,3 +394,38 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 @end
+
+/*
+ 下面我们就来看一下，对于两人通讯的情况，信令该如何设计。在我们这个例子中，可以将信令分成两大类。第一类为客户端命令；第二类为服务端命令；
+
+ 客户端命令有：
+    join: 用户加入房间
+    leave: 用户离开房间
+    message: 端到端命令（offer、answer、candidate）
+ 
+ 服务端命令:
+    joined: 用户已加入
+    leaved: 用户已离开
+    other_joined:其它用户已加入
+    bye: 其它用户已离开
+    full: 房间已满
+ 通过以上几条信令就可以实现一对一实时互动的要求，是不是非常的简单？
+ 
+ */
+
+
+/*
+ 信令状态机
+ 在 iOS 端的信令与我们之前介绍的 js端 和 Android 端一样，会通过一个信令状态机来管理。在不同的状态下，需要发不同的信令。同样的，当收到服务端，或对端的信令后，状态会随之发生改变。下面我们来看一下这个状态的变化图吧：
+
+ 在初始时，客户端处于 init/leaved 状态。
+
+    在 init/leaved 状态下，用户只能发送 join 消息。服务端收到 join 消息后，会返回 joined 消息。此时，客户端会更新为 joined 状态。
+    在 joined 状态下，客户端有多种选择，收到不同的消息会切到不同的状态:
+        如果用户离开房间，那客户端又回到了初始状态，即 init/leaved 状态。
+        如果客户端收到 second user join 消息，则切换到 join_conn 状态。在这种状态下，两个用户就可以进行通话了。
+        如果客户端收到 second user leave 消息，则切换到 join_unbind 状态。其实 join_unbind状态与 joined 状态基本是一致的。
+        如果客户端处于 join_conn 状态，当它收到 second user leave 消息时，也会转成 joined_unbind 状态。
+        如果客户端是 joined_unbind 状态，当它收到 second user join 消息时，会切到 join_conn 状态。
+    通过上面的状态图，我们就非常清楚的知道了在什么状态下应该发什么信令；或者说，发什么样的信令，状态会发生怎样的变化了。
+ */

@@ -14,7 +14,22 @@
 @end
 
 @implementation KSMediaConnection
-
+/*
+ 要想从远端获取数据，我们就必须创建 PeerConnection 对象。该对象的用处就是与远端建立联接，并最终为双方通讯提供网络通道。
+ 
+ 当 PeerConnection 对象创建好后，我们应该将本地的音视频轨添加进去，这样 WebRTC 才能帮我们生成包含相应媒体信息的 SDP，以便于后面做媒体能力协商使用。
+ //---------- !!! ----------
+ 以 PeerConnection 对象的创建为例，该在什么时候创建 PeerConnection 对象呢？最好的时机当然是在用户加入房间之后了 。
+ 
+ 客户端收到 joined 消息后，就要创建 RTCPeerConnection 了，也就是要建立一条与远端通话的音视频数据传输通道。
+ 
+ 对于 iOS 的 RTCPeerConnection 对象有三个参数：
+    第一个，是 RTCConfiguration 类型的对象，该对象中最重要的一个字段是 iceservers。它里边存放了 stun/turn 服务器地址。其主要作用是用于NAT穿越。对于 NAT 穿越的知识大家可以自行学习。
+    第二个参数，是 RTCMediaConstraints 类型对象，也就是对 RTCPeerConnection 的限制。如，是否接收视频数据？是否接收音频数据？如果要与浏览器互通还要开启 DtlsSrtpKeyAgreement 选项。
+    第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。但它并不属于观察者模式，这一点大家一定要清楚。
+    RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
+ 
+ */
 - (RTCPeerConnection *)createPeerConnection:(RTCPeerConnectionFactory *)factory
                                  audioTrack:(RTCAudioTrack *)audioTrack
                                  videoTrack:(RTCVideoTrack *)videoTrack {
@@ -135,14 +150,36 @@
     [self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
 }
 
+//该方法用于收集可用的 Candidate。
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
     [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
 }
 
+//当 ICE 连接状态发生变化时会触发该方法
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
     
 }
 
+/** Called when a receiver and its track are created. */
+//该方法在侦听到远端 track 时会触发。
+//当函数被调用后，我们可以通过 rtpReceiver 参数获取到 track。这个track有可能是音频trak，也有可能是视频trak。所以，我们首先要对 track 做个判断，看其是视频还是音频。
+- (void)peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
+    /*
+     RTCMediaStreamTrack* track = rtpReceiver.track;
+     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]){
+        
+         if(!self.remoteVideoView){
+             NSLog(@"error:remoteVideoView have not been created!");
+             return;
+         }
+         
+         remoteVideoTrack = (RTCVideoTrack*)track;
+         
+          [remoteVideoTrack addRenderer: self.remoteVideoView];
+     }
+     通过上面的代码，我们就可以将远端传来的视频展示出来了。
+     */
+}
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
     
 }
