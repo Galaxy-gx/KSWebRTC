@@ -55,8 +55,10 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     RTCVideoSource *videoSource = [_factory videoSource];
     _capture = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
     _videoTrack = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
+    if ([_capture.captureSession canSetSessionPreset:AVCaptureSessionPreset640x480]) {
+        _capture.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
+    }
     localView.captureSession = _capture.captureSession;
-    
     [self startCaptureWithDevice:device];
 }
 

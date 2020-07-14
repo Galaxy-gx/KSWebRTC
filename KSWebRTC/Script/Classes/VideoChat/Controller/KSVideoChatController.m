@@ -50,8 +50,8 @@
     _remoteKits = [NSMutableArray array];
     _padding = 0;
     _topOffset = 24;
-    _kitWidth  = self.view.bounds.size.width / 2;
-    _kitHeight = self.view.bounds.size.height / 2;
+    _kitWidth  = 160;//self.view.bounds.size.width / 2;
+    _kitHeight = 213;//self.view.bounds.size.height / 3;
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:scrollView];
@@ -142,7 +142,24 @@
 
 //RTCVideoViewDelegate
 - (void)videoView:(nonnull id<RTCVideoRenderer>)videoView didChangeVideoSize:(CGSize)size {
-    
+    /*
+    if (size.width > 0 && size.height > 0) {
+        RTCEAGLVideoView *remoteView = (RTCEAGLVideoView *)videoView;
+        CGRect bounds = remoteView.bounds;
+        CGRect videoFrame = AVMakeRectWithAspectRatioInsideRect(size, remoteView.bounds);
+        CGFloat scale = 1;
+        if (videoFrame.size.width > videoFrame.size.height) {
+            scale = bounds.size.height / videoFrame.size.height;
+        }
+        else{
+            scale = bounds.size.width / videoFrame.size.width;
+        }
+        videoFrame.size.height *= scale;
+        videoFrame.size.width *= scale;
+        [remoteView setBounds:CGRectMake(0, 0, videoFrame.size.width, videoFrame.size.height)];
+        [remoteView setCenter:CGPointMake(remoteView.center.x + (videoFrame.size.width - bounds.size.width)*0.5,
+                                          remoteView.center.y + (videoFrame.size.height - bounds.size.height) * 0.5)];
+    }*/
 }
 
 - (void)encodeWithCoder:(nonnull NSCoder *)coder {
