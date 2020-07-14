@@ -17,9 +17,9 @@
 @interface KSVideoChatController ()<RTCVideoViewDelegate,KSMessageHandlerDelegate>
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) RTCCameraPreviewView *localView;
+@property (nonatomic, strong) NSMutableArray *remoteKits;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
-@property (nonatomic, strong) NSMutableArray *remoteKits;
 
 @property (nonatomic, assign) int kitWidth;
 @property (nonatomic, assign) int kitHeight;
@@ -40,8 +40,7 @@
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
     [_mediaCapture captureLocalMedia:_localView];
-    //[_mediaCapture.videoTrack.source  adaptOutputFormatToWidth:_kitWidth height:_kitHeight fps:25];
-    
+
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
 }
@@ -52,7 +51,7 @@
     _padding = 0;
     _topOffset = 24;
     _kitWidth  = self.view.bounds.size.width / 2;
-    _kitHeight = self.view.bounds.size.height / 3;
+    _kitHeight = self.view.bounds.size.height / 2;
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:scrollView];
@@ -86,7 +85,7 @@
     [leaveBtn addTarget:self action:@selector(onLeaveClick) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (RTCEAGLVideoView *)createRemoteView:(NSNumber *)handleId {
+- (RTCEAGLVideoView *)createRemoteViewOfHandleId:(NSNumber *)handleId {
     CGPoint point= [self remotePointOfIndex:(int)_remoteKits.count + 1];
     KSEAGLVideoView *remoteView = [[KSEAGLVideoView alloc] initWithFrame:CGRectMake(point.x, point.y, _kitWidth, _kitHeight)];
     remoteView.delegate = self;
@@ -216,7 +215,7 @@
             return videoView;
         }
     }
-    return [self createRemoteView:handleId];
+    return [self createRemoteViewOfHandleId:handleId];
 }
 
 @end

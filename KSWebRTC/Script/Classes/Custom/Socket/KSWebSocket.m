@@ -112,7 +112,7 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
     [self closeConnect];//容错
     
     _configure.status                         = KSWebSocketStatusConnecting;
-    NSArray<NSString *> *protocols = @[@"janus-protocol"];
+    NSArray<NSString *> *protocols            = @[@"janus-protocol"];
     SRWebSocket *socket                       = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:_configure.urlString] protocols:protocols];
     socket.delegate                           = self;
     NSOperationQueue *delegateQueue           = [[NSOperationQueue alloc] init];

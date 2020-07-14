@@ -236,12 +236,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     _connections[handleId] = mc;
 }
 
-// 发布者收到远端媒体信息后的回调 answer
-- (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc = _connections[handleId];
-    [mc setRemoteDescriptionWithJsep:jsep];
-}
-
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
     KSMediaConnection *mc = [self createMediaConnection];
@@ -263,6 +257,12 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         jsep[@"sdp"] = [sdp sdp];
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeStart];
     }];
+}
+
+// 发布者收到远端媒体信息后的回调 answer
+- (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+    KSMediaConnection *mc = _connections[handleId];
+    [mc setRemoteDescriptionWithJsep:jsep];
 }
 
 // 发送候选者
