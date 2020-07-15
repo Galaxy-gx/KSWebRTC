@@ -135,8 +135,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 - (void)messageDetached:(KSDetached *)detached {
-    [self onLeaving:detached.sender];
     [self.delegate messageHandler:self detached:detached];
+    [self onLeaving:detached.sender];
 }
 
 - (void)analysisMsg:(id)message {
@@ -388,6 +388,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         dispatch_async(dispatch_get_main_queue(), ^{
             RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+            mediaConnection.videoView = remoteView;
             [remoteVideoTrack addRenderer:remoteView];
             mediaConnection.videoTrack = remoteVideoTrack;
         });

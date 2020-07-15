@@ -216,7 +216,6 @@
     for (KSEAGLVideoView *videoView in _remoteKits) {
         if (videoView.handleId == detached.sender) {
             [_remoteKits removeObject:videoView];
-            [videoView removeFromSuperview];
             break;
         }
     }

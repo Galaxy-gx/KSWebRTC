@@ -13,8 +13,10 @@ static NSString *const KARDAudioTrackId = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 
 @interface KSMediaCapture()
-//当前使用的是前摄像头还是后摄像头
+
+//前置摄像头/后置摄像头
 @property (nonatomic, assign) BOOL isFront;
+
 @end
 
 @implementation KSMediaCapture

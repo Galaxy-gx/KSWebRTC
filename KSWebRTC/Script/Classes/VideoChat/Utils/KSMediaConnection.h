@@ -23,7 +23,7 @@
 @property (nonatomic, weak) id<KSMediaConnectionDelegate> delegate;
 @property (nonatomic, strong) RTCPeerConnection *connection; // WebRTC连接对象
 @property (nonatomic, strong) RTCVideoTrack *videoTrack;     // 视频轨
-@property (nonatomic, strong) RTCEAGLVideoView *videoView;
+@property (nonatomic, weak) RTCEAGLVideoView *videoView;
 @property (nonatomic, strong) NSNumber *handleId;
 
 - (RTCPeerConnection *)createPeerConnection:(RTCPeerConnectionFactory *)factory
