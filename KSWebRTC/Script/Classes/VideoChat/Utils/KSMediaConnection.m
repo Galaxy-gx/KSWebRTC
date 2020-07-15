@@ -77,14 +77,16 @@
  */
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
-    NSDictionary *mandatoryContraints = [self mandatoryConstraints];
-    
-    RTCMediaConstraints *constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:nil];
-    
+    RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
     [_connection answerForConstraints:constraints
                     completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
-        
+        if (error) {
+            NSLog(@"Failure to create local answer sdp!");
+        }
+        else{
+            NSLog(@"Success to create local answer sdp!");
+        }
         [weakSelf.connection setLocalDescription:sdp
                                completionHandler:^(NSError *_Nullable error) {
             completionHandler(sdp, error);
@@ -95,14 +97,16 @@
 
 // 创建offer
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
+    RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
-    [_connection offerForConstraints:[self defaultOfferConstraints]
+    [_connection offerForConstraints:constraints
                    completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
-        
+        if(error){
+            NSLog(@"Failed to create offer SDP, err=%@", error);
+        }
         [weakSelf.connection setLocalDescription:sdp
                                completionHandler:^(NSError *_Nullable error) {
             completionHandler(sdp, error);
-            
         }];
     }];
 }
@@ -120,29 +124,28 @@
 // PeerConnection 媒体约束
 - (RTCMediaConstraints *)defaultMediaConstraint {
     // DTLS
+    NSDictionary *mandatoryContraints = [self mandatoryConstraints];
     NSDictionary *option = @{ @"DtlsSrtpKeyAgreement" : @"true" };
-    RTCMediaConstraints *constrants = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:nil optionalConstraints:option];
+    RTCMediaConstraints *constrants = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:option];
     return constrants;
+}
+
+- (NSDictionary *)mandatoryConstraints {
+    return @{
+        kRTCMediaConstraintsOfferToReceiveAudio:kRTCMediaConstraintsValueTrue,
+        kRTCMediaConstraintsOfferToReceiveVideo:kRTCMediaConstraintsValueTrue
+    };
+    /*
+     return @{
+     @"OfferToReceiveAudio" : @"true",
+     @"OfferToReceiveVideo" : @"true"
+     };*/
 }
 
 // stun 、 turn服务地址
 - (RTCIceServer *)defaultIceServer {
     NSArray *array = [NSArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
     return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
-}
-
-- (NSDictionary *)mandatoryConstraints {
-    return @{
-        @"OfferToReceiveAudio" : @"true",
-        @"OfferToReceiveVideo" : @"true"
-    };
-}
-
-// offer约束
-- (RTCMediaConstraints *)defaultOfferConstraints {
-    NSDictionary *mandatoryContraints = [self mandatoryConstraints];
-    RTCMediaConstraints *constraints = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:@{ @"DtlsSrtpKeyAgreement" : @"true" }];
-    return constraints;
 }
 
 //RTCPeerConnectionDelegate
