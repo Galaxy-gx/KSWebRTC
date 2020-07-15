@@ -154,7 +154,7 @@
 
 //RTCPeerConnectionDelegate
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream { 
-    [self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
+    //[self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
 }
 
 //该方法用于收集可用的 Candidate。
@@ -171,22 +171,9 @@
 //该方法在侦听到远端 track 时会触发。
 //当函数被调用后，我们可以通过 rtpReceiver 参数获取到 track。这个track有可能是音频trak，也有可能是视频trak。所以，我们首先要对 track 做个判断，看其是视频还是音频。
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
-    /*
-     RTCMediaStreamTrack* track = rtpReceiver.track;
-     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]){
-        
-         if(!self.remoteVideoView){
-             NSLog(@"error:remoteVideoView have not been created!");
-             return;
-         }
-         
-         remoteVideoTrack = (RTCVideoTrack*)track;
-         
-          [remoteVideoTrack addRenderer: self.remoteVideoView];
-     }
-     通过上面的代码，我们就可以将远端传来的视频展示出来了。
-     */
+    [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
 }
+
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
     
 }

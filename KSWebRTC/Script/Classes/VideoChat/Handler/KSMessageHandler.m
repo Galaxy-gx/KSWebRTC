@@ -369,6 +369,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 //KSPeerConnectionDelegate
+/*
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (stream.videoTracks.count > 0) {
@@ -378,6 +379,18 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             mediaConnection.videoTrack = remoteVideoTrack;
         }
     });
+}
+*/
+
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
+    
+    RTCMediaStreamTrack *track = rtpReceiver.track;
+    if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
+        RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
+        RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+        [remoteVideoTrack addRenderer:remoteView];
+        mediaConnection.videoTrack = remoteVideoTrack;
+    }
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
