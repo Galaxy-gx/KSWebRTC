@@ -74,6 +74,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             break;
         case KSActionTypeJoinRoom:
             //WebRTC:04
+            //这里应该创建PeerConnection
             [self configureRoom:_myHandleId];
             break;
         case KSActionTypeConfigureRoom:

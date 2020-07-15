@@ -34,6 +34,9 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
  然后创建 factory 对象。需要注意的是，在创建 factory 对象时，传入了两个参数：一个是默认的编码器；一个是默认的解码器。我们可以通过修改这两个参数来达到使用不同编解码器的目的。
  */
 - (void)createPeerConnectionFactory {
+    //设置SSL传输
+    //[RTCPeerConnectionFactory initialize];
+    
     RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
     NSArray *codes = [encoderFactory supportedCodecs];

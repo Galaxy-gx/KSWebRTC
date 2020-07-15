@@ -39,6 +39,7 @@
 - (void)initializeHandler {
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
+    //创建本地流
     [_mediaCapture captureLocalMedia:_localView];
 
     _msgHandler = [[KSMessageHandler alloc] init];

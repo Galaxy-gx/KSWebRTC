@@ -57,8 +57,12 @@
     RTCSessionDescription *answerDescription = [RTCSessionDescription descriptionFromJSONDictionary:jsep];
     [_connection setRemoteDescription:answerDescription
                     completionHandler:^(NSError *_Nullable error){
-
-                    }];
+        if(!error){
+            NSLog(@"Success to set remote Answer SDP");
+        }else{
+            NSLog(@"Failure to set remote Answer SDP, err=%@", error);
+        }
+    }];
 }
 
 /*
@@ -95,7 +99,7 @@
     }];
 }
 
-// 创建offer
+// 创建offer 进行媒体协商
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
