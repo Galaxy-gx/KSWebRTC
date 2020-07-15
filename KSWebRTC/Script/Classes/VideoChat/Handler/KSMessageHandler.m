@@ -383,13 +383,14 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 */
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
-    
     RTCMediaStreamTrack *track = rtpReceiver.track;
     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
-        RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
-        [remoteVideoTrack addRenderer:remoteView];
-        mediaConnection.videoTrack = remoteVideoTrack;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+            [remoteVideoTrack addRenderer:remoteView];
+            mediaConnection.videoTrack = remoteVideoTrack;
+        });
     }
 }
 
