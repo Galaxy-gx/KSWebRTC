@@ -57,12 +57,14 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 
     AVCaptureDevice *device = [self currentCamera];
     if (!device) {
+        NSLog(@"获取相机失败");
         return;
     }
     // 检测摄像头权限
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
+        NSLog(@"相机访问受限");
         return;
     }
     /*
@@ -77,6 +79,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     
     //将采集到的视频展示出来
     localView.captureSession = _capture.captureSession;
+    
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
 }
