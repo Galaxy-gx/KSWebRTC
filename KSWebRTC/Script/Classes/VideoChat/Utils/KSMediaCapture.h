@@ -20,7 +20,7 @@
 
 - (void)createPeerConnectionFactory;
 
-- (void)captureLocalMedia:(RTCCameraPreviewView *)localView;
+- (AVCaptureSession* )captureLocalMedia;
 
 - (void)switchCamera;
 

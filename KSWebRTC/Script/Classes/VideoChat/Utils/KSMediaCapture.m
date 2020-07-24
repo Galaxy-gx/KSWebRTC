@@ -54,7 +54,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
  
  除此之外，为了能更方便的控制视频设备，WebRTC 提供了一个专门用于操作设备的类，即 RTCCameraVideoCapture。通过它，我们就可以自如的控制视频设备了。
  */
-- (void)captureLocalMedia:(RTCCameraPreviewView *)localView {
+- (AVCaptureSession* )captureLocalMedia {
     NSDictionary *mandatoryConstraints = @{};
     RTCMediaConstraints *constrains = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
     RTCAudioSource *audioSource = [_factory audioSourceWithConstraints:constrains];
@@ -63,14 +63,14 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     AVCaptureDevice *device = [self currentCamera];
     if (!device) {
         NSLog(@"获取相机失败");
-        return;
+        return nil;
     }
     // 检测摄像头权限
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
         NSLog(@"相机访问受限");
-        return;
+        return nil;
     }
     /*
      首先将 RTCVideoSource 与 RTCCameraVideoCapture 进行绑定，然后再开启设备，这样视频数据就源源不断的被采集到 RTCVideoSource 中了。
@@ -82,11 +82,9 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
         _capture.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
     }
     
-    //将采集到的视频展示出来
-    localView.captureSession = _capture.captureSession;
-    
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
+    return _capture.captureSession;
 }
 
 - (void)switchCamera {

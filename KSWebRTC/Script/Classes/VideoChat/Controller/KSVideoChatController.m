@@ -12,11 +12,12 @@
 #import "KSMessageHandler.h"
 #import "KSMediaCapture.h"
 #import "KSEAGLVideoView.h"
+#import "KSVideoPreviewView.h"
 #import "KSMsg.h"
 
 @interface KSVideoChatController ()<RTCVideoViewDelegate,KSMessageHandlerDelegate>
 @property (nonatomic, weak) UIScrollView *scrollView;
-@property (nonatomic, weak) RTCCameraPreviewView *localView;
+@property (nonatomic, weak) KSVideoPreviewView *localView;
 @property (nonatomic, strong) NSMutableArray *remoteKits;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
@@ -40,8 +41,8 @@
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
     //创建本地流
-    [_mediaCapture captureLocalMedia:_localView];
-
+    AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
+    _localView.previewLayer.session = captureSession;
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
 }
@@ -58,7 +59,7 @@
     [self.view addSubview:scrollView];
     _scrollView = scrollView;
     
-    RTCCameraPreviewView *localView = [[RTCCameraPreviewView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight)];
+    KSVideoPreviewView *localView = [[KSVideoPreviewView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight)];
     [scrollView addSubview:localView];
     _localView = localView;
     
@@ -144,23 +145,23 @@
 //RTCVideoViewDelegate
 - (void)videoView:(nonnull id<RTCVideoRenderer>)videoView didChangeVideoSize:(CGSize)size {
     /*
-    if (size.width > 0 && size.height > 0) {
-        RTCEAGLVideoView *remoteView = (RTCEAGLVideoView *)videoView;
-        CGRect bounds = remoteView.bounds;
-        CGRect videoFrame = AVMakeRectWithAspectRatioInsideRect(size, remoteView.bounds);
-        CGFloat scale = 1;
-        if (videoFrame.size.width > videoFrame.size.height) {
-            scale = bounds.size.height / videoFrame.size.height;
-        }
-        else{
-            scale = bounds.size.width / videoFrame.size.width;
-        }
-        videoFrame.size.height *= scale;
-        videoFrame.size.width *= scale;
-        [remoteView setBounds:CGRectMake(0, 0, videoFrame.size.width, videoFrame.size.height)];
-        [remoteView setCenter:CGPointMake(remoteView.center.x + (videoFrame.size.width - bounds.size.width)*0.5,
-                                          remoteView.center.y + (videoFrame.size.height - bounds.size.height) * 0.5)];
-    }*/
+     if (size.width > 0 && size.height > 0) {
+     RTCEAGLVideoView *remoteView = (RTCEAGLVideoView *)videoView;
+     CGRect bounds = remoteView.bounds;
+     CGRect videoFrame = AVMakeRectWithAspectRatioInsideRect(size, remoteView.bounds);
+     CGFloat scale = 1;
+     if (videoFrame.size.width > videoFrame.size.height) {
+     scale = bounds.size.height / videoFrame.size.height;
+     }
+     else{
+     scale = bounds.size.width / videoFrame.size.width;
+     }
+     videoFrame.size.height *= scale;
+     videoFrame.size.width *= scale;
+     [remoteView setBounds:CGRectMake(0, 0, videoFrame.size.width, videoFrame.size.height)];
+     [remoteView setCenter:CGPointMake(remoteView.center.x + (videoFrame.size.width - bounds.size.width)*0.5,
+     remoteView.center.y + (videoFrame.size.height - bounds.size.height) * 0.5)];
+     }*/
 }
 
 - (void)encodeWithCoder:(nonnull NSCoder *)coder {
