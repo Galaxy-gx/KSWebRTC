@@ -20,8 +20,10 @@
 
 -(void)initLayer {
     AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] init];
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//填充模式
     previewLayer.frame = self.bounds;
     [self.layer addSublayer:previewLayer];
     _previewLayer = previewLayer;
 }
+
 @end
