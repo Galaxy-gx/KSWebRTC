@@ -7,7 +7,11 @@
 //
 
 #import "KSVideoPreviewView.h"
+#import "KSVisualEffectView.h"
 
+@interface KSVideoPreviewView()
+@property(nonatomic,weak)KSVisualEffectView *visualEffectView;
+@end
 @implementation KSVideoPreviewView
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -24,6 +28,15 @@
     previewLayer.frame = self.bounds;
     [self.layer addSublayer:previewLayer];
     _previewLayer = previewLayer;
+    
+    KSVisualEffectView *visualEffectView = [[KSVisualEffectView alloc] initWithFrame:self.bounds];
+    [self addSubview:visualEffectView];
+    _visualEffectView = visualEffectView;
 }
 
+-(void)layoutSubviews {
+    [super layoutSubviews];
+    _previewLayer.frame = self.bounds;
+    _visualEffectView.frame = self.bounds;
+}
 @end

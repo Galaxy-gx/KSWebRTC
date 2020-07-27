@@ -34,6 +34,7 @@
 		E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B124B85CDE004BBA8A /* UIButton+Category.m */; };
 		E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */; };
 		E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5BA24B86171004BBA8A /* KSMsg.m */; };
+		E67CEB6624CEC50100E593D4 /* KSVisualEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E67CEB6524CEC50100E593D4 /* KSVisualEffectView.m */; };
 		E68D25F924CAC0AC0060C799 /* KSVideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = E68D25F824CAC0AC0060C799 /* KSVideoPreviewView.m */; };
 		E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */; };
 		ECC021D079843342094A3894 /* libPods-KSWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */; };
@@ -96,6 +97,8 @@
 		E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
 		E67BC5B924B86171004BBA8A /* KSMsg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
 		E67BC5BA24B86171004BBA8A /* KSMsg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
+		E67CEB6424CEC50100E593D4 /* KSVisualEffectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSVisualEffectView.h; sourceTree = "<group>"; };
+		E67CEB6524CEC50100E593D4 /* KSVisualEffectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSVisualEffectView.m; sourceTree = "<group>"; };
 		E68D25F724CAC0AC0060C799 /* KSVideoPreviewView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSVideoPreviewView.h; sourceTree = "<group>"; };
 		E68D25F824CAC0AC0060C799 /* KSVideoPreviewView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSVideoPreviewView.m; sourceTree = "<group>"; };
 		E6A2E7F824BC57120008C53D /* KSEAGLVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSEAGLVideoView.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				E60C906A24CEB82300291CDA /* KSVideoCallView.m */,
 				E60C906724CEB82200291CDA /* KSVideoLayout.h */,
 				E60C906624CEB82200291CDA /* KSVideoLayout.m */,
+				E67CEB6424CEC50100E593D4 /* KSVisualEffectView.h */,
+				E67CEB6524CEC50100E593D4 /* KSVisualEffectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 				E60C906B24CEB82300291CDA /* KSVideoLayout.m in Sources */,
 				E664F8F324B89CB70092FCE2 /* KSMediaCapture.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
+				E67CEB6624CEC50100E593D4 /* KSVisualEffectView.m in Sources */,
 				E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */,
 				E60C907F24CEB85000291CDA /* KSCaptureController.m in Sources */,
 				E60C907E24CEB85000291CDA /* ARDSettingsModel.m in Sources */,
