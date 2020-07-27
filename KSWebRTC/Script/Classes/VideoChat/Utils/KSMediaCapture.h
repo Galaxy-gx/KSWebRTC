@@ -23,5 +23,7 @@
 - (AVCaptureSession* )captureLocalMedia;
 
 - (void)switchCamera;
+- (void)switchTalkMode;
+- (void)stopCapture;
 
 @end

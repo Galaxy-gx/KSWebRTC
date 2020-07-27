@@ -77,11 +77,11 @@
         return;
     }
     _isConnect = true;
-    [_msgHandler connectServer:@"ws://192.168.9.96:8188"];
+    [_msgHandler connectServer:@"ws://10.0.115.144:8188"];
 }
 
 - (void)onLeaveClick {
-    
+    [_mediaCapture switchTalkMode];
 }
 
 //KSMessageHandlerDelegate

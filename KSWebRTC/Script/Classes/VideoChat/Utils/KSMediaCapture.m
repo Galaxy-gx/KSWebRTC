@@ -16,6 +16,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 
 //前置摄像头/后置摄像头
 @property (nonatomic, assign) BOOL isFront;
+@property (nonatomic, assign) BOOL isVideo;
 
 @end
 
@@ -24,7 +25,8 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.isFront = true;
+        _isFront = true;
+        _isVideo = true;
     }
     return self;
 }
@@ -91,6 +93,25 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     _isFront = !_isFront;
     AVCaptureDevice *device = [self currentCamera];
     [self startCaptureWithDevice:device];
+}
+
+- (void)switchTalkMode {
+    _isVideo = !_isVideo;
+    if (_isVideo) {
+        [self startCapture];
+    }
+    else{
+        [self stopCapture];
+    }
+    
+}
+
+- (void)startCapture {
+    [self startCaptureWithDevice:[self currentCamera]];
+}
+
+- (void)stopCapture {
+  [_capture stopCapture];
 }
 
 - (AVCaptureDevice *)currentCamera {
