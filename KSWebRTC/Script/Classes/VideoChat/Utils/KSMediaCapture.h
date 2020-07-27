@@ -13,7 +13,7 @@
 //连接工厂
 @property (nonatomic, strong) RTCPeerConnectionFactory *factory;
 //视频生产者
-@property (nonatomic, strong) RTCCameraVideoCapturer *capture;
+@property (nonatomic, strong) RTCCameraVideoCapturer *capturer;
 //轨道
 @property (nonatomic, strong) RTCVideoTrack *videoTrack;
 @property (nonatomic, strong) RTCAudioTrack *audioTrack;

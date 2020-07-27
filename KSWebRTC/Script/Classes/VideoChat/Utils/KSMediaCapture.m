@@ -78,15 +78,15 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
      首先将 RTCVideoSource 与 RTCCameraVideoCapture 进行绑定，然后再开启设备，这样视频数据就源源不断的被采集到 RTCVideoSource 中了。
      */
     RTCVideoSource *videoSource = [_factory videoSource];
-    _capture = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
+    _capturer = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
     _videoTrack = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
-    if ([_capture.captureSession canSetSessionPreset:AVCaptureSessionPreset640x480]) {
-        _capture.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
+    if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPreset640x480]) {
+        _capturer.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
     }
     
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
-    return _capture.captureSession;
+    return _capturer.captureSession;
 }
 
 - (void)switchCamera {
@@ -111,7 +111,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
 }
 
 - (void)stopCapture {
-  [_capture stopCapture];
+  [_capturer stopCapture];
 }
 
 - (AVCaptureDevice *)currentCamera {
@@ -133,7 +133,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     }
     AVCaptureDeviceFormat *format = [[RTCCameraVideoCapturer supportedFormatsForDevice:device] lastObject];
     CGFloat fps = [[format videoSupportedFrameRateRanges] firstObject].maxFrameRate;
-    [_capture startCaptureWithDevice:device format:format fps:fps];
+    [_capturer startCaptureWithDevice:device format:format fps:fps];
 }
 
 @end
