@@ -12,12 +12,12 @@
 #import "KSMessageHandler.h"
 #import "KSMediaCapture.h"
 #import "KSEAGLVideoView.h"
-#import "KSVideoPreviewView.h"
+#import "KSLocalView.h"
 #import "KSMsg.h"
 
 @interface KSVideoChatController ()<RTCVideoViewDelegate,KSMessageHandlerDelegate>
 @property (nonatomic, weak) UIScrollView *scrollView;
-@property (nonatomic, weak) KSVideoPreviewView *localView;
+@property (nonatomic, weak) KSLocalView *localView;
 @property (nonatomic, strong) NSMutableArray *remoteKits;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
@@ -42,7 +42,7 @@
     [_mediaCapture createPeerConnectionFactory];
     //创建本地流
     AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
-    _localView.previewLayer.session = captureSession;
+    [_localView setLocalViewSession:captureSession];
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
 }
@@ -59,7 +59,7 @@
     [self.view addSubview:scrollView];
     _scrollView = scrollView;
     
-    KSVideoPreviewView *localView = [[KSVideoPreviewView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight)];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight) resizingMode:KSResizingModeTile];
     [scrollView addSubview:localView];
     _localView = localView;
     

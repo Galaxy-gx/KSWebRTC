@@ -15,14 +15,15 @@
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)KSLocalView *localView;
 @property(nonatomic,strong)NSMutableArray *remoteKits;
-@property(nonatomic,strong)KSVideoLayout *layout;
+@property(nonatomic,strong)KSVideoLayout *remoteLayout;
+
 @end
 
 @implementation KSVideoCallView
 
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSVideoLayout *)layout {
     if (self = [super initWithFrame:frame]) {
-        self.layout = layout;
+        self.remoteLayout = layout;
         [self initKit];
     }
     return self;
@@ -38,7 +39,7 @@
     CGRect rect = CGRectZero;
     switch (resizingMode) {
         case KSResizingModeTile:
-            rect = CGRectMake(_layout.layout.hpadding, _layout.layout.vpadding, size.width, size.height);
+            rect = CGRectMake(_remoteLayout.layout.hpadding, _remoteLayout.layout.vpadding, size.width, size.height);
             break;
         case KSResizingModeScreen:
             rect = self.bounds;
@@ -46,7 +47,7 @@
         default:
             break;
     }
-    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect resizingMode:resizingMode];
     [self.scrollView addSubview:localView];
 }
 
@@ -58,14 +59,14 @@
     int x = 0;
     int y = 0;
     if (index == 1) {
-        x = _layout.layout.width + _layout.layout.hpadding;
-        y = _layout.layout.vpadding;
+        x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding;
+        y = _remoteLayout.layout.vpadding;
     }
     else {
         if ((index % 2) != 0) {
-            x = _layout.layout.width + _layout.layout.hpadding;
+            x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding;
         }
-        y = _layout.layout.vpadding + (index / 2) * _layout.layout.height + _layout.layout.vpadding * (index / 2);
+        y = _remoteLayout.layout.vpadding + (index / 2) * _remoteLayout.layout.height + _remoteLayout.layout.vpadding * (index / 2);
     }
     return CGPointMake(x, y);
 }
@@ -73,13 +74,13 @@
 -(void)layoutRemoteViews {
     for (int index = 1; index <= _remoteKits.count; index++) {
         CGPoint point= [self pointOfIndex:(int)_remoteKits.count + 1];
-        KSEAGLVideoView *remoteView = _remoteKits[index];
-        remoteView.frame = CGRectMake(point.x, point.y, _layout.layout.width, _layout.layout.height);
+        KSRemoteView *remoteView = _remoteKits[index];
+        remoteView.frame = CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height);
     }
     if (_remoteKits.lastObject) {
-        KSEAGLVideoView *remoteView = _remoteKits.lastObject;
-        if (remoteView.frame.origin.y + _layout.layout.height > self.bounds.size.height) {
-            _scrollView.contentSize = CGSizeMake(self.bounds.size.width, remoteView.frame.origin.y + _layout.layout.height);
+        KSRemoteView *remoteView = _remoteKits.lastObject;
+        if (remoteView.frame.origin.y + _remoteLayout.layout.height > self.bounds.size.height) {
+            _scrollView.contentSize = CGSizeMake(self.bounds.size.width, remoteView.frame.origin.y + _remoteLayout.layout.height);
         }
     }
 }
@@ -92,11 +93,12 @@
             break;
         }
     }
+    [self layoutRemoteViews];
 }
 
 - (KSRemoteView *)createRemoteViewOfHandleId:(NSNumber *)handleId {
     CGPoint point = [self pointOfIndex:self.remoteKits.count];
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(point.x, point.y, _layout.layout.width, _layout.layout.height)];
+    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height)];
     remoteView.handleId = handleId;
     [self.scrollView addSubview:remoteView];
     [self.remoteKits addObject:remoteView];

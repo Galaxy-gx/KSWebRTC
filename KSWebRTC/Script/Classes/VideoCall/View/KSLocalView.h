@@ -12,9 +12,8 @@
 
 @interface KSLocalView : UIView
 
-@property(nonatomic,weak)AVCaptureVideoPreviewLayer *previewLayer;
-
+-(instancetype)initWithFrame:(CGRect)frame resizingMode:(KSResizingMode)resizingMode;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
-- (void)setFrameWithSize:(CGSize)size resizingMode:(KSResizingMode)resizingMode;
+- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height resizingMode:(KSResizingMode)resizingMode;
 
 @end
