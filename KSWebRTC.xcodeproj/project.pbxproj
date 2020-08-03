@@ -37,6 +37,7 @@
 		E6A5DFFA24D6D06A007E7D14 /* KSVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF524D6D06A007E7D14 /* KSVideoLayout.m */; };
 		E6A5DFFB24D6D06A007E7D14 /* KSVisualEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF724D6D06A007E7D14 /* KSVisualEffectView.m */; };
 		E6A5DFFE24D6DF08007E7D14 /* KSLocalView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */; };
+		E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E096BC24D7BBC800D083D2 /* UIView+Category.m */; };
 		ECC021D079843342094A3894 /* libPods-KSWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,8 @@
 		E6A5DFF724D6D06A007E7D14 /* KSVisualEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVisualEffectView.m; sourceTree = "<group>"; };
 		E6A5DFFC24D6DF08007E7D14 /* KSLocalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSLocalView.h; sourceTree = "<group>"; };
 		E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSLocalView.m; sourceTree = "<group>"; };
+		E6E096BB24D7BBC800D083D2 /* UIView+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
+		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +290,8 @@
 				E67BC5AE24B857BA004BBA8A /* RTCSessionDescription+Category.m */,
 				E67BC5B024B85CDE004BBA8A /* UIButton+Category.h */,
 				E67BC5B124B85CDE004BBA8A /* UIButton+Category.m */,
+				E6E096BB24D7BBC800D083D2 /* UIView+Category.h */,
+				E6E096BC24D7BBC800D083D2 /* UIView+Category.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -481,6 +486,7 @@
 				E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,
 				E664F8F324B89CB70092FCE2 /* KSMediaCapture.m in Sources */,
+				E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
 				E6A5DFFB24D6D06A007E7D14 /* KSVisualEffectView.m in Sources */,
 				E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */,
@@ -635,7 +641,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.ZeroShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.ksrtc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -655,7 +661,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.ZeroShare;
+				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.ksrtc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

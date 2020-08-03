@@ -19,4 +19,17 @@ typedef NS_ENUM(NSInteger, KSResizingMode) {
     KSResizingModeScreen,//全屏
 };
 
+struct KSScale {
+    CGFloat width;
+    CGFloat height;
+};
+typedef struct KSScale KSScale;
+
+CG_INLINE KSScale KSScaleMake(CGFloat width, CGFloat height);
+CG_INLINE KSScale
+KSScaleMake(CGFloat width, CGFloat height)
+{
+  KSScale s; s.width = width; s.height = height; return s;
+}
+
 #endif /* KSConfigure_h */

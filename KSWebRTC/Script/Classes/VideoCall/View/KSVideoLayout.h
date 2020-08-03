@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KSConfigure.h"
 struct KSLayout {
     CGFloat width;
     CGFloat height;
@@ -23,21 +23,6 @@ KSLayoutMake(CGFloat width, CGFloat height, CGFloat hpadding, CGFloat vpadding)
   KSLayout l; l.width = width; l.height = height; l.hpadding = hpadding; l.vpadding = vpadding; return l;
 }
 
-struct KSScale {
-    CGFloat width;
-    CGFloat height;
-};
-typedef struct KSScale KSScale;
-
-CG_INLINE KSScale KSScaleMake(CGFloat width, CGFloat height);
-CG_INLINE KSScale
-KSScaleMake(CGFloat width, CGFloat height)
-{
-  KSScale s; s.width = width; s.height = height; return s;
-}
-
-
-//Scale
 @interface KSVideoLayout : NSObject
 
 @property(nonatomic,assign)KSLayout layout;
