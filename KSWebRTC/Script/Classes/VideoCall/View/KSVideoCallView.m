@@ -47,6 +47,7 @@
             break;
     }
     KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect scale:layout.scale mode:layout.mode];
+    _localView = localView;
     [self.scrollView addSubview:localView];
 }
 
@@ -57,12 +58,12 @@
 -(CGPoint)pointOfIndex:(NSInteger)index {
     int x = _remoteLayout.layout.hpadding;
     int y = 0;
-    if (index == 1) {
+    if (index == 0) {
         x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
         y = _remoteLayout.layout.vpadding;
     }
     else {
-        if ((index % 2) != 0) {
+        if ((index % 2) == 0) {
             x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
         }
         y = _remoteLayout.layout.vpadding + (index / 2) * _remoteLayout.layout.height + _remoteLayout.layout.vpadding * (index / 2);
