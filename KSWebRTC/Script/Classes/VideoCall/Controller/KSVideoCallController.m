@@ -44,7 +44,7 @@
 
 - (void)initKit {
     KSVideoLayout *layout = [[KSVideoLayout alloc] init];
-    layout.scale = KSScaleMake(9, 16);
+    layout.scale = KSScaleMake(3, 4);
     layout.mode = KSContentModeScaleAspectFit;
     int width = (self.view.frame.size.width - 30)/2;
     int height = width / layout.scale.width * layout.scale.height;
