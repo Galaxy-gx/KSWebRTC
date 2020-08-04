@@ -38,7 +38,7 @@
     CGRect rect = CGRectZero;
     switch (resizingMode) {
         case KSResizingModeTile:
-            rect = CGRectMake(layout.layout.hpadding, layout.layout.vpadding, layout.layout.width, layout.layout.hpadding);
+            rect = CGRectMake(layout.layout.hpadding, layout.layout.vpadding, layout.layout.width, layout.layout.height);
             break;
         case KSResizingModeScreen:
             rect = self.bounds;

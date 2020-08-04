@@ -52,6 +52,7 @@
     
     KSVideoCallView *videoCallView = [[KSVideoCallView alloc] initWithFrame:self.view.bounds layout:layout];
     videoCallView.delegate = self;
+    [videoCallView createLocalViewWithLayout:layout resizingMode:KSResizingModeTile];
     _videoCallView = videoCallView;
     [self.view addSubview:videoCallView];
     
