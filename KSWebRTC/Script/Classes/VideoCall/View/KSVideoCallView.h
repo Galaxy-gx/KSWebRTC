@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "KSRemoteView.h"
+#import "KSVideoLayout.h"
 
 @class KSVideoCallView;
 
@@ -24,9 +25,11 @@
 
 @property(nonatomic,weak)id<KSVideoCallViewDelegate> delegate;
 
-
+- (instancetype)initWithFrame:(CGRect)frame layout:(KSVideoLayout *)layout;
+- (void)createLocalViewWithLayout:(KSVideoLayout *)layout resizingMode:(KSResizingMode)resizingMode;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
 - (RTCEAGLVideoView *)remoteViewOfHandleId:(NSNumber *)handleId;
+
 
 @end

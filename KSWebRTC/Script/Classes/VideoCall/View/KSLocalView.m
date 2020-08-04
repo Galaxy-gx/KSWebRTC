@@ -7,6 +7,8 @@
 //
 
 #import "KSLocalView.h"
+#import "UIView+Category.h"
+
 @interface KSLocalView()
 
 @property(nonatomic,weak)AVCaptureVideoPreviewLayer *previewLayer;
@@ -15,10 +17,10 @@
 
 @implementation KSLocalView
 
--(instancetype)initWithFrame:(CGRect)frame resizingMode:(KSResizingMode)resizingMode {
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode {
     if (self = [super initWithFrame:frame]) {
         [self initKit];
-        [self updatePreviewWidth:frame.size.width height:frame.size.height resizingMode:resizingMode];
+        [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
 }
@@ -34,20 +36,8 @@
     _previewLayer.session = session;
 }
 
-- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height resizingMode:(KSResizingMode)resizingMode {
-    switch (resizingMode) {
-        case KSResizingModeTile:
-            _previewLayer.frame = CGRectMake((self.frame.size.width - width)/2.0,
-                                             (self.frame.size.height - height)/2.0,
-                                             width, height);
-            break;
-        case KSResizingModeScreen:
-            _previewLayer.frame = self.bounds;
-            break;
-            
-        default:
-            break;
-    }
+- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
+     _previewLayer.frame = [self rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
 }
 
 @end

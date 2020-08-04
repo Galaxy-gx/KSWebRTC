@@ -7,8 +7,12 @@
 //
 
 #import "KSEAGLVideoView.h"
+#import "KSConfigure.h"
 
 @interface KSRemoteView : UIView
 @property(nonatomic,weak) KSEAGLVideoView *remoteView;
 @property(nonatomic,strong)NSNumber *handleId;
+
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode;
+- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
 @end

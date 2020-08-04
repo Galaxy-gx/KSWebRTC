@@ -7,7 +7,6 @@
 //
 
 #import "KSVideoCallView.h"
-#import "KSVideoLayout.h"
 #import "KSLocalView.h"
 
 @interface KSVideoCallView()
@@ -35,11 +34,11 @@
     [self addSubview:scrollView];
 }
 
-- (void)createLocalViewWithSize:(CGSize)size resizingMode:(KSResizingMode)resizingMode {
+- (void)createLocalViewWithLayout:(KSVideoLayout *)layout resizingMode:(KSResizingMode)resizingMode {
     CGRect rect = CGRectZero;
     switch (resizingMode) {
         case KSResizingModeTile:
-            rect = CGRectMake(_remoteLayout.layout.hpadding, _remoteLayout.layout.vpadding, size.width, size.height);
+            rect = CGRectMake(layout.layout.hpadding, layout.layout.vpadding, layout.layout.width, layout.layout.hpadding);
             break;
         case KSResizingModeScreen:
             rect = self.bounds;
@@ -47,7 +46,7 @@
         default:
             break;
     }
-    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect resizingMode:resizingMode];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect scale:layout.scale mode:layout.mode];
     [self.scrollView addSubview:localView];
 }
 
@@ -56,15 +55,15 @@
 }
 
 -(CGPoint)pointOfIndex:(NSInteger)index {
-    int x = 0;
+    int x = _remoteLayout.layout.hpadding;
     int y = 0;
     if (index == 1) {
-        x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding;
+        x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
         y = _remoteLayout.layout.vpadding;
     }
     else {
         if ((index % 2) != 0) {
-            x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding;
+            x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
         }
         y = _remoteLayout.layout.vpadding + (index / 2) * _remoteLayout.layout.height + _remoteLayout.layout.vpadding * (index / 2);
     }
@@ -98,7 +97,7 @@
 
 - (KSRemoteView *)createRemoteViewOfHandleId:(NSNumber *)handleId {
     CGPoint point = [self pointOfIndex:self.remoteKits.count];
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height)];
+    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height) scale:_remoteLayout.scale mode:_remoteLayout.mode];
     remoteView.handleId = handleId;
     [self.scrollView addSubview:remoteView];
     [self.remoteKits addObject:remoteView];

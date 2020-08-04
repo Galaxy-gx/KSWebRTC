@@ -59,7 +59,7 @@
     [self.view addSubview:scrollView];
     _scrollView = scrollView;
     
-    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight) resizingMode:KSResizingModeTile];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:CGRectMake(0, _topOffset, _kitWidth, _kitHeight) scale:KSScaleMake(9, 16) mode:KSContentModeScaleAspectFit];
     [scrollView addSubview:localView];
     _localView = localView;
     

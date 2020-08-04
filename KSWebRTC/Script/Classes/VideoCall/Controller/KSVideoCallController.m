@@ -43,7 +43,14 @@
 }
 
 - (void)initKit {
-    KSVideoCallView *videoCallView = [[KSVideoCallView alloc] initWithFrame:self.view.bounds];
+    KSVideoLayout *layout = [[KSVideoLayout alloc] init];
+    layout.scale = KSScaleMake(9, 16);
+    layout.mode = KSContentModeScaleAspectFit;
+    int width = (self.view.frame.size.width - 30)/2;
+    int height = width / layout.scale.width * layout.scale.height;
+    layout.layout = KSLayoutMake(width, height, 10, 10);
+    
+    KSVideoCallView *videoCallView = [[KSVideoCallView alloc] initWithFrame:self.view.bounds layout:layout];
     videoCallView.delegate = self;
     _videoCallView = videoCallView;
     [self.view addSubview:videoCallView];

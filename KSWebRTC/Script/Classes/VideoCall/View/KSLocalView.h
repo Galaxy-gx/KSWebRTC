@@ -12,8 +12,8 @@
 
 @interface KSLocalView : UIView
 
--(instancetype)initWithFrame:(CGRect)frame resizingMode:(KSResizingMode)resizingMode;
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
-- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height resizingMode:(KSResizingMode)resizingMode;
+- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
 
 @end

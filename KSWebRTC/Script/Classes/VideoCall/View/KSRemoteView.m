@@ -7,12 +7,14 @@
 //
 
 #import "KSRemoteView.h"
+#import "UIView+Category.h"
 
 @implementation KSRemoteView
 
--(instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode {
     if (self = [super initWithFrame:frame]) {
         [self initKit];
+        [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
 }
@@ -27,4 +29,9 @@
     _handleId = handleId;
     _remoteView.handleId = handleId;
 }
+
+- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
+    _remoteView.frame = [self rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
+}
+
 @end
