@@ -66,8 +66,8 @@
     else if(gestureRecognizer.state == UIGestureRecognizerStateEnded) {
         CGFloat hpadding = 10;
         CGFloat vpadding = 64;
-        CGFloat x = _tilePoint.x;
-        CGFloat y = _tilePoint.y;
+        CGFloat x = _tilePoint.x - tileView.frame.size.width/2;
+        CGFloat y = _tilePoint.y - tileView.frame.size.height/2;
         if (_tilePoint.x > self.bounds.size.width/2) {
             x = self.bounds.size.width - tileView.frame.size.width - hpadding;
         }
@@ -75,17 +75,13 @@
             x = hpadding;
         }
         
-        if (_tilePoint.y > (self.bounds.size.height - tileView.frame.size.height - vpadding)) {
+        if (_tilePoint.y > (self.bounds.size.height - tileView.frame.size.height/2 - vpadding)) {
             y = self.bounds.size.height - tileView.frame.size.height - vpadding;
         }
         
-        if (tileView.frame.origin.x < hpadding) {
-            x = hpadding;
-        }
-        if (tileView.frame.origin.y < vpadding) {
+        if (y < vpadding) {
             y = vpadding;
         }
-        
         //NSLog(@"-----x:%f, y:%f vx:%f, vy:%f----",x,y,tileView.frame.origin.x,tileView.frame.origin.y);
         [UIView animateWithDuration: 0.2 animations:^{
             tileView.frame = CGRectMake(x, y, tileView.frame.size.width, tileView.frame.size.height);
