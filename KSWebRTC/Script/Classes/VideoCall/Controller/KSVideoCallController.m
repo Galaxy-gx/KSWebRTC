@@ -7,7 +7,7 @@
 //
 
 #import "KSVideoCallController.h"
-#import "KSVideoCallView.h"
+#import "KSCallView.h"
 #import <WebRTC/RTCAudioSession.h>
 #import "KSMessageHandler.h"
 #import "KSMediaCapture.h"
@@ -15,7 +15,7 @@
 #import "UIButton+Category.h"
 @interface KSVideoCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
 
-@property(nonatomic, weak) KSVideoCallView *videoCallView;
+@property(nonatomic, weak) KSCallView *videoCallView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
 @property (nonatomic, assign) BOOL isConnect;
@@ -43,16 +43,16 @@
 }
 
 - (void)initKit {
-    KSVideoLayout *layout = [[KSVideoLayout alloc] init];
+    KSTileLayout *layout = [[KSTileLayout alloc] init];
     layout.scale = KSScaleMake(3, 4);
     layout.mode = KSContentModeScaleAspectFit;
     int width = (self.view.frame.size.width - 30)/2;
     int height = width / layout.scale.width * layout.scale.height;
     layout.layout = KSLayoutMake(width, height, 10, 10);
     
-    KSVideoCallView *videoCallView = [[KSVideoCallView alloc] initWithFrame:self.view.bounds layout:layout];
+    KSCallView *videoCallView = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeManyVideo];
     videoCallView.delegate = self;
-    [videoCallView createLocalViewWithLayout:layout resizingMode:KSResizingModeTile];
+    [videoCallView createLocalViewWithLayout:layout resizingMode:KSResizingModeTile callType:KSCallTypeManyVideo];
     _videoCallView = videoCallView;
     [self.view addSubview:videoCallView];
     
@@ -111,19 +111,19 @@
 
 
 //KSVideoCallViewDelegate
-- (void)videoCallViewDidChangeRoute:(KSVideoCallView *)view {
+- (void)videoCallViewDidChangeRoute:(KSCallView *)view {
     
 }
 
-- (void)videoCallViewDidEnableStats:(KSVideoCallView *)view {
+- (void)videoCallViewDidEnableStats:(KSCallView *)view {
     
 }
 
-- (void)videoCallViewDidHangup:(KSVideoCallView *)view {
+- (void)videoCallViewDidHangup:(KSCallView *)view {
     
 }
 
-- (void)videoCallViewDidSwitchCamera:(KSVideoCallView *)view {
+- (void)videoCallViewDidSwitchCamera:(KSCallView *)view {
     
 }
 

@@ -33,8 +33,8 @@
 		E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5BA24B86171004BBA8A /* KSMsg.m */; };
 		E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */; };
 		E6A5DFF824D6D06A007E7D14 /* KSRemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */; };
-		E6A5DFF924D6D06A007E7D14 /* KSVideoCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF324D6D06A007E7D14 /* KSVideoCallView.m */; };
-		E6A5DFFA24D6D06A007E7D14 /* KSVideoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF524D6D06A007E7D14 /* KSVideoLayout.m */; };
+		E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF324D6D06A007E7D14 /* KSCallView.m */; };
+		E6A5DFFA24D6D06A007E7D14 /* KSTileLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF524D6D06A007E7D14 /* KSTileLayout.m */; };
 		E6A5DFFB24D6D06A007E7D14 /* KSVisualEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF724D6D06A007E7D14 /* KSVisualEffectView.m */; };
 		E6A5DFFE24D6DF08007E7D14 /* KSLocalView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */; };
 		E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E096BC24D7BBC800D083D2 /* UIView+Category.m */; };
@@ -96,10 +96,10 @@
 		E6A5DFEF24D6D06A007E7D14 /* KSConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSConfigure.h; sourceTree = "<group>"; };
 		E6A5DFF024D6D06A007E7D14 /* KSRemoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRemoteView.h; sourceTree = "<group>"; };
 		E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRemoteView.m; sourceTree = "<group>"; };
-		E6A5DFF224D6D06A007E7D14 /* KSVideoCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoCallView.h; sourceTree = "<group>"; };
-		E6A5DFF324D6D06A007E7D14 /* KSVideoCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoCallView.m; sourceTree = "<group>"; };
-		E6A5DFF424D6D06A007E7D14 /* KSVideoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoLayout.h; sourceTree = "<group>"; };
-		E6A5DFF524D6D06A007E7D14 /* KSVideoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoLayout.m; sourceTree = "<group>"; };
+		E6A5DFF224D6D06A007E7D14 /* KSCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallView.h; sourceTree = "<group>"; };
+		E6A5DFF324D6D06A007E7D14 /* KSCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallView.m; sourceTree = "<group>"; };
+		E6A5DFF424D6D06A007E7D14 /* KSTileLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileLayout.h; sourceTree = "<group>"; };
+		E6A5DFF524D6D06A007E7D14 /* KSTileLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileLayout.m; sourceTree = "<group>"; };
 		E6A5DFF624D6D06A007E7D14 /* KSVisualEffectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVisualEffectView.h; sourceTree = "<group>"; };
 		E6A5DFF724D6D06A007E7D14 /* KSVisualEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVisualEffectView.m; sourceTree = "<group>"; };
 		E6A5DFFC24D6DF08007E7D14 /* KSLocalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSLocalView.h; sourceTree = "<group>"; };
@@ -340,10 +340,10 @@
 				E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */,
 				E6A5DFF024D6D06A007E7D14 /* KSRemoteView.h */,
 				E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */,
-				E6A5DFF224D6D06A007E7D14 /* KSVideoCallView.h */,
-				E6A5DFF324D6D06A007E7D14 /* KSVideoCallView.m */,
-				E6A5DFF424D6D06A007E7D14 /* KSVideoLayout.h */,
-				E6A5DFF524D6D06A007E7D14 /* KSVideoLayout.m */,
+				E6A5DFF224D6D06A007E7D14 /* KSCallView.h */,
+				E6A5DFF324D6D06A007E7D14 /* KSCallView.m */,
+				E6A5DFF424D6D06A007E7D14 /* KSTileLayout.h */,
+				E6A5DFF524D6D06A007E7D14 /* KSTileLayout.m */,
 				E6A5DFF624D6D06A007E7D14 /* KSVisualEffectView.h */,
 				E6A5DFF724D6D06A007E7D14 /* KSVisualEffectView.m */,
 			);
@@ -467,7 +467,7 @@
 				E60C907D24CEB85000291CDA /* ARDAppClient.m in Sources */,
 				E67BC5AC24B856D6004BBA8A /* NSString+Category.m in Sources */,
 				E60C908224CEB85000291CDA /* ARDTURNClient.m in Sources */,
-				E6A5DFFA24D6D06A007E7D14 /* KSVideoLayout.m in Sources */,
+				E6A5DFFA24D6D06A007E7D14 /* KSTileLayout.m in Sources */,
 				E60C908024CEB85000291CDA /* ARDSignalingChannel.m in Sources */,
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
 				E67BC5AF24B857BA004BBA8A /* RTCSessionDescription+Category.m in Sources */,
@@ -479,7 +479,7 @@
 				E6A5DFFE24D6DF08007E7D14 /* KSLocalView.m in Sources */,
 				E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */,
 				E60C906224CEB80E00291CDA /* KSVideoCallController.m in Sources */,
-				E6A5DFF924D6D06A007E7D14 /* KSVideoCallView.m in Sources */,
+				E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */,
 				E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */,
 				E6A5DFF824D6D06A007E7D14 /* KSRemoteView.m in Sources */,
 				E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */,

@@ -19,6 +19,24 @@ typedef NS_ENUM(NSInteger, KSResizingMode) {
     KSResizingModeScreen,//全屏
 };
 
+typedef NS_ENUM(NSInteger, KSCallType) {
+    KSCallTypeSingleAudio,
+    KSCallTypeManyAudio,
+    KSCallTypeSingleVideo,
+    KSCallTypeManyVideo,
+};
+
+//typedef NS_ENUM(NSInteger, KSIdentity) {
+//    KSIdentityUnknown,
+//    KSIdentityLocal,
+//    KSIdentityRemote,
+//};
+
+typedef NS_ENUM(NSInteger, KSDragState) {
+    KSDragStateInactivity,
+    KSDragStateActivity,
+};
+
 struct KSScale {
     CGFloat width;
     CGFloat height;

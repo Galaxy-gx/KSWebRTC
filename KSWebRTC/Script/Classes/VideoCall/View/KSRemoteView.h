@@ -13,6 +13,6 @@
 @property(nonatomic,weak) KSEAGLVideoView *remoteView;
 @property(nonatomic,strong)NSNumber *handleId;
 
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode;
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType;
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
 @end

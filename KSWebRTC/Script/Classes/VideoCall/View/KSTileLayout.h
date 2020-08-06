@@ -1,5 +1,5 @@
 //
-//  KSVideoLayout.h
+//  KSTileLayout.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/2.
@@ -24,7 +24,7 @@ KSLayoutMake(CGFloat width, CGFloat height, CGFloat hpadding, CGFloat vpadding)
   KSLayout l; l.width = width; l.height = height; l.hpadding = hpadding; l.vpadding = vpadding; return l;
 }
 
-@interface KSVideoLayout : NSObject
+@interface KSTileLayout : NSObject
 
 @property(nonatomic,assign)KSLayout layout;
 @property(nonatomic,assign)KSScale scale;

@@ -12,20 +12,30 @@
 @interface KSLocalView()
 
 @property(nonatomic,weak)AVCaptureVideoPreviewLayer *previewLayer;
-
+@property(nonatomic,assign)KSCallType callType;
 @end
 
 @implementation KSLocalView
 
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode {
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType {
     if (self = [super initWithFrame:frame]) {
-        [self initKit];
+        self.callType = callType;
         [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
 }
 
-- (void)initKit {
+-(void)setCallType:(KSCallType)callType {
+    _callType = callType;
+    if (_callType == KSCallTypeManyVideo || _callType == KSCallTypeSingleVideo) {
+        [self initPreviewLayer];
+    }
+}
+
+- (void)initPreviewLayer {
+    if (_previewLayer) {
+        return;
+    }
     AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] init];
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//填充模式
     _previewLayer = previewLayer;

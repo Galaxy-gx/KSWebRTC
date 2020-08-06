@@ -9,10 +9,16 @@
 #import "KSRemoteView.h"
 #import "UIView+Category.h"
 
+@interface KSRemoteView()
+
+@property(nonatomic,assign)KSCallType callType;
+
+@end
 @implementation KSRemoteView
 
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode {
+- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType {
     if (self = [super initWithFrame:frame]) {
+        self.callType = callType;
         [self initKit];
         [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
