@@ -54,7 +54,7 @@
 
 // 设置远端的媒体描述
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
-    RTCSessionDescription *answerDescription = [RTCSessionDescription descriptionFromJSONDictionary:jsep];
+    RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
     [_connection setRemoteDescription:answerDescription
                     completionHandler:^(NSError *_Nullable error){
         if(!error){

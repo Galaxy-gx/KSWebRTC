@@ -28,11 +28,11 @@
 -(void)setCallType:(KSCallType)callType {
     _callType = callType;
     if (_callType == KSCallTypeManyVideo || _callType == KSCallTypeSingleVideo) {
-        [self initPreviewLayer];
+        [self createPreviewLayer];
     }
 }
 
-- (void)initPreviewLayer {
+- (void)createPreviewLayer {
     if (_previewLayer) {
         return;
     }
@@ -47,7 +47,10 @@
 }
 
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
-     _previewLayer.frame = [self rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
+    if (_previewLayer == nil) {
+        return;
+    }
+     _previewLayer.frame = [self ks_rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
 }
 
 @end

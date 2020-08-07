@@ -47,7 +47,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     if (self) {
         self.socket = [[KSWebSocket alloc] init];
         self.socket.delegate = self;
-        self.opaqueId = [NSString stringWithFormat:@"videoroom-%@", [NSString randomForLength:KSRandomLength]];
+        self.opaqueId = [NSString stringWithFormat:@"videoroom-%@", [NSString ks_randomForLength:KSRandomLength]];
         self.connections = [NSMutableDictionary dictionary];
         self.msgs = [NSMutableDictionary dictionary];
         self.subscribers = [NSMutableDictionary dictionary];
@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             _socket.configure.isSession = true;
             
             //WebRTC:02
-            [self pluginBinding:KSActionTypePluginBinding transaction:[NSString randomForLength:KSRandomLength]];
+            [self pluginBinding:KSActionTypePluginBinding transaction:[NSString ks_randomForLength:KSRandomLength]];
             break;
         case KSActionTypePluginBinding:
             _myHandleId = success.data.ID;
@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             if (event.plugindata.data.private_id) {
                 item.privateId = event.plugindata.data.private_id;
             }
-            NSString *transaction = [NSString randomForLength:KSRandomLength];
+            NSString *transaction = [NSString ks_randomForLength:KSRandomLength];
             self.subscribers[transaction] = [item copy];
             
             //WebRTC:05
@@ -186,7 +186,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 //Send
 // 创建会话
 -(void)createSession {
-    NSString *transaction       = [NSString randomForLength:KSRandomLength];
+    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
     sendMessage[@"janus"]       = @"create";
     sendMessage[@"transaction"] = transaction;
@@ -286,7 +286,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 发送候选者
 - (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate {
-    NSString *transaction       = [NSString randomForLength:KSRandomLength];
+    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
     sendMessage[@"janus"]       = @"trickle";
     sendMessage[@"transaction"] = transaction;
@@ -299,7 +299,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 发送消息通用方法
 - (void)sendMessage:(NSDictionary *)body jsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId actionType:(KSActionType)actionType {
-    NSString *transaction = [NSString randomForLength:KSRandomLength];
+    NSString *transaction = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
     sendMessage[@"janus"] = @"message";
     sendMessage[@"transaction"] = transaction;

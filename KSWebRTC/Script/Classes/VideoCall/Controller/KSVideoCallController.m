@@ -57,7 +57,7 @@
     [self.view addSubview:videoCallView];
     
     UIColor *btnColor = [UIColor colorWithRed:100/255.0 green:149/255.0 blue:237/255.0 alpha:1];
-    UIButton *connectBtn = [UIButton initWithTitle:@"连接"
+    UIButton *connectBtn = [UIButton ks_buttonWithTitle:@"连接"
                                         titleColor:[UIColor whiteColor]
                                               font:[UIFont systemFontOfSize:14]
                                    backgroundColor:btnColor
@@ -65,7 +65,7 @@
                                        borderWidth:2];
     connectBtn.frame = CGRectMake(50, self.view.bounds.size.height - 60, 100, 44);
     
-    UIButton *leaveBtn = [UIButton initWithTitle:@"离开"
+    UIButton *leaveBtn = [UIButton ks_buttonWithTitle:@"离开"
                                       titleColor:[UIColor whiteColor]
                                             font:[UIFont systemFontOfSize:14]
                                  backgroundColor:btnColor

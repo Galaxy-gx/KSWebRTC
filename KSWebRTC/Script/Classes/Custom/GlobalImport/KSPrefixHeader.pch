@@ -1,0 +1,29 @@
+//
+//  KSPrefixHeader.pch
+//  KSWebRTC
+//
+//  Created by saeipi on 2020/8/6.
+//  Copyright © 2020 saeipi. All rights reserved.
+//
+
+#ifndef KSPrefixHeader_pch
+#define KSPrefixHeader_pch
+
+#import "KSExtern.h"
+
+//Category
+#import "UIButton+Category.h"
+#import "UIImageView+Category.h"
+#import "UIImage+Category.h"
+#import "UILabel+Category.h"
+#import "UIButton+Category.h"
+
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
+
+#import "NSString+Category.h"
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* KSPrefixHeader_pch */
