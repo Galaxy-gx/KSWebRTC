@@ -42,8 +42,8 @@
 		E6AC70EB24DCF58F00C7134D /* KSIputView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC70EA24DCF58F00C7134D /* KSIputView.m */; };
 		E6AC70F724DCF82100C7134D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6AC70F924DCF82100C7134D /* Localizable.strings */; };
 		E6AC70FE24DD21B800C7134D /* KSAnswerBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC70FD24DD21B800C7134D /* KSAnswerBarView.m */; };
-		E6AC710224DD294A00C7134D /* KSAudioChatGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710124DD294A00C7134D /* KSAudioChatGroupView.m */; };
-		E6AC710524DD2A8D00C7134D /* KSAudioChatProfileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710424DD2A8D00C7134D /* KSAudioChatProfileCell.m */; };
+		E6AC710224DD294A00C7134D /* KSWaitingAnswersGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710124DD294A00C7134D /* KSWaitingAnswersGroupView.m */; };
+		E6AC710524DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */; };
 		E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E096BC24D7BBC800D083D2 /* UIView+Category.m */; };
 		E6FD828124DBD32700E10495 /* KSCallBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828024DBD32700E10495 /* KSCallBarView.m */; };
 		E6FD828424DBD4C900E10495 /* KSCallMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828324DBD4C900E10495 /* KSCallMenuView.m */; };
@@ -139,10 +139,10 @@
 		E6AC70FA24DCF82500C7134D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E6AC70FC24DD21B800C7134D /* KSAnswerBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSAnswerBarView.h; sourceTree = "<group>"; };
 		E6AC70FD24DD21B800C7134D /* KSAnswerBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSAnswerBarView.m; sourceTree = "<group>"; };
-		E6AC710024DD294A00C7134D /* KSAudioChatGroupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSAudioChatGroupView.h; sourceTree = "<group>"; };
-		E6AC710124DD294A00C7134D /* KSAudioChatGroupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSAudioChatGroupView.m; sourceTree = "<group>"; };
-		E6AC710324DD2A8D00C7134D /* KSAudioChatProfileCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSAudioChatProfileCell.h; sourceTree = "<group>"; };
-		E6AC710424DD2A8D00C7134D /* KSAudioChatProfileCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSAudioChatProfileCell.m; sourceTree = "<group>"; };
+		E6AC710024DD294A00C7134D /* KSWaitingAnswersGroupView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersGroupView.h; sourceTree = "<group>"; };
+		E6AC710124DD294A00C7134D /* KSWaitingAnswersGroupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersGroupView.m; sourceTree = "<group>"; };
+		E6AC710324DD2A8D00C7134D /* KSWaitingAnswersMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersMemberCell.h; sourceTree = "<group>"; };
+		E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersMemberCell.m; sourceTree = "<group>"; };
 		E6E096BB24D7BBC800D083D2 /* UIView+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		E6FD827F24DBD32700E10495 /* KSCallBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
@@ -455,14 +455,14 @@
 			path = AnswerBar;
 			sourceTree = "<group>";
 		};
-		E6AC70FF24DD293200C7134D /* AudioChatGroup */ = {
+		E6AC70FF24DD293200C7134D /* WaitingAnswers */ = {
 			isa = PBXGroup;
 			children = (
 				E6AC710824DD2D8300C7134D /* Cell */,
-				E6AC710024DD294A00C7134D /* KSAudioChatGroupView.h */,
-				E6AC710124DD294A00C7134D /* KSAudioChatGroupView.m */,
+				E6AC710024DD294A00C7134D /* KSWaitingAnswersGroupView.h */,
+				E6AC710124DD294A00C7134D /* KSWaitingAnswersGroupView.m */,
 			);
-			path = AudioChatGroup;
+			path = WaitingAnswers;
 			sourceTree = "<group>";
 		};
 		E6AC710624DD2C0700C7134D /* Cell */ = {
@@ -486,8 +486,8 @@
 		E6AC710824DD2D8300C7134D /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				E6AC710324DD2A8D00C7134D /* KSAudioChatProfileCell.h */,
-				E6AC710424DD2A8D00C7134D /* KSAudioChatProfileCell.m */,
+				E6AC710324DD2A8D00C7134D /* KSWaitingAnswersMemberCell.h */,
+				E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -496,7 +496,7 @@
 			isa = PBXGroup;
 			children = (
 				E6FD82AB24DC189900E10495 /* ProfileBar */,
-				E6AC70FF24DD293200C7134D /* AudioChatGroup */,
+				E6AC70FF24DD293200C7134D /* WaitingAnswers */,
 				E6AC70FB24DD219400C7134D /* AnswerBar */,
 				E6FD82AF24DC24F100E10495 /* Meeting */,
 				E6FD82A624DC087700E10495 /* CallBar */,
@@ -700,10 +700,10 @@
 				E60C908324CEB85000291CDA /* ARDRoomServerClient.m in Sources */,
 				E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */,
 				E60C908124CEB85000291CDA /* ARDSettingsStore.m in Sources */,
-				E6AC710524DD2A8D00C7134D /* KSAudioChatProfileCell.m in Sources */,
+				E6AC710524DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m in Sources */,
 				E6FD829924DBEE1A00E10495 /* UIImageView+Category.m in Sources */,
 				E6A5DFFE24D6DF08007E7D14 /* KSLocalView.m in Sources */,
-				E6AC710224DD294A00C7134D /* KSAudioChatGroupView.m in Sources */,
+				E6AC710224DD294A00C7134D /* KSWaitingAnswersGroupView.m in Sources */,
 				E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */,
 				E6FD828A24DBE35D00E10495 /* NSObject+Category.m in Sources */,
 				E60C906224CEB80E00291CDA /* KSVideoCallController.m in Sources */,

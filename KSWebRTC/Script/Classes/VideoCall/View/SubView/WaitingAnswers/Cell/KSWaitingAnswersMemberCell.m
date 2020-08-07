@@ -1,21 +1,21 @@
 //
-//  KSAudioChatProfileCell.m
+//  KSWaitingAnswersMemberCell.m
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSAudioChatProfileCell.h"
+#import "KSWaitingAnswersMemberCell.h"
 #import "KSRoundImageView.h"
 
-@interface KSAudioChatProfileCell()
+@interface KSWaitingAnswersMemberCell()
 
 @property(nonatomic,weak)KSRoundImageView *iconView;
 
 @end
 
-@implementation KSAudioChatProfileCell
+@implementation KSWaitingAnswersMemberCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

@@ -1,5 +1,5 @@
 //
-//  KSAudioChatProfileCell.h
+//  KSAudioChatGroupView.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KSAudioChatProfileCell : UICollectionViewCell
-
+@interface KSWaitingAnswersGroupView : UIView
 
 @end

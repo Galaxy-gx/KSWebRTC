@@ -1,21 +1,21 @@
 //
-//  KSAudioChatGroupView.m
+//  KSWaitingAnswersGroupView.m
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSAudioChatGroupView.h"
-#import "KSAudioChatProfileCell.h"
+#import "KSWaitingAnswersGroupView.h"
+#import "KSWaitingAnswersMemberCell.h"
 
-@interface KSAudioChatGroupView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface KSWaitingAnswersGroupView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @end
 
-static NSString *audioChatProfileCellIdentifier = @"audioChatProfileCellIdentifier";
+static NSString *waitingAnswersMemberCellIdentifier = @"waitingAnswersMemberCellIdentifier";
 
-@implementation KSAudioChatGroupView
+@implementation KSWaitingAnswersGroupView
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -46,7 +46,7 @@ static NSString *audioChatProfileCellIdentifier = @"audioChatProfileCellIdentifi
                                                                                           KS_Extern_Point40)];
     collectionView.dataSource = self;
     collectionView.delegate = self;
-    [collectionView registerClass:[KSAudioChatProfileCell class] forCellWithReuseIdentifier:audioChatProfileCellIdentifier];
+    [collectionView registerClass:[KSWaitingAnswersMemberCell class] forCellWithReuseIdentifier:waitingAnswersMemberCellIdentifier];
     [self addSubview:collectionView];
 }
 
