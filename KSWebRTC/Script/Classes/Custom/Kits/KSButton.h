@@ -11,7 +11,9 @@
 typedef NS_ENUM(NSInteger, KSButtonLayoutType) {
     KSButtonLayoutTypeTitleTop,
     KSButtonLayoutTypeTitleBottom,
-    KSButtonLayoutTypeTitleCenter
+    KSButtonLayoutTypeTitleCenter,
+    KSButtonLayoutTypeTitleLeft,
+    KSButtonLayoutTypeTitleRight,
 };
 
 @interface KSButton : UIControl

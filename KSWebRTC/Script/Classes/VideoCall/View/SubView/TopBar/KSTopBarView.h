@@ -1,5 +1,5 @@
 //
-//  KSAnswerBarView.h
+//  KSTopBarView.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KSAnswerBarView : UIView
+@interface KSTopBarView : UIView
 
 @end

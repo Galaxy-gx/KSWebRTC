@@ -15,6 +15,7 @@
 		E60C908124CEB85000291CDA /* ARDSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907824CEB85000291CDA /* ARDSettingsStore.m */; };
 		E60C908224CEB85000291CDA /* ARDTURNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907924CEB85000291CDA /* ARDTURNClient.m */; };
 		E60C908324CEB85000291CDA /* ARDRoomServerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907A24CEB85000291CDA /* ARDRoomServerClient.m */; };
+		E62B99B924DD468500152697 /* KSTopBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E62B99B824DD468500152697 /* KSTopBarView.m */; };
 		E630B64824B946E200A5CA72 /* KSMediaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E630B64724B946E200A5CA72 /* KSMediaConnection.m */; };
 		E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3424B8507F004C7060 /* AppDelegate.m */; };
 		E6400F3824B8507F004C7060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3724B8507F004C7060 /* ViewController.m */; };
@@ -84,6 +85,8 @@
 		E60C907A24CEB85000291CDA /* ARDRoomServerClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDRoomServerClient.m; sourceTree = "<group>"; };
 		E60C907B24CEB85000291CDA /* ARDAppClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDAppClient.h; sourceTree = "<group>"; };
 		E60C907C24CEB85000291CDA /* KSCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCaptureController.h; sourceTree = "<group>"; };
+		E62B99B724DD468500152697 /* KSTopBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSTopBarView.h; sourceTree = "<group>"; };
+		E62B99B824DD468500152697 /* KSTopBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSTopBarView.m; sourceTree = "<group>"; };
 		E630B64624B946E200A5CA72 /* KSMediaConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaConnection.h; sourceTree = "<group>"; };
 		E630B64724B946E200A5CA72 /* KSMediaConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaConnection.m; sourceTree = "<group>"; };
 		E6400F3024B8507F004C7060 /* KSWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KSWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -247,6 +250,15 @@
 				E60C907424CEB85000291CDA /* KSCaptureController.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		E62B99B624DD465700152697 /* TopBar */ = {
+			isa = PBXGroup;
+			children = (
+				E62B99B724DD468500152697 /* KSTopBarView.h */,
+				E62B99B824DD468500152697 /* KSTopBarView.m */,
+			);
+			path = TopBar;
 			sourceTree = "<group>";
 		};
 		E630B64524B946C300A5CA72 /* Utils */ = {
@@ -495,6 +507,7 @@
 		E6FD827E24DBD2F300E10495 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
+				E62B99B624DD465700152697 /* TopBar */,
 				E6FD82AB24DC189900E10495 /* ProfileBar */,
 				E6AC70FF24DD293200C7134D /* WaitingAnswers */,
 				E6AC70FB24DD219400C7134D /* AnswerBar */,
@@ -719,6 +732,7 @@
 				E6400F4324B85080004C7060 /* main.m in Sources */,
 				E6FD82A524DC010400E10495 /* KSBtnInfo.m in Sources */,
 				E664F8F324B89CB70092FCE2 /* KSMediaCapture.m in Sources */,
+				E62B99B924DD468500152697 /* KSTopBarView.m in Sources */,
 				E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */,
 				E6AC70EB24DCF58F00C7134D /* KSIputView.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,

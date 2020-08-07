@@ -15,4 +15,6 @@
 + (UIImage *)ks_imageWithColor:(UIColor *)color;
 + (UIColor *)ks_white;
 + (UIColor *)ks_blueBtn;
++ (UIColor *)ks_grayBar;
+
 @end

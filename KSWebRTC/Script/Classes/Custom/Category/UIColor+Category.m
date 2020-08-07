@@ -75,4 +75,8 @@
     return [UIColor ks_colorWithHexString:@"#3478F6"];
 }
 
++ (UIColor *)ks_grayBar {
+    return [UIColor ks_colorWithHexString:@"#292C33"];
+}
+
 @end
