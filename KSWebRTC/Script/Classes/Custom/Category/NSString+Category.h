@@ -14,6 +14,6 @@
 
 + (NSString *)ks_randomForLength:(int)length;
 + (NSString *)ks_localizde:(NSString *)text;
-- (NSString *)ks_localizde;
 + (NSMutableAttributedString *)ks_attributesOfText:(NSString *)text color:(UIColor *)color font:(UIFont *)font;
+- (CGSize)ks_sizeWithFont:(UIFont *)font maxSize:(CGSize)maxSize;
 @end

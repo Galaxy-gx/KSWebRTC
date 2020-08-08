@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, KSButtonLayoutType) {
+    KSButtonLayoutTypeOriginal,
     KSButtonLayoutTypeTitleTop,
     KSButtonLayoutTypeTitleBottom,
     KSButtonLayoutTypeTitleCenter,
@@ -21,4 +22,6 @@ typedef NS_ENUM(NSInteger, KSButtonLayoutType) {
 -(instancetype)initWithFrame:(CGRect)frame textColor:(UIColor*)textColor font:(UIFont *)font alignment:(NSTextAlignment)alignment titleHeight:(int)titleHeight imageSize:(CGSize)imageSize layoutType:(KSButtonLayoutType)layoutType spacing:(CGFloat)spacing;
 -(void)updateDefaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected;
 -(void)updateTitle:(NSString *)title;
+
+
 @end

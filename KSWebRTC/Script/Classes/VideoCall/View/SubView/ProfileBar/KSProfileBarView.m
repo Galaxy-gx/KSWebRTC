@@ -26,7 +26,7 @@
 }
 
 - (void)initKit {
-    UIImageView *imageview = [UIImageView ks_imageViewWithName:@""];
+    UIImageView *imageview = [UIImageView ks_imageViewWithName:@"icon_bar_mute_red"];
     imageview.frame = CGRectMake(KS_Extern_Point04, (self.bounds.size.height - KS_Extern_Point14)/2, KS_Extern_Point14, KS_Extern_Point14);
     _imageview = imageview;
     imageview.hidden = YES;
@@ -62,7 +62,7 @@
         desc = [NSString stringWithFormat:@"%@%@",_name,state];
     }
     _descLabel.text = desc;
-    CGSize size = [_descLabel ks_sizeWithMaxSize:CGSizeMake(self.bounds.size.width - x, self.bounds.size.height)];
+    CGSize size = [_descLabel ks_textSize];
     _descLabel.frame = CGRectMake(x, y, size.width, self.bounds.size.height);
 }
 

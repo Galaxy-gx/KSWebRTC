@@ -21,11 +21,11 @@ static const NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS
 }
 
 + (NSString *)ks_localizde:(NSString *)text {
-    return text;
+    return text.localizde;
 }
 
 - (NSString *)ks_localizde {
-    return self;
+    return NSLocalizedString(self, nil);
 }
 
 - (void)setLocalizde:(NSString *)localizde {
@@ -33,7 +33,7 @@ static const NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS
 }
 
 - (NSString *)localizde {
-    return NSLocalizedString(self, nil);
+    return [self ks_localizde];
 }
 
 + (NSMutableAttributedString *)ks_attributesOfText:(NSString *)text color:(UIColor *)color font:(UIFont *)font {
@@ -45,5 +45,10 @@ static const NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS
     [attributeString addAttributes:@{NSForegroundColorAttributeName : color,
                                      NSFontAttributeName : font} range:NSMakeRange(0, length)];
     return attributeString;
+}
+
+- (CGSize)ks_sizeWithFont:(UIFont *)font maxSize:(CGSize)maxSize {
+    NSDictionary *attrs = @{NSFontAttributeName : font};
+    return [self boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }
 @end

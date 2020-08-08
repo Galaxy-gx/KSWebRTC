@@ -8,6 +8,7 @@
 
 "ks_meeting_theme_input_placeholder" = "输入你的会议主题";
 "ks_meeting_btn_start" = "开始会议";
+"ks_meeting_btn_voice_answering" = "语音接听";
 
 
 "ks_app_global_text_microphone"               = "麦克风";

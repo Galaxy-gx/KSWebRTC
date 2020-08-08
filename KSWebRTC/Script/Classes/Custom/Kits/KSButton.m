@@ -9,11 +9,11 @@
 #import "KSButton.h"
 #import "NSString+Category.h"
 @interface KSButton() {
-    int image_x;
-    int image_y;
-    int title_x;
-    int title_y;
-    int title_w;
+    CGFloat image_x;
+    CGFloat image_y;
+    CGFloat title_x;
+    CGFloat title_y;
+    CGFloat title_w;
     CGSize _imageSize;
     int _titleHeight;
     CGFloat _spacing;
@@ -56,7 +56,7 @@
         _iconView = iconView;
         _titleLabel = titleLabel;
         
-        [self updateConstraints];
+        [self updateKitsCoordinate];
 
         iconView.frame = CGRectMake(image_x, image_y, imageSize.width, imageSize.height);
         titleLabel.frame = CGRectMake(title_x, title_y, title_w, titleHeight);
@@ -85,7 +85,7 @@
         _iconView = iconView;
         _titleLabel = titleLabel;
         
-        [self updateConstraints];
+        [self updateKitsCoordinate];
         
         iconView.frame = CGRectMake(image_x, image_y, imageSize.width, imageSize.height);
         titleLabel.frame = CGRectMake(title_x, title_y, title_w, titleHeight);
@@ -93,7 +93,7 @@
     return self;
 }
 
--(void)updateCoordinate {
+-(void)updateKitsCoordinate {
     
     image_x = 0;
     image_y = 0;
@@ -107,10 +107,11 @@
         case KSButtonLayoutTypeTitleTop:
         {
             image_x = (self_w - _imageSize.width)/2;
-            image_y = self_h/2 + _spacing/2;
             
-            title_y = self_h/2 - _spacing/2 - _titleHeight;
+            title_y = (self_h - _imageSize.height - _titleHeight - _spacing)/2;
             title_w = self_w;
+            
+            image_y = title_y + _titleHeight + _spacing;
         }
             break;
         case KSButtonLayoutTypeTitleCenter:
@@ -125,16 +126,16 @@
         case KSButtonLayoutTypeTitleBottom:
         {
             image_x = (self_w - _imageSize.width)/2;
-            image_y = self_h/2 - _spacing/2 - _imageSize.height;
+            image_y = (self_h - _imageSize.height - _titleHeight - _spacing)/2;
             
-            title_y = self_h/2 + _spacing/2;
+            title_y = image_y + _imageSize.height + _spacing;
             title_w = self_w;
         }
             break;
         case KSButtonLayoutTypeTitleLeft:
         {
             if (_titleLabel.text.length > 0) {
-                CGSize size = [_titleLabel ks_sizeWithMaxSize:CGSizeMake(self_w - _spacing - _imageSize.width, _titleHeight)];
+                CGSize size = [_titleLabel ks_textSize];
                 image_x = size.width + _spacing;
                 
                 title_w = size.width;
@@ -153,7 +154,7 @@
         case KSButtonLayoutTypeTitleRight:
         {
             if (_titleLabel.text.length > 0) {
-                CGSize size = [_titleLabel ks_sizeWithMaxSize:CGSizeMake(self_w - _spacing - _imageSize.width, _titleHeight)];
+                CGSize size = [_titleLabel ks_textSize];
                 title_w = size.width;
                 title_x = _imageSize.width + _spacing;
             }
@@ -186,9 +187,15 @@
 -(void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     if (selected) {
+        if (!_selectedIcon) {
+            return;
+        }
         _iconView.image = [UIImage imageNamed:_selectedIcon];
     }
     else{
+        if (!_defaultIcon) {
+            return;
+        }
         _iconView.image = [UIImage imageNamed:_defaultIcon];
     }
 }

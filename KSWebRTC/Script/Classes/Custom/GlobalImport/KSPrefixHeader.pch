@@ -13,6 +13,7 @@
 
 //Category
 #import "UIButton+Category.h"
+#import "UIView+Category.h"
 #import "UIImageView+Category.h"
 #import "UIImage+Category.h"
 #import "UILabel+Category.h"

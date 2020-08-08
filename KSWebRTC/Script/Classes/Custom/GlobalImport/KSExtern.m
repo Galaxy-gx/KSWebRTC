@@ -52,5 +52,6 @@ int const KS_Extern_Point50                          = 50;
 int const KS_Extern_Point64                          = 64;
 int const KS_Extern_Point80                          = 80;
 int const KS_Extern_Point100                         = 100;
+int const KS_Extern_Point120                         = 120;
 int const KS_Extern_Point150                         = 150;
 int const KS_Extern_Point200                         = 200;

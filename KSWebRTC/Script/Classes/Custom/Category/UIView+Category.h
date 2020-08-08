@@ -12,5 +12,5 @@
 @interface UIView (Category)
 
 - (CGRect)ks_rectOfSuperFrame:(CGRect)frame width:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
-
+- (void)ks_drawFilletOfRadius:(CGFloat)radius backgroundColor:(UIColor *)backgroundColor;
 @end

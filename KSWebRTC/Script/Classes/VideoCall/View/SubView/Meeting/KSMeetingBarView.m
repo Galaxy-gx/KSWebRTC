@@ -4,7 +4,7 @@
 //
 //  Created by saeipi on 2020/8/6.
 //  Copyright © 2020 saeipi. All rights reserved.
-//  240:46
+//  246:46
 
 #import "KSMeetingBarView.h"
 #import "KSMeetingBarCell.h"
@@ -34,7 +34,7 @@ static NSString *meetingBarCellIdentifier = @"meetingBarCellIdentifier";
 
 - (void)initKit {
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize                = CGSizeMake(36, 46);
+    flowLayout.itemSize                = CGSizeMake(50, 46);
     /*
      //一个section有很多行item，这个属性表示最小行距，默认值不是0
      @property (nonatomic) CGFloat minimumLineSpacing;
@@ -44,11 +44,12 @@ static NSString *meetingBarCellIdentifier = @"meetingBarCellIdentifier";
      @property (nonatomic) UIEdgeInsets sectionInset;
      */
     flowLayout.minimumLineSpacing      = 0;
-    flowLayout.minimumInteritemSpacing = KS_Extern_Point32;
+    flowLayout.minimumInteritemSpacing = KS_Extern_Point04;
     flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.scrollDirection         = UICollectionViewScrollDirectionVertical;
     
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 240, 46)];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 246, 46) collectionViewLayout:flowLayout];
+    collectionView.backgroundColor = [UIColor clearColor];
     collectionView.dataSource = self;
     collectionView.delegate = self;
     [collectionView registerClass:[KSMeetingBarCell class] forCellWithReuseIdentifier:meetingBarCellIdentifier];

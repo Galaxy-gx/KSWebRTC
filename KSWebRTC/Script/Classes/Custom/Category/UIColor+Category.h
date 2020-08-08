@@ -11,7 +11,7 @@
 @interface UIColor (Category)
 
 //设置十六进制颜色
-+ (UIColor*)ks_colorWithHexString:(NSString *)hexString;
++ (UIColor *)ks_colorWithHexString:(NSString *)hexString;
 + (UIImage *)ks_imageWithColor:(UIColor *)color;
 + (UIColor *)ks_white;
 + (UIColor *)ks_blueBtn;

@@ -132,7 +132,7 @@
 
 /**
  创建安娜
-
+ 
  @param normalImg 默认图片
  @param selectImg 选择图片
  @return UIButton
@@ -149,7 +149,7 @@
  */
 + (instancetype)ks_buttonWithTitle:(NSString *)title titleColor:(UIColor *)titleColor bgColor:(UIColor *)bgColor font:(int)font isBold:(BOOL)isBold {
     UIButton *buttonCool             = [UIButton buttonWithType:UIButtonTypeCustom];
-    [buttonCool setTitle:[title ks_localizde] forState:UIControlStateNormal];
+    [buttonCool setTitle:title.localizde forState:UIControlStateNormal];
     [buttonCool setTitleColor:titleColor forState:UIControlStateNormal];
     buttonCool.layer.backgroundColor = bgColor.CGColor;
     
@@ -174,14 +174,14 @@
         buttonCool.layer.backgroundColor = bgColor.CGColor;
     }
     buttonCool.layer.cornerRadius    = radius;
-
+    
     if (isBold) {
         buttonCool.titleLabel.font   = [UIFont boldSystemFontOfSize:font];//[UIFont fontWithName:@"Helvetica-Bold" size:font];
     }
     else{
         buttonCool.titleLabel.font   = [UIFont systemFontOfSize:font];
     }
-
+    
     return buttonCool;
 }
 
@@ -252,13 +252,13 @@
     weakSelf.transform = CGAffineTransformIdentity;
     [UIView animateKeyframesWithDuration:0.5 delay:0 options:0 animations: ^{
         [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 / 3.0 animations: ^{
-             weakSelf.transform = CGAffineTransformMakeScale(1.05, 1.05);
+            weakSelf.transform = CGAffineTransformMakeScale(1.05, 1.05);
         }];
         [UIView addKeyframeWithRelativeStartTime:1/3.0 relativeDuration:1/3.0 animations: ^{
-             weakSelf.transform = CGAffineTransformMakeScale(0.95, 0.95);
+            weakSelf.transform = CGAffineTransformMakeScale(0.95, 0.95);
         }];
         [UIView addKeyframeWithRelativeStartTime:2/3.0 relativeDuration:1/3.0 animations: ^{
-             weakSelf.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            weakSelf.transform = CGAffineTransformMakeScale(1.0, 1.0);
         }];
     } completion:nil];
 }
@@ -295,31 +295,35 @@
 }
 
 + (UIButton *)ks_buttonWithFrame:(CGRect)frame title:(NSString *)title titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius backgroundColor:(UIColor *)backgroundColor {
-    UIButton *buttonCool           = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *buttonCool       = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonCool.frame           = frame;
     [buttonCool ks_setTitle:title titleColor:titleColor font:font];
     buttonCool.backgroundColor = backgroundColor;
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:frame
+    UIBezierPath *maskPath     = [UIBezierPath bezierPathWithRoundedRect:buttonCool.bounds
                                                    byRoundingCorners:UIRectCornerTopRight | UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight
                                                          cornerRadii:CGSizeMake(radius, radius)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = frame;
-    maskLayer.path = maskPath.CGPath;
-    buttonCool.layer.mask = maskLayer;
-    
+    CAShapeLayer *maskLayer    = [[CAShapeLayer alloc] init];
+    maskLayer.frame            = buttonCool.bounds;
+    maskLayer.path             = maskPath.CGPath;
+    buttonCool.layer.mask      = maskLayer;
+
     return buttonCool;
 }
 
 + (UIButton *)ks_buttonWithFrame:(CGRect)frame titleColor:(UIColor *)titleColor font:(UIFont *)font radius:(CGFloat)radius backgroundColor:(UIColor *)backgroundColor {
     UIButton *buttonCool       = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonCool.frame           = frame;
+    [buttonCool setTitleColor:titleColor forState:UIControlStateNormal];
+    buttonCool.titleLabel.font = font;
     buttonCool.backgroundColor = backgroundColor;
-    UIBezierPath *maskPath     = [UIBezierPath bezierPathWithRoundedRect:frame
+    UIBezierPath *maskPath     = [UIBezierPath bezierPathWithRoundedRect:buttonCool.bounds
                                                    byRoundingCorners:UIRectCornerTopRight | UIRectCornerTopLeft | UIRectCornerBottomLeft | UIRectCornerBottomRight
                                                          cornerRadii:CGSizeMake(radius, radius)];
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = frame;
-    maskLayer.path = maskPath.CGPath;
-    buttonCool.layer.mask = maskLayer;
-    
+    CAShapeLayer *maskLayer    = [[CAShapeLayer alloc] init];
+    maskLayer.frame            = buttonCool.bounds;
+    maskLayer.path             = maskPath.CGPath;
+    buttonCool.layer.mask      = maskLayer;
+
     return buttonCool;
 }
 

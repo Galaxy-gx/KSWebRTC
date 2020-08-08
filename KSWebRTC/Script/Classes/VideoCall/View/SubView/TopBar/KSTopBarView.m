@@ -31,16 +31,19 @@
     
     UIButton *switchBtn = [UIButton ks_buttonWithNormalImg:@"icon_bar_switch_white" selectImg:@"icon_bar_switch_white"];
     switchBtn.frame = CGRectMake(self_w - 120, kit_y, KS_Extern_Point20, KS_Extern_Point20);
+    [self addSubview:switchBtn];
     
     UIButton *addBtn = [UIButton ks_buttonWithNormalImg:@"icon_bar_add_members_white" selectImg:@"icon_bar_add_members_white"];
     addBtn.frame = CGRectMake(self_w - 76, kit_y, KS_Extern_Point20, KS_Extern_Point22);
+    [self addSubview:addBtn];
     
     UIButton *scaleDownBtn = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_small_white" selectImg:@"icon_bar_double_arrow_small_white"];
     scaleDownBtn.frame = CGRectMake(self_w - 32, kit_y, KS_Extern_Point20, 21);
+    [self addSubview:scaleDownBtn];
     
     int btn_y = self.bounds.size.height - 23 - 22;
     KSButton *identifierBtn = [[KSButton alloc] initWithFrame:CGRectMake(KS_Extern_Point12, btn_y, 128, KS_Extern_Point22)
-                                                        title:nil
+                                                        title:@"ID:000 000 000"
                                                     textColor:[UIColor ks_white]
                                                          font:[UIFont ks_fontMediumOfSize:KS_Extern_16Font]
                                                     alignment:NSTextAlignmentLeft
@@ -57,6 +60,7 @@
                                                textColor:[UIColor ks_white]
                                                     font:[UIFont ks_fontRegularOfSize:KS_Extern_12Font]
                                                alignment:NSTextAlignmentLeft];
+    countdownLabel.text = @"00:00";
     _countdownLabel = countdownLabel;
     [self addSubview:countdownLabel];
 }

@@ -7,7 +7,10 @@
 //  头像/名称等
 
 #import <UIKit/UIKit.h>
+#import "KSProfileConfigure.h"
 
 @interface KSProfileView : UIView
+
+- (instancetype)initWithFrame:(CGRect)frame configure:(KSProfileConfigure *)configure;
 
 @end

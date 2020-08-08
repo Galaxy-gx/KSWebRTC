@@ -73,26 +73,29 @@
 /**
  计算字体长度 和 宽度
  */
-- (CGSize)ks_sizeWithText:(NSString *)text font:(UIFont *)font maxSize:(CGSize)maxSize {
-    NSDictionary *attrs = @{NSFontAttributeName : font};
-    return [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
-}
-/**
- 计算字体长度 和 宽度
- */
-- (CGSize)ks_sizeWithMaxSize:(CGSize)maxSize {
-    if(self.text == nil){
+- (CGSize)ks_sizeOfMaxSize:(CGSize)maxSize {
+    if ([self.text length] == 0) {
         return CGSizeZero;
     }
     NSDictionary *attrs = @{NSFontAttributeName : self.font};
     return [self.text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }
+/**
+ 计算字体长度 和 宽度
+ */
+- (CGSize)ks_textSize {
+    if(self.text == nil){
+        return CGSizeZero;
+    }
+    NSDictionary *attrs = @{NSFontAttributeName : self.font};
+    return [self.text boundingRectWithSize:CGSizeZero options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+}
 
 
 /**
  计算字体长度 和 宽度
  */
-+ (CGSize)ks_sizeWithText:(NSString *)text font:(UIFont *)font maxSize:(CGSize)maxSize {
++ (CGSize)ks_sizeOfText:(NSString *)text font:(UIFont *)font maxSize:(CGSize)maxSize {
     NSDictionary *attrs = @{NSFontAttributeName : font};
     return [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }

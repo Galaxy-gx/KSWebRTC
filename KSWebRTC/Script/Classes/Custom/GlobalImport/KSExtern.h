@@ -54,6 +54,7 @@ UIKIT_EXTERN int const KS_Extern_Point50;
 UIKIT_EXTERN int const KS_Extern_Point64;
 UIKIT_EXTERN int const KS_Extern_Point80;
 UIKIT_EXTERN int const KS_Extern_Point100;
+UIKIT_EXTERN int const KS_Extern_Point120;
 UIKIT_EXTERN int const KS_Extern_Point150;
 UIKIT_EXTERN int const KS_Extern_Point200;
 

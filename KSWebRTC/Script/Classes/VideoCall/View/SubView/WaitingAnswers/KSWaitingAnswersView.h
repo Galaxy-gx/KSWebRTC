@@ -1,5 +1,5 @@
 //
-//  MeetingThemeView.h
+//  KSWaitingAnswersView.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MeetingThemeView : UIView
+NS_ASSUME_NONNULL_BEGIN
+
+@interface KSWaitingAnswersView : UIView
 
 @end
 
+NS_ASSUME_NONNULL_END
