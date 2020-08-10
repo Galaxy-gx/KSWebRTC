@@ -10,6 +10,7 @@
 #import "KSVideoChatController.h"
 #import "KSVideoCallController.h"
 #import "KSKitsController.h"
+#import "KSCallController.h"
 @interface AppDelegate ()
 
 @end

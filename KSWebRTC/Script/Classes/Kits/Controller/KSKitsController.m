@@ -29,51 +29,51 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    int self_w = self.view.frame.size.width;
-    int padding = 20;
- 
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height *2.5);
-    scrollView.backgroundColor = [UIColor ks_colorWithHexString:@"#15161A"];
-    self.view = scrollView;
+//    int self_w = self.view.frame.size.width;
+//    int padding = 20;
+// 
+//    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+//    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height *2.5);
+//    scrollView.backgroundColor = [UIColor ks_colorWithHexString:@"#15161A"];
+//    self.view = scrollView;
+//    
+//    KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:CGRectMake(0, 0, self_w, 86)];
+//    [self.view addSubview:topBarView];
+//    
+//    KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, CGRectGetMaxY(topBarView.frame) + padding, self_w - KS_Extern_Point12 * 2, KS_Extern_Point48)];
+//    [self.view addSubview:callBarView];
+//    
+//    KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, CGRectGetMaxY(callBarView.frame) + padding, self_w - 56 * 2, 90)];
+//    answerBarView.answerState = KSAnswerStateJoin;
+//    [self.view addSubview:answerBarView];
+//    
+//    
+//    KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
+//    configure.title = @"Hamasaki Ayumi";
+//    configure.titleFont = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
+//    configure.titleOffst = KS_Extern_Point32;
+//    configure.desc = @"Invite you to a video call";
+//    configure.descFont = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
+//    configure.descOffst = KS_Extern_Point08;
+//    
+//    KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(answerBarView.frame) + padding, self_w, 204) configure:configure];
+//    [self.view addSubview:profileView];
+//    
+//    KSMeetingThemeView *meetingThemeView = [[KSMeetingThemeView alloc] initWithFrame:CGRectMake((self_w - 252)/2, CGRectGetMaxY(profileView.frame) + padding, 252, 257)];
+//    [self.view addSubview:meetingThemeView];
+//    
+//    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
+//    [self.view addSubview:remoteView];
+//    
+//    KSRemoteView *remoteView1 = [[KSRemoteView alloc] initWithFrame:CGRectMake((self_w-4)/2 + 2, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
+//    [self.view addSubview:remoteView1];
+//    
+//    
+//    KSWaitingAnswersGroupView *waitingAnswersGroupView = [[KSWaitingAnswersGroupView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(remoteView.frame) + padding, self_w, KS_Extern_Point150)];
+//    [self.view addSubview:waitingAnswersGroupView];
     
-    KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:CGRectMake(0, 0, self_w, 86)];
-    [self.view addSubview:topBarView];
     
-    KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, CGRectGetMaxY(topBarView.frame) + padding, self_w - KS_Extern_Point12 * 2, KS_Extern_Point48)];
-    [self.view addSubview:callBarView];
-    
-    KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, CGRectGetMaxY(callBarView.frame) + padding, self_w - 56 * 2, 90)];
-    answerBarView.answerState = KSAnswerStateJoin;
-    [self.view addSubview:answerBarView];
-    
-    
-    KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
-    configure.title = @"Hamasaki Ayumi";
-    configure.titleFont = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
-    configure.titleOffst = KS_Extern_Point32;
-    configure.desc = @"Invite you to a video call";
-    configure.descFont = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
-    configure.descOffst = KS_Extern_Point08;
-    
-    KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(answerBarView.frame) + padding, self_w, 204) configure:configure];
-    [self.view addSubview:profileView];
-    
-    KSMeetingThemeView *meetingThemeView = [[KSMeetingThemeView alloc] initWithFrame:CGRectMake((self_w - 252)/2, CGRectGetMaxY(profileView.frame) + padding, 252, 257)];
-    [self.view addSubview:meetingThemeView];
-    
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-    [self.view addSubview:remoteView];
-    
-    KSRemoteView *remoteView1 = [[KSRemoteView alloc] initWithFrame:CGRectMake((self_w-4)/2 + 2, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-    [self.view addSubview:remoteView1];
-    
-    
-    KSWaitingAnswersGroupView *waitingAnswersGroupView = [[KSWaitingAnswersGroupView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(remoteView.frame) + padding, self_w, KS_Extern_Point150)];
-    [self.view addSubview:waitingAnswersGroupView];
-    
-    
-    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(waitingAnswersGroupView.frame) + padding, KS_Extern_Point100, 46)
+    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, 100, KS_Extern_Point100, 46)
                                                                    layoutType:KSButtonLayoutTypeTitleBottom
                                                                         title:@"ks_meeting_btn_voice_answering"
                                                                          font:[UIFont ks_fontRegularOfSize:KS_Extern_13Font]

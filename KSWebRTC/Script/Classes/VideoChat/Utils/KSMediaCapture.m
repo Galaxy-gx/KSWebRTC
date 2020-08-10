@@ -106,6 +106,34 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     
 }
 
+- (void)speakerOff {
+    RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
+    [rtcAudioSession lockForConfiguration];
+    @try {
+        [rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    } @catch (NSException *exception) {
+        NSLog(@"Error setting AVAudioSession category %@",exception);
+    } @finally {
+        NSLog(@"speakerOff Error");
+    }
+    [rtcAudioSession unlockForConfiguration];
+}
+
+- (void)speakerOn {
+    RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
+    [rtcAudioSession lockForConfiguration];
+    @try {
+        [rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    } @catch (NSException *exception) {
+        NSLog(@"speakerOff Error 01");
+    } @finally {
+        NSLog(@"speakerOff Error 02");
+    }
+    [rtcAudioSession unlockForConfiguration];
+}
+
 - (void)startCapture {
     [self startCaptureWithDevice:[self currentCamera]];
 }

@@ -115,6 +115,22 @@
     }];
 }
 
+- (void)muteAudio {
+    [self setAudioEnabled:NO];
+}
+
+- (void)unmuteAudio {
+    [self setAudioEnabled:YES];
+}
+
+- (void)setAudioEnabled:(BOOL)enabled {
+    for (RTCRtpTransceiver *item in self.connection.transceivers) {
+        if ([item.sender.track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
+            item.sender.track.isEnabled = enabled;
+        }
+    }
+}
+
 - (void)close {
     [_connection close];
     _connection = NULL;
