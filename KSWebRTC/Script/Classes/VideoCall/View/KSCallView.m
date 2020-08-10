@@ -25,7 +25,7 @@
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,assign)CGPoint tilePoint;
 @property(nonatomic,assign)BOOL isDrag;
-
+@property(nonatomic,strong)NSLock *lock;
 @end
 
 @implementation KSCallView
@@ -34,6 +34,7 @@
     if (self = [super initWithFrame:frame]) {
         self.remoteLayout = layout;
         self.callType = callType;
+        self.lock = [[NSLock alloc] init];
         [self initKit];
     }
     return self;
@@ -58,14 +59,18 @@
             break;
     }
     KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect scale:layout.scale mode:layout.mode callType:callType];
-    _localView = localView;
+    _localView             = localView;
     [self.scrollView addSubview:localView];
 }
 
 - (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, 76, 96, 96 / self.localView.scale.width * self.localView.scale.height);
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96,
+                                      _topPadding + 32,
+                                      96,
+                                      96 / self.localView.scale.width * self.localView.scale.height);
     self.localView.frame = target;
     [self.localView updatePreviewWidth:target.size.width height:target.size.height scale:self.localView.scale mode:self.localView.mode];
+    [self addSubview:self.localView];
 }
 
 - (void)panSwipeGesture:(UIGestureRecognizer *)gestureRecognizer {
@@ -156,6 +161,7 @@
 }
 
 - (void)leaveOfHandleId:(NSNumber *)handleId {
+    [self.lock lock];
     for (KSRemoteView *videoView in _remoteKits) {
         if (videoView.handleId == handleId) {
             [_remoteKits removeObject:videoView];
@@ -163,6 +169,7 @@
             break;
         }
     }
+    [self.lock unlock];
     [self layoutRemoteViews];
 }
 
@@ -188,7 +195,7 @@
     }
     
     KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect scale:_remoteLayout.scale mode:_remoteLayout.mode callType:_callType];
-    remoteView.handleId = handleId;
+    remoteView.handleId      = handleId;
     [self.scrollView addSubview:remoteView];
     [self.remoteKits addObject:remoteView];
     return remoteView;
@@ -201,6 +208,10 @@
         }
     }
     KSRemoteView *remoteView = [self createRemoteViewOfHandleId:handleId];
+    
+    if (self.callType == KSCallTypeSingleVideo) {//测试
+        [self zoomOutLocalView];
+    }
     return remoteView.remoteView;
 }
 
@@ -256,7 +267,6 @@
 - (void)displayCallBar {
     [self hideAnswerBar];
     [self hideProfile];
-    [self zoomOutLocalView];
     
     if (_callBarView == nil) {
         CGFloat y                  = self.bounds.size.height - (40 + 48);

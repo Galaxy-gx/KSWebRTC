@@ -13,12 +13,13 @@
 #import "KSMediaCapture.h"
 #import "KSMsg.h"
 #import "UIButton+Category.h"
-
 #import "KSProfileView.h"
+#import "KSTopBarView.h"
 
 @interface KSCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
 
 @property(nonatomic, weak) KSCallView *callView;
+@property(nonatomic, weak) KSTopBarView *topBarView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapture *mediaCapture;
 @property (nonatomic, assign) BOOL isConnect;
@@ -52,13 +53,18 @@
     int height                      = width / layout.scale.width * layout.scale.height;
     layout.layout                   = KSLayoutMake(width, height, 10, 10);
 
-    KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeManyVideo];
+    CGFloat statusHeight            = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat navHeight               = self.navigationController.navigationBar.bounds.size.height;
+
+    KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeSingleVideo];
     callView.delegate               = self;
+    callView.topPadding             = statusHeight + navHeight;
     _callView                       = callView;
     
-    KSEventCallback callback = ^(KSEventType eventType, NSDictionary *info) {
-        NSLog(@"|------| %d |------|",(int)eventType);
-        [self triggerEvent:eventType];
+    KSWeakSelf;
+    KSEventCallback callback        = ^(KSEventType eventType, NSDictionary *info) {
+        NSLog(@"|------| eventType: %d |------|",(int)eventType);
+        [weakSelf triggerEvent:eventType];
     };
     [callView setEventCallback:callback];
     [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
@@ -75,8 +81,6 @@
 
     [_callView setProfileConfigure:configure];
     [_callView setAnswerState:KSAnswerStateAwait];
-    //KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, 173, self.view.bounds.size.width, 204) configure:configure];
-    //[self.view addSubview:profileView];
 
     UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
     arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
@@ -86,7 +90,25 @@
 }
 
 - (void)onArrowClick {
+    NSLog(@"%s",__FUNCTION__);
     [self dismiss];
+}
+
+- (void)onSwitchCameraClick {
+    NSLog(@"%s",__FUNCTION__);
+}
+
+- (void)onAddMemberClick {
+    NSLog(@"%s",__FUNCTION__);
+}
+
+- (void)onScaleDownClick {
+    NSLog(@"%s",__FUNCTION__);
+    [self dismiss];
+}
+
+- (void)onIdentifierClick {
+    NSLog(@"%s",__FUNCTION__);
 }
 
 - (void)triggerEvent:(KSEventType)eventType {
@@ -105,14 +127,22 @@
 }
 
 - (void)callerHangup {
+    NSLog(@"%s",__FUNCTION__);
     [_callView setAnswerState:KSAnswerStateJoin];
 }
 
 -(void)calleeHangup {
-    
+    NSLog(@"%s",__FUNCTION__);
 }
 
 -(void)calleeAnswer {
+    NSLog(@"%s",__FUNCTION__);
+    if (_isConnect) {
+        return;
+    }
+    _isConnect = true;
+    [_msgHandler connectServer:@"ws://10.0.115.144:8188"];
+    
     [_callView displayCallBar];
 }
 
@@ -130,9 +160,9 @@
 }
 
 - (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    self.topBarView.hidden = NO;
     return [_callView remoteViewOfHandleId:handleId];
 }
-
 
 //KSVideoCallViewDelegate
 - (void)videoCallViewDidChangeRoute:(KSCallView *)view {
@@ -195,4 +225,18 @@
 - (void)updateFocusIfNeeded {
     
 }
+
+-(KSTopBarView *)topBarView {
+    if (_topBarView == nil) {
+        KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:self.superBar.bounds];
+        [self.superBar addSubview:topBarView];
+        _topBarView              = topBarView;
+        [topBarView.switchBtn addTarget:self action:@selector(onSwitchCameraClick) forControlEvents:UIControlEventTouchUpInside];
+        [topBarView.addBtn addTarget:self action:@selector(onAddMemberClick) forControlEvents:UIControlEventTouchUpInside];
+        [topBarView.scaleDownBtn addTarget:self action:@selector(onScaleDownClick) forControlEvents:UIControlEventTouchUpInside];
+        [topBarView.identifierBtn addTarget:self action:@selector(onIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _topBarView;
+}
+
 @end

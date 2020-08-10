@@ -34,8 +34,6 @@ typedef NS_ENUM(NSInteger, KSEventType) {
     KSEventTypeStartMeeting,//开始会议
 };
 
-//kse (^eventCallback)(KSEventType eventType,NSDictionary *info)
-
 typedef void(^KSEventCallback)(KSEventType eventType,NSDictionary *info);
 
 #endif /* KSBlock_h */

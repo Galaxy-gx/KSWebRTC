@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KSButton.h"
 
 @interface KSTopBarView : UIView
 
+@property(nonatomic,weak)UIButton *switchBtn;
+@property(nonatomic,weak)UIButton *addBtn;
+@property(nonatomic,weak)UIButton *scaleDownBtn;
+@property(nonatomic,weak)KSButton *identifierBtn;
 @end

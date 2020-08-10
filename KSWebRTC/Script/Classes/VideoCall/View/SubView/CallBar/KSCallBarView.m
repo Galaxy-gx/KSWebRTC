@@ -33,9 +33,9 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
 
 - (void)initKit {
     [self ks_drawFilletOfRadius:24 backgroundColor:[UIColor ks_grayBar]];
-    
+
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize                = CGSizeMake(KS_Extern_Point40, KS_Extern_Point40);
+    flowLayout.itemSize                    = CGSizeMake(KS_Extern_Point40, KS_Extern_Point40);
     /*
      //一个section有很多行item，这个属性表示最小行距，默认值不是0
      @property (nonatomic) CGFloat minimumLineSpacing;
@@ -44,20 +44,20 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
      //这个属性表示section的内边距，上下左右的留边
      @property (nonatomic) UIEdgeInsets sectionInset;
      */
-    flowLayout.minimumLineSpacing      = 0;
-    flowLayout.minimumInteritemSpacing = KS_Extern_Point22;
-    flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    flowLayout.scrollDirection         = UICollectionViewScrollDirectionVertical;
-    
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(KS_Extern_Point32,
+    flowLayout.minimumLineSpacing          = 0;
+    flowLayout.minimumInteritemSpacing     = KS_Extern_Point08;
+    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
+    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
+
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(KS_Extern_Point32,
                                                                                           KS_Extern_Point04,
                                                                                           self.frame.size.width - KS_Extern_Point32 * 2,
                                                                                           KS_Extern_Point40)
                                                           collectionViewLayout:flowLayout];
-    collectionView.backgroundColor   = [UIColor ks_grayBar];
-    
-    collectionView.dataSource = self;
-    collectionView.delegate = self;
+    collectionView.backgroundColor         = [UIColor ks_grayBar];
+
+    collectionView.dataSource              = self;
+    collectionView.delegate                = self;
     [collectionView registerClass:[KSCallBarCell class] forCellWithReuseIdentifier:callBarCellIdentifier];
     [self addSubview:collectionView];
 }

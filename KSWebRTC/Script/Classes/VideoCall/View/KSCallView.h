@@ -32,6 +32,7 @@
 @interface KSCallView : KSEventCallbackView
 
 @property(nonatomic,weak)id<KSVideoCallViewDelegate> delegate;
+@property(nonatomic,assign)CGFloat topPadding;
 
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType;
 - (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType;

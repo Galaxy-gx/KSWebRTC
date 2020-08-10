@@ -193,6 +193,7 @@
 		E6C3527824E10FFE0055C370 /* KSBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSBlock.h; sourceTree = "<group>"; };
 		E6C3527924E11E660055C370 /* KSEventCallbackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSEventCallbackView.h; sourceTree = "<group>"; };
 		E6C3527A24E11E660055C370 /* KSEventCallbackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSEventCallbackView.m; sourceTree = "<group>"; };
+		E6C352F524E1479D0055C370 /* KSMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMacro.h; sourceTree = "<group>"; };
 		E6E096BB24D7BBC800D083D2 /* UIView+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		E6FD827F24DBD32700E10495 /* KSCallBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
@@ -726,6 +727,7 @@
 				E6FD829E24DBFB1400E10495 /* KSPrefixHeader.pch */,
 				E6FD829F24DBFBB500E10495 /* KSExtern.h */,
 				E6FD82A024DBFBB500E10495 /* KSExtern.m */,
+				E6C352F524E1479D0055C370 /* KSMacro.h */,
 			);
 			path = GlobalImport;
 			sourceTree = "<group>";

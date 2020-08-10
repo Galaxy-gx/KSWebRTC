@@ -257,10 +257,10 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc = [self createMediaConnection];
-    mc.handleId = handleId;
+    KSMediaConnection *mc  = [self createMediaConnection];
+    mc.handleId            = handleId;
     _connections[handleId] = mc;
-    
+
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -324,6 +324,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 - (void)onLeaving:(NSNumber *)handleId {
     KSMediaConnection *mc = _connections[handleId];
+    if (mc == nil) {
+        return;
+    }
     [mc close];
     [_connections removeObjectForKey:handleId];
 }
