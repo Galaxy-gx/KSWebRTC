@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
-#import "KSRemoteView.h"
+//Configure
+#import "KSConfigure.h"
+
+//ViewModel
 #import "KSTileLayout.h"
+#import "KSProfileConfigure.h"
+
+//Kit
+#import "KSRemoteView.h"
 
 @class KSCallView;
 
@@ -30,6 +37,11 @@
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
 - (RTCEAGLVideoView *)remoteViewOfHandleId:(NSNumber *)handleId;
+
+//KIT:KSProfileView
+- (void)setProfileConfigure:(KSProfileConfigure *)configure;
+//KIT:KSAnswerBarView
+- (void)setAnswerState:(KSAnswerState)state;
 
 
 @end

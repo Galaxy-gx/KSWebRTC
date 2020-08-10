@@ -56,7 +56,6 @@
     configure.descFont = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
     configure.descOffst = KS_Extern_Point08;
     
-    
     KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(answerBarView.frame) + padding, self_w, 204) configure:configure];
     [self.view addSubview:profileView];
     

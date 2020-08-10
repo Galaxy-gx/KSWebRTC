@@ -8,16 +8,22 @@
 
 #import "KSCallView.h"
 #import "KSLocalView.h"
+#import "KSProfileView.h"
+#import "KSAnswerBarView.h"
 
 @interface KSCallView()
 
 @property(nonatomic,weak)UIScrollView *scrollView;
 @property(nonatomic,weak)KSLocalView *localView;
+@property(nonatomic,weak)KSProfileView *profileView;
+@property(nonatomic,weak)KSAnswerBarView *answerBarView;
+
 @property(nonatomic,strong)NSMutableArray *remoteKits;
 @property(nonatomic,strong)KSTileLayout *remoteLayout;
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,assign)CGPoint tilePoint;
 @property(nonatomic,assign)BOOL isDrag;
+
 @end
 
 @implementation KSCallView
@@ -197,4 +203,30 @@
     return _remoteKits;
 }
 
+//KIT:KSProfileView
+- (void)setProfileConfigure:(KSProfileConfigure *)configure {
+    if (_profileView == nil) {
+        KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, configure.topPaddding, self.bounds.size.width, 204) configure:configure];
+        _profileView = profileView;
+        [self addSubview:profileView];
+        
+    }
+    else{
+        [_profileView updateConfiure:configure];
+    }
+}
+//KIT:KSAnswerBarView
+- (void)setAnswerState:(KSAnswerState)state {
+    if (_answerBarView == nil) {
+        CGFloat y                      = self.bounds.size.height - (68 + 62);
+        KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, y, self.bounds.size.width - 56 * 2, 90)];
+        answerBarView.answerState      = state;
+        _answerBarView                 = answerBarView;
+        [self addSubview:answerBarView];
+    }
+    else{
+        _answerBarView.answerState     = state;
+    }
+    
+}
 @end

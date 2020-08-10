@@ -189,6 +189,7 @@
 		E6AC710124DD294A00C7134D /* KSWaitingAnswersGroupView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersGroupView.m; sourceTree = "<group>"; };
 		E6AC710324DD2A8D00C7134D /* KSWaitingAnswersMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersMemberCell.h; sourceTree = "<group>"; };
 		E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersMemberCell.m; sourceTree = "<group>"; };
+		E6C3527824E10FFE0055C370 /* KSBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSBlock.h; sourceTree = "<group>"; };
 		E6E096BB24D7BBC800D083D2 /* UIView+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		E6FD827F24DBD32700E10495 /* KSCallBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
@@ -436,6 +437,7 @@
 			children = (
 				E6A5DFEF24D6D06A007E7D14 /* KSConfigure.h */,
 				E67A6A7A24DE7A6900BCE4B9 /* KSCallState.h */,
+				E6C3527824E10FFE0055C370 /* KSBlock.h */,
 			);
 			path = Header;
 			sourceTree = "<group>";

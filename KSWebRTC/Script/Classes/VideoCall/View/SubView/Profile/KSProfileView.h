@@ -12,5 +12,5 @@
 @interface KSProfileView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame configure:(KSProfileConfigure *)configure;
-
+- (void)updateConfiure:(KSProfileConfigure *)configure;
 @end

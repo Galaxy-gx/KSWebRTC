@@ -32,9 +32,6 @@
     
     [self addSubview:hangupBtn];
     [self addSubview:answerBtn];
-    
-    hangupBtn.hidden = YES;
-    answerBtn.hidden = YES;
 }
 
 -(KSLayoutButton *)createButtonWithPointX:(CGFloat)pointX title:(NSString *)title  defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon{
@@ -66,4 +63,5 @@
         _hangupBtn.frame = CGRectMake(self.bounds.size.width - btn_wh, 0, btn_wh, btn_wh);
     }
 }
+
 @end

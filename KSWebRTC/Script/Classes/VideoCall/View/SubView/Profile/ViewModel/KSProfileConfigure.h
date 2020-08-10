@@ -10,6 +10,8 @@
 
 @interface KSProfileConfigure : UIView
 
+@property(nonatomic,assign)int topPaddding;
+
 @property(nonatomic,copy)NSString *title;
 @property(nonatomic,strong)UIFont *titleFont;
 @property(nonatomic,assign)int titleOffst;

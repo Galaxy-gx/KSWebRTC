@@ -14,6 +14,8 @@
 #import "KSMsg.h"
 #import "UIButton+Category.h"
 
+#import "KSProfileView.h"
+
 @interface KSCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
 
 @property(nonatomic, weak) KSCallView *callView;
@@ -32,14 +34,14 @@
 }
 
 - (void)initProperty {
-    _mediaCapture = [[KSMediaCapture alloc] init];
+    _mediaCapture                    = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
     AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
-    
+
     [_callView setLocalViewSession:captureSession];
-    
-    _msgHandler = [[KSMessageHandler alloc] init];
-    _msgHandler.delegate = self;
+
+    _msgHandler                      = [[KSMessageHandler alloc] init];
+    _msgHandler.delegate             = self;
 }
 
 - (void)initKit {
@@ -55,6 +57,20 @@
     _callView                       = callView;
     [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
     [self.view addSubview:callView];
+
+    KSProfileConfigure *configure   = [[KSProfileConfigure alloc] init];
+    configure.topPaddding           = 173;
+    configure.title                 = @"Hamasaki Ayumi";
+    configure.titleFont             = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
+    configure.titleOffst            = KS_Extern_Point32;
+    configure.desc                  = @"Invite you to a video call";
+    configure.descFont              = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
+    configure.descOffst             = KS_Extern_Point08;
+
+    [_callView setProfileConfigure:configure];
+    [_callView setAnswerState:KSAnswerStateAwait];
+    //KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, 173, self.view.bounds.size.width, 204) configure:configure];
+    //[self.view addSubview:profileView];
 
     UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
     arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);

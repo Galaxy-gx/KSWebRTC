@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface KSAnswerBarView : UIView
+
 @property(nonatomic,assign)KSAnswerState answerState;
+
 @end
