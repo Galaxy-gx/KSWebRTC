@@ -33,7 +33,7 @@
     int padding = 20;
  
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height *2);
+    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height *2.5);
     scrollView.backgroundColor = [UIColor ks_colorWithHexString:@"#15161A"];
     self.view = scrollView;
     
@@ -44,7 +44,10 @@
     [self.view addSubview:callBarView];
     
     KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, CGRectGetMaxY(callBarView.frame) + padding, self_w - 56 * 2, 90)];
+    answerBarView.answerState = KSAnswerStateJoin;
     [self.view addSubview:answerBarView];
+    
+    
     KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
     configure.title = @"Hamasaki Ayumi";
     configure.titleFont = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];

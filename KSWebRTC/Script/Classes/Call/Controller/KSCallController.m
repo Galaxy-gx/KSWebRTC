@@ -8,20 +8,18 @@
 
 #import "KSCallController.h"
 #import "KSCallView.h"
-#import "KSNavigationBar.h"
+#import <WebRTC/RTCAudioSession.h>
+#import "KSMessageHandler.h"
+#import "KSMediaCapture.h"
+#import "KSMsg.h"
+#import "UIButton+Category.h"
 
-#import "KSCallBarView.h"
-#import "KSTopBarView.h"
-#import "KSAnswerBarView.h"
-#import "KSProfileView.h"
-#import "KSMeetingThemeView.h"
-#import "KSRemoteView.h"
-#import "KSWaitingAnswersGroupView.h"
-#import "KSLayoutButton.h"
-#import "KSCoolHUB.h"
-#import "KSCallController.h"
+@interface KSCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
 
-@interface KSCallController ()
+@property(nonatomic, weak) KSCallView *callView;
+@property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, strong) KSMediaCapture *mediaCapture;
+@property (nonatomic, assign) BOOL isConnect;
 
 @end
 
@@ -29,74 +27,122 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    int self_w = self.view.frame.size.width;
-    int padding = 20;
- 
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.containerView.bounds];
-    scrollView.contentSize = CGSizeMake(self.containerView.bounds.size.width, self.containerView.bounds.size.height * 2);
-    scrollView.backgroundColor = [UIColor ks_colorWithHexString:@"#15161A"];
-    [self.containerView addSubview:scrollView];
-    
-    KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:self.superBar.bounds];
-    [self.superBar addSubview:topBarView];
-    
-    KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, 0, self_w - KS_Extern_Point12 * 2, KS_Extern_Point48)];
-    [scrollView addSubview:callBarView];
-    
-    KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, CGRectGetMaxY(callBarView.frame) + padding, self_w - 56 * 2, 90)];
-    [scrollView addSubview:answerBarView];
-    KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
-    configure.title = @"Hamasaki Ayumi";
-    configure.titleFont = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
-    configure.titleOffst = KS_Extern_Point32;
-    configure.desc = @"Invite you to a video call";
-    configure.descFont = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
-    configure.descOffst = KS_Extern_Point08;
-    
-    
-    KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(answerBarView.frame) + padding, self_w, 204) configure:configure];
-    [scrollView addSubview:profileView];
-    
-    KSMeetingThemeView *meetingThemeView = [[KSMeetingThemeView alloc] initWithFrame:CGRectMake((self_w - 252)/2, CGRectGetMaxY(profileView.frame) + padding, 252, 257)];
-    [scrollView addSubview:meetingThemeView];
-    
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-    [scrollView addSubview:remoteView];
-    
-    KSRemoteView *remoteView1 = [[KSRemoteView alloc] initWithFrame:CGRectMake((self_w-4)/2 + 2, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-    [scrollView addSubview:remoteView1];
-    
-    
-    KSWaitingAnswersGroupView *waitingAnswersGroupView = [[KSWaitingAnswersGroupView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(remoteView.frame) + padding, self_w, KS_Extern_Point150)];
-    [scrollView addSubview:waitingAnswersGroupView];
-    
-    
-    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(waitingAnswersGroupView.frame) + padding, KS_Extern_Point100, 46)
-                                                                   layoutType:KSButtonLayoutTypeTitleBottom
-                                                                        title:@"ks_meeting_btn_voice_answering"
-                                                                         font:[UIFont ks_fontRegularOfSize:KS_Extern_13Font]
-                                                                    textColor:[UIColor ks_white]
-                                                                    normalImg:@"icon_bar_rings_small_white"
-                                                                    selectImg:@"icon_bar_rings_small_white"
-                                                                        space:KS_Extern_Point08
-                                                                   imageWidth:KS_Extern_Point20
-                                                                  imageHeight:KS_Extern_Point20];
-    [scrollView addSubview:voiceAnsweringBtn];
-    [voiceAnsweringBtn ks_addTarget:self action:@selector(onVoiceAnsweringClick)];
-    
-    // Do any additional setup after loading the view.
+    [self initKit];
+    [self initProperty];
 }
 
-- (void)onVoiceAnsweringClick {
+- (void)initProperty {
+    _mediaCapture = [[KSMediaCapture alloc] init];
+    [_mediaCapture createPeerConnectionFactory];
+    AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
     
-    KSCallController *ctrl = [[KSCallController alloc] init];
-    ctrl.isSuperBar = YES;
-    //UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    [_callView setLocalViewSession:captureSession];
+    
+    _msgHandler = [[KSMessageHandler alloc] init];
+    _msgHandler.delegate = self;
+}
+
+- (void)initKit {
+    KSTileLayout *layout            = [[KSTileLayout alloc] init];
+    layout.scale                    = KSScaleMake(9, 16);
+    layout.mode                     = KSContentModeScaleAspectFit;
+    int width                       = 96;
+    int height                      = width / layout.scale.width * layout.scale.height;
+    layout.layout                   = KSLayoutMake(width, height, 10, 10);
+
+    KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeManyVideo];
+    callView.delegate               = self;
+    _callView                       = callView;
+    [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
+    [self.view addSubview:callView];
+
+    UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
+    arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
+    [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
+    self.superBar.backBarButtonItem = arrowBtn;
+    [self.superBar toFront];
+}
+
+- (void)onArrowClick {
+    [self pop];
+}
+//KSMessageHandlerDelegate
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
+    
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler detached:(KSDetached *)detached {
+    [_callView leaveOfHandleId:detached.sender];
+}
+
+- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
+    return _mediaCapture;
+}
+
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    return [_callView remoteViewOfHandleId:handleId];
 }
 
 
+//KSVideoCallViewDelegate
+- (void)videoCallViewDidChangeRoute:(KSCallView *)view {
+    
+}
 
+- (void)videoCallViewDidEnableStats:(KSCallView *)view {
+    
+}
 
+- (void)videoCallViewDidHangup:(KSCallView *)view {
+    
+}
+
+- (void)videoCallViewDidSwitchCamera:(KSCallView *)view {
+    
+}
+
+//KSMessageHandlerDelegate
+- (void)encodeWithCoder:(nonnull NSCoder *)coder {
+    
+}
+
+- (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection {
+    
+}
+
+- (void)preferredContentSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
+    
+}
+
+- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
+    return CGSizeZero;
+}
+
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
+    
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+    
+}
+
+- (void)willTransitionToTraitCollection:(nonnull UITraitCollection *)newCollection withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
+    
+}
+
+- (void)didUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context withAnimationCoordinator:(nonnull UIFocusAnimationCoordinator *)coordinator {
+    
+}
+
+- (void)setNeedsFocusUpdate {
+    
+}
+
+- (BOOL)shouldUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context {
+    return YES;
+}
+
+- (void)updateFocusIfNeeded {
+    
+}
 @end

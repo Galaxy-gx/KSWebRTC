@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KSButton.h"
 @interface KSNavigationBar : UIView
 
 @property(nonatomic,copy)NSString *title;
+@property(nonatomic,weak)UIButton *backBarButtonItem;
+
+- (void)toFront;
 
 @end

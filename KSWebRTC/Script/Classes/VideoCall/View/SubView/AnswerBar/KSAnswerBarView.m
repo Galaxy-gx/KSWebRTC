@@ -8,6 +8,11 @@
 
 #import "KSAnswerBarView.h"
 #import "KSLayoutButton.h"
+
+@interface KSAnswerBarView()
+@property(nonatomic,weak)KSLayoutButton *hangupBtn;
+@property(nonatomic,weak)KSLayoutButton *answerBtn;
+@end
 @implementation KSAnswerBarView
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -19,13 +24,20 @@
 
 - (void)initKit {
     
-    UIView *hangupBtn = [self createButtonWithPointX:0 title:@"ks_app_global_text_hang_up" defaultIcon:@"icon_bar_hangup_red" selectedIcon:@"icon_bar_hangup_red"];
-    UIView *answerBtn = [self createButtonWithPointX:self.bounds.size.width - 90 title:@"ks_app_global_text_answer" defaultIcon:@"icon_bar_answer_green" selectedIcon:@"icon_bar_answer_green"];
+    KSLayoutButton *hangupBtn = [self createButtonWithPointX:0 title:@"ks_app_global_text_hang_up" defaultIcon:@"icon_bar_hangup_red" selectedIcon:@"icon_bar_hangup_red"];
+    _hangupBtn = hangupBtn;
+    
+    KSLayoutButton *answerBtn = [self createButtonWithPointX:self.bounds.size.width - 90 title:@"ks_app_global_text_answer" defaultIcon:@"icon_bar_answer_green" selectedIcon:@"icon_bar_answer_green"];
+    _answerBtn = answerBtn;
+    
     [self addSubview:hangupBtn];
     [self addSubview:answerBtn];
+    
+    hangupBtn.hidden = YES;
+    answerBtn.hidden = YES;
 }
 
--(UIView *)createButtonWithPointX:(CGFloat)pointX title:(NSString *)title  defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon{
+-(KSLayoutButton *)createButtonWithPointX:(CGFloat)pointX title:(NSString *)title  defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon{
     int btn_wh = 90;
     KSLayoutButton *button = [[KSLayoutButton alloc] initWithFrame:CGRectMake(pointX, 0, btn_wh, btn_wh)
                                                      layoutType:KSButtonLayoutTypeTitleBottom
@@ -40,4 +52,18 @@
     return button;
 }
 
+-(void)setAnswerState:(KSAnswerState)answerState {
+    _answerState = answerState;
+    int btn_wh = 90;
+    
+    if (answerState == KSAnswerStateAwait) {
+        _answerBtn.hidden = YES;
+        _hangupBtn.frame = CGRectMake((self.bounds.size.width - btn_wh)/2, 0, btn_wh, btn_wh);
+    }
+    else if (answerState == KSAnswerStateJoin) {
+        _answerBtn.hidden = NO;
+        _hangupBtn.frame = CGRectMake(0, 0, btn_wh, btn_wh);
+        _hangupBtn.frame = CGRectMake(self.bounds.size.width - btn_wh, 0, btn_wh, btn_wh);
+    }
+}
 @end

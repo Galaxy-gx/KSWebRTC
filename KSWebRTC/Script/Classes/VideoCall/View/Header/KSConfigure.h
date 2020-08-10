@@ -20,10 +20,15 @@ typedef NS_ENUM(NSInteger, KSResizingMode) {
 };
 
 typedef NS_ENUM(NSInteger, KSCallType) {
-    KSCallTypeSingleAudio,
-    KSCallTypeManyAudio,
-    KSCallTypeSingleVideo,
-    KSCallTypeManyVideo,
+    KSCallTypeSingleAudio,//一对一语音
+    KSCallTypeManyAudio,//多人语音
+    KSCallTypeSingleVideo,//一对一视频
+    KSCallTypeManyVideo,//多人视频
+};
+
+typedef NS_ENUM(NSInteger, KSAnswerState) {
+    KSAnswerStateAwait,//等待
+    KSAnswerStateJoin,//接通
 };
 
 //typedef NS_ENUM(NSInteger, KSIdentity) {
@@ -33,8 +38,8 @@ typedef NS_ENUM(NSInteger, KSCallType) {
 //};
 
 typedef NS_ENUM(NSInteger, KSDragState) {
-    KSDragStateInactivity,
-    KSDragStateActivity,
+    KSDragStateInactivity,//不活动的
+    KSDragStateActivity,//活动的
 };
 
 struct KSScale {

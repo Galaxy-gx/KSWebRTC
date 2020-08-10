@@ -11,20 +11,31 @@
 @interface KSNavigationBar()
 
 @property(nonatomic,weak)UILabel *titleLabel;
-
+@property(nonatomic,assign)CGFloat statusBarHeight;
+@property(nonatomic,assign)CGFloat barHeight;
 @end
 
 @implementation KSNavigationBar
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        _statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        _barHeight = self.bounds.size.height - _statusBarHeight;
+    }
+    return self;
+}
 
+- (void)initKit {
+    
+}
 
 -(void)setTitle:(NSString *)title {
     _title               = title;
 
-    self.titleLabel.text = title;
-    int title_h          = 44;
-    int padding          = KS_Extern_Point50;
-    CGSize title_size    = [_titleLabel ks_sizeOfMaxSize:CGSizeMake(self.bounds.size.width - padding * 2, title_h)];
-    _titleLabel.frame    = CGRectMake((self.bounds.size.width - title_size.width)/2, self.bounds.size.height - title_h, title_size.width, title_h);
+    self.titleLabel.text  = title;
+    int padding           = KS_Extern_Point50;
+    CGSize title_size     = [self.titleLabel ks_sizeOfMaxSize:CGSizeMake(self.bounds.size.width - padding * 2, _statusBarHeight)];
+    self.titleLabel.frame = CGRectMake((self.bounds.size.width - title_size.width)/2, _statusBarHeight, title_size.width, _barHeight);
+    [self bringSubviewToFront:_titleLabel];
 }
 
 - (UILabel *)titleLabel {
@@ -36,4 +47,22 @@
     return _titleLabel;
 }
 
+-(void)setBackBarButtonItem:(UIButton *)backBarButtonItem {
+    if (_backBarButtonItem) {
+        [_backBarButtonItem removeFromSuperview];
+        _backBarButtonItem = nil;
+    }
+    _backBarButtonItem      = backBarButtonItem;
+    backBarButtonItem.frame = CGRectMake(KS_Extern_Point14,
+                                         _statusBarHeight + (_barHeight - backBarButtonItem.bounds.size.height)/2,
+                                         backBarButtonItem.bounds.size.width,
+                                         backBarButtonItem.bounds.size.height);
+    [self addSubview:backBarButtonItem];
+}
+
+- (void)toFront {
+    if (self.superview) {
+        [self.superview bringSubviewToFront:self];
+    }
+}
 @end
