@@ -6,8 +6,8 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //  静音/切换摄像头/挂断等菜单
 
-#import <UIKit/UIKit.h>
+#import "KSEventCallbackView.h"
 
-@interface KSCallBarView : UIView
+@interface KSCallBarView : KSEventCallbackView
 
 @end

@@ -74,7 +74,27 @@ static NSString *meetingBarCellIdentifier = @"meetingBarCellIdentifier";
 
 #pragma mark - KSMeetingBarCellDelegate
 -(void)meetingBarCell:(KSMeetingBarCell *)cell didSelectBarBtn:(KSBtnInfo *)btnInfo {
+    KSEventType type = KSEventTypeMeetingThemeMicrophoneOpen;
+    switch (btnInfo.btnType) {
+        case KSCallBarBtnTypeMicrophone:
+            type = btnInfo.isSelected ? KSEventTypeMeetingThemeMicrophoneClose : KSEventTypeMeetingThemeMicrophoneOpen;
+            break;
+        case KSCallBarBtnTypeVolume:
+            type = btnInfo.isSelected ? KSEventTypeMeetingThemeVolumeClose: KSEventTypeMeetingThemeVolumeOpen;
+            break;
+        case KSCallBarBtnTypeCamera:
+            type = btnInfo.isSelected ? KSEventTypeMeetingThemeCameraClose : KSEventTypeMeetingThemeCameraOpen;
+            break;
+        case KSCallBarBtnTypeBluetooth:
+            type = btnInfo.isSelected ? KSEventTypeMeetingThemeBluetoothClose : KSEventTypeMeetingThemeBluetoothOpen;
+            break;
+        default:
+            break;
+    }
     
+    if (self.callback) {
+        self.callback(type,nil);
+    }
 }
 
 @end

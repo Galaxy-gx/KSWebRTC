@@ -10,6 +10,7 @@
 #import "KSLocalView.h"
 #import "KSProfileView.h"
 #import "KSAnswerBarView.h"
+#import "KSCallBarView.h"
 
 @interface KSCallView()
 
@@ -17,6 +18,7 @@
 @property(nonatomic,weak)KSLocalView *localView;
 @property(nonatomic,weak)KSProfileView *profileView;
 @property(nonatomic,weak)KSAnswerBarView *answerBarView;
+@property(nonatomic,weak)KSCallBarView *callBarView;
 
 @property(nonatomic,strong)NSMutableArray *remoteKits;
 @property(nonatomic,strong)KSTileLayout *remoteLayout;
@@ -58,6 +60,12 @@
     KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect scale:layout.scale mode:layout.mode callType:callType];
     _localView = localView;
     [self.scrollView addSubview:localView];
+}
+
+- (void)zoomOutLocalView {
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, 76, 96, 96 / self.localView.scale.width * self.localView.scale.height);
+    self.localView.frame = target;
+    [self.localView updatePreviewWidth:target.size.width height:target.size.height scale:self.localView.scale mode:self.localView.mode];
 }
 
 - (void)panSwipeGesture:(UIGestureRecognizer *)gestureRecognizer {
@@ -215,6 +223,13 @@
         [_profileView updateConfiure:configure];
     }
 }
+
+- (void)hideProfile {
+    if (_profileView.isHidden == NO) {
+        _profileView.hidden = YES;
+    }
+}
+
 //KIT:KSAnswerBarView
 - (void)setAnswerState:(KSAnswerState)state {
     if (_answerBarView == nil) {
@@ -222,11 +237,34 @@
         KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, y, self.bounds.size.width - 56 * 2, 90)];
         answerBarView.answerState      = state;
         _answerBarView                 = answerBarView;
+        [answerBarView setEventCallback:self.callback];
         [self addSubview:answerBarView];
     }
     else{
-        _answerBarView.answerState     = state;
+        _callBarView.hidden        = NO;
+        _answerBarView.answerState = state;
     }
-    
 }
+
+- (void)hideAnswerBar {
+    if (_answerBarView.isHidden == NO) {
+        _answerBarView.hidden = YES;
+    }
+}
+
+//KIT:KSCallBarView
+- (void)displayCallBar {
+    [self hideAnswerBar];
+    [self hideProfile];
+    [self zoomOutLocalView];
+    
+    if (_callBarView == nil) {
+        CGFloat y                  = self.bounds.size.height - (40 + 48);
+        KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, y, self.bounds.size.width - KS_Extern_Point12 * 2, KS_Extern_Point48)];
+        _callBarView               = callBarView;
+        [callBarView setEventCallback:self.callback];
+        [self addSubview:callBarView];
+    }
+}
+
 @end

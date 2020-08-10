@@ -6,10 +6,11 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "KSEventCallbackView.h"
 #import <AVFoundation/AVFoundation.h>
 //Configure
 #import "KSConfigure.h"
+#import "KSBlock.h"
 
 //ViewModel
 #import "KSTileLayout.h"
@@ -28,7 +29,7 @@
 - (void)videoCallViewDidSwitchCamera:(KSCallView *)view;
 @end
 
-@interface KSCallView : UIView
+@interface KSCallView : KSEventCallbackView
 
 @property(nonatomic,weak)id<KSVideoCallViewDelegate> delegate;
 
@@ -42,6 +43,8 @@
 - (void)setProfileConfigure:(KSProfileConfigure *)configure;
 //KIT:KSAnswerBarView
 - (void)setAnswerState:(KSAnswerState)state;
-
+- (void)hideAnswerBar;
+//KIT:KSCallBarView
+- (void)displayCallBar;
 
 @end

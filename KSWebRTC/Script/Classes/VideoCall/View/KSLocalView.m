@@ -11,14 +11,14 @@
 
 @interface KSLocalView()
 
-@property(nonatomic,weak)AVCaptureVideoPreviewLayer *previewLayer;
-@property(nonatomic,assign)KSCallType callType;
 @end
 
 @implementation KSLocalView
 
 - (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType {
     if (self = [super initWithFrame:frame]) {
+        self.scale    = scale;
+        self.mode     = mode;
         self.callType = callType;
         [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }

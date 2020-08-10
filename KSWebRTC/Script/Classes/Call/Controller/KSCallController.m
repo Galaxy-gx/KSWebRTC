@@ -55,6 +55,12 @@
     KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeManyVideo];
     callView.delegate               = self;
     _callView                       = callView;
+    
+    KSEventCallback callback = ^(KSEventType eventType, NSDictionary *info) {
+        NSLog(@"|------| %d |------|",(int)eventType);
+        [self triggerEvent:eventType];
+    };
+    [callView setEventCallback:callback];
     [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
     [self.view addSubview:callView];
 
@@ -80,8 +86,36 @@
 }
 
 - (void)onArrowClick {
-    [self pop];
+    [self dismiss];
 }
+
+- (void)triggerEvent:(KSEventType)eventType {
+    switch (eventType) {
+        case KSEventTypeCallerHangup://呼叫时，呼叫方挂断
+            [self callerHangup];
+            break;
+        case KSEventTypeCalleeHangup://被叫方挂断
+            break;
+        case KSEventTypeCalleeAnswer://被叫方接听
+            [self calleeAnswer];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)callerHangup {
+    [_callView setAnswerState:KSAnswerStateJoin];
+}
+
+-(void)calleeHangup {
+    
+}
+
+-(void)calleeAnswer {
+    [_callView displayCallBar];
+}
+
 //KSMessageHandlerDelegate
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
     

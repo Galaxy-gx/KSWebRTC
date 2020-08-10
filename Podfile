@@ -6,4 +6,5 @@ target 'KSWebRTC' do
 	pod 'SocketRocket', '~> 0.5.1'
 	pod 'GoogleWebRTC', '~> 1.1.29400'
   pod 'MJExtension', '~> 3.2.1'
+  #pod 'pop', '~> 1.0.12'
 end

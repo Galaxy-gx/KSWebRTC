@@ -12,6 +12,7 @@
 
 @property(nonatomic,weak)UITextField *textField;
 @property(nonatomic,weak)KSMeetingBarView *meetingBarView;
+
 @end
 
 @implementation KSMeetingThemeView
@@ -52,7 +53,9 @@
 }
 
 -(void)onStartClick {
-    
+    if (self.callback) {
+        self.callback(KSEventTypeStartMeeting,nil);
+    }
 }
 
 @end

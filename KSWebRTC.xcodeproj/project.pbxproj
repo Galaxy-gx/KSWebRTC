@@ -59,6 +59,7 @@
 		E6AC70FE24DD21B800C7134D /* KSAnswerBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC70FD24DD21B800C7134D /* KSAnswerBarView.m */; };
 		E6AC710224DD294A00C7134D /* KSWaitingAnswersGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710124DD294A00C7134D /* KSWaitingAnswersGroupView.m */; };
 		E6AC710524DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */; };
+		E6C3527B24E11E660055C370 /* KSEventCallbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3527A24E11E660055C370 /* KSEventCallbackView.m */; };
 		E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E096BC24D7BBC800D083D2 /* UIView+Category.m */; };
 		E6FD828124DBD32700E10495 /* KSCallBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828024DBD32700E10495 /* KSCallBarView.m */; };
 		E6FD828424DBD4C900E10495 /* KSCallMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828324DBD4C900E10495 /* KSCallMenuView.m */; };
@@ -190,6 +191,8 @@
 		E6AC710324DD2A8D00C7134D /* KSWaitingAnswersMemberCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersMemberCell.h; sourceTree = "<group>"; };
 		E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersMemberCell.m; sourceTree = "<group>"; };
 		E6C3527824E10FFE0055C370 /* KSBlock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSBlock.h; sourceTree = "<group>"; };
+		E6C3527924E11E660055C370 /* KSEventCallbackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSEventCallbackView.h; sourceTree = "<group>"; };
+		E6C3527A24E11E660055C370 /* KSEventCallbackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSEventCallbackView.m; sourceTree = "<group>"; };
 		E6E096BB24D7BBC800D083D2 /* UIView+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
 		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		E6FD827F24DBD32700E10495 /* KSCallBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
@@ -310,6 +313,8 @@
 			children = (
 				E6277C2724DE9A0B008D9E96 /* KSNavigationBar.h */,
 				E6277C2824DE9A0B008D9E96 /* KSNavigationBar.m */,
+				E6C3527924E11E660055C370 /* KSEventCallbackView.h */,
+				E6C3527A24E11E660055C370 /* KSEventCallbackView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				E67A6A9124DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m in Sources */,
 				E67BC5AC24B856D6004BBA8A /* NSString+Category.m in Sources */,
 				E60C908224CEB85000291CDA /* ARDTURNClient.m in Sources */,
+				E6C3527B24E11E660055C370 /* KSEventCallbackView.m in Sources */,
 				E6FD82AA24DC08B200E10495 /* KSCallBarCell.m in Sources */,
 				E6A5DFFA24D6D06A007E7D14 /* KSTileLayout.m in Sources */,
 				E60C908024CEB85000291CDA /* ARDSignalingChannel.m in Sources */,

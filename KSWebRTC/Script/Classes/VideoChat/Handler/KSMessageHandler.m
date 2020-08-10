@@ -286,14 +286,14 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 发送候选者
 - (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate {
-    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"janus"]       = @"trickle";
-    sendMessage[@"transaction"] = transaction;
-    sendMessage[@"session_id"]  = _sessionId;
-    sendMessage[@"candidate"]   = candidate;
-    sendMessage[@"handle_id"]   = handleId;
-    
+    NSString *transaction            = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
+    sendMessage[@"janus"]            = @"trickle";
+    sendMessage[@"transaction"]      = transaction;
+    sendMessage[@"session_id"]       = _sessionId;
+    sendMessage[@"candidate"]        = candidate;
+    sendMessage[@"handle_id"]        = handleId;
+
     [_socket sendMessage:sendMessage];
 }
 

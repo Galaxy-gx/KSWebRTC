@@ -10,8 +10,10 @@
 #import "KSLayoutButton.h"
 
 @interface KSAnswerBarView()
+
 @property(nonatomic,weak)KSLayoutButton *hangupBtn;
 @property(nonatomic,weak)KSLayoutButton *answerBtn;
+
 @end
 @implementation KSAnswerBarView
 
@@ -26,12 +28,31 @@
     
     KSLayoutButton *hangupBtn = [self createButtonWithPointX:0 title:@"ks_app_global_text_hang_up" defaultIcon:@"icon_bar_hangup_red" selectedIcon:@"icon_bar_hangup_red"];
     _hangupBtn = hangupBtn;
+    [hangupBtn addTarget:self action:@selector(onHangupClock) forControlEvents:UIControlEventTouchUpInside];
     
     KSLayoutButton *answerBtn = [self createButtonWithPointX:self.bounds.size.width - 90 title:@"ks_app_global_text_answer" defaultIcon:@"icon_bar_answer_green" selectedIcon:@"icon_bar_answer_green"];
     _answerBtn = answerBtn;
+    [answerBtn addTarget:self action:@selector(onAnswerClock) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:hangupBtn];
     [self addSubview:answerBtn];
+}
+
+-(void)onHangupClock {
+    if (self.callback) {
+        if (self.answerState == KSAnswerStateJoin) {
+            self.callback(KSEventTypeCalleeHangup,nil);//被叫方挂断
+        }
+        else{
+            self.callback(KSEventTypeCallerHangup,nil);//呼叫时，呼叫方挂断
+        }
+    }
+}
+
+-(void)onAnswerClock {
+    if (self.callback) {
+        self.callback(KSEventTypeCalleeAnswer,nil);//被叫方接听
+    }
 }
 
 -(KSLayoutButton *)createButtonWithPointX:(CGFloat)pointX title:(NSString *)title  defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon{
@@ -60,7 +81,7 @@
     else if (answerState == KSAnswerStateJoin) {
         _answerBtn.hidden = NO;
         _hangupBtn.frame = CGRectMake(0, 0, btn_wh, btn_wh);
-        _hangupBtn.frame = CGRectMake(self.bounds.size.width - btn_wh, 0, btn_wh, btn_wh);
+        _answerBtn.frame = CGRectMake(self.bounds.size.width - btn_wh, 0, btn_wh, btn_wh);
     }
 }
 

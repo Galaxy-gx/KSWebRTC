@@ -6,10 +6,11 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "KSEventCallbackView.h"
 
-@interface KSAnswerBarView : UIView
+@interface KSAnswerBarView : KSEventCallbackView
 
 @property(nonatomic,assign)KSAnswerState answerState;
+
 
 @end

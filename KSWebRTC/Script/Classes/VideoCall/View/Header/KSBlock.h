@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, KSEventType) {
     KSEventTypeInConversationCameraClose,//会话中关闭摄像机
     KSEventTypeInConversationBluetoothOpen,//会话中开启蓝牙
     KSEventTypeInConversationBluetoothClose,//会话中关闭蓝牙
+    KSEventTypeInConversationHangup,//会话中挂断
     
     KSEventTypeMeetingThemeMicrophoneOpen,//会话中开启麦克风
     KSEventTypeMeetingThemeMicrophoneClose,//会话中关闭麦克风
@@ -35,6 +36,6 @@ typedef NS_ENUM(NSInteger, KSEventType) {
 
 //kse (^eventCallback)(KSEventType eventType,NSDictionary *info)
 
-typedef void(^success)(KSEventType eventType,NSDictionary *info);
+typedef void(^KSEventCallback)(KSEventType eventType,NSDictionary *info);
 
 #endif /* KSBlock_h */

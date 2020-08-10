@@ -79,6 +79,30 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
 
 #pragma mark - KSCallBarCellDelegate
 -(void)callBarCell:(KSCallBarCell *)cell didSelectBarBtn:(KSBtnInfo *)btnInfo {
+    KSEventType type;
+    switch (btnInfo.btnType) {
+        case KSCallBarBtnTypeMicrophone:
+            type = btnInfo.isSelected ? KSEventTypeInConversationMicrophoneClose : KSEventTypeInConversationMicrophoneOpen;
+            break;
+        case KSCallBarBtnTypeVolume:
+            type = btnInfo.isSelected ? KSEventTypeInConversationVolumeClose: KSEventTypeInConversationVolumeOpen;
+            break;
+        case KSCallBarBtnTypeCamera:
+            type = btnInfo.isSelected ? KSEventTypeInConversationCameraClose : KSEventTypeInConversationCameraOpen;
+            break;
+        case KSCallBarBtnTypeBluetooth:
+            type = btnInfo.isSelected ? KSEventTypeInConversationBluetoothClose : KSEventTypeInConversationBluetoothOpen;
+            break;
+        case KSCallBarBtnTypePhone:
+            type = KSEventTypeInConversationHangup;
+            break;
+        default:
+            break;
+    }
     
+    if (self.callback) {
+        self.callback(type,nil);
+    }
 }
+
 @end

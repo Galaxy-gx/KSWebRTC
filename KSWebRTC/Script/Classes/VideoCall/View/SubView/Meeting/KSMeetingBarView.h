@@ -6,8 +6,8 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "KSEventCallbackView.h"
 
-@interface KSMeetingBarView : UIView
+@interface KSMeetingBarView : KSEventCallbackView
 
 @end
