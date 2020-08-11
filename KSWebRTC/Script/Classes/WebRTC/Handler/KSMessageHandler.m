@@ -339,8 +339,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         return;
     }
     [mc close];
-    
     [_connections removeObjectForKey:handleId];
+    mc = nil;
     
     if (_connections.count == 1) {
         [self.delegate messageHandlerEndOfSession:self];

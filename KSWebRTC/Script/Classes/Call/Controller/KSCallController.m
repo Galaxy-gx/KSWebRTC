@@ -247,9 +247,10 @@
 //会话中挂断
 - (void)inConversationHangup {
     [_msgHandler close];
+    [_msgHandler requestHangup];
+    [_mediaCapture close];
+    _mediaCapture = nil;
     [_callView setLocalViewSession:nil];
-    [self.localConnection close];
-    [self.msgHandler requestHangup];
 }
 
 //会议主题面板中开启麦克风

@@ -131,8 +131,8 @@
 }
 
 - (void)close {
-    [_capture close];
-    _capture          = nil;
+    //[_capture close];
+    //_capture          = nil;
     
     [_connection close];
     _connection       = nil;
