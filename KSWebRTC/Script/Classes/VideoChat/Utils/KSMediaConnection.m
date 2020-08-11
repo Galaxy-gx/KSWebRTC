@@ -30,25 +30,24 @@
     RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
  
  */
-- (RTCPeerConnection *)createPeerConnection:(RTCPeerConnectionFactory *)factory
-                                 audioTrack:(RTCAudioTrack *)audioTrack
-                                 videoTrack:(RTCVideoTrack *)videoTrack {
+- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapture *)capture {
     // 媒体约束
-    RTCMediaConstraints *constraints = [self defaultMediaConstraint];
+    RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
     // 创建配置
-    RTCConfiguration *config = [[RTCConfiguration alloc] init];
+    RTCConfiguration *config          = [[RTCConfiguration alloc] init];
     // ICE 中继服务器地址
-    NSArray *iceServers = @[[self defaultIceServer]];
-    config.iceServers = iceServers;
+    NSArray *iceServers               = @[[self defaultIceServer]];
+    config.iceServers                 = iceServers;
     // 创建一个peerconnection
-    RTCPeerConnection *peerConnection = [factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
-    
-    NSArray *mediaStreamLabels = @[ @"ARDAMS" ];
+    RTCPeerConnection *peerConnection = [capture.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
+
+    NSArray *mediaStreamLabels        = @[ @"ARDAMS" ];
     // 添加视频轨
-    [peerConnection addTrack:videoTrack streamIds:mediaStreamLabels];
+    [peerConnection addTrack:capture.videoTrack streamIds:mediaStreamLabels];
     // 添加音频轨
-    [peerConnection addTrack:audioTrack streamIds:mediaStreamLabels];
-    _connection = peerConnection;
+    [peerConnection addTrack:capture.audioTrack streamIds:mediaStreamLabels];
+    _connection                       = peerConnection;
+    _capture                          = capture;
     return peerConnection;
 }
 
@@ -132,13 +131,17 @@
 }
 
 - (void)close {
+    [_capture close];
+    _capture          = nil;
+    
     [_connection close];
-    _connection = NULL;
-
-    [_videoTrack removeRenderer:_videoView];
-    _videoTrack = NULL;
-    [_videoView renderFrame:nil];
-    [_videoView removeFromSuperview];
+    _connection       = nil;
+    
+    if (_remoteVideoView) {
+        [_remoteVideoTrack removeRenderer:_remoteVideoView];
+    }
+    _remoteVideoView  = nil;
+    _remoteVideoTrack = nil;
 }
 
 // PeerConnection 媒体约束

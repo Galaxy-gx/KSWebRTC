@@ -31,18 +31,18 @@
 }
 
 - (void)initKit {
-    KSEAGLVideoView *remoteView = [[KSEAGLVideoView alloc] init];
-    _remoteView = remoteView;
+    KSEAGLVideoView *remoteView      = [[KSEAGLVideoView alloc] init];
+    _remoteView                      = remoteView;
     [self addSubview:remoteView];
-    
+
     KSProfileBarView *profileBarView = [[KSProfileBarView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - KS_Extern_Point20, self.bounds.size.width, KS_Extern_Point20)];
-    _profileBarView = profileBarView;
+    _profileBarView                  = profileBarView;
     [self addSubview:profileBarView];
     [profileBarView setUserName:@"Sevtin"];
     [profileBarView updateStateType:KSAudioStateTypeMute];
-    
+
     KSRoundImageView *roundImageView = [[KSRoundImageView alloc] initWithFrame:CGRectMake((self.bounds.size.width - KS_Extern_Point50)/2, (self.bounds.size.height - KS_Extern_Point50)/2, KS_Extern_Point50, KS_Extern_Point50) strokeColor:[UIColor ks_white] lineWidth:0.5];
-    _roundImageView = roundImageView;
+    _roundImageView                  = roundImageView;
     [self addSubview:roundImageView];
     if (self.callType == KSCallTypeSingleVideo) {
         profileBarView.hidden = YES;
@@ -57,6 +57,10 @@
 
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
     _remoteView.frame = [self ks_rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
+}
+
+- (void)removeVideoView {
+    [_remoteView removeFromSuperview];
 }
 
 @end

@@ -10,13 +10,17 @@
 #import <AVFoundation/AVFoundation.h>
 #import "KSConfigure.h"
 
+@interface KSPreviewLayer : AVCaptureVideoPreviewLayer
+
+@end
+
 @interface KSLocalView : UIView
 
-@property (nonatomic,assign) BOOL                       isDrag;
-@property (nonatomic,assign) KSScale                    scale;
-@property (nonatomic,assign) KSContentMode              mode;
-@property (nonatomic,assign) KSCallType                 callType;
-@property (nonatomic,weak  ) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic,assign) BOOL           isDrag;
+@property (nonatomic,assign) KSScale        scale;
+@property (nonatomic,assign) KSContentMode  mode;
+@property (nonatomic,assign) KSCallType     callType;
+@property (nonatomic,weak  ) KSPreviewLayer *previewLayer;
 
 - (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType;
 - (void)setLocalViewSession:(AVCaptureSession *)session;

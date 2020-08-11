@@ -56,37 +56,36 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
  
  除此之外，为了能更方便的控制视频设备，WebRTC 提供了一个专门用于操作设备的类，即 RTCCameraVideoCapture。通过它，我们就可以自如的控制视频设备了。
  */
-- (AVCaptureSession* )captureLocalMedia {
+- (void)captureLocalMedia {
     NSDictionary *mandatoryConstraints = @{};
-    RTCMediaConstraints *constrains = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
-    RTCAudioSource *audioSource = [_factory audioSourceWithConstraints:constrains];
-    _audioTrack = [_factory audioTrackWithSource:audioSource trackId:KARDAudioTrackId];
+    RTCMediaConstraints *constrains    = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
+    RTCAudioSource *audioSource        = [_factory audioSourceWithConstraints:constrains];
+    _audioTrack                        = [_factory audioTrackWithSource:audioSource trackId:KARDAudioTrackId];
 
     AVCaptureDevice *device = [self currentCamera];
     if (!device) {
         NSLog(@"获取相机失败");
-        return nil;
+        return;
     }
     // 检测摄像头权限
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
         NSLog(@"相机访问受限");
-        return nil;
+        return;
     }
     /*
      首先将 RTCVideoSource 与 RTCCameraVideoCapture 进行绑定，然后再开启设备，这样视频数据就源源不断的被采集到 RTCVideoSource 中了。
      */
     RTCVideoSource *videoSource = [_factory videoSource];
-    _capturer = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
-    _videoTrack = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
+    _capturer                   = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
+    _videoTrack                 = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
     if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPreset640x480]) {
         _capturer.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
     }
     
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
-    return _capturer.captureSession;
 }
 
 - (void)switchCamera {
@@ -106,6 +105,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     
 }
 
+//关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
 - (void)speakerOff {
     RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
     [rtcAudioSession lockForConfiguration];
@@ -120,6 +120,7 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     [rtcAudioSession unlockForConfiguration];
 }
 
+//开启扬声器
 - (void)speakerOn {
     RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
     [rtcAudioSession lockForConfiguration];
@@ -127,9 +128,9 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
         [rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
         [rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     } @catch (NSException *exception) {
-        NSLog(@"speakerOff Error 01");
+        NSLog(@"Couldn't force audio to speaker: %@",exception);
     } @finally {
-        NSLog(@"speakerOff Error 02");
+        NSLog(@"speakerOn Error");
     }
     [rtcAudioSession unlockForConfiguration];
 }
@@ -162,6 +163,17 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     AVCaptureDeviceFormat *format = [[RTCCameraVideoCapturer supportedFormatsForDevice:device] lastObject];
     CGFloat fps = [[format videoSupportedFrameRateRanges] firstObject].maxFrameRate;
     [_capturer startCaptureWithDevice:device format:format fps:fps];
+}
+
+- (void)close {
+    _videoTrack = nil;
+    _audioTrack = nil;
+    
+    [_factory stopAecDump];
+    _factory    = nil;
+    
+    [_capturer stopCapture];
+    _capturer   = nil;
 }
 
 @end

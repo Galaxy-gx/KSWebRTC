@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <WebRTC/WebRTC.h>
+#import "KSMediaCapture.h"
+
 @class KSMediaConnection;
 @protocol KSMediaConnectionDelegate <NSObject>
 // 收到远端流处理
@@ -20,15 +22,15 @@
 
 @interface KSMediaConnection : NSObject
 
-@property (nonatomic, weak) id<KSMediaConnectionDelegate> delegate;
-@property (nonatomic, strong) RTCPeerConnection *connection; // WebRTC连接对象
-@property (nonatomic, strong) RTCVideoTrack *videoTrack;     // 视频轨
-@property (nonatomic, weak) RTCEAGLVideoView *videoView;
-@property (nonatomic, strong) NSNumber *handleId;
+@property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
+@property (nonatomic, strong) RTCPeerConnection *connection;//WebRTC连接对象
+@property (nonatomic, strong) KSMediaCapture    *capture;
+@property (nonatomic, strong) RTCVideoTrack     *remoteVideoTrack;//视频轨
+@property (nonatomic, weak  ) RTCEAGLVideoView  *remoteVideoView;
+@property (nonatomic, strong) NSNumber          *handleId;
+@property (nonatomic, assign) BOOL              isLocal;
 
-- (RTCPeerConnection *)createPeerConnection:(RTCPeerConnectionFactory *)factory
-                                 audioTrack:(RTCAudioTrack *)audioTrack
-                                 videoTrack:(RTCVideoTrack *)videoTrack;
+- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapture *)capture;
 
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 
@@ -38,5 +40,9 @@
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep;
 
 - (void)close;
+
+- (void)muteAudio;
+
+- (void)unmuteAudio;
 
 @end

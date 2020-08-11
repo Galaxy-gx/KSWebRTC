@@ -34,9 +34,8 @@
 - (void)initProperty {
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
-    AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
-    
-    [_videoCallView setLocalViewSession:captureSession];
+
+    [_videoCallView setLocalViewSession:_mediaCapture.capturer.captureSession];
     
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;

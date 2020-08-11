@@ -10,7 +10,6 @@
 #import "KSMsg.h"
 #import "KSWebSocket.h"
 #import "KSMediaCapture.h"
-#import "KSMediaConnection.h"
 
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
@@ -29,29 +28,29 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 @interface KSMessageHandler()<KSWebSocketDelegate,KSMediaConnectionDelegate>
 
-@property(nonatomic,strong)KSWebSocket *socket;
-@property(nonatomic,strong)NSNumber *sessionId;
-@property (nonatomic, copy) NSString *opaqueId;
-@property(nonatomic,strong)NSNumber *roomMumber;
-@property(nonatomic,strong)NSNumber *myHandleId;
+@property (nonatomic,strong ) KSWebSocket         *socket;
+@property (nonatomic,strong ) NSNumber            *sessionId;
+@property (nonatomic, copy  ) NSString            *opaqueId;
+@property (nonatomic,strong ) NSNumber            *roomMumber;
+@property (nonatomic,strong ) NSNumber            *myHandleId;
 @property (nonatomic, strong) NSMutableDictionary *connections;
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
-@property (nonatomic, strong) RTCPeerConnection *publisherPeerConnection;
-
+@property (nonatomic, weak) RTCPeerConnection     *publisherPeerConnection;
 @end
+
 @implementation KSMessageHandler
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.socket = [[KSWebSocket alloc] init];
+        self.socket          = [[KSWebSocket alloc] init];
         self.socket.delegate = self;
-        self.opaqueId = [NSString stringWithFormat:@"videoroom-%@", [NSString ks_randomForLength:KSRandomLength]];
-        self.connections = [NSMutableDictionary dictionary];
-        self.msgs = [NSMutableDictionary dictionary];
-        self.subscribers = [NSMutableDictionary dictionary];
-        self.roomMumber = @1234;
+        self.opaqueId        = [NSString stringWithFormat:@"videoroom-%@", [NSString ks_randomForLength:KSRandomLength]];
+        self.connections     = [NSMutableDictionary dictionary];
+        self.msgs            = [NSMutableDictionary dictionary];
+        self.subscribers     = [NSMutableDictionary dictionary];
+        self.roomMumber      = @1234;
     }
     return self;
 }
@@ -135,7 +134,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 - (void)messageDetached:(KSDetached *)detached {
-    [self.delegate messageHandler:self detached:detached];
+    [self.delegate messageHandler:self leaveOfHandleId:detached.sender];
     [self onLeaving:detached.sender];
 }
 
@@ -194,6 +193,14 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [_socket sendMessage:sendMessage];
 }
 
+-(void)requestHangup {
+    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
+    sendMessage[@"request"]     = @"hangup";
+    sendMessage[@"transaction"] = transaction;
+    [_socket sendMessage:sendMessage];
+}
+
 // 插件绑定
 - (void)pluginBinding:(KSActionType)type transaction:(NSString *)transaction {
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
@@ -236,8 +243,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc = [self createMediaConnection];
-    _publisherPeerConnection = mc.connection;
+    KSMediaConnection *mc             = [self createMediaConnection];
+    _publisherPeerConnection          = mc.connection;
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -252,6 +259,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
     }];
     mc.handleId = handleId;
+    if (_connections.count == 0) {//测试
+        mc.isLocal = YES;
+    }
     _connections[handleId] = mc;
 }
 
@@ -316,9 +326,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 // 创建一个媒体连接
 -(KSMediaConnection *)createMediaConnection {
     KSMediaCapture *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
-    KSMediaConnection *mc = [[KSMediaConnection alloc] init];
-    [mc createPeerConnection:mediaCapture.factory audioTrack:mediaCapture.audioTrack videoTrack:mediaCapture.videoTrack];
-    mc.delegate = self;
+    KSMediaConnection *mc        = [[KSMediaConnection alloc] init];
+    [mc createPeerConnectionOfKSMediaCapture:mediaCapture];
+    mc.delegate                  = self;
     return mc;
 }
 
@@ -328,9 +338,31 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         return;
     }
     [mc close];
+    
     [_connections removeObjectForKey:handleId];
+    
+    if (_connections.count == 1) {
+        [self.delegate messageHandlerEndOfSession:self];
+    }
 }
 
+- (void)closeAllMediaConnection {
+    for (KSMediaConnection *mc in _connections.allValues) {
+        if (mc) {
+            [mc close];
+            [_connections removeObjectForKey:mc.handleId];
+            [self.delegate messageHandler:self leaveOfHandleId:mc.handleId];
+        }
+    }
+    [self.delegate messageHandlerEndOfSession:self];
+}
+
+- (void)close {
+    [_socket activeClose];
+    [self closeAllMediaConnection];
+    [_publisherPeerConnection close];
+    
+}
 //KSWebSocketDelegate
 /**
  连接成功
@@ -390,10 +422,10 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         dispatch_async(dispatch_get_main_queue(), ^{
-            RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
-            mediaConnection.videoView = remoteView;
+            RTCEAGLVideoView *remoteView     = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+            mediaConnection.remoteVideoView  = remoteView;
             [remoteVideoTrack addRenderer:remoteView];
-            mediaConnection.videoTrack = remoteVideoTrack;
+            mediaConnection.remoteVideoTrack = remoteVideoTrack;
         });
     }
 }
@@ -410,6 +442,16 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         body[@"completed"] = @YES;
         [self trickleCandidate:mediaConnection.handleId candidate:body];
     }
+}
+
+//Get
+-(KSMediaConnection *)localConnection {
+    for (KSMediaConnection *item in _connections.allValues) {
+        if (item.isLocal) {
+            return item;
+        }
+    }
+    return nil;
 }
 
 @end

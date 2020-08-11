@@ -41,8 +41,7 @@
     _mediaCapture = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
     //创建本地流
-    AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
-    [_localView setLocalViewSession:captureSession];
+    [_localView setLocalViewSession:_mediaCapture.capturer.captureSession];
     _msgHandler = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
 }

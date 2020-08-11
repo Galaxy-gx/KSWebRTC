@@ -25,7 +25,7 @@
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,assign)CGPoint tilePoint;
 @property(nonatomic,assign)BOOL isDrag;
-@property(nonatomic,strong)NSLock *lock;
+
 @end
 
 @implementation KSCallView
@@ -33,8 +33,7 @@
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType {
     if (self = [super initWithFrame:frame]) {
         self.remoteLayout = layout;
-        self.callType = callType;
-        self.lock = [[NSLock alloc] init];
+        self.callType     = callType;
         [self initKit];
     }
     return self;
@@ -64,13 +63,14 @@
 }
 
 - (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96,
-                                      _topPadding + 32,
-                                      96,
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _topPadding + 32, 96,
                                       96 / self.localView.scale.width * self.localView.scale.height);
     self.localView.frame = target;
-    [self.localView updatePreviewWidth:target.size.width height:target.size.height scale:self.localView.scale mode:self.localView.mode];
-    [self addSubview:self.localView];
+    [self localToFront];
+}
+
+- (void)localToFront {
+    [self.scrollView bringSubviewToFront:self.localView];
 }
 
 - (void)panSwipeGesture:(UIGestureRecognizer *)gestureRecognizer {
@@ -85,8 +85,8 @@
     else if(gestureRecognizer.state == UIGestureRecognizerStateEnded) {
         CGFloat hpadding = 10;
         CGFloat vpadding = 64;
-        CGFloat x = _tilePoint.x - tileView.frame.size.width/2;
-        CGFloat y = _tilePoint.y - tileView.frame.size.height/2;
+        CGFloat x        = _tilePoint.x - tileView.frame.size.width/2;
+        CGFloat y        = _tilePoint.y - tileView.frame.size.height/2;
         if (_tilePoint.x > self.bounds.size.width/2) {
             x = self.bounds.size.width - tileView.frame.size.width - hpadding;
         }
@@ -147,7 +147,7 @@
 }
 
 -(void)layoutRemoteViews {
-    for (int index = 1; index <= _remoteKits.count; index++) {
+    for (int index = 0; index < _remoteKits.count; index++) {
         CGPoint point= [self pointOfIndex:(int)_remoteKits.count + 1];
         KSRemoteView *remoteView = _remoteKits[index];
         remoteView.frame = CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height);
@@ -161,16 +161,17 @@
 }
 
 - (void)leaveOfHandleId:(NSNumber *)handleId {
-    [self.lock lock];
     for (KSRemoteView *videoView in _remoteKits) {
         if (videoView.handleId == handleId) {
             [_remoteKits removeObject:videoView];
+            [videoView removeVideoView];
             [videoView removeFromSuperview];
             break;
         }
     }
-    [self.lock unlock];
-    [self layoutRemoteViews];
+    if (_remoteKits.count > 0) {
+        [self layoutRemoteViews];
+    }
 }
 
 - (KSRemoteView *)createRemoteViewOfHandleId:(NSNumber *)handleId {

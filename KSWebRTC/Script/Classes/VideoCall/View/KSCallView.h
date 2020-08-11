@@ -23,10 +23,10 @@
 
 @protocol KSVideoCallViewDelegate <NSObject>
 @optional
-- (void)videoCallViewDidChangeRoute:(KSCallView *)view;
-- (void)videoCallViewDidEnableStats:(KSCallView *)view;
-- (void)videoCallViewDidHangup:(KSCallView *)view;
-- (void)videoCallViewDidSwitchCamera:(KSCallView *)view;
+//- (void)videoCallViewDidChangeRoute:(KSCallView *)view;
+//- (void)videoCallViewDidEnableStats:(KSCallView *)view;
+//- (void)videoCallViewDidHangup:(KSCallView *)view;
+//- (void)videoCallViewDidSwitchCamera:(KSCallView *)view;
 @end
 
 @interface KSCallView : KSEventCallbackView

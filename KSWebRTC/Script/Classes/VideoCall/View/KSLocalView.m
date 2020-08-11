@@ -9,6 +9,15 @@
 #import "KSLocalView.h"
 #import "UIView+Category.h"
 
+@implementation KSPreviewLayer
+
+-(id<CAAction>)actionForKey:(NSString *)event {
+    return nil;
+}
+
+@end
+
+
 @interface KSLocalView()
 
 @end
@@ -20,15 +29,21 @@
         self.scale    = scale;
         self.mode     = mode;
         self.callType = callType;
-        [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
+        //[self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
+}
+
+-(void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self updatePreviewWidth:frame.size.width height:frame.size.height scale:_scale mode:_mode];
 }
 
 -(void)setCallType:(KSCallType)callType {
     _callType = callType;
     if (_callType == KSCallTypeManyVideo || _callType == KSCallTypeSingleVideo) {
         [self createPreviewLayer];
+        [self updatePreviewWidth:self.bounds.size.width height:self.bounds.size.height scale:_scale mode:_mode];
     }
 }
 
@@ -36,9 +51,9 @@
     if (_previewLayer) {
         return;
     }
-    AVCaptureVideoPreviewLayer *previewLayer = [[AVCaptureVideoPreviewLayer alloc] init];
-    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;//填充模式
-    _previewLayer = previewLayer;
+    KSPreviewLayer *previewLayer = [[KSPreviewLayer alloc] init];
+    previewLayer.videoGravity    = AVLayerVideoGravityResizeAspectFill;//填充模式
+    _previewLayer                = previewLayer;
     [self.layer addSublayer:previewLayer];
 }
 

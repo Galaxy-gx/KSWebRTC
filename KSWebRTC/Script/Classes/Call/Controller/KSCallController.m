@@ -15,14 +15,17 @@
 #import "UIButton+Category.h"
 #import "KSProfileView.h"
 #import "KSTopBarView.h"
+#import "KSCallState.h"
 
 @interface KSCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
 
-@property(nonatomic, weak) KSCallView *callView;
-@property(nonatomic, weak) KSTopBarView *topBarView;
-@property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, strong) KSMediaCapture *mediaCapture;
-@property (nonatomic, assign) BOOL isConnect;
+@property (nonatomic, weak           ) KSCallView        *callView;
+@property (nonatomic, weak           ) KSTopBarView      *topBarView;
+@property (nonatomic, strong         ) KSMessageHandler  *msgHandler;
+@property (nonatomic, strong         ) KSMediaCapture    *mediaCapture;
+@property (nonatomic, assign         ) BOOL              isConnect;
+@property (nonatomic, assign,readonly) KSCallState       callState;
+@property (nonatomic, readonly       ) KSMediaConnection *localConnection;
 
 @end
 
@@ -37,9 +40,9 @@
 - (void)initProperty {
     _mediaCapture                    = [[KSMediaCapture alloc] init];
     [_mediaCapture createPeerConnectionFactory];
-    AVCaptureSession *captureSession = [_mediaCapture captureLocalMedia];
-
-    [_callView setLocalViewSession:captureSession];
+    [_mediaCapture captureLocalMedia];
+    
+    [_callView setLocalViewSession:_mediaCapture.capturer.captureSession];
 
     _msgHandler                      = [[KSMessageHandler alloc] init];
     _msgHandler.delegate             = self;
@@ -121,6 +124,33 @@
         case KSEventTypeCalleeAnswer://被叫方接听
             [self calleeAnswer];
             break;
+        case KSEventTypeInConversationMicrophoneOpen:
+            [self inConversationMicrophoneOpen];
+            break;
+        case KSEventTypeInConversationMicrophoneClose:
+            [self inConversationMicrophoneClose];
+            break;
+        case KSEventTypeInConversationVolumeOpen:
+            [self inConversationVolumeOpen];
+            break;
+        case KSEventTypeInConversationVolumeClose:
+            [self inConversationVolumeClose];
+            break;
+        case KSEventTypeInConversationCameraOpen:
+            [self inConversationCameraOpen];
+            break;
+        case KSEventTypeInConversationCameraClose:
+            [self inConversationCameraClose];
+            break;
+        case KSEventTypeInConversationBluetoothOpen:
+            [self inConversationVolumeOpen];
+            break;
+        case KSEventTypeInConversationBluetoothClose:
+            [self inConversationBluetoothClose];
+            break;
+        case KSEventTypeInConversationHangup:
+            [self inConversationHangup];
+            break;
         default:
             break;
     }
@@ -145,14 +175,67 @@
     
     [_callView displayCallBar];
 }
+// 按钮操作
+//会话中开启麦克风
+- (void)inConversationMicrophoneOpen {
+    [self.localConnection unmuteAudio];
+}
+
+//会话中关闭麦克风
+- (void)inConversationMicrophoneClose {
+    [self.localConnection muteAudio];
+}
+
+//会话中开启声音
+- (void)inConversationVolumeOpen {
+    [_mediaCapture speakerOn];
+}
+
+//会话中静音
+- (void)inConversationVolumeClose {
+    [_mediaCapture speakerOff];
+}
+
+//会话中开启摄像机
+- (void)inConversationCameraOpen {
+    [_mediaCapture startCapture];
+}
+
+//会话中关闭摄像机
+- (void)inConversationCameraClose {
+    [_mediaCapture stopCapture];
+}
+
+
+//会话中开启蓝牙
+- (void)inConversationBluetoothOpen {
+    
+}
+
+//会话中关闭蓝牙
+- (void)inConversationBluetoothClose {
+    
+}
+
+//会话中挂断
+- (void)inConversationHangup {
+    [_msgHandler close];
+    [_callView setLocalViewSession:nil];
+    [self.localConnection close];
+    [self.msgHandler requestHangup];
+}
 
 //KSMessageHandlerDelegate
+- (void)messageHandlerEndOfSession:(KSMessageHandler *)messageHandler {
+   
+}
+
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
     
 }
 
-- (void)messageHandler:(KSMessageHandler *)messageHandler detached:(KSDetached *)detached {
-    [_callView leaveOfHandleId:detached.sender];
+- (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId {
+    [_callView leaveOfHandleId:handleId];
 }
 
 - (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
@@ -237,6 +320,15 @@
         [topBarView.identifierBtn addTarget:self action:@selector(onIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _topBarView;
+}
+
+//Get
+-(KSCallState)callState {
+    return _msgHandler.callState;
+}
+
+-(KSMediaConnection *)localConnection {
+    return _msgHandler.localConnection;
 }
 
 @end
