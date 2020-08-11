@@ -6,12 +6,20 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSEAGLVideoView.h"
+#import <UIKit/UIKit.h>
+#import <WebRTC/WebRTC.h>
 #import "KSConfigure.h"
 
-@interface KSRemoteView : UIView
-@property(nonatomic,weak) KSEAGLVideoView *remoteView;
+@interface KSEAGLVideoView : RTCEAGLVideoView
+
 @property(nonatomic,strong)NSNumber *handleId;
+
+@end
+
+
+@interface KSRemoteView : UIView
+@property (nonatomic,weak  ) KSEAGLVideoView  *remoteView;
+@property (nonatomic,strong) NSNumber         *handleId;
 
 - (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType;
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;

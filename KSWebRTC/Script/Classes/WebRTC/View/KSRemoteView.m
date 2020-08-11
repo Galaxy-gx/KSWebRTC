@@ -11,6 +11,11 @@
 #import "KSProfileView.h"
 #import "KSProfileBarView.h"
 #import "KSRoundImageView.h"
+
+@implementation KSEAGLVideoView
+
+@end
+
 @interface KSRemoteView()
 
 @property(nonatomic,assign)KSCallType callType;

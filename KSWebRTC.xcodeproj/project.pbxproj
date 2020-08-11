@@ -39,14 +39,12 @@
 		E67A6AA724DE930E00BCE4B9 /* KSSuperController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67A6AA624DE930E00BCE4B9 /* KSSuperController+Category.m */; };
 		E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A224B854E3004BBA8A /* KSWebSocket.m */; };
 		E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */; };
-		E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5A724B85640004BBA8A /* KSVideoChatController.m */; };
 		E67BC5AC24B856D6004BBA8A /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5AB24B856D6004BBA8A /* NSString+Category.m */; };
 		E67BC5AF24B857BA004BBA8A /* RTCSessionDescription+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5AE24B857BA004BBA8A /* RTCSessionDescription+Category.m */; };
 		E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B124B85CDE004BBA8A /* UIButton+Category.m */; };
 		E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */; };
 		E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5BA24B86171004BBA8A /* KSMsg.m */; };
 		E6A2939C24DE445A008E41E1 /* KSLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2939B24DE445A008E41E1 /* KSLayoutButton.m */; };
-		E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */; };
 		E6A5DFF824D6D06A007E7D14 /* KSRemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */; };
 		E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF324D6D06A007E7D14 /* KSCallView.m */; };
 		E6A5DFFA24D6D06A007E7D14 /* KSTileLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF524D6D06A007E7D14 /* KSTileLayout.m */; };
@@ -147,8 +145,6 @@
 		E67BC5A124B854E3004BBA8A /* KSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocket.h; sourceTree = "<group>"; };
 		E67BC5A224B854E3004BBA8A /* KSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocket.m; sourceTree = "<group>"; };
 		E67BC5A324B854E4004BBA8A /* KSWebSocketConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocketConfigure.m; sourceTree = "<group>"; };
-		E67BC5A624B85640004BBA8A /* KSVideoChatController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSVideoChatController.h; sourceTree = "<group>"; };
-		E67BC5A724B85640004BBA8A /* KSVideoChatController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSVideoChatController.m; sourceTree = "<group>"; };
 		E67BC5AA24B856D6004BBA8A /* NSString+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
 		E67BC5AB24B856D6004BBA8A /* NSString+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
 		E67BC5AD24B857BA004BBA8A /* RTCSessionDescription+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RTCSessionDescription+Category.h"; sourceTree = "<group>"; };
@@ -161,8 +157,6 @@
 		E67BC5BA24B86171004BBA8A /* KSMsg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
 		E6A2939A24DE445A008E41E1 /* KSLayoutButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSLayoutButton.h; sourceTree = "<group>"; };
 		E6A2939B24DE445A008E41E1 /* KSLayoutButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSLayoutButton.m; sourceTree = "<group>"; };
-		E6A2E7F824BC57120008C53D /* KSEAGLVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSEAGLVideoView.h; sourceTree = "<group>"; };
-		E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSEAGLVideoView.m; sourceTree = "<group>"; };
 		E6A5DFEF24D6D06A007E7D14 /* KSConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSConfigure.h; sourceTree = "<group>"; };
 		E6A5DFF024D6D06A007E7D14 /* KSRemoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRemoteView.h; sourceTree = "<group>"; };
 		E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRemoteView.m; sourceTree = "<group>"; };
@@ -263,8 +257,6 @@
 		E60C905E24CEB7F500291CDA /* VideoCall */ = {
 			isa = PBXGroup;
 			children = (
-				E6A5DFEE24D6D06A007E7D14 /* View */,
-				E60C906E24CEB84000291CDA /* Utils */,
 				E60C905F24CEB7FD00291CDA /* Controller */,
 			);
 			path = VideoCall;
@@ -376,17 +368,6 @@
 				E62B99CE24DD75C100152697 /* KSProfileConfigure.m */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		E630B64524B946C300A5CA72 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				E664F8F124B89CB70092FCE2 /* KSMediaCapture.h */,
-				E664F8F224B89CB70092FCE2 /* KSMediaCapture.m */,
-				E630B64624B946E200A5CA72 /* KSMediaConnection.h */,
-				E630B64724B946E200A5CA72 /* KSMediaConnection.m */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		E6400F2724B8507F004C7060 = {
@@ -506,13 +487,13 @@
 		E67BC59B24B853DE004BBA8A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E6BC0B1524E29C55005A955A /* WebRTC */,
 				E67695AB24DEA0A30034A478 /* Library */,
 				E67A6A9E24DE910500BCE4B9 /* Super */,
 				E67A6A9924DE8EF100BCE4B9 /* Call */,
 				E62B99C024DD5BA700152697 /* Kits */,
 				E60C905E24CEB7F500291CDA /* VideoCall */,
 				E67BC59E24B85498004BBA8A /* Custom */,
-				E67BC59D24B85424004BBA8A /* VideoChat */,
 				E67BC59C24B853FE004BBA8A /* Main */,
 			);
 			path = Classes;
@@ -527,18 +508,6 @@
 				E6400F3724B8507F004C7060 /* ViewController.m */,
 			);
 			path = Main;
-			sourceTree = "<group>";
-		};
-		E67BC59D24B85424004BBA8A /* VideoChat */ = {
-			isa = PBXGroup;
-			children = (
-				E6A2E7F724BC56F10008C53D /* View */,
-				E630B64524B946C300A5CA72 /* Utils */,
-				E67BC5B824B86156004BBA8A /* Model */,
-				E67BC5B424B860BE004BBA8A /* Handler */,
-				E67BC5B324B86093004BBA8A /* Controller */,
-			);
-			path = VideoChat;
 			sourceTree = "<group>";
 		};
 		E67BC59E24B85498004BBA8A /* Custom */ = {
@@ -592,15 +561,6 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
-		E67BC5B324B86093004BBA8A /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E67BC5A624B85640004BBA8A /* KSVideoChatController.h */,
-				E67BC5A724B85640004BBA8A /* KSVideoChatController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
 		E67BC5B424B860BE004BBA8A /* Handler */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,19 +579,9 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		E6A2E7F724BC56F10008C53D /* View */ = {
-			isa = PBXGroup;
-			children = (
-				E6A2E7F824BC57120008C53D /* KSEAGLVideoView.h */,
-				E6A2E7F924BC57120008C53D /* KSEAGLVideoView.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
 		E6A5DFEE24D6D06A007E7D14 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				E67A6A7B24DE7A8300BCE4B9 /* Header */,
 				E6FD827E24DBD2F300E10495 /* SubView */,
 				E6A5DFFC24D6DF08007E7D14 /* KSLocalView.h */,
 				E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */,
@@ -702,6 +652,30 @@
 				E6AC710424DD2A8D00C7134D /* KSWaitingAnswersMemberCell.m */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		E6BC0B1524E29C55005A955A /* WebRTC */ = {
+			isa = PBXGroup;
+			children = (
+				E67BC5B424B860BE004BBA8A /* Handler */,
+				E67BC5B824B86156004BBA8A /* Model */,
+				E6BC0B1624E29CA7005A955A /* Connection */,
+				E60C906E24CEB84000291CDA /* Utils */,
+				E6A5DFEE24D6D06A007E7D14 /* View */,
+				E67A6A7B24DE7A8300BCE4B9 /* Header */,
+			);
+			path = WebRTC;
+			sourceTree = "<group>";
+		};
+		E6BC0B1624E29CA7005A955A /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				E664F8F124B89CB70092FCE2 /* KSMediaCapture.h */,
+				E664F8F224B89CB70092FCE2 /* KSMediaCapture.m */,
+				E630B64624B946E200A5CA72 /* KSMediaConnection.h */,
+				E630B64724B946E200A5CA72 /* KSMediaConnection.m */,
+			);
+			path = Connection;
 			sourceTree = "<group>";
 		};
 		E6FD827E24DBD2F300E10495 /* SubView */ = {
@@ -934,7 +908,6 @@
 				E60C906224CEB80E00291CDA /* KSVideoCallController.m in Sources */,
 				E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */,
 				E6AC70FE24DD21B800C7134D /* KSAnswerBarView.m in Sources */,
-				E6A2E7FA24BC57120008C53D /* KSEAGLVideoView.m in Sources */,
 				E6277C2F24DE9B8A008D9E96 /* KSExecuteArgs.m in Sources */,
 				E6FD829024DBE6A500E10495 /* UIImage+Category.m in Sources */,
 				E6FD828724DBD65E00E10495 /* KSProfileView.m in Sources */,
@@ -951,7 +924,6 @@
 				E6AC70EB24DCF58F00C7134D /* KSIputView.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
 				E6A5DFFB24D6D06A007E7D14 /* KSVisualEffectView.m in Sources */,
-				E67BC5A824B85640004BBA8A /* KSVideoChatController.m in Sources */,
 				E60C907F24CEB85000291CDA /* KSCaptureController.m in Sources */,
 				E6277C3224DE9BE3008D9E96 /* KSAbstract.m in Sources */,
 				E6FD82B724DC278C00E10495 /* KSButton.m in Sources */,
