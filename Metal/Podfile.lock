@@ -1,0 +1,24 @@
+PODS:
+  - GoogleWebRTC (1.1.29400)
+  - MJExtension (3.2.1)
+  - SocketRocket (0.5.1)
+
+DEPENDENCIES:
+  - GoogleWebRTC (~> 1.1.29400)
+  - MJExtension (~> 3.2.1)
+  - SocketRocket (~> 0.5.1)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - GoogleWebRTC
+    - MJExtension
+    - SocketRocket
+
+SPEC CHECKSUMS:
+  GoogleWebRTC: cfb83bc346435a17fe06bb05f04ad826b858a7fb
+  MJExtension: 635f2c663dcb1bf76fa4b715b2570a5710aec545
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+
+PODFILE CHECKSUM: 4bfb935b90dbec00fbbcd327dc552ab88a6b9a76
+
+COCOAPODS: 1.9.3
