@@ -29,7 +29,6 @@
         self.scale    = scale;
         self.mode     = mode;
         self.callType = callType;
-        //[self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
 }
@@ -59,6 +58,7 @@
 
 - (void)setLocalViewSession:(AVCaptureSession *)session {
     _previewLayer.session = session;
+    _previewLayer.hidden  = session == nil ? YES : NO;
 }
 
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {

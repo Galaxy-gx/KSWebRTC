@@ -17,15 +17,15 @@
 #import "KSTopBarView.h"
 #import "KSCallState.h"
 
-@interface KSCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
+@interface KSCallController ()<KSMessageHandlerDelegate>
 
-@property (nonatomic, weak           ) KSCallView        *callView;
-@property (nonatomic, weak           ) KSTopBarView      *topBarView;
-@property (nonatomic, strong         ) KSMessageHandler  *msgHandler;
-@property (nonatomic, strong         ) KSMediaCapture    *mediaCapture;
-@property (nonatomic, assign         ) BOOL              isConnect;
-@property (nonatomic, assign,readonly) KSCallState       callState;
-@property (nonatomic, readonly       ) KSMediaConnection *localConnection;
+@property (nonatomic, weak            ) KSCallView        *callView;
+@property (nonatomic, weak            ) KSTopBarView      *topBarView;
+@property (nonatomic, strong          ) KSMessageHandler  *msgHandler;
+@property (nonatomic, strong          ) KSMediaCapture    *mediaCapture;
+@property (nonatomic, assign          ) BOOL              isConnect;
+@property (nonatomic, assign, readonly) KSCallState       callState;
+@property (nonatomic, weak, readonly  ) KSMediaConnection *localConnection;
 
 @end
 
@@ -43,7 +43,7 @@
     [_mediaCapture captureLocalMedia];
     
     [_callView setLocalViewSession:_mediaCapture.capturer.captureSession];
-
+    
     _msgHandler                      = [[KSMessageHandler alloc] init];
     _msgHandler.delegate             = self;
 }
@@ -55,12 +55,11 @@
     int width                       = 96;
     int height                      = width / layout.scale.width * layout.scale.height;
     layout.layout                   = KSLayoutMake(width, height, 10, 10);
-
+    
     CGFloat statusHeight            = [[UIApplication sharedApplication] statusBarFrame].size.height;
     CGFloat navHeight               = self.navigationController.navigationBar.bounds.size.height;
-
+    
     KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeSingleVideo];
-    callView.delegate               = self;
     callView.topPadding             = statusHeight + navHeight;
     _callView                       = callView;
     
@@ -72,7 +71,7 @@
     [callView setEventCallback:callback];
     [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
     [self.view addSubview:callView];
-
+    
     KSProfileConfigure *configure   = [[KSProfileConfigure alloc] init];
     configure.topPaddding           = 173;
     configure.title                 = @"Hamasaki Ayumi";
@@ -81,37 +80,15 @@
     configure.desc                  = @"Invite you to a video call";
     configure.descFont              = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
     configure.descOffst             = KS_Extern_Point08;
-
+    
     [_callView setProfileConfigure:configure];
     [_callView setAnswerState:KSAnswerStateAwait];
-
+    
     UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
     arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
     self.superBar.backBarButtonItem = arrowBtn;
     [self.superBar toFront];
-}
-
-- (void)onArrowClick {
-    NSLog(@"%s",__FUNCTION__);
-    [self dismiss];
-}
-
-- (void)onSwitchCameraClick {
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onAddMemberClick {
-    NSLog(@"%s",__FUNCTION__);
-}
-
-- (void)onScaleDownClick {
-    NSLog(@"%s",__FUNCTION__);
-    [self dismiss];
-}
-
-- (void)onIdentifierClick {
-    NSLog(@"%s",__FUNCTION__);
 }
 
 - (void)triggerEvent:(KSEventType)eventType {
@@ -151,9 +128,59 @@
         case KSEventTypeInConversationHangup:
             [self inConversationHangup];
             break;
+        case KSEventTypeMeetingThemeMicrophoneOpen:
+            [self meetingThemeMicrophoneOpen];
+            break;
+        case KSEventTypeMeetingThemeMicrophoneClose:
+            [self meetingThemeMicrophoneClose];
+            break;
+        case KSEventTypeMeetingThemeVolumeOpen:
+            [self meetingThemeVolumeOpen];
+            break;
+        case KSEventTypeMeetingThemeVolumeClose:
+            [self meetingThemeVolumeClose];
+            break;
+        case KSEventTypeMeetingThemeCameraOpen:
+            [self meetingThemeCameraOpen];
+            break;
+        case KSEventTypeMeetingThemeCameraClose:
+            [self meetingThemeCameraClose];
+            break;
+        case KSEventTypeMeetingThemeBluetoothOpen:
+            [self meetingThemeVolumeOpen];
+            break;
+        case KSEventTypeMeetingThemeBluetoothClose:
+            [self meetingThemeBluetoothClose];
+            break;
+        case KSEventTypeStartMeeting:
+            break;
         default:
             break;
     }
+}
+
+// 按钮操作
+- (void)onArrowClick {
+    NSLog(@"%s",__FUNCTION__);
+    [self dismiss];
+}
+
+- (void)onSwitchCameraClick {
+    [_mediaCapture switchCamera];
+    NSLog(@"%s",__FUNCTION__);
+}
+
+- (void)onAddMemberClick {
+    NSLog(@"%s",__FUNCTION__);
+}
+
+- (void)onScaleDownClick {
+    NSLog(@"%s",__FUNCTION__);
+    [self dismiss];
+}
+
+- (void)onIdentifierClick {
+    NSLog(@"%s",__FUNCTION__);
 }
 
 - (void)callerHangup {
@@ -175,7 +202,7 @@
     
     [_callView displayCallBar];
 }
-// 按钮操作
+
 //会话中开启麦克风
 - (void)inConversationMicrophoneOpen {
     [self.localConnection unmuteAudio];
@@ -225,9 +252,50 @@
     [self.msgHandler requestHangup];
 }
 
+//会议主题面板中开启麦克风
+- (void)meetingThemeMicrophoneOpen {
+    [self.localConnection unmuteAudio];
+}
+
+//会议主题面板中关闭麦克风
+- (void)meetingThemeMicrophoneClose {
+    [self.localConnection muteAudio];
+}
+
+//会议主题面板中开启声音
+- (void)meetingThemeVolumeOpen {
+    [_mediaCapture speakerOn];
+}
+
+//会议主题面板中静音
+- (void)meetingThemeVolumeClose {
+    [_mediaCapture speakerOff];
+}
+
+//会议主题面板中开启摄像机
+- (void)meetingThemeCameraOpen {
+    [_mediaCapture startCapture];
+}
+
+//会议主题面板中关闭摄像机
+- (void)meetingThemeCameraClose {
+    [_mediaCapture stopCapture];
+}
+
+
+//会议主题面板中开启蓝牙
+- (void)meetingThemeBluetoothOpen {
+    
+}
+
+//会议主题面板中关闭蓝牙
+- (void)meetingThemeBluetoothClose {
+    
+}
+
 //KSMessageHandlerDelegate
 - (void)messageHandlerEndOfSession:(KSMessageHandler *)messageHandler {
-   
+    
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
@@ -245,23 +313,6 @@
 - (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
     self.topBarView.hidden = NO;
     return [_callView remoteViewOfHandleId:handleId];
-}
-
-//KSVideoCallViewDelegate
-- (void)videoCallViewDidChangeRoute:(KSCallView *)view {
-    
-}
-
-- (void)videoCallViewDidEnableStats:(KSCallView *)view {
-    
-}
-
-- (void)videoCallViewDidHangup:(KSCallView *)view {
-    
-}
-
-- (void)videoCallViewDidSwitchCamera:(KSCallView *)view {
-    
 }
 
 //KSMessageHandlerDelegate

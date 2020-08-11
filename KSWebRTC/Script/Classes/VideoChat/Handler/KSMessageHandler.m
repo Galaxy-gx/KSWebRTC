@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
 @property (nonatomic, weak) RTCPeerConnection     *publisherPeerConnection;
+
 @end
 
 @implementation KSMessageHandler
@@ -390,12 +391,14 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)socketReconnectionFailure:(KSWebSocket *)socket {
     
 }
+
 /**
  服务端断开
  */
 - (void)socketDidClose:(KSWebSocket *)socket {
     
 }
+
 /**
  网络变化回调
  */

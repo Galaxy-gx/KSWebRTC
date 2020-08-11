@@ -14,17 +14,16 @@
 
 @interface KSCallView()
 
-@property(nonatomic,weak)UIScrollView *scrollView;
-@property(nonatomic,weak)KSLocalView *localView;
-@property(nonatomic,weak)KSProfileView *profileView;
-@property(nonatomic,weak)KSAnswerBarView *answerBarView;
-@property(nonatomic,weak)KSCallBarView *callBarView;
+@property (nonatomic,weak  ) UIScrollView    *scrollView;
+@property (nonatomic,weak  ) KSLocalView     *localView;
+@property (nonatomic,weak  ) KSProfileView   *profileView;
+@property (nonatomic,weak  ) KSAnswerBarView *answerBarView;
+@property (nonatomic,weak  ) KSCallBarView   *callBarView;
 
-@property(nonatomic,strong)NSMutableArray *remoteKits;
-@property(nonatomic,strong)KSTileLayout *remoteLayout;
-@property(nonatomic,assign)KSCallType callType;
-@property(nonatomic,assign)CGPoint tilePoint;
-@property(nonatomic,assign)BOOL isDrag;
+@property (nonatomic,strong) NSMutableArray  *remoteKits;
+@property (nonatomic,strong) KSTileLayout    *remoteLayout;
+@property (nonatomic,assign) KSCallType      callType;
+@property (nonatomic,assign) CGPoint         tilePoint;
 
 @end
 

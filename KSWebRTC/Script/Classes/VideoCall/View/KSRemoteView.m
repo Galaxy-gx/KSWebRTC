@@ -51,7 +51,7 @@
 }
 
 -(void)setHandleId:(NSNumber *)handleId {
-    _handleId = handleId;
+    _handleId            = handleId;
     _remoteView.handleId = handleId;
 }
 

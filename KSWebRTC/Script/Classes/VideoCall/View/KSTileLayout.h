@@ -26,8 +26,8 @@ KSLayoutMake(CGFloat width, CGFloat height, CGFloat hpadding, CGFloat vpadding)
 
 @interface KSTileLayout : NSObject
 
-@property(nonatomic,assign)KSLayout layout;
-@property(nonatomic,assign)KSScale scale;
-@property(nonatomic,assign)KSContentMode mode;
+@property (nonatomic,assign) KSLayout      layout;
+@property (nonatomic,assign) KSScale       scale;
+@property (nonatomic,assign) KSContentMode mode;
 
 @end

@@ -22,7 +22,6 @@ typedef NS_ENUM(NSInteger, KSEventType) {
     KSEventTypeInConversationBluetoothOpen,//会话中开启蓝牙
     KSEventTypeInConversationBluetoothClose,//会话中关闭蓝牙
     KSEventTypeInConversationHangup,//会话中挂断
-    
     KSEventTypeMeetingThemeMicrophoneOpen,//会议主题开启麦克风
     KSEventTypeMeetingThemeMicrophoneClose,//会议主题关闭麦克风
     KSEventTypeMeetingThemeVolumeOpen,//会议主题开启声音

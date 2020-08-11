@@ -19,19 +19,7 @@
 //Kit
 #import "KSRemoteView.h"
 
-@class KSCallView;
-
-@protocol KSVideoCallViewDelegate <NSObject>
-@optional
-//- (void)videoCallViewDidChangeRoute:(KSCallView *)view;
-//- (void)videoCallViewDidEnableStats:(KSCallView *)view;
-//- (void)videoCallViewDidHangup:(KSCallView *)view;
-//- (void)videoCallViewDidSwitchCamera:(KSCallView *)view;
-@end
-
 @interface KSCallView : KSEventCallbackView
-
-@property(nonatomic,weak)id<KSVideoCallViewDelegate> delegate;
 @property(nonatomic,assign)CGFloat topPadding;
 
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType;

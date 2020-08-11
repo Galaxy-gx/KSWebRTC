@@ -13,7 +13,7 @@
 #import "KSMediaCapture.h"
 #import "KSMsg.h"
 #import "UIButton+Category.h"
-@interface KSVideoCallController ()<KSVideoCallViewDelegate,KSMessageHandlerDelegate>
+@interface KSVideoCallController ()<KSMessageHandlerDelegate>
 
 @property(nonatomic, weak) KSCallView *videoCallView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
@@ -50,7 +50,6 @@
     layout.layout = KSLayoutMake(width, height, 10, 10);
     
     KSCallView *videoCallView = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeManyVideo];
-    videoCallView.delegate = self;
     [videoCallView createLocalViewWithLayout:layout resizingMode:KSResizingModeTile callType:KSCallTypeManyVideo];
     _videoCallView = videoCallView;
     [self.view addSubview:videoCallView];
