@@ -411,10 +411,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream {
     dispatch_async(dispatch_get_main_queue(), ^{
         if (stream.videoTracks.count > 0) {
-            RTCVideoTrack *remoteVideoTrack = stream.videoTracks[0];
-            RTCEAGLVideoView *remoteView = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+            RTCVideoTrack *remoteVideoTrack  = stream.videoTracks[0];
+            RTCEAGLVideoView *remoteView     = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
+            mediaConnection.remoteVideoView  = remoteView;
             [remoteVideoTrack addRenderer:remoteView];
-            mediaConnection.videoTrack = remoteVideoTrack;
+            mediaConnection.remoteVideoTrack = remoteVideoTrack;
         }
     });
 }

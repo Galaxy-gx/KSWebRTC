@@ -133,7 +133,10 @@
 - (void)close {
     //[_capture close];
     //_capture          = nil;
-    
+    RTCMediaStream *mediaStream = [_connection.localStreams firstObject];
+    if (mediaStream) {
+        [_connection removeStream:mediaStream];
+    }
     [_connection close];
     _connection       = nil;
     
