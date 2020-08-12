@@ -19,8 +19,6 @@
 @property (nonatomic, strong) RTCVideoTrack            *videoTrack;
 @property (nonatomic, strong) RTCAudioTrack            *audioTrack;
 
-@property (nonatomic, strong) AVCaptureSession         *captureSession;
-
 - (void)createPeerConnectionFactory;
 
 - (void)captureLocalMedia;

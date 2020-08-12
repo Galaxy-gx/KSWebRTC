@@ -84,7 +84,6 @@ static int const kFramerateLimit         = 30.0;
     if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPresetiFrame960x540]) {
         _capturer.captureSession.sessionPreset = AVCaptureSessionPresetiFrame960x540;
     }
-    
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
 }

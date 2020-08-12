@@ -11,6 +11,7 @@
 #import "KSCallState.h"
 #import "KSMediaConnection.h"
 #import "KSWebSocket.h"
+#import "KSMediaInfo.h"
 
 @class KSMsg;
 @class KSMessageHandler;
@@ -18,24 +19,26 @@
 @class KSDetached;
 
 @protocol KSMessageHandlerDelegate <NSObject>
+
 @required
-//会话结束
-- (void)messageHandlerEndOfSession:(KSMessageHandler *)messageHandler;
+- (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId;
+- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
 
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
 - (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId;
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket;
+- (void)messageHandler:(KSMessageHandler *)messageHandler didAddMediaConnection:(KSMediaConnection *)connection;
+
 @end
 
 @interface KSMessageHandler : NSObject
 
-@property (nonatomic, weak) id<KSMessageHandlerDelegate> delegate;
-@property (nonatomic, assign  ) KSCallState       callState;
-@property (nonatomic, readonly) KSMediaConnection *localConnection;
+@property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
+@property (nonatomic, assign )KSCallState callState;
+//@property (nonatomic, readonly) KSMediaConnection *localConnection;
 
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;

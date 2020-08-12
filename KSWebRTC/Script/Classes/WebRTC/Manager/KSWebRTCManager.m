@@ -10,7 +10,9 @@
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate>
 
-@property (nonatomic, strong) KSMessageHandler  *msgHandler;
+@property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, weak) KSMediaConnection  *localConnection;
+@property (nonatomic, strong) NSMutableArray   *mediaConnections;
 
 @end
 
@@ -35,10 +37,17 @@
 }
 
 #pragma mark - KSMessageHandlerDelegate
-- (void)messageHandlerEndOfSession:(KSMessageHandler *)messageHandler {
-    if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEndOfSession:)]) {
-        [self.delegate webRTCManagerHandlerEndOfSession:self];
-    }
+- (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId {
+    //若不返回错误，则ICE错误
+    return  [self mediaConnectionOfHandleId:handleId];
+}
+
+- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
+    return _mediaCapture;
+}
+
+- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    return [self.delegate remoteViewOfWebRTCManager:self handleId:handleId];
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
@@ -48,17 +57,18 @@
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfHandleId:)]) {
-        [self.delegate webRTCManager:self leaveOfHandleId:handleId];
+    KSMediaConnection *connection = [self mediaConnectionOfHandleId:handleId];
+    if (connection == nil) {
+        return;
     }
-}
-
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
-    return _mediaCapture;
-}
-
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    return [self.delegate remoteViewOfWebRTCManager:self handleId:handleId];
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfHandleId:connection:)]) {
+        [self.delegate webRTCManager:self leaveOfHandleId:handleId connection:connection];
+    }
+    if (self.mediaConnections.count == 1) {
+        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEndOfSession:)]) {
+            [self.delegate webRTCManagerHandlerEndOfSession:self];
+        }
+    }
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket {
@@ -75,6 +85,15 @@
     }
 }
 
+- (void)messageHandler:(KSMessageHandler *)messageHandler didAddMediaConnection:(KSMediaConnection *)connection {
+    if (connection.mediaInfo.isLocal) {
+        _localConnection = connection;
+    }
+    connection.index = (int)self.mediaConnections.count;
+    [self.mediaConnections addObject:connection];
+    [self.delegate webRTCManager:self didAddMediaConnection:connection];
+}
+
 #pragma mark - Get
 -(AVCaptureSession *)captureSession {
     return self.mediaCapture.capturer.captureSession;
@@ -82,10 +101,6 @@
 
 -(KSCallState)callState {
     return _msgHandler.callState;
-}
-
--(KSMediaConnection *)localConnection {
-    return _msgHandler.localConnection;
 }
 
 #pragma mark - 事件
@@ -139,6 +154,54 @@
 
 + (void)socketSendHangup {
     [[KSWebRTCManager shared].msgHandler requestHangup];
+}
+
+//data
++ (KSMediaConnection *)connectionOfIndex:(NSInteger)index {
+    if (index >= [KSWebRTCManager shared].mediaConnections.count) {
+        return nil;
+    }
+    return [KSWebRTCManager shared].mediaConnections[index];
+}
+
++ (NSInteger)connectionCount {
+    return [KSWebRTCManager shared].mediaConnections.count;
+}
+
++ (void)removeConnectionAtIndex:(int)index {
+    if (index >= [KSWebRTCManager shared].mediaConnections.count) {
+        return;
+    }
+    KSMediaConnection *connection = [KSWebRTCManager shared].mediaConnections[index];
+    [[KSWebRTCManager shared].mediaConnections removeObjectAtIndex:index];
+    [connection close];
+    connection = nil;
+}
+
++ (void)removeConnection:(KSMediaConnection *)connection {
+    if (connection == nil) {
+        return;
+    }
+    [[KSWebRTCManager shared].mediaConnections removeObject:connection];
+    [connection close];
+    connection = nil;
+}
+
+-(KSMediaConnection *)mediaConnectionOfHandleId:(NSNumber *)handleId {
+    for (KSMediaConnection *connection in self.mediaConnections) {
+        if (connection.handleId == handleId) {
+            return connection;
+        }
+    }
+    return nil;
+}
+
+#pragma mark - 懒加载
+-(NSMutableArray *)mediaConnections {
+    if (_mediaConnections == nil) {
+        _mediaConnections = [NSMutableArray array];
+    }
+    return _mediaConnections;
 }
 
 @end

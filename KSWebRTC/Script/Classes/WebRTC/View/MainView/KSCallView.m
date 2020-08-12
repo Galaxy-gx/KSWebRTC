@@ -11,8 +11,10 @@
 #import "KSProfileView.h"
 #import "KSAnswerBarView.h"
 #import "KSCallBarView.h"
+#import "KSRemoteCell.h"
+#import "KSLocalCell.h"
 
-@interface KSCallView()
+@interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic,weak  ) UIScrollView    *scrollView;
 @property (nonatomic,weak  ) KSLocalView     *localView;
@@ -25,7 +27,12 @@
 @property (nonatomic,assign) KSCallType      callType;
 @property (nonatomic,assign) CGPoint         tilePoint;
 
+@property(nonatomic,weak)UICollectionView    *collectionView;
+
 @end
+
+static NSString *const remoteCellIdentifier = @"remoteCellIdentifier";
+static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 @implementation KSCallView
 
@@ -33,7 +40,8 @@
     if (self = [super initWithFrame:frame]) {
         self.remoteLayout = layout;
         self.callType     = callType;
-        [self initKit];
+        //[self initKit];
+        [self initCollectionView];
     }
     return self;
 }
@@ -42,6 +50,29 @@
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView = scrollView;
     [self addSubview:scrollView];
+}
+
+- (void)initCollectionView {
+    CGFloat padding                        = 10;
+    CGFloat cell_wh                        = (self.bounds.size.width - padding)/2;
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.itemSize                    = CGSizeMake(cell_wh, cell_wh);
+    flowLayout.minimumLineSpacing          = 0;
+    flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
+    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
+    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
+    
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _topPadding, self.frame.size.width, self.bounds.size.height)
+                                                                collectionViewLayout:flowLayout];
+    collectionView.backgroundColor         = [UIColor ks_grayBar];
+    
+    collectionView.dataSource              = self;
+    collectionView.delegate                = self;
+    _collectionView                        = collectionView;
+    [collectionView registerClass:[KSRemoteCell class] forCellWithReuseIdentifier:remoteCellIdentifier];
+    [collectionView registerClass:[KSLocalCell class] forCellWithReuseIdentifier:localCellIdentifier];
+    
+    [self addSubview:collectionView];
 }
 
 - (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType {
@@ -222,7 +253,7 @@
     return _remoteKits;
 }
 
-//KIT:KSProfileView
+#pragma mark - KSProfileView
 - (void)setProfileConfigure:(KSProfileConfigure *)configure {
     if (_profileView == nil) {
         KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, configure.topPaddding, self.bounds.size.width, 204) configure:configure];
@@ -241,7 +272,7 @@
     }
 }
 
-//KIT:KSAnswerBarView
+#pragma mark - KSAnswerBarView
 - (void)setAnswerState:(KSAnswerState)state {
     if (_answerBarView == nil) {
         CGFloat y                      = self.bounds.size.height - (68 + 62);
@@ -263,7 +294,7 @@
     }
 }
 
-//KIT:KSCallBarView
+#pragma mark - KSCallBarView
 - (void)displayCallBar {
     [self hideAnswerBar];
     [self hideProfile];
@@ -277,4 +308,57 @@
     }
 }
 
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if ([self.dataSource respondsToSelector:@selector(callView:numberOfItemsInSection:)]) {
+        return [self.dataSource callView:self numberOfItemsInSection:section];
+    }
+    return 0;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    KSMediaConnection *connection = nil;
+    if ([self.dataSource respondsToSelector:@selector(callView:itemAtIndexPath:)]) {
+        connection = [self.dataSource callView:self itemAtIndexPath:indexPath];
+    }
+    if (connection == nil) {
+        return nil;
+    }
+    if (connection.mediaInfo.isLocal) {
+        KSLocalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:localCellIdentifier forIndexPath:indexPath];
+        cell.connection   = connection;
+        return cell;
+    }
+    else{
+        KSRemoteCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:remoteCellIdentifier forIndexPath:indexPath];
+        cell.connection    = connection;
+        return cell;
+    }
+}
+
+/*
+//将要加载某个Item时调用的方法
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+}
+*/
+
+#pragma mark - UICollectionView
+- (void)reloadItemsAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [_collectionView reloadItemsAtIndexPaths:@[indexPath]];
+}
+
+- (void)insertItemsAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [_collectionView insertItemsAtIndexPaths:@[indexPath]];
+}
+
+- (void)deleteItemsAtIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+}
+
+- (void)reloadCollectionView {
+    [_collectionView reloadData];
+}
 @end

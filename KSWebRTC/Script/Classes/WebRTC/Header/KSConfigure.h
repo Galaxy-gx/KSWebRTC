@@ -31,15 +31,21 @@ typedef NS_ENUM(NSInteger, KSAnswerState) {
     KSAnswerStateJoin,//接通
 };
 
-//typedef NS_ENUM(NSInteger, KSIdentity) {
-//    KSIdentityUnknown,
-//    KSIdentityLocal,
-//    KSIdentityRemote,
-//};
+typedef NS_ENUM(NSInteger, KSIdentity) {
+    KSIdentityUnknown,
+    KSIdentityLocal,
+    KSIdentityRemote,
+};
 
 typedef NS_ENUM(NSInteger, KSDragState) {
     KSDragStateInactivity,//不活动的
     KSDragStateActivity,//活动的
+};
+
+typedef NS_ENUM(NSInteger, KSManipulation) {
+    KSManipulationSaveDisplay,//存储并展示
+    KSManipulationSave,//存储
+    KSManipulationDisplay,//展示
 };
 
 struct KSScale {

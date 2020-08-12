@@ -7,12 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef NS_ENUM(NSInteger, KSAudioStateType) {
-    KSAudioStateTypeUnknown,
-    KSAudioStateTypeMute,
-    KSAudioStateTypeSound,
-};
+#import "KSCallState.h"
 
 @interface KSProfileBarView : UIView
 

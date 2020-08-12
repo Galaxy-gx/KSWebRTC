@@ -18,9 +18,11 @@
 #import "KSCallState.h"
 
 #import "KSWebRTCManager.h"
-@interface KSCallController ()<KSWebRTCManagerDelegate>
+@interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
+
 @property (nonatomic, weak) KSCallView   *callView;
 @property (nonatomic, weak) KSTopBarView *topBarView;
+
 @end
 
 @implementation KSCallController
@@ -49,6 +51,7 @@
 
     KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:[KSWebRTCManager shared].callType];
     callView.topPadding               = statusHeight + navHeight;
+    callView.dataSource               = self;
     _callView                         = callView;
 
     KSWeakSelf;
@@ -57,9 +60,11 @@
         [weakSelf triggerEvent:eventType];
     };
     [callView setEventCallback:callback];
+    //测试注释
+    /*
     [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
-
     [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+     */
     [self.view addSubview:callView];
 
     KSProfileConfigure *configure     = [[KSProfileConfigure alloc] init];
@@ -222,7 +227,6 @@
     [KSWebRTCManager stopCapture];
 }
 
-
 //会话中开启蓝牙
 - (void)inConversationBluetoothOpen {
     
@@ -294,8 +298,10 @@
     
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfHandleId:(NSNumber *)handleId {
-     [_callView leaveOfHandleId:handleId];
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfHandleId:(NSNumber *)handleId connection:(KSMediaConnection *)connection {
+    [KSWebRTCManager removeConnection:connection];
+    [_callView deleteItemsAtIndex:connection.index];
+    //[_callView leaveOfHandleId:handleId];
 }
 
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager {
@@ -304,6 +310,21 @@
 
 - (void)webRTCManagerSocketDidFail:(KSWebRTCManager *)webRTCManager {
     
+}
+
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
+    //[_callView reloadItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+    //[_callView reloadCollectionView];
+    [_callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+}
+
+//KSCallViewDataSource
+- (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {
+    return [KSWebRTCManager connectionCount];
+}
+
+- (KSMediaConnection *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath {
+    return [KSWebRTCManager connectionOfIndex:indexPath.item];
 }
 
 //懒加载

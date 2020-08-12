@@ -51,6 +51,10 @@
     return peerConnection;
 }
 
+-(AVCaptureSession *)captureSession {
+    return _capture.capturer.captureSession;
+}
+
 // 设置远端的媒体描述
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];

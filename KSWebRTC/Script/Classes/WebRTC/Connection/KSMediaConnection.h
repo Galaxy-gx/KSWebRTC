@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WebRTC/WebRTC.h>
 #import "KSMediaCapture.h"
+#import "KSMediaInfo.h"
 
 @class KSMediaConnection;
 @protocol KSMediaConnectionDelegate <NSObject>
@@ -23,12 +24,14 @@
 @interface KSMediaConnection : NSObject
 
 @property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
-@property (nonatomic, strong) RTCPeerConnection *connection;//WebRTC连接对象
-@property (nonatomic, weak  ) KSMediaCapture    *capture;
-@property (nonatomic, strong) RTCVideoTrack     *remoteVideoTrack;//视频轨
-@property (nonatomic, weak  ) RTCEAGLVideoView  *remoteVideoView;
-@property (nonatomic, strong) NSNumber          *handleId;
-@property (nonatomic, assign) BOOL              isLocal;
+@property (nonatomic, strong) RTCPeerConnection         *connection;//WebRTC连接对象
+@property (nonatomic, weak  ) KSMediaCapture            *capture;
+@property (nonatomic, strong) RTCVideoTrack             *remoteVideoTrack;//视频轨
+@property (nonatomic, weak  ) RTCEAGLVideoView          *remoteVideoView;
+@property (nonatomic, strong) NSNumber                  *handleId;
+@property (nonatomic, strong) KSMediaInfo               *mediaInfo;
+@property (nonatomic,assign ) int                       index;
+@property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
 
 - (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapture *)capture;
 

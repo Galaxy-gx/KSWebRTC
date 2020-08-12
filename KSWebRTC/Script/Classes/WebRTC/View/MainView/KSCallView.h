@@ -15,12 +15,25 @@
 //ViewModel
 #import "KSTileLayout.h"
 #import "KSProfileConfigure.h"
+#import "KSMediaInfo.h"
 
 //Kit
 #import "KSRemoteView.h"
 
+//Other
+#import "KSMediaConnection.h"
+
+@class KSCallView;
+@protocol KSCallViewDataSource <NSObject>
+
+- (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section;
+- (KSMediaConnection *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
 @interface KSCallView : KSEventCallbackView
-@property(nonatomic,assign)CGFloat topPadding;
+@property(nonatomic,assign)CGFloat                topPadding;
+@property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
 
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType;
 - (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType;
@@ -28,12 +41,17 @@
 - (void)leaveOfHandleId:(NSNumber *)handleId;
 - (RTCEAGLVideoView *)remoteViewOfHandleId:(NSNumber *)handleId;
 
-//KIT:KSProfileView
+#pragma mark - KSProfileView
 - (void)setProfileConfigure:(KSProfileConfigure *)configure;
-//KIT:KSAnswerBarView
+#pragma mark - KSAnswerBarView
 - (void)setAnswerState:(KSAnswerState)state;
 - (void)hideAnswerBar;
-//KIT:KSCallBarView
+#pragma mark - KSCallBarView
 - (void)displayCallBar;
+#pragma mark - UICollectionView
+- (void)reloadItemsAtIndex:(NSInteger)index;
+- (void)insertItemsAtIndex:(NSInteger)index;
+- (void)deleteItemsAtIndex:(NSInteger)index;
+- (void)reloadCollectionView;
 
 @end
