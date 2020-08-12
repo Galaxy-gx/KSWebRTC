@@ -61,7 +61,6 @@
 		E6C3527B24E11E660055C370 /* KSEventCallbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6C3527A24E11E660055C370 /* KSEventCallbackView.m */; };
 		E6E096BD24D7BBC800D083D2 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6E096BC24D7BBC800D083D2 /* UIView+Category.m */; };
 		E6FD828124DBD32700E10495 /* KSCallBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828024DBD32700E10495 /* KSCallBarView.m */; };
-		E6FD828424DBD4C900E10495 /* KSCallMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828324DBD4C900E10495 /* KSCallMenuView.m */; };
 		E6FD828724DBD65E00E10495 /* KSProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828624DBD65E00E10495 /* KSProfileView.m */; };
 		E6FD828A24DBE35D00E10495 /* NSObject+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828924DBE35D00E10495 /* NSObject+Category.m */; };
 		E6FD828D24DBE4BC00E10495 /* UIColor+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD828C24DBE4BC00E10495 /* UIColor+Category.m */; };
@@ -195,8 +194,6 @@
 		E6E096BC24D7BBC800D083D2 /* UIView+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
 		E6FD827F24DBD32700E10495 /* KSCallBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
 		E6FD828024DBD32700E10495 /* KSCallBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSCallBarView.m; sourceTree = "<group>"; };
-		E6FD828224DBD4C900E10495 /* KSCallMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCallMenuView.h; sourceTree = "<group>"; };
-		E6FD828324DBD4C900E10495 /* KSCallMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuView.m; sourceTree = "<group>"; };
 		E6FD828524DBD65E00E10495 /* KSProfileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSProfileView.h; sourceTree = "<group>"; };
 		E6FD828624DBD65E00E10495 /* KSProfileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSProfileView.m; sourceTree = "<group>"; };
 		E6FD828824DBE35D00E10495 /* NSObject+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+Category.h"; sourceTree = "<group>"; };
@@ -702,8 +699,6 @@
 				E6AC70FB24DD219400C7134D /* AnswerBar */,
 				E6FD82AF24DC24F100E10495 /* Meeting */,
 				E6FD82A624DC087700E10495 /* CallBar */,
-				E6FD828224DBD4C900E10495 /* KSCallMenuView.h */,
-				E6FD828324DBD4C900E10495 /* KSCallMenuView.m */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -891,7 +886,6 @@
 				E60C908024CEB85000291CDA /* ARDSignalingChannel.m in Sources */,
 				E67A6AA124DE915500BCE4B9 /* KSSuperController.m in Sources */,
 				E6FD829C24DBEFB600E10495 /* KSRoundImageView.m in Sources */,
-				E6FD828424DBD4C900E10495 /* KSCallMenuView.m in Sources */,
 				E62B99C724DD73FD00152697 /* KSWaitingAnswersView.m in Sources */,
 				E6FD829624DBE7DA00E10495 /* UIFont+Category.m in Sources */,
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
