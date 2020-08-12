@@ -44,6 +44,7 @@
 		E67BC5B224B85CDE004BBA8A /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B124B85CDE004BBA8A /* UIButton+Category.m */; };
 		E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */; };
 		E67BC5BB24B86171004BBA8A /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E67BC5BA24B86171004BBA8A /* KSMsg.m */; };
+		E680287E24E380B7003D849A /* KSWebRTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E680287D24E380B7003D849A /* KSWebRTCManager.m */; };
 		E6A2939C24DE445A008E41E1 /* KSLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A2939B24DE445A008E41E1 /* KSLayoutButton.m */; };
 		E6A5DFF824D6D06A007E7D14 /* KSRemoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */; };
 		E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A5DFF324D6D06A007E7D14 /* KSCallView.m */; };
@@ -155,6 +156,8 @@
 		E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
 		E67BC5B924B86171004BBA8A /* KSMsg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
 		E67BC5BA24B86171004BBA8A /* KSMsg.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
+		E680287C24E380B7003D849A /* KSWebRTCManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSWebRTCManager.h; sourceTree = "<group>"; };
+		E680287D24E380B7003D849A /* KSWebRTCManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSWebRTCManager.m; sourceTree = "<group>"; };
 		E6A2939A24DE445A008E41E1 /* KSLayoutButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSLayoutButton.h; sourceTree = "<group>"; };
 		E6A2939B24DE445A008E41E1 /* KSLayoutButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSLayoutButton.m; sourceTree = "<group>"; };
 		E6A5DFEF24D6D06A007E7D14 /* KSConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSConfigure.h; sourceTree = "<group>"; };
@@ -321,6 +324,15 @@
 				E6277C3124DE9BE3008D9E96 /* KSAbstract.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E62A713824E380350068A768 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				E680287C24E380B7003D849A /* KSWebRTCManager.h */,
+				E680287D24E380B7003D849A /* KSWebRTCManager.m */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		E62B99B624DD465700152697 /* TopBar */ = {
@@ -655,6 +667,7 @@
 		E6BC0B1524E29C55005A955A /* WebRTC */ = {
 			isa = PBXGroup;
 			children = (
+				E62A713824E380350068A768 /* Manager */,
 				E67695AB24DEA0A30034A478 /* Library */,
 				E67A6A9E24DE910500BCE4B9 /* Super */,
 				E67BC5B424B860BE004BBA8A /* Handler */,
@@ -914,6 +927,7 @@
 				E6A5DFF824D6D06A007E7D14 /* KSRemoteView.m in Sources */,
 				E67BC5A424B854E4004BBA8A /* KSWebSocket.m in Sources */,
 				E6FD82B224DC250F00E10495 /* KSMeetingBarView.m in Sources */,
+				E680287E24E380B7003D849A /* KSWebRTCManager.m in Sources */,
 				E67BC5A524B854E4004BBA8A /* KSWebSocketConfigure.m in Sources */,
 				E67A6AA724DE930E00BCE4B9 /* KSSuperController+Category.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,

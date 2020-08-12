@@ -8,9 +8,7 @@
 
 #import "KSMessageHandler.h"
 #import "KSMsg.h"
-#import "KSWebSocket.h"
 #import "KSMediaCapture.h"
-
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
 
@@ -185,7 +183,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 //Send
 // 创建会话
--(void)createSession {
+- (void)createSession {
     NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
     sendMessage[@"janus"]       = @"create";
@@ -194,7 +192,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     [_socket sendMessage:sendMessage];
 }
 
--(void)requestHangup {
+- (void)requestHangup {
     NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
     sendMessage[@"request"]     = @"hangup";
@@ -370,14 +368,19 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
-    [self createSession];
+    //[self createSession];
+    if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
+        [self.delegate messageHandler:self socketDidOpen:socket];
+    }
 }
 
 /**
  出现错误/连接失败时调用[如果设置自动重连，则不会调用]
  */
 - (void)socketDidFail:(KSWebSocket *)socket {
-    
+    if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidFail:)]) {
+        [self.delegate messageHandler:self socketDidFail:socket];
+    }
 }
 /**
  收到消息

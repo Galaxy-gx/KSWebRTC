@@ -10,6 +10,7 @@
 #import <WebRTC/WebRTC.h>
 #import "KSCallState.h"
 #import "KSMediaConnection.h"
+#import "KSWebSocket.h"
 
 @class KSMsg;
 @class KSMessageHandler;
@@ -26,12 +27,14 @@
 - (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId;
 - (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
 - (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
+- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
+- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket;
 @end
 
 @interface KSMessageHandler : NSObject
 
 @property (nonatomic, weak) id<KSMessageHandlerDelegate> delegate;
-@property (nonatomic, assign) KSCallState callState;
+@property (nonatomic, assign  ) KSCallState       callState;
 @property (nonatomic, readonly) KSMediaConnection *localConnection;
 
 - (void)connectServer:(NSString *)url;
@@ -43,4 +46,5 @@
 - (void)requestHangup;
 
 - (void)close;
+
 @end

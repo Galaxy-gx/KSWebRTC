@@ -9,8 +9,9 @@
 #import "KSMediaCapture.h"
 
 static NSString *const KARDMediaStreamId = @"ARDAMS";
-static NSString *const KARDAudioTrackId = @"ARDAMSa0";
-static NSString *const KARDVideoTrackId = @"ARDAMSv0";
+static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
+static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
+static int const kFramerateLimit         = 30.0;
 
 @interface KSMediaCapture()
 
@@ -80,18 +81,12 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     RTCVideoSource *videoSource = [_factory videoSource];
     _capturer                   = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
     _videoTrack                 = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
-    if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPreset640x480]) {
-        _capturer.captureSession.sessionPreset = AVCaptureSessionPreset640x480;
+    if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPresetiFrame960x540]) {
+        _capturer.captureSession.sessionPreset = AVCaptureSessionPresetiFrame960x540;
     }
     
     [self startCaptureWithDevice:device];
     //通过上面的几行代码就可以从摄像头捕获视频数据了。
-}
-
-- (void)switchCamera {
-    _isFront = !_isFront;
-    AVCaptureDevice *device = [self currentCamera];
-    [self startCaptureWithDevice:device];
 }
 
 - (void)switchTalkMode {
@@ -102,7 +97,6 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     else{
         [self stopCapture];
     }
-    
 }
 
 //关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
@@ -143,10 +137,16 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
   [_capturer stopCapture];
 }
 
+- (void)switchCamera {
+    _isFront = !_isFront;
+    AVCaptureDevice *device = [self currentCamera];
+    [self startCaptureWithDevice:device];
+}
+
 - (AVCaptureDevice *)currentCamera {
     NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
-    AVCaptureDevicePosition position = _isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
-    AVCaptureDevice *device = NULL;
+    AVCaptureDevicePosition position           = _isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
+    AVCaptureDevice *device                    = NULL;
     for (AVCaptureDevice *obj in captureDevices) {
         if (obj.position == position) {
             device = obj;
@@ -174,6 +174,68 @@ static NSString *const KARDVideoTrackId = @"ARDAMSv0";
     
     [_capturer stopCapture];
     _capturer   = nil;
+}
+
+- (void)stopCapture1 {
+  [_capturer stopCapture];
+}
+
+- (void)switchCamera1 {
+  _isFront = !_isFront;
+  [self startCapture];
+}
+
+- (void)startCapture1 {
+  AVCaptureDevicePosition position = _isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
+  AVCaptureDevice *device          = [self findDeviceForPosition:position];
+  AVCaptureDeviceFormat *format    = [self selectFormatForDevice:device];
+  if (format == nil) {
+    NSLog(@"No valid formats for device %@", device);
+    return;
+  }
+  NSInteger fps                    = [self selectFpsForFormat:format];
+  [_capturer startCaptureWithDevice:device format:format fps:fps];
+}
+
+#pragma mark - Private
+- (AVCaptureDevice *)findDeviceForPosition:(AVCaptureDevicePosition)position {
+  NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
+  for (AVCaptureDevice *device in captureDevices) {
+    if (device.position == position) {
+      return device;
+    }
+  }
+  return captureDevices[0];
+}
+
+- (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
+  NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
+  int targetWidth                           = 540;
+  int targetHeight                          = 960;
+  AVCaptureDeviceFormat *selectedFormat     = nil;
+  int currentDiff                           = INT_MAX;
+
+  for (AVCaptureDeviceFormat *format in formats) {
+    CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
+    FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
+    int diff = abs(targetWidth - dimension.width) + abs(targetHeight - dimension.height);
+    if (diff < currentDiff) {
+      selectedFormat = format;
+      currentDiff = diff;
+    } else if (diff == currentDiff && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+      selectedFormat = format;
+    }
+  }
+
+  return selectedFormat;
+}
+
+- (NSInteger)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
+  int maxSupportedFramerate = 0;
+  for (AVFrameRateRange *fpsRange in format.videoSupportedFrameRateRanges) {
+    maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
+  }
+  return fmin(maxSupportedFramerate, kFramerateLimit);
 }
 
 @end

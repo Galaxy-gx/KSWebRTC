@@ -17,16 +17,10 @@
 #import "KSTopBarView.h"
 #import "KSCallState.h"
 
-@interface KSCallController ()<KSMessageHandlerDelegate>
-
-@property (nonatomic, weak            ) KSCallView        *callView;
-@property (nonatomic, weak            ) KSTopBarView      *topBarView;
-@property (nonatomic, strong          ) KSMessageHandler  *msgHandler;
-@property (nonatomic, strong          ) KSMediaCapture    *mediaCapture;
-@property (nonatomic, assign          ) BOOL              isConnect;
-@property (nonatomic, assign, readonly) KSCallState       callState;
-@property (nonatomic, weak, readonly  ) KSMediaConnection *localConnection;
-
+#import "KSWebRTCManager.h"
+@interface KSCallController ()<KSWebRTCManagerDelegate>
+@property (nonatomic, weak) KSCallView   *callView;
+@property (nonatomic, weak) KSTopBarView *topBarView;
 @end
 
 @implementation KSCallController
@@ -34,60 +28,56 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initKit];
-    [self initProperty];
-}
-
-- (void)initProperty {
-    _mediaCapture                    = [[KSMediaCapture alloc] init];
-    [_mediaCapture createPeerConnectionFactory];
-    [_mediaCapture captureLocalMedia];
-    
-    [_callView setLocalViewSession:_mediaCapture.capturer.captureSession];
-    
-    _msgHandler                      = [[KSMessageHandler alloc] init];
-    _msgHandler.delegate             = self;
 }
 
 - (void)initKit {
-    KSTileLayout *layout            = [[KSTileLayout alloc] init];
-    layout.scale                    = KSScaleMake(9, 16);
-    layout.mode                     = KSContentModeScaleAspectFit;
-    int width                       = 96;
-    int height                      = width / layout.scale.width * layout.scale.height;
-    layout.layout                   = KSLayoutMake(width, height, 10, 10);
     
-    CGFloat statusHeight            = [[UIApplication sharedApplication] statusBarFrame].size.height;
-    CGFloat navHeight               = self.navigationController.navigationBar.bounds.size.height;
+    [[KSWebRTCManager shared] initRTC];
+    [KSWebRTCManager shared].delegate = self;
+    [KSWebRTCManager shared].callType = KSCallTypeSingleVideo;
+    [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     
-    KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:KSCallTypeSingleVideo];
-    callView.topPadding             = statusHeight + navHeight;
-    _callView                       = callView;
-    
+    KSTileLayout *layout              = [[KSTileLayout alloc] init];
+    layout.scale                      = KSScaleMake(9, 16);
+    layout.mode                       = KSContentModeScaleAspectFit;
+    int width                         = 96;
+    int height                        = width / layout.scale.width * layout.scale.height;
+    layout.layout                     = KSLayoutMake(width, height, 10, 10);
+
+    CGFloat statusHeight              = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
+
+    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:[KSWebRTCManager shared].callType];
+    callView.topPadding               = statusHeight + navHeight;
+    _callView                         = callView;
+
     KSWeakSelf;
-    KSEventCallback callback        = ^(KSEventType eventType, NSDictionary *info) {
+    KSEventCallback callback          = ^(KSEventType eventType, NSDictionary *info) {
         NSLog(@"|------| eventType: %d |------|",(int)eventType);
         [weakSelf triggerEvent:eventType];
     };
     [callView setEventCallback:callback];
-    [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:KSCallTypeSingleVideo];
+    [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+
+    [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
     [self.view addSubview:callView];
-    
-    KSProfileConfigure *configure   = [[KSProfileConfigure alloc] init];
-    configure.topPaddding           = 173;
-    configure.title                 = @"Hamasaki Ayumi";
-    configure.titleFont             = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
-    configure.titleOffst            = KS_Extern_Point32;
-    configure.desc                  = @"Invite you to a video call";
-    configure.descFont              = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
-    configure.descOffst             = KS_Extern_Point08;
-    
+
+    KSProfileConfigure *configure     = [[KSProfileConfigure alloc] init];
+    configure.topPaddding             = 173;
+    configure.title                   = @"Hamasaki Ayumi";
+    configure.titleFont               = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
+    configure.titleOffst              = KS_Extern_Point32;
+    configure.desc                    = @"Invite you to a video call";
+    configure.descFont                = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
+    configure.descOffst               = KS_Extern_Point08;
+
     [_callView setProfileConfigure:configure];
     [_callView setAnswerState:KSAnswerStateAwait];
-    
-    UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
-    arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
+
+    UIButton *arrowBtn                = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
+    arrowBtn.frame                    = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
-    self.superBar.backBarButtonItem = arrowBtn;
+    self.superBar.backBarButtonItem   = arrowBtn;
     [self.superBar toFront];
 }
 
@@ -166,7 +156,7 @@
 }
 
 - (void)onSwitchCameraClick {
-    [_mediaCapture switchCamera];
+    [KSWebRTCManager switchCamera];
     NSLog(@"%s",__FUNCTION__);
 }
 
@@ -194,43 +184,42 @@
 
 -(void)calleeAnswer {
     NSLog(@"%s",__FUNCTION__);
-    if (_isConnect) {
+    if ([KSWebRTCManager shared].isConnect == NO) {
         return;
     }
-    _isConnect = true;
-    [_msgHandler connectServer:@"ws://10.0.115.144:8188"];
     
+    [KSWebRTCManager socketCreateSession];
     [_callView displayCallBar];
 }
 
 //会话中开启麦克风
 - (void)inConversationMicrophoneOpen {
-    [self.localConnection unmuteAudio];
+    [KSWebRTCManager unmuteAudio];
 }
 
 //会话中关闭麦克风
 - (void)inConversationMicrophoneClose {
-    [self.localConnection muteAudio];
+    [KSWebRTCManager muteAudio];
 }
 
 //会话中开启声音
 - (void)inConversationVolumeOpen {
-    [_mediaCapture speakerOn];
+    [KSWebRTCManager speakerOn];
 }
 
 //会话中静音
 - (void)inConversationVolumeClose {
-    [_mediaCapture speakerOff];
+    [KSWebRTCManager speakerOff];
 }
 
 //会话中开启摄像机
 - (void)inConversationCameraOpen {
-    [_mediaCapture startCapture];
+    [KSWebRTCManager startCapture];
 }
 
 //会话中关闭摄像机
 - (void)inConversationCameraClose {
-    [_mediaCapture stopCapture];
+    [KSWebRTCManager stopCapture];
 }
 
 
@@ -246,43 +235,41 @@
 
 //会话中挂断
 - (void)inConversationHangup {
-    [_msgHandler close];
-    [_msgHandler requestHangup];
-    [_mediaCapture close];
-    _mediaCapture = nil;
+    [KSWebRTCManager socketSendHangup];
+    [KSWebRTCManager socketClose];
+    [KSWebRTCManager closeMediaCapture];
     [_callView setLocalViewSession:nil];
 }
 
 //会议主题面板中开启麦克风
 - (void)meetingThemeMicrophoneOpen {
-    [self.localConnection unmuteAudio];
+    [KSWebRTCManager unmuteAudio];
 }
 
 //会议主题面板中关闭麦克风
 - (void)meetingThemeMicrophoneClose {
-    [self.localConnection muteAudio];
+    [KSWebRTCManager muteAudio];
 }
 
 //会议主题面板中开启声音
 - (void)meetingThemeVolumeOpen {
-    [_mediaCapture speakerOn];
+    [KSWebRTCManager speakerOn];
 }
 
 //会议主题面板中静音
 - (void)meetingThemeVolumeClose {
-    [_mediaCapture speakerOff];
+    [KSWebRTCManager speakerOff];
 }
 
 //会议主题面板中开启摄像机
 - (void)meetingThemeCameraOpen {
-    [_mediaCapture startCapture];
+    [KSWebRTCManager startCapture];
 }
 
 //会议主题面板中关闭摄像机
 - (void)meetingThemeCameraClose {
-    [_mediaCapture stopCapture];
+    [KSWebRTCManager stopCapture];
 }
-
 
 //会议主题面板中开启蓝牙
 - (void)meetingThemeBluetoothOpen {
@@ -294,73 +281,32 @@
     
 }
 
-//KSMessageHandlerDelegate
-- (void)messageHandlerEndOfSession:(KSMessageHandler *)messageHandler {
+//KSWebRTCManagerDelegate
+- (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager {
     
 }
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
-    
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId {
-    [_callView leaveOfHandleId:handleId];
-}
-
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
-    return _mediaCapture;
-}
-
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+- (RTCEAGLVideoView *)remoteViewOfWebRTCManager:(KSWebRTCManager *)webRTCManager handleId:(NSNumber *)handleId {
     self.topBarView.hidden = NO;
     return [_callView remoteViewOfHandleId:handleId];
 }
 
-//KSMessageHandlerDelegate
-- (void)encodeWithCoder:(nonnull NSCoder *)coder {
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message {
     
 }
 
-- (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection {
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfHandleId:(NSNumber *)handleId {
+     [_callView leaveOfHandleId:handleId];
+}
+
+- (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager {
     
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
+- (void)webRTCManagerSocketDidFail:(KSWebRTCManager *)webRTCManager {
     
 }
 
-- (CGSize)sizeForChildContentContainer:(nonnull id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
-    return CGSizeZero;
-}
-
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(nonnull id<UIContentContainer>)container {
-    
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
-    
-}
-
-- (void)willTransitionToTraitCollection:(nonnull UITraitCollection *)newCollection withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator {
-    
-}
-
-- (void)didUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context withAnimationCoordinator:(nonnull UIFocusAnimationCoordinator *)coordinator {
-    
-}
-
-- (void)setNeedsFocusUpdate {
-    
-}
-
-- (BOOL)shouldUpdateFocusInContext:(nonnull UIFocusUpdateContext *)context {
-    return YES;
-}
-
-- (void)updateFocusIfNeeded {
-    
-}
-
+//懒加载
 -(KSTopBarView *)topBarView {
     if (_topBarView == nil) {
         KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:self.superBar.bounds];
@@ -372,15 +318,6 @@
         [topBarView.identifierBtn addTarget:self action:@selector(onIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
     }
     return _topBarView;
-}
-
-//Get
--(KSCallState)callState {
-    return _msgHandler.callState;
-}
-
--(KSMediaConnection *)localConnection {
-    return _msgHandler.localConnection;
 }
 
 @end
