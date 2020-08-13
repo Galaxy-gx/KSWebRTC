@@ -435,10 +435,19 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
     switch (newState) {
         case RTCIceConnectionStateDisconnected:
+        case RTCIceConnectionStateClosed:
+        case RTCIceConnectionStateFailed:
         {
-            if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
-                [self.delegate messageHandler:self leaveOfHandleId:mediaConnection.handleId];
+            if (mediaConnection.isClose) {
+                return;
             }
+            mediaConnection.isClose = YES;
+            __weak typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if ([weakSelf.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
+                    [weakSelf.delegate messageHandler:weakSelf leaveOfHandleId:mediaConnection.handleId];
+                }
+            });
         }
             break;
             

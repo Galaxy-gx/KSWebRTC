@@ -10,9 +10,9 @@
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate>
 
-@property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, weak) KSMediaConnection  *localConnection;
-@property (nonatomic, strong) NSMutableArray   *mediaConnections;
+@property (nonatomic, strong) KSMessageHandler  *msgHandler;
+@property (nonatomic, weak  ) KSMediaConnection *localConnection;
+@property (nonatomic, strong) NSMutableArray    *mediaConnections;
 
 @end
 
@@ -23,21 +23,23 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc] init];
+        [instance initMsgHandler];
     });
     return instance;
 }
 
+- (void)initMsgHandler {
+    _msgHandler          = [[KSMessageHandler alloc] init];
+    _msgHandler.delegate = self;
+}
+
 - (void)initRTCWithCallType:(KSCallType)callType {
     _callType                  = callType;
-    
     KSCapturerSetting *setting = [[KSCapturerSetting alloc] init];
     setting.isFront            = YES;
     setting.callType           = callType;
     setting.resolution         = CGSizeMake(540, 960);
     _mediaCapture              = [[KSMediaCapturer alloc] initWithSetting:setting];
-
-    _msgHandler                = [[KSMessageHandler alloc] init];
-    _msgHandler.delegate       = self;
 }
 
 #pragma mark - KSMessageHandlerDelegate
@@ -61,17 +63,16 @@
     if (connection == nil) {
         return;
     }
-    [KSWebRTCManager removeConnection:connection];
+    [self removeConnection:connection];
     
     if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfConnection:)]) {
         [self.delegate webRTCManager:self leaveOfConnection:connection];
     }
-    NSLog(@"|------------| 02 leaveOfHandleId : %lu |------------|",(unsigned long)self.mediaConnections.count);
     if (self.mediaConnections.count == 1) {
         if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEndOfSession:)]) {
             [self.delegate webRTCManagerHandlerEndOfSession:self];
         }
-        [self closeAll];
+        [self close];
     }
 }
 
@@ -183,24 +184,25 @@
     connection                    = nil;
 }
 
-+ (void)removeConnection:(KSMediaConnection *)connection {
+- (void)removeConnection:(KSMediaConnection *)connection {
     if (connection == nil) {
         return;
     }
-    [[KSWebRTCManager shared].mediaConnections removeObject:connection];
+    [self.mediaConnections removeObject:connection];
     [connection close];
-    connection          = nil;
 }
 
-- (void)closeAll {
+- (void)close {
     for (KSMediaConnection *connection in self.mediaConnections) {
         [connection close];
     }
     [self.mediaConnections removeAllObjects];
     [self.mediaCapture close];
+
     self.mediaCapture = nil;
     [self.msgHandler close];
-    self.msgHandler = nil;
+    
+    //self.msgHandler   = nil;
 }
 
 -(KSMediaConnection *)mediaConnectionOfHandleId:(NSNumber *)handleId {

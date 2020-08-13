@@ -18,6 +18,7 @@
 #import "KSCoolHUB.h"
 #import "KSCallController.h"
 #import "KSSuperController+Category.h"
+
 @interface KSKitsController ()
 
 @property(nonatomic,weak)KSCoolHUB *coolHUB;
@@ -28,7 +29,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 //    int self_w = self.view.frame.size.width;
 //    int padding = 20;
 // 

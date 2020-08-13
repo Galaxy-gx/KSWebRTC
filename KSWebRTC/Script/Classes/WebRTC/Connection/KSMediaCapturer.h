@@ -31,7 +31,6 @@
 
 -(instancetype)initWithSetting:(KSCapturerSetting *)setting;
 - (void)addVideoSourceOfCallType:(KSCallType)callType;
-
 - (void)switchTalkMode;
 - (void)speakerOff;
 - (void)speakerOn;

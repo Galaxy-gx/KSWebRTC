@@ -18,8 +18,9 @@
 
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
-@property (nonatomic, weak) KSCallView   *callView;
-@property (nonatomic, weak) KSTopBarView *topBarView;
+@property (nonatomic, weak ) KSCallView   *callView;
+@property (nonatomic, weak ) KSTopBarView *topBarView;
+@property (nonatomic,assign) KSCallType   callType;
 
 @end
 
@@ -27,15 +28,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _callType = KSCallTypeSingleVideo;
     [self initMainKit];
-    [self createLocalView];
+    [self initWebRTC];
+}
+
+-(void)dealloc {
+    [[KSWebRTCManager shared] close];
 }
 
 - (void)initMainKit {
-    
-    [KSWebRTCManager shared].delegate = self;
-    [[KSWebRTCManager shared] initRTCWithCallType:KSCallTypeSingleVideo];
-    [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     
     KSTileLayout *layout              = [[KSTileLayout alloc] init];
     layout.scale                      = KSScaleMake(9, 16);
@@ -47,7 +49,7 @@
     CGFloat statusHeight              = [[UIApplication sharedApplication] statusBarFrame].size.height;
     CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
 
-    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:[KSWebRTCManager shared].callType];
+    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:_callType];
     callView.topPadding               = statusHeight + navHeight;
     callView.dataSource               = self;
     _callView                         = callView;
@@ -77,6 +79,19 @@
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
     self.superBar.backBarButtonItem   = arrowBtn;
     [self.superBar toFront];
+}
+
+- (void)initWebRTC {
+    KSWeakSelf;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[KSWebRTCManager shared] initRTCWithCallType:weakSelf.callType];
+        [KSWebRTCManager shared].delegate = self;
+        if (weakSelf.callType == KSCallTypeSingleVideo) {
+            [weakSelf createLocalView];
+        }
+        //测试放后面
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+    });
 }
 
 - (void)createLocalView {
@@ -348,6 +363,10 @@
     if (connection.mediaInfo.isLocal && [KSWebRTCManager shared].callType == KSCallTypeSingleVideo) {
         return;
     }
+    if (self.topBarView.isHidden) {
+        self.topBarView.hidden = NO;
+    }
+    
     switch ([KSWebRTCManager shared].callType) {
         case KSCallTypeSingleAudio:
 

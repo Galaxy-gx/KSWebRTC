@@ -130,7 +130,7 @@
 
 - (void)setAudioEnabled:(BOOL)enabled {
     for (RTCRtpTransceiver *item in self.connection.transceivers) {
-        if ([item.sender.track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
+        if ([item.sender.track.kind isEqualToString:kRTCMediaStreamTrackKindAudio]) {
             item.sender.track.isEnabled = enabled;
         }
     }

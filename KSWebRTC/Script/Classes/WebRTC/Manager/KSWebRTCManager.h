@@ -48,6 +48,7 @@
 + (void)speakerOff;
 + (void)speakerOn;
 + (void)closeMediaCapture;
+- (void)close;
 
 //MediaConnection
 + (void)closeMediaConnection;
@@ -64,6 +65,5 @@
 + (KSMediaConnection *)connectionOfIndex:(NSInteger)index;
 + (NSInteger)connectionCount;
 + (void)removeConnectionAtIndex:(int)index;
-+ (void)removeConnection:(KSMediaConnection *)connection;
 
 @end
