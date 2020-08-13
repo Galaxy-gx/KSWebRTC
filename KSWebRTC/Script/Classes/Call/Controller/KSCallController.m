@@ -34,8 +34,7 @@
 - (void)initMainKit {
     
     [KSWebRTCManager shared].delegate = self;
-    [KSWebRTCManager shared].callType = KSCallTypeSingleVideo;
-    [[KSWebRTCManager shared] initRTC];
+    [[KSWebRTCManager shared] initRTCWithCallType:KSCallTypeSingleVideo];
     [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     
     KSTileLayout *layout              = [[KSTileLayout alloc] init];

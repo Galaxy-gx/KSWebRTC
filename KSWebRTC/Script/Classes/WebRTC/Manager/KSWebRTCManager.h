@@ -38,7 +38,7 @@
 @property (nonatomic, weak, readonly  ) AVCaptureSession  *captureSession;
 
 + (instancetype)shared;
-- (void)initRTC;
+- (void)initRTCWithCallType:(KSCallType)callType;
 
 //MediaCapture
 + (void)switchCamera;

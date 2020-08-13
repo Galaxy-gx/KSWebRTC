@@ -27,13 +27,17 @@
     return instance;
 }
 
-- (void)initRTC {
-    _mediaCapture                    = [[KSMediaCapturer alloc] init];
-    [_mediaCapture createPeerConnectionFactory];
-    [_mediaCapture captureLocalMediaOfCallType:_callType];
+- (void)initRTCWithCallType:(KSCallType)callType {
+    _callType                  = callType;
     
-    _msgHandler                      = [[KSMessageHandler alloc] init];
-    _msgHandler.delegate             = self;
+    KSCapturerSetting *setting = [[KSCapturerSetting alloc] init];
+    setting.isFront            = YES;
+    setting.callType           = callType;
+    setting.resolution         = CGSizeMake(540, 960);
+    _mediaCapture              = [[KSMediaCapturer alloc] initWithSetting:setting];
+
+    _msgHandler                = [[KSMessageHandler alloc] init];
+    _msgHandler.delegate       = self;
 }
 
 #pragma mark - KSMessageHandlerDelegate

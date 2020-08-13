@@ -7,27 +7,21 @@
 //
 
 #import "KSMediaCapturer.h"
+@implementation KSCapturerSetting
+@end
 
 static NSString *const KARDMediaStreamId = @"ARDAMS";
 static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
-static int const kFramerateLimit         = 30.0;
-
-@interface KSMediaCapturer()
-
-//前置摄像头/后置摄像头
-@property (nonatomic, assign) BOOL isFront;
-@property (nonatomic, assign) BOOL isVideo;
-
-@end
+static int const kFramerateLimit         = 25.0;
 
 @implementation KSMediaCapturer
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _isFront = true;
-        _isVideo = true;
+-(instancetype)initWithSetting:(KSCapturerSetting *)setting {
+    if (self = [super init]) {
+        _setting = setting;
+        [self createPeerConnectionFactory];
+        [self addMediaSource];
     }
     return self;
 }
@@ -39,9 +33,10 @@ static int const kFramerateLimit         = 30.0;
  然后创建 factory 对象。需要注意的是，在创建 factory 对象时，传入了两个参数：一个是默认的编码器；一个是默认的解码器。我们可以通过修改这两个参数来达到使用不同编解码器的目的。
  */
 - (void)createPeerConnectionFactory {
-    //设置SSL传输
-    //[RTCPeerConnectionFactory initialize];
-    
+    if (_setting.isSSL) {
+        //设置SSL传输
+        [RTCPeerConnectionFactory initialize];
+    }
     RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
     NSArray *codes = [encoderFactory supportedCodecs];
@@ -57,15 +52,26 @@ static int const kFramerateLimit         = 30.0;
  
  除此之外，为了能更方便的控制视频设备，WebRTC 提供了一个专门用于操作设备的类，即 RTCCameraVideoCapture。通过它，我们就可以自如的控制视频设备了。
  */
-- (void)captureLocalMediaOfCallType:(KSCallType)callType {
-    _callType = callType;
+
+- (void)addMediaSource {
     [self addAudioSource];
-    if (callType == KSCallTypeManyVideo || callType == KSCallTypeSingleVideo) {
-        [self addVideoSourceOfCallType:callType];
+    if (_setting.callType == KSCallTypeManyVideo || _setting.callType == KSCallTypeSingleVideo) {
+        [self addVideoSourceOfCallType:_setting.callType];
     }
 }
 
 - (void)addAudioSource {
+    if (_audioTrack) {
+        return;
+    }
+    // 检测权限
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
+    if (authStatus == AVAuthorizationStatusRestricted ||
+        authStatus == AVAuthorizationStatusDenied) {
+        NSLog(@"麦克风访问受限");
+        return;
+    }
+    
     NSDictionary *mandatoryConstraints = @{};
     RTCMediaConstraints *constrains    = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
     RTCAudioSource *audioSource        = [_factory audioSourceWithConstraints:constrains];
@@ -73,13 +79,16 @@ static int const kFramerateLimit         = 30.0;
 }
 
 - (void)addVideoSourceOfCallType:(KSCallType)callType {
-    _callType               = callType;
-    AVCaptureDevice *device = [self currentCamera];
+    _setting.callType                = callType;
+    if (_videoTrack) {
+        return;
+    }
+    AVCaptureDevice *device          = [self currentCamera];
     if (!device) {
         NSLog(@"获取相机失败");
         return;
     }
-    // 检测摄像头权限
+    // 检测权限
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
@@ -99,8 +108,8 @@ static int const kFramerateLimit         = 30.0;
 }
 
 - (void)switchTalkMode {
-    _isVideo = !_isVideo;
-    if (_isVideo) {
+    _setting.isStartCapture = !_setting.isStartCapture;
+    if (_setting.isStartCapture) {
         [self startCapture];
     }
     else{
@@ -138,40 +147,69 @@ static int const kFramerateLimit         = 30.0;
     [rtcAudioSession unlockForConfiguration];
 }
 
-- (void)startCapture {
-    [self startCaptureWithDevice:[self currentCamera]];
+- (void)switchCamera {
+    _setting.isFront = !_setting.isFront;
+    [self startCapture];
 }
 
 - (void)stopCapture {
-  [_capturer stopCapture];
+    [_capturer stopCapture];
 }
 
-- (void)switchCamera {
-    _isFront = !_isFront;
+- (void)startCapture {
     AVCaptureDevice *device = [self currentCamera];
     [self startCaptureWithDevice:device];
 }
 
-- (AVCaptureDevice *)currentCamera {
-    NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
-    AVCaptureDevicePosition position           = _isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
-    AVCaptureDevice *device                    = NULL;
-    for (AVCaptureDevice *obj in captureDevices) {
-        if (obj.position == position) {
-            device = obj;
-            break;
-        }
-    }
-    return device;
-}
-
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device {
-    if (!device) {
+    AVCaptureDeviceFormat *format    = [self selectFormatForDevice:device];
+    if (format == nil) {
+        NSLog(@"No valid formats for device %@", device);
         return;
     }
-    AVCaptureDeviceFormat *format = [[RTCCameraVideoCapturer supportedFormatsForDevice:device] lastObject];
-    CGFloat fps = [[format videoSupportedFrameRateRanges] firstObject].maxFrameRate;
+    NSInteger fps                    = [self selectFpsForFormat:format];
     [_capturer startCaptureWithDevice:device format:format fps:fps];
+}
+
+#pragma mark - Private
+- (AVCaptureDevice *)currentCamera {
+    AVCaptureDevicePosition position = _setting.isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
+    NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
+    for (AVCaptureDevice *device in captureDevices) {
+        if (device.position == position) {
+            return device;
+        }
+    }
+    return captureDevices[0];
+}
+
+- (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
+    NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
+    int targetWidth                           = _setting.resolution.width;//540
+    int targetHeight                          = _setting.resolution.height;//960
+    AVCaptureDeviceFormat *selectedFormat     = nil;
+    int currentDiff                           = INT_MAX;
+    
+    for (AVCaptureDeviceFormat *format in formats) {
+        CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
+        FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
+        int diff = abs(targetWidth - dimension.width) + abs(targetHeight - dimension.height);
+        if (diff < currentDiff) {
+            selectedFormat = format;
+            currentDiff = diff;
+        } else if (diff == currentDiff && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+            selectedFormat = format;
+        }
+    }
+    return selectedFormat;
+}
+
+- (NSInteger)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
+    int maxSupportedFramerate = 0;
+    for (AVFrameRateRange *fpsRange in format.videoSupportedFrameRateRanges) {
+        maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
+    }
+    return fmin(maxSupportedFramerate, kFramerateLimit);
 }
 
 - (void)close {
@@ -184,68 +222,8 @@ static int const kFramerateLimit         = 30.0;
     [_capturer stopCapture];
     [_capturer.captureSession stopRunning];
     _capturer   = nil;
-}
-
-- (void)stopCapture1 {
-  [_capturer stopCapture];
-}
-
-- (void)switchCamera1 {
-  _isFront = !_isFront;
-  [self startCapture1];
-}
-
-- (void)startCapture1 {
-  AVCaptureDevicePosition position = _isFront ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
-  AVCaptureDevice *device          = [self findDeviceForPosition:position];
-  AVCaptureDeviceFormat *format    = [self selectFormatForDevice:device];
-  if (format == nil) {
-    NSLog(@"No valid formats for device %@", device);
-    return;
-  }
-  NSInteger fps                    = [self selectFpsForFormat:format];
-  [_capturer startCaptureWithDevice:device format:format fps:fps];
-}
-
-#pragma mark - Private
-- (AVCaptureDevice *)findDeviceForPosition:(AVCaptureDevicePosition)position {
-  NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
-  for (AVCaptureDevice *device in captureDevices) {
-    if (device.position == position) {
-      return device;
-    }
-  }
-  return captureDevices[0];
-}
-
-- (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
-  NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
-  int targetWidth                           = 540;
-  int targetHeight                          = 960;
-  AVCaptureDeviceFormat *selectedFormat     = nil;
-  int currentDiff                           = INT_MAX;
-
-  for (AVCaptureDeviceFormat *format in formats) {
-    CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
-    FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
-    int diff = abs(targetWidth - dimension.width) + abs(targetHeight - dimension.height);
-    if (diff < currentDiff) {
-      selectedFormat = format;
-      currentDiff = diff;
-    } else if (diff == currentDiff && pixelFormat == [_capturer preferredOutputPixelFormat]) {
-      selectedFormat = format;
-    }
-  }
-
-  return selectedFormat;
-}
-
-- (NSInteger)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
-  int maxSupportedFramerate = 0;
-  for (AVFrameRateRange *fpsRange in format.videoSupportedFrameRateRanges) {
-    maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
-  }
-  return fmin(maxSupportedFramerate, kFramerateLimit);
+    
+    _setting    = nil;
 }
 
 @end

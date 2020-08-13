@@ -433,12 +433,20 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    if (newState == RTCIceConnectionStateDisconnected) {
-        if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
-            [self.delegate messageHandler:self leaveOfHandleId:mediaConnection.handleId];
+    switch (newState) {
+        case RTCIceConnectionStateDisconnected:
+        {
+            if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
+                [self.delegate messageHandler:self leaveOfHandleId:mediaConnection.handleId];
+            }
         }
+            break;
+            
+        default:
+            break;
     }
 }
+
 @end
 
 /*

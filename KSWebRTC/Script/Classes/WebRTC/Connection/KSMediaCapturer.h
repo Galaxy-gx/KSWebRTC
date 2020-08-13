@@ -10,6 +10,14 @@
 #import <WebRTC/WebRTC.h>
 #import "KSConfigure.h"
 
+@interface KSCapturerSetting : NSObject
+@property (nonatomic,assign ) KSCallType callType;
+@property (nonatomic,assign ) BOOL       isSSL;
+@property (nonatomic,assign ) BOOL       isFront;
+@property (nonatomic,assign ) BOOL       isStartCapture;
+@property (nonatomic,assign ) CGSize     resolution;
+@end
+
 @interface KSMediaCapturer : NSObject
 
 //连接工厂
@@ -19,16 +27,17 @@
 //轨
 @property (nonatomic, strong) RTCVideoTrack            *videoTrack;
 @property (nonatomic, strong) RTCAudioTrack            *audioTrack;
-@property (nonatomic,assign ) KSCallType               callType;
+@property (nonatomic, strong) KSCapturerSetting        *setting;
 
-- (void)createPeerConnectionFactory;
-- (void)captureLocalMediaOfCallType:(KSCallType)callType;
+-(instancetype)initWithSetting:(KSCapturerSetting *)setting;
 - (void)addVideoSourceOfCallType:(KSCallType)callType;
-- (void)switchCamera;
+
 - (void)switchTalkMode;
-- (void)startCapture;
-- (void)stopCapture;
 - (void)speakerOff;
 - (void)speakerOn;
+- (void)switchCamera;
+- (void)stopCapture;
+- (void)startCapture;
 - (void)close;
+
 @end
