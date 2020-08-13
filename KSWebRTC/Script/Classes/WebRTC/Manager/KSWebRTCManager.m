@@ -118,10 +118,11 @@
     [[KSWebRTCManager shared].mediaCapture switchTalkMode];
 }
 + (void)startCapture {
-    [[KSWebRTCManager shared].mediaCapture startCapture];
+    [[KSWebRTCManager shared].localConnection muteVideo];
 }
 + (void)stopCapture {
-    [[KSWebRTCManager shared].mediaCapture stopCapture];
+    [[KSWebRTCManager shared].localConnection unmuteVideo];
+    //[[KSWebRTCManager shared].mediaCapture stopCapture];
 }
 + (void)speakerOff {
     [[KSWebRTCManager shared].mediaCapture speakerOff];

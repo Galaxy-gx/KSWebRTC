@@ -13,6 +13,7 @@
 @end
 
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
+@property(nonatomic, strong) RTCAudioTrack *defaultAudioTrack;
 @end
 
 @implementation KSMediaConnection
@@ -48,8 +49,9 @@
     [peerConnection addTrack:capture.videoTrack streamIds:mediaStreamLabels];
     // 添加音频轨
     [peerConnection addTrack:capture.audioTrack streamIds:mediaStreamLabels];
-    _connection                       = peerConnection;
-    _capturer                          = capture;
+    _peerConnection                   = peerConnection;
+    _capturer                         = capture;
+    _isSpeakerEnabled                 = YES;
     return peerConnection;
 }
 
@@ -60,8 +62,8 @@
 // 设置远端的媒体描述
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
-    [_connection setRemoteDescription:answerDescription
-                    completionHandler:^(NSError *_Nullable error){
+    [_peerConnection setRemoteDescription:answerDescription
+                        completionHandler:^(NSError *_Nullable error){
         if(!error){
             NSLog(@"Success to set remote Answer SDP");
         }else{
@@ -88,16 +90,16 @@
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
-    [_connection answerForConstraints:constraints
-                    completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
+    [_peerConnection answerForConstraints:constraints
+                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if (error) {
             NSLog(@"Failure to create local answer sdp!");
         }
         else{
             NSLog(@"Success to create local answer sdp!");
         }
-        [weakSelf.connection setLocalDescription:sdp
-                               completionHandler:^(NSError *_Nullable error) {
+        [weakSelf.peerConnection setLocalDescription:sdp
+                                   completionHandler:^(NSError *_Nullable error) {
             completionHandler(sdp, error);
         }];
         
@@ -108,48 +110,68 @@
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
-    [_connection offerForConstraints:constraints
-                   completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
+    [_peerConnection offerForConstraints:constraints
+                       completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
             NSLog(@"Failed to create offer SDP, err=%@", error);
         }
-        [weakSelf.connection setLocalDescription:sdp
-                               completionHandler:^(NSError *_Nullable error) {
+        [weakSelf.peerConnection setLocalDescription:sdp
+                                   completionHandler:^(NSError *_Nullable error) {
             completionHandler(sdp, error);
         }];
     }];
 }
 
+#pragma mark - Audio mute/unmute
 - (void)muteAudio {
-    [self setAudioEnabled:NO];
+    NSLog(@"audio muted");
+    _capturer.audioTrack.isEnabled = NO;
 }
 
 - (void)unmuteAudio {
-    [self setAudioEnabled:YES];
+    NSLog(@"audio unmuted");
+    _capturer.audioTrack.isEnabled = YES;
 }
 
-- (void)setAudioEnabled:(BOOL)enabled {
-    for (RTCRtpTransceiver *item in self.connection.transceivers) {
-        if ([item.sender.track.kind isEqualToString:kRTCMediaStreamTrackKindAudio]) {
-            item.sender.track.isEnabled = enabled;
-        }
-    }
+#pragma mark - Video mute/unmute
+- (void)muteVideo {
+    _capturer.videoTrack.isEnabled = NO;
+    NSLog(@"video muted");
+
+}
+- (void)unmuteVideo {
+    NSLog(@"video unmuted");
+    _capturer.videoTrack.isEnabled = YES;
+}
+
+#pragma mark - enable/disable speaker
+- (void)enableSpeaker {
+    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    _isSpeakerEnabled = YES;
+}
+
+- (void)disableSpeaker {
+    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+    _isSpeakerEnabled = NO;
 }
 
 - (void)close {
     //[_capture close];
     //_capture          = nil;
-    RTCMediaStream *mediaStream = [_connection.localStreams firstObject];
+    RTCMediaStream *mediaStream = [_peerConnection.localStreams firstObject];
     if (mediaStream) {
-        [_connection removeStream:mediaStream];
+        [_peerConnection removeStream:mediaStream];
     }
-    [_connection close];
-    _connection       = nil;
+    [_peerConnection close];
+    _peerConnection       = nil;
     
     if (_remoteVideoView) {
         [_remoteVideoTrack removeRenderer:_remoteVideoView];
     }
+    
+    [_remoteVideoView renderFrame:nil];
     _remoteVideoView  = nil;
+    
     _remoteVideoTrack = nil;
     self.delegate     = nil;
 }

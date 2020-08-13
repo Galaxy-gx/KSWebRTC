@@ -7,6 +7,7 @@
 //
 
 #import "KSMediaCapturer.h"
+
 @implementation KSCapturerSetting
 @end
 
@@ -15,13 +16,20 @@ static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
 static int const kFramerateLimit         = 25.0;
 
+@interface KSMediaCapturer()
+@property(nonatomic,weak)RTCAudioSession *rtcAudioSession;
+@end
 @implementation KSMediaCapturer
 
 -(instancetype)initWithSetting:(KSCapturerSetting *)setting {
     if (self = [super init]) {
-        _setting = setting;
+        _setting         = setting;
+
         [self createPeerConnectionFactory];
         [self addMediaSource];
+
+        _rtcAudioSession = [RTCAudioSession sharedInstance];
+        [self configureAudioSession];
     }
     return self;
 }
@@ -107,6 +115,19 @@ static int const kFramerateLimit         = 25.0;
     [self startCaptureWithDevice:device];
 }
 
+- (void)configureAudioSession {
+    [_rtcAudioSession lockForConfiguration];
+    @try {
+        NSError *error = nil;
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [_rtcAudioSession setMode:AVAudioSessionModeVoiceChat error:&error];
+    } @catch (NSException *exception) {
+        NSLog(@"Error setting AVAudioSession category %@",exception);
+    } @finally {
+    }
+    [_rtcAudioSession unlockForConfiguration];
+}
+
 - (void)switchTalkMode {
     _setting.isStartCapture = !_setting.isStartCapture;
     if (_setting.isStartCapture) {
@@ -119,32 +140,33 @@ static int const kFramerateLimit         = 25.0;
 
 //关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
 - (void)speakerOff {
-    RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
-    [rtcAudioSession lockForConfiguration];
+    [_rtcAudioSession lockForConfiguration];
     @try {
-        [rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        NSError *error = nil;
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
     } @catch (NSException *exception) {
         NSLog(@"Error setting AVAudioSession category %@",exception);
     } @finally {
-        NSLog(@"speakerOff Error");
     }
-    [rtcAudioSession unlockForConfiguration];
+    [_rtcAudioSession unlockForConfiguration];
 }
 
 //开启扬声器
 - (void)speakerOn {
-    RTCAudioSession *rtcAudioSession = [RTCAudioSession sharedInstance];
-    [rtcAudioSession lockForConfiguration];
+    [_rtcAudioSession lockForConfiguration];
     @try {
-        [rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        NSError *error = nil;
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        if (error == nil) {
+            [_rtcAudioSession setActive:YES error:&error];
+        }
     } @catch (NSException *exception) {
         NSLog(@"Couldn't force audio to speaker: %@",exception);
     } @finally {
-        NSLog(@"speakerOn Error");
     }
-    [rtcAudioSession unlockForConfiguration];
+    [_rtcAudioSession unlockForConfiguration];
 }
 
 - (void)switchCamera {

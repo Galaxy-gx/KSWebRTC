@@ -36,7 +36,7 @@
 @interface KSMediaConnection : NSObject
 
 @property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
-@property (nonatomic, strong        ) RTCPeerConnection *connection;//WebRTC连接对象
+@property (nonatomic, strong        ) RTCPeerConnection *peerConnection;//WebRTC连接对象
 @property (nonatomic, weak          ) KSMediaCapturer   *capturer;
 @property (nonatomic, strong        ) RTCVideoTrack     *remoteVideoTrack;//视频轨
 @property (nonatomic, weak          ) RTCEAGLVideoView  *remoteVideoView;
@@ -45,6 +45,7 @@
 @property (nonatomic,assign         ) int               index;
 @property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
 @property (nonatomic, assign        ) BOOL              isClose;
+@property (nonatomic, assign        ) BOOL              isSpeakerEnabled;
 
 - (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
@@ -54,5 +55,7 @@
 - (void)close;
 - (void)muteAudio;
 - (void)unmuteAudio;
+- (void)muteVideo;
+- (void)unmuteVideo;
 
 @end
