@@ -176,7 +176,7 @@
     KSMediaConnection *connection = [KSWebRTCManager shared].mediaConnections[index];
     [[KSWebRTCManager shared].mediaConnections removeObjectAtIndex:index];
     [connection close];
-    connection = nil;
+    connection                    = nil;
 }
 
 + (void)removeConnection:(KSMediaConnection *)connection {
@@ -185,7 +185,7 @@
     }
     [[KSWebRTCManager shared].mediaConnections removeObject:connection];
     [connection close];
-    connection = nil;
+    connection          = nil;
 }
 
 - (void)closeAll {

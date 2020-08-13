@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "KSVideoCallController.h"
 #import "KSKitsController.h"
 #import "KSCallController.h"
 @interface AppDelegate ()
@@ -20,7 +19,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [self.window makeKeyAndVisible];
-    //KSVideoCallController *ctrl = [[KSVideoCallController alloc] init];
+
     KSKitsController *ctrl = [[KSKitsController alloc] init];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     //UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];

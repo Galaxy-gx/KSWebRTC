@@ -151,6 +151,7 @@
     }
     _remoteVideoView  = nil;
     _remoteVideoTrack = nil;
+    self.delegate     = nil;
 }
 
 // PeerConnection 媒体约束
@@ -188,11 +189,17 @@
 //该方法用于收集可用的 Candidate。
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
     NSLog(@"已找到新的候选者。");
-    [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
+    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didGenerateIceCandidate:)]) {
+        [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
+    }
 }
 
 //当 ICE 连接状态发生变化时会触发该方法
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
+    if ([self.delegate respondsToSelector:@selector(mediaConnection:didChangeIceConnectionState:)]) {
+        [self.delegate mediaConnection:self didChangeIceConnectionState:newState];
+    }
+    
     NSLog(@"每当IceConnectionState更改时调用。");
     switch (newState) {
         case RTCIceConnectionStateNew:
@@ -229,7 +236,9 @@
 //当函数被调用后，我们可以通过 rtpReceiver 参数获取到 track。这个track有可能是音频trak，也有可能是视频trak。所以，我们首先要对 track 做个判断，看其是视频还是音频。
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
     NSLog(@"在创建接收者及其音轨时调用。");
-    [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
+    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didAddReceiver:streams:)]) {
+        [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
+    }
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {

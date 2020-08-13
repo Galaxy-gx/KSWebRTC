@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E60C906224CEB80E00291CDA /* KSVideoCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C906124CEB80E00291CDA /* KSVideoCallController.m */; };
 		E60C907D24CEB85000291CDA /* ARDAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907124CEB84F00291CDA /* ARDAppClient.m */; };
 		E60C907E24CEB85000291CDA /* ARDSettingsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907324CEB85000291CDA /* ARDSettingsModel.m */; };
 		E60C907F24CEB85000291CDA /* KSCaptureController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60C907424CEB85000291CDA /* KSCaptureController.m */; };
@@ -84,8 +83,6 @@
 		005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-KSWebRTC.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A78CB3FBA8D1E1A07AA6289F /* Pods-KSWebRTC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSWebRTC.debug.xcconfig"; path = "Target Support Files/Pods-KSWebRTC/Pods-KSWebRTC.debug.xcconfig"; sourceTree = "<group>"; };
 		DE646ED62E8FCF423BE8CDE2 /* Pods-KSWebRTC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KSWebRTC.release.xcconfig"; path = "Target Support Files/Pods-KSWebRTC/Pods-KSWebRTC.release.xcconfig"; sourceTree = "<group>"; };
-		E60C906024CEB80E00291CDA /* KSVideoCallController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoCallController.h; sourceTree = "<group>"; };
-		E60C906124CEB80E00291CDA /* KSVideoCallController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoCallController.m; sourceTree = "<group>"; };
 		E60C906F24CEB84F00291CDA /* ARDSettingsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDSettingsStore.h; sourceTree = "<group>"; };
 		E60C907024CEB84F00291CDA /* ARDRoomServerClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDRoomServerClient.h; sourceTree = "<group>"; };
 		E60C907124CEB84F00291CDA /* ARDAppClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDAppClient.m; sourceTree = "<group>"; };
@@ -258,23 +255,6 @@
 				005D1DB6CAA5B5F80B6C5ABF /* libPods-KSWebRTC.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E60C905E24CEB7F500291CDA /* VideoCall */ = {
-			isa = PBXGroup;
-			children = (
-				E60C905F24CEB7FD00291CDA /* Controller */,
-			);
-			path = VideoCall;
-			sourceTree = "<group>";
-		};
-		E60C905F24CEB7FD00291CDA /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E60C906024CEB80E00291CDA /* KSVideoCallController.h */,
-				E60C906124CEB80E00291CDA /* KSVideoCallController.m */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		E60C906E24CEB84000291CDA /* Utils */ = {
@@ -494,6 +474,7 @@
 		E67BC59A24B853C8004BBA8A /* Script */ = {
 			isa = PBXGroup;
 			children = (
+				E67BC59C24B853FE004BBA8A /* Main */,
 				E67BC59B24B853DE004BBA8A /* Classes */,
 			);
 			path = Script;
@@ -505,9 +486,7 @@
 				E6BC0B1524E29C55005A955A /* WebRTC */,
 				E67A6A9924DE8EF100BCE4B9 /* Call */,
 				E62B99C024DD5BA700152697 /* Kits */,
-				E60C905E24CEB7F500291CDA /* VideoCall */,
 				E67BC59E24B85498004BBA8A /* Custom */,
-				E67BC59C24B853FE004BBA8A /* Main */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -932,7 +911,6 @@
 				E6FD828A24DBE35D00E10495 /* NSObject+Category.m in Sources */,
 				E6A2939C24DE445A008E41E1 /* KSLayoutButton.m in Sources */,
 				E67695AF24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
-				E60C906224CEB80E00291CDA /* KSVideoCallController.m in Sources */,
 				E6A5DFF924D6D06A007E7D14 /* KSCallView.m in Sources */,
 				E6AC70FE24DD21B800C7134D /* KSAnswerBarView.m in Sources */,
 				E6277C2F24DE9B8A008D9E96 /* KSExecuteArgs.m in Sources */,

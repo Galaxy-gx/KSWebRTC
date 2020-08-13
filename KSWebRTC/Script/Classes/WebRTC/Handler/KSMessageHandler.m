@@ -8,7 +8,6 @@
 
 #import "KSMessageHandler.h"
 #import "KSMsg.h"
-#import "KSMediaCapturer.h"
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
 
@@ -130,9 +129,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 }
 
 - (void)messageDetached:(KSDetached *)detached {
+    /*
     if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
         [self.delegate messageHandler:self leaveOfHandleId:detached.sender];
     }
+     */
 }
 
 - (void)analysisMsg:(id)message {
@@ -331,31 +332,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     return mc;
 }
 
-//- (void)onLeaving:(NSNumber *)handleId {
-//    KSMediaConnection *mc = _connections[handleId];
-//    if (mc == nil) {
-//        return;
-//    }
-//    [mc close];
-//    [_connections removeObjectForKey:handleId];
-//    mc = nil;
-//
-//    if (_connections.count == 1) {
-//        [self.delegate messageHandlerEndOfSession:self];
-//    }
-//}
-
-//- (void)closeAllMediaConnection {
-//    for (KSMediaConnection *mc in _connections.allValues) {
-//        if (mc) {
-//            [mc close];
-//            [_connections removeObjectForKey:mc.handleId];
-//            [self.delegate messageHandler:self leaveOfHandleId:mc.handleId];
-//        }
-//    }
-//    [self.delegate messageHandlerEndOfSession:self];
-//}
-
 - (void)close {
     [_socket activeClose];
     _socket = nil;
@@ -456,6 +432,13 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     }
 }
 
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
+    if (newState == RTCIceConnectionStateDisconnected) {
+        if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
+            [self.delegate messageHandler:self leaveOfHandleId:mediaConnection.handleId];
+        }
+    }
+}
 @end
 
 /*
