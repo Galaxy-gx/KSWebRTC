@@ -10,14 +10,14 @@
 #import "KSCallView.h"
 #import <WebRTC/RTCAudioSession.h>
 #import "KSMessageHandler.h"
-#import "KSMediaCapture.h"
+#import "KSMediaCapturer.h"
 #import "KSMsg.h"
 #import "UIButton+Category.h"
 @interface KSVideoCallController ()<KSMessageHandlerDelegate>
 
 @property(nonatomic, weak) KSCallView *videoCallView;
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, strong) KSMediaCapture *mediaCapture;
+@property (nonatomic, strong) KSMediaCapturer *mediaCapture;
 @property (nonatomic, assign) BOOL isConnect;
 @end
 
@@ -32,7 +32,7 @@
 }
 
 - (void)initProperty {
-    _mediaCapture = [[KSMediaCapture alloc] init];
+    _mediaCapture = [[KSMediaCapturer alloc] init];
     [_mediaCapture createPeerConnectionFactory];
 
     [_videoCallView setLocalViewSession:_mediaCapture.capturer.captureSession];
@@ -96,17 +96,16 @@
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler detached:(KSDetached *)detached {
-    [_videoCallView leaveOfHandleId:detached.sender];
+    //[_videoCallView leaveOfHandleId:detached.sender];
 }
 
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
+- (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
     return _mediaCapture;
 }
 
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    return [_videoCallView remoteViewOfHandleId:handleId];
-}
-
+//- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+//    return [_videoCallView remoteViewOfHandleId:handleId];
+//}
 
 //KSVideoCallViewDelegate
 - (void)videoCallViewDidChangeRoute:(KSCallView *)view {

@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KSMediaCapture.h"
+#import "KSMediaCapturer.h"
 #import "KSMediaConnection.h"
 #import "KSCallState.h"
 #import "KSMsg.h"
 #import "KSMessageHandler.h"
-#import "KSMediaInfo.h"
 
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
@@ -20,13 +19,11 @@
 //socket
 - (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfHandleId:(NSNumber *)handleId connection:(KSMediaConnection *)connection;
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection;
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManagerSocketDidFail:(KSWebRTCManager *)webRTCManager;
 
 //Media
-//若使用UICollectionView则不必实现
-- (RTCEAGLVideoView *)remoteViewOfWebRTCManager:(KSWebRTCManager *)webRTCManager handleId:(NSNumber *)handleId;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection;
 
 @end
@@ -34,7 +31,7 @@
 @interface KSWebRTCManager : NSObject
 
 @property(nonatomic,weak)id<KSWebRTCManagerDelegate>      delegate;
-@property (nonatomic, strong          ) KSMediaCapture    *mediaCapture;//本地
+@property (nonatomic, strong          ) KSMediaCapturer    *mediaCapture;//本地
 @property (nonatomic, assign, readonly) KSCallState       callState;
 @property (nonatomic, assign          ) KSCallType        callType;
 @property (nonatomic, assign          ) BOOL              isConnect;

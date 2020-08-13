@@ -68,4 +68,9 @@
      _previewLayer.frame = [self ks_rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
 }
 
+- (void)removeVideoView {
+    [_previewLayer removeFromSuperlayer];
+    _previewLayer.session = nil;
+    _previewLayer = nil;
+}
 @end

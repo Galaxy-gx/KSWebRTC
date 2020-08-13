@@ -1,5 +1,5 @@
 //
-//  KSMediaCapture.h
+//  KSMediaCapturer.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/7/10.
@@ -8,21 +8,22 @@
 
 #import <Foundation/Foundation.h>
 #import <WebRTC/WebRTC.h>
+#import "KSConfigure.h"
 
-@interface KSMediaCapture : NSObject
+@interface KSMediaCapturer : NSObject
 
 //连接工厂
 @property (nonatomic, strong) RTCPeerConnectionFactory *factory;
 //视频生产者
 @property (nonatomic, strong) RTCCameraVideoCapturer   *capturer;
-//轨道
+//轨
 @property (nonatomic, strong) RTCVideoTrack            *videoTrack;
 @property (nonatomic, strong) RTCAudioTrack            *audioTrack;
+@property (nonatomic,assign ) KSCallType               callType;
 
 - (void)createPeerConnectionFactory;
-
-- (void)captureLocalMedia;
-
+- (void)captureLocalMediaOfCallType:(KSCallType)callType;
+- (void)addVideoSourceOfCallType:(KSCallType)callType;
 - (void)switchCamera;
 - (void)switchTalkMode;
 - (void)startCapture;

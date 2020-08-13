@@ -8,7 +8,7 @@
 
 #import "KSMessageHandler.h"
 #import "KSMsg.h"
-#import "KSMediaCapture.h"
+#import "KSMediaCapturer.h"
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
 
@@ -324,7 +324,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 创建一个媒体连接
 -(KSMediaConnection *)createMediaConnection {
-    KSMediaCapture *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
+    KSMediaCapturer *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
     KSMediaConnection *mc        = [[KSMediaConnection alloc] init];
     [mc createPeerConnectionOfKSMediaCapture:mediaCapture];
     mc.delegate                  = self;

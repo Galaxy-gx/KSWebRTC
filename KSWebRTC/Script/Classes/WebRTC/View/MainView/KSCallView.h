@@ -15,7 +15,6 @@
 //ViewModel
 #import "KSTileLayout.h"
 #import "KSProfileConfigure.h"
-#import "KSMediaInfo.h"
 
 //Kit
 #import "KSRemoteView.h"
@@ -38,8 +37,9 @@
 - (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType;
 - (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
+- (void)leaveLocal;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
-- (RTCEAGLVideoView *)remoteViewOfHandleId:(NSNumber *)handleId;
+- (void)createRemoteViewOfConnection:(KSMediaConnection *)connection;
 
 #pragma mark - KSProfileView
 - (void)setProfileConfigure:(KSProfileConfigure *)configure;

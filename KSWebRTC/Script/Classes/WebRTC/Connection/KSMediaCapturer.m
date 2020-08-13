@@ -1,19 +1,19 @@
 //
-//  KSMediaCapture.m
+//  KSMediaCapturer.m
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/7/10.
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSMediaCapture.h"
+#import "KSMediaCapturer.h"
 
 static NSString *const KARDMediaStreamId = @"ARDAMS";
 static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
 static int const kFramerateLimit         = 30.0;
 
-@interface KSMediaCapture()
+@interface KSMediaCapturer()
 
 //前置摄像头/后置摄像头
 @property (nonatomic, assign) BOOL isFront;
@@ -21,7 +21,7 @@ static int const kFramerateLimit         = 30.0;
 
 @end
 
-@implementation KSMediaCapture
+@implementation KSMediaCapturer
 
 - (instancetype)init {
     self = [super init];
@@ -57,12 +57,23 @@ static int const kFramerateLimit         = 30.0;
  
  除此之外，为了能更方便的控制视频设备，WebRTC 提供了一个专门用于操作设备的类，即 RTCCameraVideoCapture。通过它，我们就可以自如的控制视频设备了。
  */
-- (void)captureLocalMedia {
+- (void)captureLocalMediaOfCallType:(KSCallType)callType {
+    _callType = callType;
+    [self addAudioSource];
+    if (callType == KSCallTypeManyVideo || callType == KSCallTypeSingleVideo) {
+        [self addVideoSourceOfCallType:callType];
+    }
+}
+
+- (void)addAudioSource {
     NSDictionary *mandatoryConstraints = @{};
     RTCMediaConstraints *constrains    = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryConstraints optionalConstraints:nil];
     RTCAudioSource *audioSource        = [_factory audioSourceWithConstraints:constrains];
     _audioTrack                        = [_factory audioTrackWithSource:audioSource trackId:KARDAudioTrackId];
+}
 
+- (void)addVideoSourceOfCallType:(KSCallType)callType {
+    _callType               = callType;
     AVCaptureDevice *device = [self currentCamera];
     if (!device) {
         NSLog(@"获取相机失败");
@@ -85,7 +96,6 @@ static int const kFramerateLimit         = 30.0;
         _capturer.captureSession.sessionPreset = AVCaptureSessionPresetiFrame960x540;
     }
     [self startCaptureWithDevice:device];
-    //通过上面的几行代码就可以从摄像头捕获视频数据了。
 }
 
 - (void)switchTalkMode {
@@ -172,6 +182,7 @@ static int const kFramerateLimit         = 30.0;
     _factory    = nil;
     
     [_capturer stopCapture];
+    [_capturer.captureSession stopRunning];
     _capturer   = nil;
 }
 
@@ -181,7 +192,7 @@ static int const kFramerateLimit         = 30.0;
 
 - (void)switchCamera1 {
   _isFront = !_isFront;
-  [self startCapture];
+  [self startCapture1];
 }
 
 - (void)startCapture1 {

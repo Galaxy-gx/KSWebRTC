@@ -25,5 +25,6 @@
 - (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
+- (void)removeVideoView;
 
 @end

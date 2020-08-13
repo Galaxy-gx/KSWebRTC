@@ -40,13 +40,28 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     if (self = [super initWithFrame:frame]) {
         self.remoteLayout = layout;
         self.callType     = callType;
-        //[self initKit];
-        [self initCollectionView];
+        switch (callType) {
+            case KSCallTypeSingleAudio:
+                [self initScrollView];
+                break;
+            case KSCallTypeManyAudio:
+                [self initCollectionView];
+                break;
+            case KSCallTypeSingleVideo:
+                [self initScrollView];
+                break;
+            case KSCallTypeManyVideo:
+                [self initCollectionView];
+                break;
+            default:
+                break;
+        }
+        
     }
     return self;
 }
 
-- (void)initKit {
+- (void)initScrollView {
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView = scrollView;
     [self addSubview:scrollView];
@@ -190,6 +205,26 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     }
 }
 
+- (void)leaveLocal {
+    switch (_callType) {
+        case KSCallTypeSingleAudio:
+        case KSCallTypeSingleVideo:
+        {
+            
+        }
+            break;
+        case KSCallTypeManyAudio:
+        case KSCallTypeManyVideo:
+        {
+            [self.localView removeVideoView];
+        }
+            break;
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)leaveOfHandleId:(NSNumber *)handleId {
     for (KSRemoteView *videoView in _remoteKits) {
         if (videoView.handleId == handleId) {
@@ -232,18 +267,23 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     return remoteView;
 }
 
-- (RTCEAGLVideoView *)remoteViewOfHandleId:(NSNumber *)handleId {
+- (void)createRemoteViewOfConnection:(KSMediaConnection *)connection {
+    KSRemoteView *remoteView = nil;
     for (KSRemoteView *itemView in self.remoteKits) {
-        if (itemView.handleId == handleId) {
-            return itemView.remoteView;
+        if (itemView.handleId == connection.handleId) {
+            remoteView = itemView;
+            break;
         }
     }
-    KSRemoteView *remoteView = [self createRemoteViewOfHandleId:handleId];
+    if (remoteView == nil) {
+        remoteView = [self createRemoteViewOfHandleId:connection.handleId];
+    }
+    
+    [connection.remoteVideoTrack addRenderer:remoteView.remoteView];
     
     if (self.callType == KSCallTypeSingleVideo) {//测试
         [self zoomOutLocalView];
     }
-    return remoteView.remoteView;
 }
 
 -(NSMutableArray *)remoteKits {
@@ -361,4 +401,5 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (void)reloadCollectionView {
     [_collectionView reloadData];
 }
+
 @end

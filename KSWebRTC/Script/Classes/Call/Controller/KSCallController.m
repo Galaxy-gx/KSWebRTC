@@ -10,14 +10,14 @@
 #import "KSCallView.h"
 #import <WebRTC/RTCAudioSession.h>
 #import "KSMessageHandler.h"
-#import "KSMediaCapture.h"
+#import "KSMediaCapturer.h"
 #import "KSMsg.h"
 #import "UIButton+Category.h"
 #import "KSProfileView.h"
 #import "KSTopBarView.h"
 #import "KSCallState.h"
-
 #import "KSWebRTCManager.h"
+
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
 @property (nonatomic, weak) KSCallView   *callView;
@@ -29,14 +29,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initKit];
+    [self initMainKit];
+    [self createLocalView];
 }
 
-- (void)initKit {
+- (void)initMainKit {
     
-    [[KSWebRTCManager shared] initRTC];
     [KSWebRTCManager shared].delegate = self;
     [KSWebRTCManager shared].callType = KSCallTypeSingleVideo;
+    [[KSWebRTCManager shared] initRTC];
     [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     
     KSTileLayout *layout              = [[KSTileLayout alloc] init];
@@ -60,13 +61,8 @@
         [weakSelf triggerEvent:eventType];
     };
     [callView setEventCallback:callback];
-    //测试注释
-    /*
-    [callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
-    [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
-     */
     [self.view addSubview:callView];
-
+    
     KSProfileConfigure *configure     = [[KSProfileConfigure alloc] init];
     configure.topPaddding             = 173;
     configure.title                   = @"Hamasaki Ayumi";
@@ -84,6 +80,34 @@
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
     self.superBar.backBarButtonItem   = arrowBtn;
     [self.superBar toFront];
+}
+
+- (void)createLocalView {
+    KSTileLayout *layout              = [[KSTileLayout alloc] init];
+    layout.scale                      = KSScaleMake(9, 16);
+    layout.mode                       = KSContentModeScaleAspectFit;
+    int width                         = 96;
+    int height                        = width / layout.scale.width * layout.scale.height;
+    layout.layout                     = KSLayoutMake(width, height, 10, 10);
+    
+    switch ([KSWebRTCManager shared].callType) {
+        case KSCallTypeSingleAudio:
+
+            break;
+        case KSCallTypeManyAudio:
+            
+            break;
+        case KSCallTypeSingleVideo:
+        {
+            [_callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+        }
+            break;
+        case KSCallTypeManyVideo:
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)triggerEvent:(KSEventType)eventType {
@@ -287,21 +311,32 @@
 
 //KSWebRTCManagerDelegate
 - (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager {
-    
-}
-- (RTCEAGLVideoView *)remoteViewOfWebRTCManager:(KSWebRTCManager *)webRTCManager handleId:(NSNumber *)handleId {
-    self.topBarView.hidden = NO;
-    return [_callView remoteViewOfHandleId:handleId];
+    //会话结束
+    [_callView leaveLocal];
+    [self dismiss];
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message {
     
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfHandleId:(NSNumber *)handleId connection:(KSMediaConnection *)connection {
-    [KSWebRTCManager removeConnection:connection];
-    [_callView deleteItemsAtIndex:connection.index];
-    //[_callView leaveOfHandleId:handleId];
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection {
+    switch ([KSWebRTCManager shared].callType) {
+        case KSCallTypeSingleAudio:
+
+            break;
+        case KSCallTypeManyAudio:
+            
+            break;
+        case KSCallTypeSingleVideo:
+            [_callView leaveOfHandleId:connection.handleId];
+            break;
+        case KSCallTypeManyVideo:
+            [_callView deleteItemsAtIndex:connection.index];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager {
@@ -313,9 +348,25 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-    //[_callView reloadItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
-    //[_callView reloadCollectionView];
-    [_callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+    if (connection.mediaInfo.isLocal && [KSWebRTCManager shared].callType == KSCallTypeSingleVideo) {
+        return;
+    }
+    switch ([KSWebRTCManager shared].callType) {
+        case KSCallTypeSingleAudio:
+
+            break;
+        case KSCallTypeManyAudio:
+            
+            break;
+        case KSCallTypeSingleVideo:
+            [_callView createRemoteViewOfConnection:connection];
+            break;
+        case KSCallTypeManyVideo:
+            [_callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+            break;
+        default:
+            break;
+    }
 }
 
 //KSCallViewDataSource

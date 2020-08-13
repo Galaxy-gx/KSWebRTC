@@ -9,8 +9,10 @@
 #import "KSMediaConnection.h"
 #import "RTCSessionDescription+Category.h"
 
-@interface KSMediaConnection ()<RTCPeerConnectionDelegate>
+@implementation KSMediaInfo
+@end
 
+@interface KSMediaConnection ()<RTCPeerConnectionDelegate>
 @end
 
 @implementation KSMediaConnection
@@ -30,7 +32,7 @@
     RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
  
  */
-- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapture *)capture {
+- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture {
     // 媒体约束
     RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
     // 创建配置
@@ -47,12 +49,12 @@
     // 添加音频轨
     [peerConnection addTrack:capture.audioTrack streamIds:mediaStreamLabels];
     _connection                       = peerConnection;
-    _capture                          = capture;
+    _capturer                          = capture;
     return peerConnection;
 }
 
 -(AVCaptureSession *)captureSession {
-    return _capture.capturer.captureSession;
+    return _capturer.capturer.captureSession;
 }
 
 // 设置远端的媒体描述
@@ -185,44 +187,108 @@
 
 //该方法用于收集可用的 Candidate。
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
+    NSLog(@"已找到新的候选者。");
     [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
 }
 
 //当 ICE 连接状态发生变化时会触发该方法
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    
+    NSLog(@"每当IceConnectionState更改时调用。");
+    switch (newState) {
+        case RTCIceConnectionStateNew:
+            NSLog(@"|------| RTCIceConnectionStateNew : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateChecking:
+            NSLog(@"|------| RTCIceConnectionStateChecking : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateConnected:
+            NSLog(@"|------| RTCIceConnectionStateConnected : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateCompleted:
+            NSLog(@"|------| RTCIceConnectionStateCompleted : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateFailed:
+            NSLog(@"|------| RTCIceConnectionStateFailed : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateDisconnected:
+            NSLog(@"|------| RTCIceConnectionStateDisconnected : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateClosed:
+            NSLog(@"|------| RTCIceConnectionStateClosed : %d |------|",(int)newState);
+            break;
+        case RTCIceConnectionStateCount:
+            NSLog(@"|------| RTCIceConnectionStateCount : %d |------|",(int)newState);
+            break;
+        default:
+            break;
+    }
 }
 
 /** Called when a receiver and its track are created. */
 //该方法在侦听到远端 track 时会触发。
 //当函数被调用后，我们可以通过 rtpReceiver 参数获取到 track。这个track有可能是音频trak，也有可能是视频trak。所以，我们首先要对 track 做个判断，看其是视频还是音频。
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
+    NSLog(@"在创建接收者及其音轨时调用。");
     [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
-    
+    NSLog(@"每当IceGatheringState更改时调用。");
+    switch (newState) {
+        case RTCIceGatheringStateNew:
+            NSLog(@"|------| RTCIceGatheringStateNew : %d |------|",(int)newState);
+            break;
+        case RTCIceGatheringStateGathering:
+            NSLog(@"|------| RTCIceGatheringStateGathering : %d |------|",(int)newState);
+            break;
+        case RTCIceGatheringStateComplete:
+            NSLog(@"|------| RTCIceGatheringStateComplete : %d |------|",(int)newState);
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeSignalingState:(RTCSignalingState)stateChanged {
-    
+    NSLog(@"在SignalingState更改时调用。");
+    switch (stateChanged) {
+        case RTCSignalingStateStable:
+            NSLog(@"|------| RTCSignalingStateStable : %d |------|",(int)stateChanged);
+            break;
+        case  RTCSignalingStateHaveLocalOffer:
+            NSLog(@"|------| RTCSignalingStateHaveLocalOffer : %d |------|",(int)stateChanged);
+            break;
+        case RTCSignalingStateHaveLocalPrAnswer:
+            NSLog(@"|------| RTCSignalingStateHaveLocalPrAnswer : %d |------|",(int)stateChanged);
+            break;
+        case RTCSignalingStateHaveRemoteOffer:
+            NSLog(@"|------| RTCSignalingStateHaveRemoteOffer : %d |------|",(int)stateChanged);
+            break;
+        case RTCSignalingStateHaveRemotePrAnswer:
+            NSLog(@"|------| RTCSignalingStateHaveRemotePrAnswer : %d |------|",(int)stateChanged);
+            break;
+        case RTCSignalingStateClosed:
+            NSLog(@"|------| RTCSignalingStateClosed : %d |------|",(int)stateChanged);
+            break;
+        default:
+            break;
+    }
 }
 
-
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didOpenDataChannel:(nonnull RTCDataChannel *)dataChannel {
-    
+    NSLog(@"新数据通道已打开。");
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didRemoveIceCandidates:(nonnull NSArray<RTCIceCandidate *> *)candidates {
-    
+    NSLog(@"在删除一组本地Ice候选对象时调用。");
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didRemoveStream:(nonnull RTCMediaStream *)stream {
-    
+    NSLog(@"在远程对等方关闭流时调用。指定RTCSdpSemanticsUnifiedPlan时不调用此方法。");
 }
 
 - (void)peerConnectionShouldNegotiate:(nonnull RTCPeerConnection *)peerConnection {
-    
+    NSLog(@"在需要协商时调用，例如ICE已重新启动");
 }
 
 @end

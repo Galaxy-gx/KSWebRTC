@@ -28,9 +28,9 @@
 }
 
 - (void)initRTC {
-    _mediaCapture                    = [[KSMediaCapture alloc] init];
+    _mediaCapture                    = [[KSMediaCapturer alloc] init];
     [_mediaCapture createPeerConnectionFactory];
-    [_mediaCapture captureLocalMedia];
+    [_mediaCapture captureLocalMediaOfCallType:_callType];
     
     _msgHandler                      = [[KSMessageHandler alloc] init];
     _msgHandler.delegate             = self;
@@ -42,12 +42,8 @@
     return  [self mediaConnectionOfHandleId:handleId];
 }
 
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
+- (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
     return _mediaCapture;
-}
-
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    return [self.delegate remoteViewOfWebRTCManager:self handleId:handleId];
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
@@ -61,13 +57,17 @@
     if (connection == nil) {
         return;
     }
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfHandleId:connection:)]) {
-        [self.delegate webRTCManager:self leaveOfHandleId:handleId connection:connection];
+    [KSWebRTCManager removeConnection:connection];
+    
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfConnection:)]) {
+        [self.delegate webRTCManager:self leaveOfConnection:connection];
     }
+    NSLog(@"|------------| 02 leaveOfHandleId : %lu |------------|",(unsigned long)self.mediaConnections.count);
     if (self.mediaConnections.count == 1) {
         if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEndOfSession:)]) {
             [self.delegate webRTCManagerHandlerEndOfSession:self];
         }
+        [self closeAll];
     }
 }
 
@@ -91,6 +91,7 @@
     }
     connection.index = (int)self.mediaConnections.count;
     [self.mediaConnections addObject:connection];
+    NSLog(@"|------------| 01 didAddMediaConnection : %lu |------------|",(unsigned long)self.mediaConnections.count);
     [self.delegate webRTCManager:self didAddMediaConnection:connection];
 }
 
@@ -185,6 +186,17 @@
     [[KSWebRTCManager shared].mediaConnections removeObject:connection];
     [connection close];
     connection = nil;
+}
+
+- (void)closeAll {
+    for (KSMediaConnection *connection in self.mediaConnections) {
+        [connection close];
+    }
+    [self.mediaConnections removeAllObjects];
+    [self.mediaCapture close];
+    self.mediaCapture = nil;
+    [self.msgHandler close];
+    self.msgHandler = nil;
 }
 
 -(KSMediaConnection *)mediaConnectionOfHandleId:(NSNumber *)handleId {

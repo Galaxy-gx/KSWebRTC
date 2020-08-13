@@ -11,19 +11,18 @@
 #import "KSCallState.h"
 #import "KSMediaConnection.h"
 #import "KSWebSocket.h"
-#import "KSMediaInfo.h"
 
 @class KSMsg;
 @class KSMessageHandler;
-@class KSMediaCapture;
+@class KSMediaCapturer;
 @class KSDetached;
 
 @protocol KSMessageHandlerDelegate <NSObject>
 
 @required
 - (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId;
-- (KSMediaCapture *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
-- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
+- (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
+//- (RTCEAGLVideoView *)remoteViewOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
 
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
