@@ -6,8 +6,8 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSSuperController.h"
+#import "KSMediaController.h"
 
-@interface KSCallController : KSSuperController
+@interface KSCallController : KSMediaController
 
 @end

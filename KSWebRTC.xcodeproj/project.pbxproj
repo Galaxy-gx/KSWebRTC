@@ -29,6 +29,8 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E646E5D924E6767B0098892F /* KSKitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E646E5D824E6767B0098892F /* KSKitManager.m */; };
+		E646E5DE24E67B3F0098892F /* KSMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = E646E5DD24E67B3F0098892F /* KSMediaController.m */; };
 		E664F8F324B89CB70092FCE2 /* KSMediaCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = E664F8F224B89CB70092FCE2 /* KSMediaCapturer.m */; };
 		E67695AF24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = E67695AE24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.m */; };
 		E67A6A9124DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E67A6A9024DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m */; };
@@ -125,6 +127,10 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E646E5D724E6767B0098892F /* KSKitManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSKitManager.h; sourceTree = "<group>"; };
+		E646E5D824E6767B0098892F /* KSKitManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSKitManager.m; sourceTree = "<group>"; };
+		E646E5DC24E67B3F0098892F /* KSMediaController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaController.h; sourceTree = "<group>"; };
+		E646E5DD24E67B3F0098892F /* KSMediaController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaController.m; sourceTree = "<group>"; };
 		E664F8F124B89CB70092FCE2 /* KSMediaCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaCapturer.h; sourceTree = "<group>"; };
 		E664F8F224B89CB70092FCE2 /* KSMediaCapturer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaCapturer.m; sourceTree = "<group>"; };
 		E67695AD24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
@@ -314,6 +320,8 @@
 			children = (
 				E680287C24E380B7003D849A /* KSWebRTCManager.h */,
 				E680287D24E380B7003D849A /* KSWebRTCManager.m */,
+				E646E5D724E6767B0098892F /* KSKitManager.h */,
+				E646E5D824E6767B0098892F /* KSKitManager.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -395,6 +403,23 @@
 				E6400F4224B85080004C7060 /* main.m */,
 			);
 			path = KSWebRTC;
+			sourceTree = "<group>";
+		};
+		E646E5DA24E67B1B0098892F /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				E646E5DB24E67B260098892F /* Controller */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		E646E5DB24E67B260098892F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E646E5DC24E67B3F0098892F /* KSMediaController.h */,
+				E646E5DD24E67B3F0098892F /* KSMediaController.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		E67695AB24DEA0A30034A478 /* Library */ = {
@@ -483,6 +508,7 @@
 		E67BC59B24B853DE004BBA8A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				E646E5DA24E67B1B0098892F /* Media */,
 				E6BC0B1524E29C55005A955A /* WebRTC */,
 				E67A6A9924DE8EF100BCE4B9 /* Call */,
 				E62B99C024DD5BA700152697 /* Kits */,
@@ -873,6 +899,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E646E5DE24E67B3F0098892F /* KSMediaController.m in Sources */,
 				E60C907D24CEB85000291CDA /* ARDAppClient.m in Sources */,
 				E67A6A9124DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m in Sources */,
 				E67BC5AC24B856D6004BBA8A /* NSString+Category.m in Sources */,
@@ -907,6 +934,7 @@
 				E62B99CF24DD75C100152697 /* KSProfileConfigure.m in Sources */,
 				E6A5DFFE24D6DF08007E7D14 /* KSLocalView.m in Sources */,
 				E6AC710224DD294A00C7134D /* KSWaitingAnswersGroupView.m in Sources */,
+				E646E5D924E6767B0098892F /* KSKitManager.m in Sources */,
 				E67BC5B724B860E0004BBA8A /* KSMessageHandler.m in Sources */,
 				E6FD828A24DBE35D00E10495 /* NSObject+Category.m in Sources */,
 				E6A2939C24DE445A008E41E1 /* KSLayoutButton.m in Sources */,

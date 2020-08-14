@@ -93,7 +93,10 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     CGRect rect = CGRectZero;
     switch (tileLayout.resizingMode) {
         case KSResizingModeTile:
-            rect = CGRectMake(tileLayout.layout.hpadding, tileLayout.layout.vpadding, tileLayout.layout.width, tileLayout.layout.height);
+            rect = CGRectMake(self.bounds.size.width - tileLayout.layout.width - tileLayout.layout.hpadding,
+                              tileLayout.layout.vpadding,
+                              tileLayout.layout.width,
+                              tileLayout.layout.height);
             break;
         case KSResizingModeScreen:
             rect = self.bounds;

@@ -54,8 +54,11 @@
 }
 
 - (void)setSession:(AVCaptureSession *)session {
-    _previewLayer.session = session;
+    KSLog(@"|------------| setSession 001 |------------|");
+    _previewLayer.session = session;//赋值非常慢
+    KSLog(@"|------------| setSession 002 |------------|");
     _previewLayer.hidden  = session == nil ? YES : NO;
+    KSLog(@"|------------| setSession 003 |------------|");
 }
 
 - (void)removeVideoView {

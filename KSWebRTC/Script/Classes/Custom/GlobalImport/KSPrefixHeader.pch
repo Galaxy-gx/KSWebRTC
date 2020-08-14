@@ -23,7 +23,7 @@
 //#import "NSString+Category.h"
 //#import "KSSuperController+Category.h"
 //
-//#import "KSMacro.h"
+#import "KSMacro.h"
 
 
 #endif /* KSPrefixHeader_pch */

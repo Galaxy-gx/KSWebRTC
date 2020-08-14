@@ -9,11 +9,7 @@
 #import "KSWebRTCManager.h"
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate>
-
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, strong) KSMediaCapturer  *mediaCapture;//本地
-@property (nonatomic, strong) NSMutableArray   *mediaConnections;
-
 @end
 
 @implementation KSWebRTCManager
@@ -107,9 +103,7 @@
     return self.mediaCapture.capturer.captureSession;
 }
 
--(KSCallState)callState {
-    return _msgHandler.callState;
-}
+#pragma mark - Set
 
 #pragma mark - 事件
 //MediaCapture

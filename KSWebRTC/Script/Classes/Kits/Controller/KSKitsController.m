@@ -21,7 +21,7 @@
 #import "UIButton+Category.h"
 #import "UIColor+Category.h"
 #import "UIFont+Category.h"
-
+#import "KSWebRTCManager.h"
 @interface KSKitsController ()
 
 @property(nonatomic,weak)KSCoolHUB *coolHUB;
@@ -94,14 +94,16 @@
 
 - (void)onVoiceAnsweringClick {
     [self.coolHUB showMessage:@"您已打开摄像头"];
+    [KSWebRTCManager shared].callState = KSCallStateNone;
+    [KSWebRTCManager shared].callType  = KSCallTypeSingleVideo;
 
     //self.modalPresentationStyle     = UIModalPresentationFullScreen;
-    KSCallController *ctrl          = [[KSCallController alloc] init];
-    ctrl.isSuperBar                 = YES;
-    ctrl.displayFlag = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    KSCallController *ctrl             = [[KSCallController alloc] init];
+    ctrl.isSuperBar                    = YES;
+    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-    
+
     [self presentViewController:navCtrl animated:NO completion:nil];
 }
 

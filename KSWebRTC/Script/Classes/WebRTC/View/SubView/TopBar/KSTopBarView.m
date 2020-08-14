@@ -28,8 +28,7 @@
 }
 
 - (void)initKit {
-    //self.backgroundColor    = [UIColor ks_grayBar];
-    self.backgroundColor    = [UIColor clearColor];
+    self.backgroundColor    = [UIColor ks_grayBar];
     int self_w              = self.bounds.size.width;
     int kit_y               = self.bounds.size.height - 18 - 20;;
 

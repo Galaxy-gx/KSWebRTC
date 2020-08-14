@@ -12,6 +12,7 @@
 #import "KSCallState.h"
 #import "KSMsg.h"
 #import "KSMessageHandler.h"
+#import "KSKitManager.h"
 
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
@@ -31,11 +32,16 @@
 @interface KSWebRTCManager : NSObject
 
 @property(nonatomic,weak)id<KSWebRTCManagerDelegate>      delegate;
-@property (nonatomic, weak            ) KSMediaConnection *localConnection;
-@property (nonatomic, assign, readonly) KSCallState       callState;
-@property (nonatomic, assign          ) KSCallType        callType;
-@property (nonatomic, assign          ) BOOL              isConnect;
+
 @property (nonatomic, weak, readonly  ) AVCaptureSession  *captureSession;
+
+@property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
+@property (nonatomic, weak  ) KSMediaConnection *localConnection;
+@property (nonatomic, assign) KSCallType        callType;
+@property (nonatomic, assign) BOOL              isConnect;
+@property (nonatomic, assign) KSCallState       callState;
+@property (nonatomic,strong ) KSKitManager      *kitManager;
+@property (nonatomic, strong) NSMutableArray    *mediaConnections;
 
 + (instancetype)shared;
 - (void)initRTCWithCallType:(KSCallType)callType;

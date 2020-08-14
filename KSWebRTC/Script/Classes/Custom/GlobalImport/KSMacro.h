@@ -11,4 +11,10 @@
 
 #define KSWeakSelf __weak typeof(self) weakSelf = self;
 
+#ifdef DEBUG
+#define KSLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define KSLog( s, ... )
+#endif
+
 #endif /* KSMacro_h */

@@ -18,13 +18,14 @@
 #import "KSCallBarView.h"
 #import "UIFont+Category.h"
 #import "KSSuperController+Category.h"
+#import "KSKitManager.h"
 
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
-@property (nonatomic, weak ) KSCallView   *callView;
-@property (nonatomic, weak ) KSTopBarView *topBarView;
-@property (nonatomic,assign) KSCallType   callType;
-@property (nonatomic,strong) KSTileLayout *tileLayout;
+@property (nonatomic, weak ) KSTopBarView       *topBarView;
+@property (nonatomic,assign) KSCallType         callType;
+@property (nonatomic,strong) KSTileLayout       *tileLayout;
+@property (nonatomic,strong) KSProfileConfigure *profileInfo;
 
 @end
 
@@ -32,92 +33,158 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //记录类型
+    _callType = [KSWebRTCManager shared].callType;//KSCallTypeManyVideo;//KSCallTypeSingleVideo;
     
-    _callType = KSCallTypeManyVideo;//KSCallTypeSingleVideo;
-    [self initMainKit];
-    [self initWebRTC];
+    //初始化布局
+    [self initTileLayout];
+    //初始化页面
+    [self initKit];
+    //页面逻辑
+    [self kitLogic];
 }
 
--(void)dealloc {
-    [[KSWebRTCManager shared] close];
+- (void)initTileLayout {
+    KSTileLayout *tileLayout = [KSTileLayout layoutWithCallType:_callType];
+    CGFloat statusHeight     = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat navHeight        = self.navigationController.navigationBar.bounds.size.height;
+    tileLayout.topPadding    = statusHeight + navHeight;
+    self.tileLayout          = tileLayout;
 }
 
-- (void)initMainKit {
-    KSTileLayout *tileLayout          = [KSTileLayout layoutWithCallType:_callType];
-    CGFloat statusHeight              = [[UIApplication sharedApplication] statusBarFrame].size.height;
-    CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
-    tileLayout.topPadding             = statusHeight + navHeight;
-    _tileLayout                       = tileLayout;
-    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:tileLayout];
-    callView.dataSource               = self;
-    _callView                         = callView;
-
-    //KSWeakSelf;
-    __weak typeof(self) weakSelf      = self;
-    KSEventCallback callback          = ^(KSEventType eventType, NSDictionary *info) {
+- (void)initKit {
+    __weak typeof(self) weakSelf    = self;
+    KSEventCallback callback        = ^(KSEventType eventType, NSDictionary *info) {
         NSLog(@"|------| eventType: %d |------|",(int)eventType);
         [weakSelf triggerEvent:eventType];
     };
+
+    KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:_tileLayout];
+    callView.dataSource             = self;
+    self.callView                   = callView;
     [callView setEventCallback:callback];
     [self.view addSubview:callView];
-    
-    KSProfileConfigure *configure     = [[KSProfileConfigure alloc] init];
-    configure.topPaddding             = 173;
-    configure.title                   = @"Hamasaki Ayumi";
-    configure.titleFont               = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
-    configure.titleOffst              = KS_Extern_Point32;
-    configure.desc                    = @"Invite you to a video call";
-    configure.descFont                = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
-    configure.descOffst               = KS_Extern_Point08;
 
-    [_callView setProfileConfigure:configure];
-    [_callView setAnswerState:KSAnswerStateAwait];
-
-    UIButton *arrowBtn                = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
-    arrowBtn.frame                    = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
+    UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
+    arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
-    self.superBar.backBarButtonItem   = arrowBtn;
+    self.superBar.backBarButtonItem = arrowBtn;
     [self.superBar toFront];
 }
 
+//self.profileInfo
+- (void)testProfileData01 {
+    KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
+    configure.topPaddding         = 173;
+    configure.title               = @"Hamasaki Ayumi";
+    configure.titleFont           = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
+    configure.titleOffst          = KS_Extern_Point32;
+    configure.desc                = @"Invite you to a video call";
+    configure.descFont            = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
+    configure.descOffst           = KS_Extern_Point08;
+    _profileInfo                  = configure;
+}
+
+- (void)kitLogic {
+    switch ([KSWebRTCManager shared].callState) {
+        case KSCallStateNone://拨打界面（挂断）
+        {
+            [self testProfileData01];
+            [self.callView setProfileConfigure:_profileInfo];
+            [self.callView setAnswerState:KSAnswerStateAwait];
+            
+            [self initWebRTC];
+        }
+            break;
+        case KSCallStateCalleeBeingCalled://被叫界面（挂断/接听）
+        {
+            [self testProfileData01];
+            [self.callView setProfileConfigure:_profileInfo];
+            [self.callView setAnswerState:KSAnswerStateJoin];
+            
+            [self initWebRTC];
+        }
+            break;
+        case KSCallStateRecording://通话中
+        {
+            self.topBarView.hidden = NO;
+            [self callLayout];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)initWebRTC {
+    if ([KSWebRTCManager shared].mediaCapture == nil) {
+        [[KSWebRTCManager shared] initRTCWithCallType:_callType];
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+    }
+    [KSWebRTCManager shared].delegate = self;
+    [self createLocalView];
+}
+
+- (void)setProfileInfo:(KSProfileConfigure *)profileInfo {
+    [self.callView setProfileConfigure:profileInfo];
+}
+
+- (void)setAnswerState:(KSAnswerState)state {
+    [self.callView setAnswerState:state];
+}
+
+/// 创建并展示一对一本地视频
+- (void)screenLocalViewOfSession:(BOOL)isSession {
+    _tileLayout.resizingMode = isSession ? KSResizingModeTile : KSResizingModeScreen;
+    [self.callView createLocalViewWithTileLayout:_tileLayout];
+
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[KSWebRTCManager shared] initRTCWithCallType:weakSelf.callType];
-        [KSWebRTCManager shared].delegate = self;
-        if (weakSelf.callType == KSCallTypeSingleVideo) {
-            [weakSelf createLocalView];
-        }
-        //测试放后面
-        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+        [weakSelf.callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
     });
 }
 
+/// 未开始会话的本地界面
 - (void)createLocalView {
-    
     switch (_callType) {
         case KSCallTypeSingleAudio:
+        case KSCallTypeSingleVideo:
         {
-            _tileLayout.resizingMode = KSResizingModeScreen;
-            [_callView createLocalViewWithTileLayout:_tileLayout];
-            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+            [self screenLocalViewOfSession:NO];
         }
             break;
         case KSCallTypeManyAudio:
             
-            break;
-        case KSCallTypeSingleVideo:
-        {
-            _tileLayout.resizingMode = KSResizingModeScreen;
-            [_callView createLocalViewWithTileLayout:_tileLayout];
-            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
-        }
             break;
         case KSCallTypeManyVideo:
         {
             
         }
             break;
+        default:
+            break;
+    }
+}
+
+/// 已经接通：从其他页面回到此页面
+- (void)callLayout {
+    switch (_callType) {
+        case KSCallTypeSingleAudio:
+        case KSCallTypeSingleVideo:
+        {
+            [self screenLocalViewOfSession:YES];
+            KSWebRTCManager *manager = [KSWebRTCManager shared];
+            [self webRTCManager:manager didAddMediaConnection:manager.mediaConnections.lastObject];
+        }
+            break;
+        case KSCallTypeManyAudio:
+        case KSCallTypeManyVideo:
+        {
+            KSWebRTCManager *manager = [KSWebRTCManager shared];
+            for (KSMediaConnection *mediaConnection in manager.mediaConnections) {
+                [self webRTCManager:manager didAddMediaConnection:mediaConnection];
+            }
+        }
         default:
             break;
     }
@@ -199,8 +266,16 @@
 }
 
 - (void)onSwitchCameraClick {
-    [KSWebRTCManager switchCamera];
+    //[KSWebRTCManager switchCamera];
     NSLog(@"%s",__FUNCTION__);
+    
+    [KSWebRTCManager shared].callState = KSCallStateRecording;
+    KSCallController *ctrl             = [[KSCallController alloc] init];
+    ctrl.isSuperBar                    = YES;
+    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
+    [self presentViewController:navCtrl animated:NO completion:nil];
 }
 
 - (void)onAddMemberClick {
@@ -218,7 +293,7 @@
 
 - (void)callerHangup {
     NSLog(@"%s",__FUNCTION__);
-    [_callView setAnswerState:KSAnswerStateJoin];
+    [self.callView setAnswerState:KSAnswerStateJoin];
 }
 
 -(void)calleeHangup {
@@ -232,7 +307,7 @@
     }
     
     [KSWebRTCManager socketCreateSession];
-    [_callView displayCallBar];
+    [self.callView displayCallBar];
 }
 
 //会话中开启麦克风
@@ -280,7 +355,7 @@
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
     [KSWebRTCManager closeMediaCapture];
-    [_callView setLocalViewSession:nil];
+    [self.callView setLocalViewSession:nil];
 }
 
 //会议主题面板中开启麦克风
@@ -333,7 +408,7 @@
     //会话结束
     if (self.callType == KSCallTypeSingleVideo || self.callType == KSCallTypeSingleVideo) {
         //次方法省略？
-        [_callView leaveLocal];
+        [self.callView leaveLocal];
     }
     [self dismiss];
 }
@@ -351,10 +426,10 @@
             
             break;
         case KSCallTypeSingleVideo:
-            [_callView leaveOfHandleId:connection.handleId];
+            [self.callView leaveOfHandleId:connection.handleId];
             break;
         case KSCallTypeManyVideo:
-            [_callView deleteItemsAtIndex:connection.index];
+            [self.callView deleteItemsAtIndex:connection.index];
             break;
         default:
             break;
@@ -370,13 +445,13 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection.mediaInfo.isLocal && [KSWebRTCManager shared].callType == KSCallTypeSingleVideo) {
+    if (connection.mediaInfo.isLocal) {
         return;
     }
+    
     if (self.topBarView.isHidden) {
         self.topBarView.hidden = NO;
     }
-    
     switch (_callType) {
         case KSCallTypeSingleAudio:
 
@@ -386,10 +461,10 @@
             break;
         case KSCallTypeSingleVideo:
             connection.mediaInfo.callType = _callType;
-            [_callView createRemoteViewOfConnection:connection];
+            [self.callView createRemoteViewOfConnection:connection];
             break;
         case KSCallTypeManyVideo:
-            [_callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+            [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
             break;
         default:
             break;
