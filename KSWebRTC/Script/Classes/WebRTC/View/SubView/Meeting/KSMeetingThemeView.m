@@ -8,6 +8,11 @@
 
 #import "KSMeetingThemeView.h"
 #import "KSMeetingBarView.h"
+#import "UIColor+Category.h"
+#import "NSString+Category.h"
+#import "UIFont+Category.h"
+#import "UIButton+Category.h"
+
 @interface KSMeetingThemeView()
 
 @property(nonatomic,weak)UITextField *textField;

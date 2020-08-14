@@ -8,6 +8,8 @@
 
 #import "KSProfileView.h"
 #import "KSRoundImageView.h"
+#import "UIColor+Category.h"
+#import "UILabel+Category.h"
 
 @interface KSProfileView()
 

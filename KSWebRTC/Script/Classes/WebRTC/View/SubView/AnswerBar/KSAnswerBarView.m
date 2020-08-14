@@ -8,6 +8,8 @@
 
 #import "KSAnswerBarView.h"
 #import "KSLayoutButton.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSAnswerBarView()
 

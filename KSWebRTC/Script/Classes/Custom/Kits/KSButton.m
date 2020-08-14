@@ -8,6 +8,8 @@
 
 #import "KSButton.h"
 #import "NSString+Category.h"
+#import "UILabel+Category.h"
+
 @interface KSButton() {
     CGFloat image_x;
     CGFloat image_y;

@@ -8,6 +8,8 @@
 
 #import "KSCallBarCell.h"
 #import "KSBtnInfo.h"
+#import "UIButton+Category.h"
+
 @interface KSCallBarCell()
 
 @property(nonatomic,weak)UIButton *button;

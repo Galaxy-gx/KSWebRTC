@@ -10,20 +10,20 @@
 #define KSPrefixHeader_pch
 
 #import "KSExtern.h"
-
-//Category
-#import "UIButton+Category.h"
-#import "UIView+Category.h"
-#import "UIImageView+Category.h"
-#import "UIImage+Category.h"
-#import "UILabel+Category.h"
-#import "UIButton+Category.h"
-#import "UIColor+Category.h"
-#import "UIFont+Category.h"
-#import "NSString+Category.h"
-#import "KSSuperController+Category.h"
-
-#import "KSMacro.h"
+//
+////Category
+//#import "UIButton+Category.h"
+//#import "UIView+Category.h"
+//#import "UIImageView+Category.h"
+//#import "UIImage+Category.h"
+//#import "UILabel+Category.h"
+//#import "UIButton+Category.h"
+//#import "UIColor+Category.h"
+//#import "UIFont+Category.h"
+//#import "NSString+Category.h"
+//#import "KSSuperController+Category.h"
+//
+//#import "KSMacro.h"
 
 
 #endif /* KSPrefixHeader_pch */

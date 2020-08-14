@@ -7,6 +7,10 @@
 //  self_height = 20
 
 #import "KSProfileBarView.h"
+#import "UIImageView+Category.h"
+#import "UILabel+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSProfileBarView()
 

@@ -7,6 +7,9 @@
 //
 
 #import "KSCoolTipsView.h"
+#import "UILabel+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSCoolTipsView()
 

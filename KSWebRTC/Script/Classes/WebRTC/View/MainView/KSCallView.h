@@ -33,7 +33,7 @@
 @interface KSCallView : KSEventCallbackView
 @property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
 
-- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout callType:(KSCallType)callType;
+- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout;
 - (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)leaveLocal;

@@ -8,6 +8,7 @@
 
 #import "KSWaitingAnswersMemberCell.h"
 #import "KSRoundImageView.h"
+#import "UIColor+Category.h"
 
 @interface KSWaitingAnswersMemberCell()
 

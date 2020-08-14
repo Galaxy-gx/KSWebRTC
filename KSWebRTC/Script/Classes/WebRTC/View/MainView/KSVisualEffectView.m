@@ -30,4 +30,5 @@
     self.effect = blurEffrct;
     self.contentView.backgroundColor = [UIColor colorWithRed:80/255.0 green:80/255.0 blue:80/255.0 alpha:0.5];
 }
+
 @end

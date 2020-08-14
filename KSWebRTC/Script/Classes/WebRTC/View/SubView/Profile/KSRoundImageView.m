@@ -7,6 +7,9 @@
 //
 
 #import "KSRoundImageView.h"
+#import "UIColor+Category.h"
+#import "UILabel+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSRoundImageView()
 

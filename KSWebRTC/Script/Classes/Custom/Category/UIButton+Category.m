@@ -7,6 +7,9 @@
 //
 
 #import "UIButton+Category.h"
+#import "UIColor+Category.h"
+#import "NSString+Category.h"
+#import "UIImage+Category.h"
 
 @implementation UIButton (Category)
 

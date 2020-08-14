@@ -7,6 +7,10 @@
 //
 
 #import "KSTopBarView.h"
+#import "UIButton+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
+#import "UILabel+Category.h"
 
 @interface KSTopBarView()
 
@@ -24,8 +28,8 @@
 }
 
 - (void)initKit {
-    self.backgroundColor    = [UIColor ks_grayBar];
-
+    //self.backgroundColor    = [UIColor ks_grayBar];
+    self.backgroundColor    = [UIColor clearColor];
     int self_w              = self.bounds.size.width;
     int kit_y               = self.bounds.size.height - 18 - 20;;
 

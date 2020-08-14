@@ -13,6 +13,7 @@
 #import "KSCallBarView.h"
 #import "KSRemoteCell.h"
 #import "KSLocalCell.h"
+#import "UIColor+Category.h"
 
 @interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
@@ -24,7 +25,6 @@
 
 @property (nonatomic,strong) NSMutableArray  *remoteKits;
 @property (nonatomic,strong) KSTileLayout    *tileLayout;
-@property (nonatomic,assign) KSCallType      callType;
 @property (nonatomic,assign) CGPoint         tilePoint;
 
 @property(nonatomic,weak)UICollectionView    *collectionView;
@@ -36,11 +36,10 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 @implementation KSCallView
 
-- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout callType:(KSCallType)callType {
+- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout {
     if (self = [super initWithFrame:frame]) {
         self.tileLayout   = tileLayout;
-        self.callType     = callType;
-        switch (callType) {
+        switch (tileLayout.callType) {
             case KSCallTypeSingleAudio:
                 [self initScrollView];
                 break;
@@ -209,7 +208,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)leaveLocal {
-    switch (_callType) {
+    switch (_tileLayout.callType) {
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
@@ -245,7 +244,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 - (KSRemoteView *)createRemoteView {
     CGRect rect = CGRectZero;
-    switch (_callType) {
+    switch (_tileLayout.callType) {
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
@@ -283,7 +282,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     }
     remoteView.connection = connection;
     
-    if (self.callType == KSCallTypeSingleVideo) {//测试
+    if (self.tileLayout.callType == KSCallTypeSingleVideo) {//测试
         [self zoomOutLocalView];
     }
 }

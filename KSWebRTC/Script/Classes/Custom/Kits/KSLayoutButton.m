@@ -7,6 +7,7 @@
 //
 
 #import "KSLayoutButton.h"
+#import "NSString+Category.h"
 
 @implementation KSLayoutButton
 

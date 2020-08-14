@@ -11,15 +11,16 @@
 #import "KSProfileView.h"
 #import "KSProfileBarView.h"
 #import "KSRoundImageView.h"
+#import "UIColor+Category.h"
 
 @implementation KSEAGLVideoView
 @end
 
 @interface KSRemoteView()<KSMediaConnectionUpdateDelegate>
 
-@property(nonatomic,weak)KSProfileBarView *profileBarView;
-@property(nonatomic,weak)KSRoundImageView *roundImageView;
-@property (nonatomic,weak  ) KSEAGLVideoView  *remoteView;
+@property (nonatomic,weak) KSProfileBarView *profileBarView;
+@property (nonatomic,weak) KSRoundImageView *roundImageView;
+@property (nonatomic,weak) KSEAGLVideoView  *remoteView;
 
 @end
 

@@ -15,8 +15,9 @@
 #import "KSTopBarView.h"
 #import "KSCallState.h"
 #import "KSWebRTCManager.h"
-
 #import "KSCallBarView.h"
+#import "UIFont+Category.h"
+#import "KSSuperController+Category.h"
 
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
@@ -47,11 +48,12 @@
     CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
     tileLayout.topPadding             = statusHeight + navHeight;
     _tileLayout                       = tileLayout;
-    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:tileLayout callType:_callType];
+    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:tileLayout];
     callView.dataSource               = self;
     _callView                         = callView;
 
-    KSWeakSelf;
+    //KSWeakSelf;
+    __weak typeof(self) weakSelf      = self;
     KSEventCallback callback          = ^(KSEventType eventType, NSDictionary *info) {
         NSLog(@"|------| eventType: %d |------|",(int)eventType);
         [weakSelf triggerEvent:eventType];
@@ -79,7 +81,7 @@
 }
 
 - (void)initWebRTC {
-    KSWeakSelf;
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [[KSWebRTCManager shared] initRTCWithCallType:weakSelf.callType];
         [KSWebRTCManager shared].delegate = self;

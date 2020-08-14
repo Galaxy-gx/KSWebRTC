@@ -18,6 +18,9 @@
 #import "KSCoolHUB.h"
 #import "KSCallController.h"
 #import "KSSuperController+Category.h"
+#import "UIButton+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSKitsController ()
 

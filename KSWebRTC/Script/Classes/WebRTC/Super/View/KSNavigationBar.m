@@ -7,6 +7,9 @@
 //
 
 #import "KSNavigationBar.h"
+#import "UILabel+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
 
 @interface KSNavigationBar()
 
@@ -18,8 +21,9 @@
 @implementation KSNavigationBar
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        _statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
-        _barHeight = self.bounds.size.height - _statusBarHeight;
+        _statusBarHeight     = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        _barHeight           = self.bounds.size.height - _statusBarHeight;
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

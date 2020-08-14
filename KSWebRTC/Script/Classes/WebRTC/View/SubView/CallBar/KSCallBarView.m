@@ -9,6 +9,9 @@
 #import "KSCallBarView.h"
 #import "KSCallBarCell.h"
 #import "KSBtnInfo.h"
+#import "UIView+Category.h"
+#import "UIColor+Category.h"
+
 @interface KSCallBarView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,KSCallBarCellDelegate>
 
 @property(nonatomic,strong)NSMutableArray *bars;

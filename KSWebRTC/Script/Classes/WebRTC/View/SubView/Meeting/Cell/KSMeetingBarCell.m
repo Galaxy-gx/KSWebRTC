@@ -9,6 +9,9 @@
 #import "KSMeetingBarCell.h"
 #import "KSLayoutButton.h"
 #import "KSBtnInfo.h"
+#import "UIFont+Category.h"
+#import "UIColor+Category.h"
+
 @interface KSMeetingBarCell()
 
 @property(nonatomic,weak)KSLayoutButton *button;

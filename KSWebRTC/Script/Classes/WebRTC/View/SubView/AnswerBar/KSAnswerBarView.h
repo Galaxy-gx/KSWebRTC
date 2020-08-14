@@ -7,10 +7,10 @@
 //
 
 #import "KSEventCallbackView.h"
+#import "KSConfigure.h"
 
 @interface KSAnswerBarView : KSEventCallbackView
 
 @property(nonatomic,assign)KSAnswerState answerState;
-
 
 @end

@@ -9,6 +9,7 @@
 #import "KSSuperController.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import "KSNavigationBar.h"
+#import "UIColor+Category.h"
 
 @interface KSSuperController ()<UIGestureRecognizerDelegate>
 
