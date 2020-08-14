@@ -52,9 +52,12 @@
 }
 
 -(void)setConnection:(KSMediaConnection *)connection {
+    if (_connection) {
+        [_connection.remoteVideoTrack removeRenderer:_remoteView];
+    }
     _connection = connection;
-    if (connection == nil) {
-        return;
+    if (connection.mediaInfo.isFocus) {
+        [connection.remoteVideoTrack addRenderer:_remoteView];
     }
     if (connection.mediaInfo.callType == KSCallTypeSingleVideo) {
         _profileBarView.hidden = YES;
@@ -66,14 +69,6 @@
     }
     else{
         
-    }
-    [connection.remoteVideoTrack addRenderer:_remoteView];
-}
-
-- (void)prepareForReuse {
-    [super prepareForReuse];
-    if (_connection) {
-        [_connection.remoteVideoTrack removeRenderer:_remoteView];
     }
 }
 

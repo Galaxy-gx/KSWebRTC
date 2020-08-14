@@ -23,6 +23,7 @@
 @property (nonatomic, weak ) KSCallView   *callView;
 @property (nonatomic, weak ) KSTopBarView *topBarView;
 @property (nonatomic,assign) KSCallType   callType;
+@property (nonatomic,strong) KSTileLayout *tileLayout;
 
 @end
 
@@ -31,7 +32,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _callType = KSCallTypeSingleVideo;
+    _callType = KSCallTypeManyVideo;//KSCallTypeSingleVideo;
     [self initMainKit];
     [self initWebRTC];
 }
@@ -41,19 +42,31 @@
 }
 
 - (void)initMainKit {
-    
-    KSTileLayout *layout              = [[KSTileLayout alloc] init];
-    layout.scale                      = KSScaleMake(9, 16);
-    layout.mode                       = KSContentModeScaleAspectFit;
-    int width                         = 96;
-    int height                        = width / layout.scale.width * layout.scale.height;
-    layout.layout                     = KSLayoutMake(width, height, 10, 10);
-
+    KSTileLayout *tileLayout = nil;
     CGFloat statusHeight              = [[UIApplication sharedApplication] statusBarFrame].size.height;
     CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
-
-    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds layout:layout callType:_callType];
-    callView.topPadding               = statusHeight + navHeight;
+    switch (_callType) {
+        case KSCallTypeSingleAudio:
+            tileLayout                = [KSTileLayout singleAudioLayout];
+            tileLayout.topPadding     = 0;
+            break;
+        case KSCallTypeManyAudio:
+            tileLayout = [KSTileLayout manyAudioLayout];
+            tileLayout.topPadding     = statusHeight + navHeight;
+            break;
+        case KSCallTypeSingleVideo:
+            tileLayout                = [KSTileLayout singleVideoLayout];
+            tileLayout.topPadding     = 0;
+            break;
+        case KSCallTypeManyVideo:
+            tileLayout = [KSTileLayout manyVideoLayout];
+            tileLayout.topPadding     = statusHeight + navHeight;
+            break;
+        default:
+            break;
+    }
+    _tileLayout                       = tileLayout;
+    KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:tileLayout callType:_callType];
     callView.dataSource               = self;
     _callView                         = callView;
 
@@ -98,27 +111,27 @@
 }
 
 - (void)createLocalView {
-    KSTileLayout *layout = [[KSTileLayout alloc] init];
-    layout.scale         = KSScaleMake(9, 16);
-    layout.mode          = KSContentModeScaleAspectFit;
-    int width            = 96;
-    int height           = width / layout.scale.width * layout.scale.height;
-    layout.layout        = KSLayoutMake(width, height, 10, 10);
     
-    switch ([KSWebRTCManager shared].callType) {
+    switch (_callType) {
         case KSCallTypeSingleAudio:
-
+        {
+            [_callView createLocalViewWithLayout:_tileLayout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+        }
             break;
         case KSCallTypeManyAudio:
             
             break;
         case KSCallTypeSingleVideo:
         {
-            [_callView createLocalViewWithLayout:layout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+            [_callView createLocalViewWithLayout:_tileLayout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
             [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
         }
             break;
         case KSCallTypeManyVideo:
+        {
+            
+        }
             break;
         default:
             break;

@@ -31,10 +31,9 @@
 @end
 
 @interface KSCallView : KSEventCallbackView
-@property(nonatomic,assign)CGFloat                topPadding;
 @property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
 
-- (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType;
+- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout callType:(KSCallType)callType;
 - (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)leaveLocal;

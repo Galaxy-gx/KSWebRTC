@@ -21,7 +21,7 @@ static int const kFramerateLimit         = 25.0;
 @end
 @implementation KSMediaCapturer
 
--(instancetype)initWithSetting:(KSCapturerSetting *)setting {
+- (instancetype)initWithSetting:(KSCapturerSetting *)setting {
     if (self = [super init]) {
         _setting         = setting;
 
@@ -210,7 +210,7 @@ static int const kFramerateLimit         = 25.0;
             return device;
         }
     }
-    return captureDevices[0];
+    return captureDevices.firstObject;
 }
 
 - (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {

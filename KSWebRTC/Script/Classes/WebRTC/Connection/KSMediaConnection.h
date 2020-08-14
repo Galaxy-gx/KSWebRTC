@@ -18,6 +18,7 @@
 @property (nonatomic,assign ) KSCallType       callType;
 @property (nonatomic,copy   ) NSString         *name;
 @property (nonatomic, assign) BOOL             isOpenSpeaker;
+@property (nonatomic, assign) BOOL             isFocus;
 
 @end
 

@@ -23,7 +23,7 @@
 @property (nonatomic,weak  ) KSCallBarView   *callBarView;
 
 @property (nonatomic,strong) NSMutableArray  *remoteKits;
-@property (nonatomic,strong) KSTileLayout    *remoteLayout;
+@property (nonatomic,strong) KSTileLayout    *tileLayout;
 @property (nonatomic,assign) KSCallType      callType;
 @property (nonatomic,assign) CGPoint         tilePoint;
 
@@ -36,9 +36,9 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 @implementation KSCallView
 
-- (instancetype)initWithFrame:(CGRect)frame layout:(KSTileLayout *)layout callType:(KSCallType)callType {
+- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout callType:(KSCallType)callType {
     if (self = [super initWithFrame:frame]) {
-        self.remoteLayout = layout;
+        self.tileLayout   = tileLayout;
         self.callType     = callType;
         switch (callType) {
             case KSCallTypeSingleAudio:
@@ -77,7 +77,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
     
-    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _topPadding, self.frame.size.width, self.bounds.size.height)
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height)
                                                                 collectionViewLayout:flowLayout];
     collectionView.backgroundColor         = [UIColor ks_grayBar];
     
@@ -108,7 +108,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _topPadding + KS_Extern_Point10, 96,
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _tileLayout.topPadding + KS_Extern_Point10, 96,
                                       96 / self.localView.scale.width * self.localView.scale.height);
     self.localView.frame = target;
     [self localToFront];
@@ -176,17 +176,17 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 -(CGPoint)pointOfIndex:(NSInteger)index {
-    int x = _remoteLayout.layout.hpadding;
+    int x = _tileLayout.layout.hpadding;
     int y = 0;
     if (index == 0) {
-        x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
-        y = _remoteLayout.layout.vpadding;
+        x = _tileLayout.layout.width + _tileLayout.layout.hpadding * 2;
+        y = _tileLayout.layout.vpadding;
     }
     else {
         if ((index % 2) == 0) {
-            x = _remoteLayout.layout.width + _remoteLayout.layout.hpadding * 2;
+            x = _tileLayout.layout.width + _tileLayout.layout.hpadding * 2;
         }
-        y = _remoteLayout.layout.vpadding + (index / 2) * _remoteLayout.layout.height + _remoteLayout.layout.vpadding * (index / 2);
+        y = _tileLayout.layout.vpadding + (index / 2) * _tileLayout.layout.height + _tileLayout.layout.vpadding * (index / 2);
     }
     return CGPointMake(x, y);
 }
@@ -195,12 +195,12 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     for (int index = 0; index < _remoteKits.count; index++) {
         CGPoint point= [self pointOfIndex:(int)_remoteKits.count + 1];
         KSRemoteView *remoteView = _remoteKits[index];
-        remoteView.frame = CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height);
+        remoteView.frame = CGRectMake(point.x, point.y, _tileLayout.layout.width, _tileLayout.layout.height);
     }
     if (_remoteKits.lastObject) {
         KSRemoteView *remoteView = _remoteKits.lastObject;
-        if (remoteView.frame.origin.y + _remoteLayout.layout.height > self.bounds.size.height) {
-            _scrollView.contentSize = CGSizeMake(self.bounds.size.width, remoteView.frame.origin.y + _remoteLayout.layout.height);
+        if (remoteView.frame.origin.y + _tileLayout.layout.height > self.bounds.size.height) {
+            _scrollView.contentSize = CGSizeMake(self.bounds.size.width, remoteView.frame.origin.y + _tileLayout.layout.height);
         }
     }
 }
@@ -252,7 +252,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         case KSCallTypeManyVideo:
         {
             CGPoint point = [self pointOfIndex:self.remoteKits.count];
-            rect = CGRectMake(point.x, point.y, _remoteLayout.layout.width, _remoteLayout.layout.height);
+            rect = CGRectMake(point.x, point.y, _tileLayout.layout.width, _tileLayout.layout.height);
         }
             break;
             break;
@@ -260,7 +260,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
             break;
     }
     
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect scale:_remoteLayout.scale mode:_remoteLayout.mode callType:_callType];
+    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect scale:_tileLayout.scale mode:_tileLayout.mode callType:_callType];
     remoteView.handleId      = handleId;
     [self.scrollView addSubview:remoteView];
     [self.remoteKits addObject:remoteView];

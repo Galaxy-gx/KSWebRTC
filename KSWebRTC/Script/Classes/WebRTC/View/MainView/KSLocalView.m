@@ -73,4 +73,5 @@
     _previewLayer.session = nil;
     _previewLayer = nil;
 }
+
 @end

@@ -37,14 +37,10 @@
 
 -(void)setConnection:(KSMediaConnection *)connection {
     _connection           = connection;
-    _previewLayer.session = connection.captureSession;
-    _previewLayer.hidden  = connection.captureSession == nil ? YES : NO;
-}
-
-- (void)prepareForReuse {
-    [super prepareForReuse];
-    _previewLayer.session = nil;
-    _previewLayer.hidden  = YES;
+    if (connection.mediaInfo.isFocus) {
+        _previewLayer.session = connection.captureSession;
+        _previewLayer.hidden  = connection.captureSession == nil ? YES : NO;
+    }
 }
 
 @end

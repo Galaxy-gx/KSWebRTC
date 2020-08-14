@@ -96,8 +96,10 @@
     }
     connection.index = (int)self.mediaConnections.count;
     [self.mediaConnections addObject:connection];
-    NSLog(@"|------------| 01 didAddMediaConnection : %lu |------------|",(unsigned long)self.mediaConnections.count);
-    [self.delegate webRTCManager:self didAddMediaConnection:connection];
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:didAddMediaConnection:)]) {
+        connection.mediaInfo.isFocus = YES;
+        [self.delegate webRTCManager:self didAddMediaConnection:connection];
+    }
 }
 
 #pragma mark - Get
