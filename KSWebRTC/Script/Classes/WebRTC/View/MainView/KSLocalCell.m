@@ -7,10 +7,11 @@
 //
 
 #import "KSLocalCell.h"
+#import "KSLocalView.h"
 
 @interface KSLocalCell()
 
-@property (nonatomic,weak) KSPreviewLayer *previewLayer;
+@property(nonatomic,weak)KSLocalView *localView;
 
 @end
 
@@ -24,23 +25,18 @@
 }
 
 - (void)initKit {
-    KSPreviewLayer *previewLayer = [[KSPreviewLayer alloc] init];
-    previewLayer.videoGravity    = AVLayerVideoGravityResizeAspectFill;//填充模式
-    _previewLayer                = previewLayer;
-    [self.layer addSublayer:previewLayer];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:self.bounds];
+    _localView = localView;
+    [self addSubview:localView];
 }
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    _previewLayer.frame = self.bounds;
 }
 
 -(void)setConnection:(KSMediaConnection *)connection {
     _connection           = connection;
-    if (connection.mediaInfo.isFocus) {
-        _previewLayer.session = connection.captureSession;
-        _previewLayer.hidden  = connection.captureSession == nil ? YES : NO;
-    }
+    _localView.connection = connection;
 }
 
 @end

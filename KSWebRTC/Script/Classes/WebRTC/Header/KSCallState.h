@@ -51,10 +51,12 @@ typedef NS_ENUM(NSInteger, KSWebRTCStatus) {
     KSWebRTCStatusWebRTCSuccessed    = 0x00000001<<18   //是否成功建立的连接
 };
 
-typedef NS_ENUM(NSInteger, KSAudioStateType) {
-    KSAudioStateTypeUnknown,
-    KSAudioStateTypeMute,
-    KSAudioStateTypeSound,
+typedef NS_ENUM(NSInteger, KSMediaState) {
+    KSMediaStateMuteAudio,
+    KSMediaStateUnmuteAudio,
+    KSMediaStateMuteVideo,
+    KSMediaStateUnmuteVideo,
+    KSMediaStateTalking,
 };
 
 #endif /* KSCallState_h */

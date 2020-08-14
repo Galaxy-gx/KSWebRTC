@@ -7,24 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import "KSConfigure.h"
-
+#import "KSMediaConnection.h"
+#import "KSTileLayout.h"
 @interface KSPreviewLayer : AVCaptureVideoPreviewLayer
-
 @end
 
 @interface KSLocalView : UIView
+@property (nonatomic,weak  ) KSMediaConnection *connection;
+@property (nonatomic,strong) KSTileLayout      *tileLayout;
+@property (nonatomic,assign) BOOL              isDrag;
 
-@property (nonatomic,assign) BOOL          isDrag;
-@property (nonatomic,assign) KSScale       scale;
-@property (nonatomic,assign) KSContentMode mode;
-@property (nonatomic,assign) KSCallType    callType;
-@property (nonatomic,weak  ) KSPreviewLayer *previewLayer;
-
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType;
-- (void)setLocalViewSession:(AVCaptureSession *)session;
-- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode;
-- (void)removeVideoView;
+- (void)setSession:(AVCaptureSession *)session;
 
 @end

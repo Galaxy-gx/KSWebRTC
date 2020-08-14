@@ -11,9 +11,9 @@
 
 @interface KSProfileBarView : UIView
 
-@property(nonatomic,assign)KSAudioStateType stateType;
+@property(nonatomic,assign)KSMediaState mediaState;
 
 - (void)setUserName:(NSString *)name;
-- (void)updateStateType:(KSAudioStateType)stateType;
+- (void)updateMediaState:(KSMediaState)mediaState;
 
 @end

@@ -120,6 +120,14 @@
     }];
 }
 
+#pragma mark - Set
+-(void)setMediaState:(KSMediaState)mediaState {
+    if ([self.updateDelegate respondsToSelector:@selector(mediaConnection:didChangeMediaState:)]) {
+        [self.updateDelegate mediaConnection:self didChangeMediaState:mediaState];
+    }
+    _mediaState = mediaState;
+}
+
 #pragma mark - Audio mute/unmute
 - (void)muteAudio {
     NSLog(@"audio muted");
@@ -239,7 +247,7 @@
     return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
 }
 
-//RTCPeerConnectionDelegate
+#pragma mark - RTCPeerConnectionDelegate
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream { 
     //[self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
 }

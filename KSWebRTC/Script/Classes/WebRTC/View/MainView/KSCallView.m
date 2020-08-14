@@ -72,7 +72,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     CGFloat cell_wh                        = (self.bounds.size.width - padding)/2;
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize                    = CGSizeMake(cell_wh, cell_wh);
-    flowLayout.minimumLineSpacing          = 0;
+    flowLayout.minimumLineSpacing          = KS_Extern_Point10;
     flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
     flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
@@ -90,11 +90,11 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     [self addSubview:collectionView];
 }
 
-- (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType {
+- (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout {
     CGRect rect = CGRectZero;
-    switch (resizingMode) {
+    switch (tileLayout.resizingMode) {
         case KSResizingModeTile:
-            rect = CGRectMake(layout.layout.hpadding, layout.layout.vpadding, layout.layout.width, layout.layout.height);
+            rect = CGRectMake(tileLayout.layout.hpadding, tileLayout.layout.vpadding, tileLayout.layout.width, tileLayout.layout.height);
             break;
         case KSResizingModeScreen:
             rect = self.bounds;
@@ -102,14 +102,21 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         default:
             break;
     }
-    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect scale:layout.scale mode:layout.mode callType:callType];
+    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect];
+    localView.tileLayout   = tileLayout;
     _localView             = localView;
     [self.scrollView addSubview:localView];
 }
 
+- (void)setLocalViewSession:(AVCaptureSession *)session {
+    [_localView setSession:session];
+}
+
 - (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _tileLayout.topPadding + KS_Extern_Point10, 96,
-                                      96 / self.localView.scale.width * self.localView.scale.height);
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - self.localView.tileLayout.layout.width,
+                                      _tileLayout.topPadding + KS_Extern_Point10,
+                                      self.localView.tileLayout.layout.width,
+                                      self.localView.tileLayout.layout.height);
     self.localView.frame = target;
     [self localToFront];
 }
@@ -171,10 +178,6 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     [_localView addGestureRecognizer:panSwipeGesture];
 }
 
-- (void)setLocalViewSession:(AVCaptureSession *)session {
-    [_localView setLocalViewSession:session];
-}
-
 -(CGPoint)pointOfIndex:(NSInteger)index {
     int x = _tileLayout.layout.hpadding;
     int y = 0;
@@ -210,13 +213,14 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            
+            self.localView.connection = nil;
+            [self.localView removeFromSuperview];
         }
             break;
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            [self.localView removeVideoView];
+            
         }
             break;
             break;
@@ -227,7 +231,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 - (void)leaveOfHandleId:(NSNumber *)handleId {
     for (KSRemoteView *videoView in _remoteKits) {
-        if (videoView.handleId == handleId) {
+        if (videoView.connection.handleId == handleId) {
             [_remoteKits removeObject:videoView];
             [videoView removeVideoView];
             [videoView removeFromSuperview];
@@ -239,7 +243,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     }
 }
 
-- (KSRemoteView *)createRemoteViewOfHandleId:(NSNumber *)handleId {
+- (KSRemoteView *)createRemoteView {
     CGRect rect = CGRectZero;
     switch (_callType) {
         case KSCallTypeSingleAudio:
@@ -260,8 +264,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
             break;
     }
     
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect scale:_tileLayout.scale mode:_tileLayout.mode callType:_callType];
-    remoteView.handleId      = handleId;
+    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect];
     [self.scrollView addSubview:remoteView];
     [self.remoteKits addObject:remoteView];
     return remoteView;
@@ -270,16 +273,15 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (void)createRemoteViewOfConnection:(KSMediaConnection *)connection {
     KSRemoteView *remoteView = nil;
     for (KSRemoteView *itemView in self.remoteKits) {
-        if (itemView.handleId == connection.handleId) {
+        if (itemView.connection.handleId == connection.handleId) {
             remoteView = itemView;
             break;
         }
     }
     if (remoteView == nil) {
-        remoteView = [self createRemoteViewOfHandleId:connection.handleId];
+        remoteView = [self createRemoteView];
     }
-    
-    [connection.remoteVideoTrack addRenderer:remoteView.remoteView];
+    remoteView.connection = connection;
     
     if (self.callType == KSCallTypeSingleVideo) {//测试
         [self zoomOutLocalView];

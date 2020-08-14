@@ -13,30 +13,28 @@
 #import "KSRoundImageView.h"
 
 @implementation KSEAGLVideoView
-
 @end
 
-@interface KSRemoteView()
+@interface KSRemoteView()<KSMediaConnectionUpdateDelegate>
 
-@property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,weak)KSProfileBarView *profileBarView;
 @property(nonatomic,weak)KSRoundImageView *roundImageView;
+@property (nonatomic,weak  ) KSEAGLVideoView  *remoteView;
 
 @end
 
 @implementation KSRemoteView
 
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType {
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.callType = callType;
         [self initKit];
-        [self updatePreviewWidth:frame.size.width height:frame.size.height scale:scale mode:mode];
     }
     return self;
 }
 
 - (void)initKit {
     KSEAGLVideoView *remoteView      = [[KSEAGLVideoView alloc] init];
+    remoteView.frame                 = self.bounds;
     _remoteView                      = remoteView;
     [self addSubview:remoteView];
 
@@ -44,28 +42,53 @@
     _profileBarView                  = profileBarView;
     [self addSubview:profileBarView];
     [profileBarView setUserName:@"Sevtin"];
-    [profileBarView updateStateType:KSAudioStateTypeMute];
+    [profileBarView updateMediaState:KSMediaStateMuteAudio];
 
     KSRoundImageView *roundImageView = [[KSRoundImageView alloc] initWithFrame:CGRectMake((self.bounds.size.width - KS_Extern_Point50)/2, (self.bounds.size.height - KS_Extern_Point50)/2, KS_Extern_Point50, KS_Extern_Point50) strokeColor:[UIColor ks_white] lineWidth:0.5];
     _roundImageView                  = roundImageView;
     [self addSubview:roundImageView];
-    if (self.callType == KSCallTypeSingleVideo) {
-        profileBarView.hidden = YES;
-        roundImageView.hidden = YES;
+}
+
+-(void)setConnection:(KSMediaConnection *)connection {
+    if (_connection) {
+        [_connection.remoteVideoTrack removeRenderer:_remoteView];
+    }
+    _connection = connection;
+    connection.updateDelegate = self;
+    if (connection.mediaInfo.isFocus) {
+        [connection.remoteVideoTrack addRenderer:_remoteView];
+    }
+    
+    switch (connection.mediaInfo.callType) {
+        case KSCallTypeSingleAudio:
+
+            break;
+        case KSCallTypeManyAudio:
+            
+            break;
+        case KSCallTypeSingleVideo:
+            _profileBarView.hidden = YES;
+            _roundImageView.hidden = YES;
+            break;
+        case KSCallTypeManyVideo:
+            _profileBarView.hidden = NO;
+            _roundImageView.hidden = YES;
+            break;
+        default:
+            break;
     }
 }
 
--(void)setHandleId:(NSNumber *)handleId {
-    _handleId            = handleId;
-    _remoteView.handleId = handleId;
-}
-
-- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
-    _remoteView.frame = [self ks_rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
-}
-
 - (void)removeVideoView {
+    if (_connection) {
+        [_connection.remoteVideoTrack removeRenderer:_remoteView];
+    }
+    _connection = nil;
     [_remoteView removeFromSuperview];
 }
 
+//KSMediaConnectionUpdateDelegate
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeMediaState:(KSMediaState)mediaState {
+    
+}
 @end

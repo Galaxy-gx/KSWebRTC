@@ -41,21 +41,21 @@
     _name = name;
 }
 
-- (void)updateStateType:(KSAudioStateType)stateType {
-    _stateType = stateType;
+- (void)updateMediaState:(KSMediaState)mediaState {
+    _mediaState = mediaState;
     int x = 10;
     int y = 0;
     NSString *desc = _name;
-    if (_stateType == KSAudioStateTypeUnknown) {
+    if (_mediaState == KSMediaStateUnmuteAudio) {
         _imageview.hidden = YES;
     }
-    else if (_stateType == KSAudioStateTypeMute) {
+    else if (_mediaState == KSMediaStateMuteAudio) {
         _imageview.hidden = NO;
         x = KS_Extern_Point22;
         NSString *state = @"静音";
         desc = [NSString stringWithFormat:@"%@%@",_name,state];
     }
-    else if (_stateType == KSAudioStateTypeSound) {
+    else if (_mediaState == KSMediaStateTalking) {
         _imageview.hidden = NO;
         x = KS_Extern_Point22;
         NSString *state = @"发声";

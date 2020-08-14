@@ -54,4 +54,25 @@
     return tileLayout;
 }
 
++ (KSTileLayout *)layoutWithCallType:(KSCallType)callType {
+    KSTileLayout *tileLayout = nil;
+    switch (callType) {
+        case KSCallTypeSingleAudio:
+            tileLayout = [KSTileLayout singleAudioLayout];
+            break;
+        case KSCallTypeManyAudio:
+            tileLayout = [KSTileLayout manyAudioLayout];
+            break;
+        case KSCallTypeSingleVideo:
+            tileLayout = [KSTileLayout singleVideoLayout];
+            break;
+        case KSCallTypeManyVideo:
+            tileLayout = [KSTileLayout manyVideoLayout];
+            break;
+        default:
+            break;
+    }
+    return tileLayout;
+}
+
 @end

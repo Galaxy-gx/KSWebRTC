@@ -42,29 +42,10 @@
 }
 
 - (void)initMainKit {
-    KSTileLayout *tileLayout = nil;
+    KSTileLayout *tileLayout          = [KSTileLayout layoutWithCallType:_callType];
     CGFloat statusHeight              = [[UIApplication sharedApplication] statusBarFrame].size.height;
     CGFloat navHeight                 = self.navigationController.navigationBar.bounds.size.height;
-    switch (_callType) {
-        case KSCallTypeSingleAudio:
-            tileLayout                = [KSTileLayout singleAudioLayout];
-            tileLayout.topPadding     = 0;
-            break;
-        case KSCallTypeManyAudio:
-            tileLayout = [KSTileLayout manyAudioLayout];
-            tileLayout.topPadding     = statusHeight + navHeight;
-            break;
-        case KSCallTypeSingleVideo:
-            tileLayout                = [KSTileLayout singleVideoLayout];
-            tileLayout.topPadding     = 0;
-            break;
-        case KSCallTypeManyVideo:
-            tileLayout = [KSTileLayout manyVideoLayout];
-            tileLayout.topPadding     = statusHeight + navHeight;
-            break;
-        default:
-            break;
-    }
+    tileLayout.topPadding             = statusHeight + navHeight;
     _tileLayout                       = tileLayout;
     KSCallView *callView              = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:tileLayout callType:_callType];
     callView.dataSource               = self;
@@ -115,7 +96,8 @@
     switch (_callType) {
         case KSCallTypeSingleAudio:
         {
-            [_callView createLocalViewWithLayout:_tileLayout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+            _tileLayout.resizingMode = KSResizingModeScreen;
+            [_callView createLocalViewWithTileLayout:_tileLayout];
             [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
         }
             break;
@@ -124,7 +106,8 @@
             break;
         case KSCallTypeSingleVideo:
         {
-            [_callView createLocalViewWithLayout:_tileLayout resizingMode:KSResizingModeScreen callType:[KSWebRTCManager shared].callType];
+            _tileLayout.resizingMode = KSResizingModeScreen;
+            [_callView createLocalViewWithTileLayout:_tileLayout];
             [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
         }
             break;
@@ -346,7 +329,10 @@
 //KSWebRTCManagerDelegate
 - (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager {
     //会话结束
-    [_callView leaveLocal];
+    if (self.callType == KSCallTypeSingleVideo || self.callType == KSCallTypeSingleVideo) {
+        //次方法省略？
+        [_callView leaveLocal];
+    }
     [self dismiss];
 }
 
@@ -355,7 +341,7 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection {
-    switch ([KSWebRTCManager shared].callType) {
+    switch (_callType) {
         case KSCallTypeSingleAudio:
 
             break;
@@ -389,7 +375,7 @@
         self.topBarView.hidden = NO;
     }
     
-    switch ([KSWebRTCManager shared].callType) {
+    switch (_callType) {
         case KSCallTypeSingleAudio:
 
             break;
@@ -397,6 +383,7 @@
             
             break;
         case KSCallTypeSingleVideo:
+            connection.mediaInfo.callType = _callType;
             [_callView createRemoteViewOfConnection:connection];
             break;
         case KSCallTypeManyVideo:

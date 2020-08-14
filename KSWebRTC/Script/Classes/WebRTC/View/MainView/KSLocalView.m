@@ -10,68 +10,63 @@
 #import "UIView+Category.h"
 
 @implementation KSPreviewLayer
-
 -(id<CAAction>)actionForKey:(NSString *)event {
     return nil;
 }
-
 @end
 
+@interface KSLocalView()<KSMediaConnectionUpdateDelegate>
 
-@interface KSLocalView()
+@property (nonatomic,weak) KSPreviewLayer *previewLayer;
 
 @end
 
 @implementation KSLocalView
 
-- (instancetype)initWithFrame:(CGRect)frame scale:(KSScale)scale mode:(KSContentMode)mode callType:(KSCallType)callType {
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.scale    = scale;
-        self.mode     = mode;
-        self.callType = callType;
+        [self initKit];
     }
     return self;
 }
 
--(void)setFrame:(CGRect)frame {
-    [super setFrame:frame];
-    [self updatePreviewWidth:frame.size.width height:frame.size.height scale:_scale mode:_mode];
-}
-
--(void)setCallType:(KSCallType)callType {
-    _callType = callType;
-    if (_callType == KSCallTypeManyVideo || _callType == KSCallTypeSingleVideo) {
-        [self createPreviewLayer];
-        [self updatePreviewWidth:self.bounds.size.width height:self.bounds.size.height scale:_scale mode:_mode];
-    }
-}
-
-- (void)createPreviewLayer {
-    if (_previewLayer) {
-        return;
-    }
+- (void)initKit {
     KSPreviewLayer *previewLayer = [[KSPreviewLayer alloc] init];
     previewLayer.videoGravity    = AVLayerVideoGravityResizeAspectFill;//填充模式
     _previewLayer                = previewLayer;
     [self.layer addSublayer:previewLayer];
 }
 
-- (void)setLocalViewSession:(AVCaptureSession *)session {
-    _previewLayer.session = session;
-    _previewLayer.hidden  = session == nil ? YES : NO;
+-(void)layoutSubviews {
+    [super layoutSubviews];
+    _previewLayer.frame = self.bounds;
 }
 
-- (void)updatePreviewWidth:(CGFloat)width height:(CGFloat)height scale:(KSScale)scale mode:(KSContentMode)mode {
-    if (_previewLayer == nil) {
-        return;
+-(void)setConnection:(KSMediaConnection *)connection {
+    _connection               = connection;
+    connection.updateDelegate = self;
+    if (connection.mediaInfo.isFocus) {
+        [self setSession:connection.captureSession];
     }
-     _previewLayer.frame = [self ks_rectOfSuperFrame:self.frame width:width height:height scale:scale mode:mode];
+    if (connection == nil) {
+        [self removeVideoView];
+    }
+}
+
+- (void)setSession:(AVCaptureSession *)session {
+    _previewLayer.session = session;
+    _previewLayer.hidden  = session == nil ? YES : NO;
 }
 
 - (void)removeVideoView {
     [_previewLayer removeFromSuperlayer];
     _previewLayer.session = nil;
     _previewLayer = nil;
+}
+
+//KSMediaConnectionUpdateDelegate
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeMediaState:(KSMediaState)mediaState {
+    
 }
 
 @end

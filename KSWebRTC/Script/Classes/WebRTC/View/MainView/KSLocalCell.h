@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KSLocalView.h"
 #import "KSMediaConnection.h"
 
 @interface KSLocalCell : UICollectionViewCell

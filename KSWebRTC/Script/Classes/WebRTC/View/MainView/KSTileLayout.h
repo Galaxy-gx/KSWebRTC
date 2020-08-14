@@ -26,14 +26,17 @@ KSLayoutMake(CGFloat width, CGFloat height, CGFloat hpadding, CGFloat vpadding)
 
 @interface KSTileLayout : NSObject
 
-@property (nonatomic,assign) KSLayout      layout;
-@property (nonatomic,assign) KSScale       scale;
-@property (nonatomic,assign) KSContentMode mode;
-@property (nonatomic,assign) KSCallType    callType;
-@property (nonatomic,assign) CGFloat       topPadding;
+@property (nonatomic,assign) KSLayout       layout;
+@property (nonatomic,assign) KSScale        scale;
+@property (nonatomic,assign) KSContentMode  mode;
+@property (nonatomic,assign) KSCallType     callType;
+@property (nonatomic,assign) KSResizingMode resizingMode;
+@property (nonatomic,assign) CGFloat        topPadding;
 
 + (KSTileLayout *)singleAudioLayout;
 + (KSTileLayout *)manyAudioLayout;
 + (KSTileLayout *)singleVideoLayout;
 + (KSTileLayout *)manyVideoLayout;
+
++ (KSTileLayout *)layoutWithCallType:(KSCallType)callType;
 @end

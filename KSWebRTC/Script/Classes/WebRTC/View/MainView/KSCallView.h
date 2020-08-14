@@ -34,7 +34,7 @@
 @property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
 
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout callType:(KSCallType)callType;
-- (void)createLocalViewWithLayout:(KSTileLayout *)layout resizingMode:(KSResizingMode)resizingMode callType:(KSCallType)callType;
+- (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;
 - (void)setLocalViewSession:(AVCaptureSession *)session;
 - (void)leaveLocal;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
