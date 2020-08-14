@@ -108,7 +108,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _topPadding + 32, 96,
+    CGRect target        = CGRectMake(self.bounds.size.width - 10 - 96, _topPadding + KS_Extern_Point10, 96,
                                       96 / self.localView.scale.width * self.localView.scale.height);
     self.localView.frame = target;
     [self localToFront];

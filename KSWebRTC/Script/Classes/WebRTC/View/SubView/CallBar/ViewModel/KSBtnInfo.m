@@ -36,7 +36,7 @@
     KSBtnInfo *btn3 = [[KSBtnInfo alloc] initWithTitle:nil
                                            defaultIcon:@"icon_bar_camera_white" selectedIcon:@"icon_bar_camera_red" isSelected:NO btnType:KSCallBarBtnTypeCamera];
     KSBtnInfo *btn4 = [[KSBtnInfo alloc] initWithTitle:nil
-                                           defaultIcon:@"icon_bar_bluetoot_white" selectedIcon:@"icon_bar_bluetoot_red" isSelected:NO btnType:KSCallBarBtnTypeBluetooth];
+                                           defaultIcon:@"icon_bar_bluetoot_white" selectedIcon:@"icon_bar_bluetoot_white" isSelected:NO btnType:KSCallBarBtnTypeBluetooth];
     KSBtnInfo *btn5 = [[KSBtnInfo alloc] initWithTitle:nil
                                            defaultIcon:@"icon_bar_hangup_small_red" selectedIcon:@"icon_bar_hangup_small_red" isSelected:NO btnType:KSCallBarBtnTypePhone];
     NSMutableArray *btns = [NSMutableArray arrayWithObjects:btn1,btn2,btn3,btn4,btn5, nil];
@@ -51,7 +51,7 @@
     KSBtnInfo *btn3 = [[KSBtnInfo alloc] initWithTitle:@"ks_app_global_text_camera"
                                            defaultIcon:@"icon_bar_camera_white" selectedIcon:@"icon_bar_camera_red" isSelected:NO btnType:KSCallBarBtnTypeCamera];
     KSBtnInfo *btn4 = [[KSBtnInfo alloc] initWithTitle:@"ks_app_global_text_bluetoot"
-                                           defaultIcon:@"icon_bar_bluetoot_white" selectedIcon:@"icon_bar_bluetoot_red" isSelected:NO btnType:KSCallBarBtnTypeBluetooth];
+                                           defaultIcon:@"icon_bar_bluetoot_white" selectedIcon:@"icon_bar_bluetoot_white" isSelected:NO btnType:KSCallBarBtnTypeBluetooth];
     NSMutableArray *btns = [NSMutableArray arrayWithObjects:btn1,btn2,btn3,btn4, nil];
     return btns;
 }

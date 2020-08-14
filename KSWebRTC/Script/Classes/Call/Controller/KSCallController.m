@@ -16,6 +16,8 @@
 #import "KSCallState.h"
 #import "KSWebRTCManager.h"
 
+#import "KSCallBarView.h"
+
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
 @property (nonatomic, weak ) KSCallView   *callView;
@@ -28,6 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _callType = KSCallTypeSingleVideo;
     [self initMainKit];
     [self initWebRTC];
@@ -95,12 +98,12 @@
 }
 
 - (void)createLocalView {
-    KSTileLayout *layout              = [[KSTileLayout alloc] init];
-    layout.scale                      = KSScaleMake(9, 16);
-    layout.mode                       = KSContentModeScaleAspectFit;
-    int width                         = 96;
-    int height                        = width / layout.scale.width * layout.scale.height;
-    layout.layout                     = KSLayoutMake(width, height, 10, 10);
+    KSTileLayout *layout = [[KSTileLayout alloc] init];
+    layout.scale         = KSScaleMake(9, 16);
+    layout.mode          = KSContentModeScaleAspectFit;
+    int width            = 96;
+    int height           = width / layout.scale.width * layout.scale.height;
+    layout.layout        = KSLayoutMake(width, height, 10, 10);
     
     switch ([KSWebRTCManager shared].callType) {
         case KSCallTypeSingleAudio:
@@ -151,7 +154,7 @@
             [self inConversationCameraClose];
             break;
         case KSEventTypeInConversationBluetoothOpen:
-            [self inConversationVolumeOpen];
+            [self inConversationBluetoothOpen];
             break;
         case KSEventTypeInConversationBluetoothClose:
             [self inConversationBluetoothClose];
@@ -178,12 +181,13 @@
             [self meetingThemeCameraClose];
             break;
         case KSEventTypeMeetingThemeBluetoothOpen:
-            [self meetingThemeVolumeOpen];
+            [self meetingThemeBluetoothOpen];
             break;
         case KSEventTypeMeetingThemeBluetoothClose:
             [self meetingThemeBluetoothClose];
             break;
         case KSEventTypeStartMeeting:
+            [self startMeeting];
             break;
         default:
             break;
@@ -318,6 +322,11 @@
 
 //会议主题面板中关闭蓝牙
 - (void)meetingThemeBluetoothClose {
+    
+}
+
+//开始会议
+- (void)startMeeting {
     
 }
 
