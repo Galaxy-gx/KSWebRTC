@@ -13,7 +13,7 @@
 @end
 
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
-@property(nonatomic, strong) RTCAudioTrack *defaultAudioTrack;
+@property (nonatomic, weak ) KSMediaCapturer   *capturer;
 @end
 
 @implementation KSMediaConnection
@@ -31,7 +31,6 @@
     第二个参数，是 RTCMediaConstraints 类型对象，也就是对 RTCPeerConnection 的限制。如，是否接收视频数据？是否接收音频数据？如果要与浏览器互通还要开启 DtlsSrtpKeyAgreement 选项。
     第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。但它并不属于观察者模式，这一点大家一定要清楚。
     RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
- 
  */
 - (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture {
     // 媒体约束
@@ -51,7 +50,6 @@
     [peerConnection addTrack:capture.audioTrack streamIds:mediaStreamLabels];
     _peerConnection                   = peerConnection;
     _capturer                         = capture;
-    _isSpeakerEnabled                 = YES;
     return peerConnection;
 }
 
@@ -145,14 +143,52 @@
 }
 
 #pragma mark - enable/disable speaker
+/*
 - (void)enableSpeaker {
     [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-    _isSpeakerEnabled = YES;
 }
 
 - (void)disableSpeaker {
     [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    _isSpeakerEnabled = NO;
+}
+*/
+- (void)speakerOff {
+    [self setSpeakerEnabled:NO];
+}
+
+- (void)speakerOn {
+    [self setSpeakerEnabled:YES];
+}
+
+- (void)setSpeakerEnabled:(BOOL)enabled {
+    _mediaInfo.isOpenSpeaker = enabled;
+    [_capturer setSpeakerEnabled:enabled];
+    /*
+    if (enabled) {
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+        //此方法设置之后，如果此时插入耳机在拔掉。播放的声音会从听筒输出，而不是回到扬声器
+        //[[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        //此方法设置之后，始终输出到扬声器，而不是其他接收器 如果此时插入耳机在拔掉。播放的声音会从扬声器输出
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+    }else{
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
+    }
+     */
+}
+- (void)switchTalkMode {
+    [_capturer switchTalkMode];
+}
+- (void)switchCamera {
+    [_capturer switchCamera];
+}
+
+- (void)startCapture {
+    [_capturer startCapture];
+}
+
+- (void)stopCapture {
+    [_capturer stopCapture];
 }
 
 - (void)close {

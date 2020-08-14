@@ -29,11 +29,10 @@
 @property (nonatomic, strong) RTCAudioTrack            *audioTrack;
 @property (nonatomic, strong) KSCapturerSetting        *setting;
 
--(instancetype)initWithSetting:(KSCapturerSetting *)setting;
+- (instancetype)initWithSetting:(KSCapturerSetting *)setting;
 - (void)addVideoSourceOfCallType:(KSCallType)callType;
 - (void)switchTalkMode;
-- (void)speakerOff;
-- (void)speakerOn;
+- (void)setSpeakerEnabled:(BOOL)enabled;
 - (void)switchCamera;
 - (void)stopCapture;
 - (void)startCapture;

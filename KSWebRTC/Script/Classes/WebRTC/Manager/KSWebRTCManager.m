@@ -10,9 +10,9 @@
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate>
 
-@property (nonatomic, strong) KSMessageHandler  *msgHandler;
-@property (nonatomic, weak  ) KSMediaConnection *localConnection;
-@property (nonatomic, strong) NSMutableArray    *mediaConnections;
+@property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, strong) KSMediaCapturer  *mediaCapture;//本地
+@property (nonatomic, strong) NSMutableArray   *mediaConnections;
 
 @end
 
@@ -112,10 +112,10 @@
 #pragma mark - 事件
 //MediaCapture
 + (void)switchCamera {
-    [[KSWebRTCManager shared].mediaCapture switchCamera];
+    [[KSWebRTCManager shared].localConnection switchCamera];
 }
 + (void)switchTalkMode {
-    [[KSWebRTCManager shared].mediaCapture switchTalkMode];
+    [[KSWebRTCManager shared].localConnection switchTalkMode];
 }
 + (void)startCapture {
     [[KSWebRTCManager shared].localConnection muteVideo];
@@ -125,10 +125,10 @@
     //[[KSWebRTCManager shared].mediaCapture stopCapture];
 }
 + (void)speakerOff {
-    [[KSWebRTCManager shared].mediaCapture speakerOff];
+    [[KSWebRTCManager shared].localConnection speakerOff];
 }
 + (void)speakerOn {
-    [[KSWebRTCManager shared].mediaCapture speakerOn];
+    [[KSWebRTCManager shared].localConnection speakerOn];
 }
 + (void)closeMediaCapture {
     [[KSWebRTCManager shared].mediaCapture close];

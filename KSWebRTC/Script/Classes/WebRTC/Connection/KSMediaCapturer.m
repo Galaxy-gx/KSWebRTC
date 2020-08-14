@@ -169,6 +169,14 @@ static int const kFramerateLimit         = 25.0;
     [_rtcAudioSession unlockForConfiguration];
 }
 
+- (void)setSpeakerEnabled:(BOOL)enabled {
+    if (enabled) {
+        [self speakerOn];
+    } else {
+        [self speakerOff];
+    }
+}
+
 - (void)switchCamera {
     _setting.isFront = !_setting.isFront;
     [self startCapture];

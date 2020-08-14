@@ -31,7 +31,7 @@
 @interface KSWebRTCManager : NSObject
 
 @property(nonatomic,weak)id<KSWebRTCManagerDelegate>      delegate;
-@property (nonatomic, strong          ) KSMediaCapturer    *mediaCapture;//本地
+@property (nonatomic, weak            ) KSMediaConnection *localConnection;
 @property (nonatomic, assign, readonly) KSCallState       callState;
 @property (nonatomic, assign          ) KSCallType        callType;
 @property (nonatomic, assign          ) BOOL              isConnect;
