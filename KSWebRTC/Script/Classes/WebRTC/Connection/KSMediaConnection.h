@@ -10,16 +10,7 @@
 #import <WebRTC/WebRTC.h>
 #import "KSMediaCapturer.h"
 #import "KSCallState.h"
-
-@interface KSMediaInfo : NSObject
-
-@property (nonatomic, assign) BOOL         isLocal;
-@property (nonatomic,assign ) KSCallType   callType;
-@property (nonatomic,copy   ) NSString     *name;
-@property (nonatomic, assign) BOOL         isOpenSpeaker;
-@property (nonatomic, assign) BOOL         isFocus;
-
-@end
+#import "KSMediaSetting.h"
 
 @class KSMediaConnection;
 @protocol KSMediaConnectionDelegate <NSObject>
@@ -40,16 +31,20 @@
 @property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
 @property (nonatomic, weak  ) id<KSMediaConnectionUpdateDelegate> updateDelegate;
 @property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
-@property (nonatomic, strong) RTCPeerConnection *peerConnection;//WebRTC连接对象
-@property (nonatomic, strong) RTCVideoTrack     *remoteVideoTrack;//视频轨
-@property (nonatomic, weak  ) RTCEAGLVideoView  *remoteVideoView;
-@property (nonatomic, strong) NSNumber          *handleId;
-@property (nonatomic, strong) KSMediaInfo       *mediaInfo;
-@property (nonatomic,assign ) int               index;
-@property (nonatomic, assign) BOOL              isClose;
-@property (nonatomic,assign ) KSMediaState      mediaState;
+@property (nonatomic, strong) RTCPeerConnection   *peerConnection;//WebRTC连接对象
+@property (nonatomic, strong) RTCVideoTrack       *videoTrack;// 视频轨
+@property (nonatomic, weak  ) RTCMTLVideoView     *videoView;
+@property (nonatomic, strong) KSConnectionSetting *setting;
+@property (nonatomic, strong) NSNumber            *handleId;
+@property (nonatomic,assign ) int                 index;
+@property (nonatomic, assign) BOOL                isClose;
+@property (nonatomic, assign) BOOL                isLocal;
+@property (nonatomic,assign ) KSMediaState        mediaState;
+@property (nonatomic,assign ) KSCallType          callType;
 
+- (instancetype)initWithSetting:(KSConnectionSetting *)setting;
 - (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture;
+- (void)addRenderer:(id<RTCVideoRenderer>)renderer;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;

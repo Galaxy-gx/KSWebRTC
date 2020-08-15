@@ -8,9 +8,6 @@
 
 #import "KSMediaCapturer.h"
 
-@implementation KSCapturerSetting
-@end
-
 static NSString *const KARDMediaStreamId = @"ARDAMS";
 static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
@@ -23,7 +20,7 @@ static int const kFramerateLimit         = 25.0;
 
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting {
     if (self = [super init]) {
-        _setting         = setting;
+        _setting = setting;
 
         [self createPeerConnectionFactory];
         [self addMediaSource];
@@ -228,7 +225,8 @@ static int const kFramerateLimit         = 25.0;
     for (AVCaptureDeviceFormat *format in formats) {
         CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
         FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
-        if (targetWidth >= dimension.height && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+        if (targetWidth <= dimension.height && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+            NSLog(@"|------------| dimension.width : %d, dimension.height : %d |------------|",dimension.width,dimension.height);
             selectedFormat = format;
             break;
         }

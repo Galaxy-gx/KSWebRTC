@@ -31,6 +31,8 @@
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
 		E646E5D924E6767B0098892F /* KSKitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E646E5D824E6767B0098892F /* KSKitManager.m */; };
 		E646E5DE24E67B3F0098892F /* KSMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = E646E5DD24E67B3F0098892F /* KSMediaController.m */; };
+		E65CD16F24E7825800B54D98 /* KSMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E65CD16E24E7825800B54D98 /* KSMediaView.m */; };
+		E65CD17224E7900400B54D98 /* KSMediaSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = E65CD17124E7900400B54D98 /* KSMediaSetting.m */; };
 		E664F8F324B89CB70092FCE2 /* KSMediaCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = E664F8F224B89CB70092FCE2 /* KSMediaCapturer.m */; };
 		E67695AF24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = E67695AE24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.m */; };
 		E67A6A9124DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E67A6A9024DE7F9600BCE4B9 /* KSCellAlignmentFlowLayout.m */; };
@@ -131,6 +133,10 @@
 		E646E5D824E6767B0098892F /* KSKitManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSKitManager.m; sourceTree = "<group>"; };
 		E646E5DC24E67B3F0098892F /* KSMediaController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaController.h; sourceTree = "<group>"; };
 		E646E5DD24E67B3F0098892F /* KSMediaController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaController.m; sourceTree = "<group>"; };
+		E65CD16D24E7825800B54D98 /* KSMediaView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaView.h; sourceTree = "<group>"; };
+		E65CD16E24E7825800B54D98 /* KSMediaView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaView.m; sourceTree = "<group>"; };
+		E65CD17024E7900400B54D98 /* KSMediaSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaSetting.h; sourceTree = "<group>"; };
+		E65CD17124E7900400B54D98 /* KSMediaSetting.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaSetting.m; sourceTree = "<group>"; };
 		E664F8F124B89CB70092FCE2 /* KSMediaCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaCapturer.h; sourceTree = "<group>"; };
 		E664F8F224B89CB70092FCE2 /* KSMediaCapturer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaCapturer.m; sourceTree = "<group>"; };
 		E67695AD24DEA7FB0034A478 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
@@ -579,13 +585,13 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
-		E67BC5B424B860BE004BBA8A /* Handler */ = {
+		E67BC5B424B860BE004BBA8A /* MessageHandler */ = {
 			isa = PBXGroup;
 			children = (
 				E67BC5B524B860E0004BBA8A /* KSMessageHandler.h */,
 				E67BC5B624B860E0004BBA8A /* KSMessageHandler.m */,
 			);
-			path = Handler;
+			path = MessageHandler;
 			sourceTree = "<group>";
 		};
 		E67BC5B824B86156004BBA8A /* Model */ = {
@@ -602,14 +608,16 @@
 			children = (
 				E6A5DFF224D6D06A007E7D14 /* KSCallView.h */,
 				E6A5DFF324D6D06A007E7D14 /* KSCallView.m */,
-				E6300CF524E3DF9300FB2A7A /* KSLocalCell.h */,
-				E6300CF624E3DF9300FB2A7A /* KSLocalCell.m */,
-				E680287F24E3B3E1003D849A /* KSRemoteCell.h */,
-				E680288024E3B3E1003D849A /* KSRemoteCell.m */,
+				E65CD16D24E7825800B54D98 /* KSMediaView.h */,
+				E65CD16E24E7825800B54D98 /* KSMediaView.m */,
 				E6A5DFFC24D6DF08007E7D14 /* KSLocalView.h */,
 				E6A5DFFD24D6DF08007E7D14 /* KSLocalView.m */,
 				E6A5DFF024D6D06A007E7D14 /* KSRemoteView.h */,
 				E6A5DFF124D6D06A007E7D14 /* KSRemoteView.m */,
+				E6300CF524E3DF9300FB2A7A /* KSLocalCell.h */,
+				E6300CF624E3DF9300FB2A7A /* KSLocalCell.m */,
+				E680287F24E3B3E1003D849A /* KSRemoteCell.h */,
+				E680288024E3B3E1003D849A /* KSRemoteCell.m */,
 				E6A5DFF424D6D06A007E7D14 /* KSTileLayout.h */,
 				E6A5DFF524D6D06A007E7D14 /* KSTileLayout.m */,
 				E6A5DFF624D6D06A007E7D14 /* KSVisualEffectView.h */,
@@ -690,7 +698,7 @@
 				E62A713824E380350068A768 /* Manager */,
 				E67695AB24DEA0A30034A478 /* Library */,
 				E67A6A9E24DE910500BCE4B9 /* Super */,
-				E67BC5B424B860BE004BBA8A /* Handler */,
+				E67BC5B424B860BE004BBA8A /* MessageHandler */,
 				E67BC5B824B86156004BBA8A /* Model */,
 				E6BC0B1624E29CA7005A955A /* Connection */,
 				E60C906E24CEB84000291CDA /* Utils */,
@@ -707,6 +715,8 @@
 				E664F8F224B89CB70092FCE2 /* KSMediaCapturer.m */,
 				E630B64624B946E200A5CA72 /* KSMediaConnection.h */,
 				E630B64724B946E200A5CA72 /* KSMediaConnection.m */,
+				E65CD17024E7900400B54D98 /* KSMediaSetting.h */,
+				E65CD17124E7900400B54D98 /* KSMediaSetting.m */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -908,6 +918,8 @@
 				E6FD82AA24DC08B200E10495 /* KSCallBarCell.m in Sources */,
 				E6300CF724E3DF9300FB2A7A /* KSLocalCell.m in Sources */,
 				E6A5DFFA24D6D06A007E7D14 /* KSTileLayout.m in Sources */,
+				E65CD16F24E7825800B54D98 /* KSMediaView.m in Sources */,
+				E65CD17224E7900400B54D98 /* KSMediaSetting.m in Sources */,
 				E60C908024CEB85000291CDA /* ARDSignalingChannel.m in Sources */,
 				E67A6AA124DE915500BCE4B9 /* KSSuperController.m in Sources */,
 				E6FD829C24DBEFB600E10495 /* KSRoundImageView.m in Sources */,

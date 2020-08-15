@@ -118,9 +118,20 @@
 
 - (void)initWebRTC {
     if ([KSWebRTCManager shared].mediaCapture == nil) {
-        [[KSWebRTCManager shared] initRTCWithCallType:_callType];
+        KSConnectionSetting *monnectionSetting = [[KSConnectionSetting alloc] init];
+        monnectionSetting.callType             = _callType;
+        monnectionSetting.iceServer            = [[KSIceServer alloc] init];
+        
+        KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
+        capturerSetting.isFront                = YES;
+        capturerSetting.callType               = _callType;
+        capturerSetting.resolution             = CGSizeMake(540, 960);
+        
+        KSMediaSetting *setting = [[KSMediaSetting alloc] initWithConnectionSetting:monnectionSetting capturerSetting:capturerSetting];
+        [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
         [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     }
+
     [KSWebRTCManager shared].delegate = self;
     [self createLocalView];
 }
@@ -140,7 +151,7 @@
 
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+        [weakSelf.callView setMediaConnection:[KSWebRTCManager shared].localConnection];
     });
 }
 
@@ -355,7 +366,7 @@
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
     [KSWebRTCManager closeMediaCapture];
-    [self.callView setLocalViewSession:nil];
+    [self.callView setMediaConnection:nil];
 }
 
 //会议主题面板中开启麦克风
@@ -445,7 +456,7 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection.mediaInfo.isLocal) {
+    if (connection.isLocal) {
         return;
     }
     
@@ -460,7 +471,7 @@
             
             break;
         case KSCallTypeSingleVideo:
-            connection.mediaInfo.callType = _callType;
+            //connection.callType = _callType;
             [self.callView createRemoteViewOfConnection:connection];
             break;
         case KSCallTypeManyVideo:

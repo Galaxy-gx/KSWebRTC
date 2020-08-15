@@ -35,7 +35,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout;
 - (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;
-- (void)setLocalViewSession:(AVCaptureSession *)session;
+- (void)setMediaConnection:(KSMediaConnection *)connection;
 - (void)leaveLocal;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
 - (void)createRemoteViewOfConnection:(KSMediaConnection *)connection;

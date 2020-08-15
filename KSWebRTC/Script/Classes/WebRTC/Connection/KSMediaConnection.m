@@ -9,14 +9,20 @@
 #import "KSMediaConnection.h"
 #import "RTCSessionDescription+Category.h"
 
-@implementation KSMediaInfo
-@end
-
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
-@property (nonatomic, weak ) KSMediaCapturer   *capturer;
+@property (nonatomic, weak)KSMediaCapturer *capturer;
 @end
 
 @implementation KSMediaConnection
+
+- (instancetype)initWithSetting:(KSConnectionSetting *)setting {
+    if (self = [super init]) {
+        _setting  = setting;
+        _callType = setting.callType;
+    }
+    return self;
+}
+
 /*
  要想从远端获取数据，我们就必须创建 PeerConnection 对象。该对象的用处就是与远端建立联接，并最终为双方通讯提供网络通道。
  
@@ -51,6 +57,10 @@
     _peerConnection                   = peerConnection;
     _capturer                         = capture;
     return peerConnection;
+}
+
+- (void)addRenderer:(id<RTCVideoRenderer>)renderer {
+    [self.videoTrack addRenderer:renderer];
 }
 
 -(AVCaptureSession *)captureSession {
@@ -169,7 +179,6 @@
 }
 
 - (void)setSpeakerEnabled:(BOOL)enabled {
-    _mediaInfo.isOpenSpeaker = enabled;
     [_capturer setSpeakerEnabled:enabled];
     /*
     if (enabled) {
@@ -209,15 +218,15 @@
     [_peerConnection close];
     _peerConnection       = nil;
     
-    if (_remoteVideoView) {
-        [_remoteVideoTrack removeRenderer:_remoteVideoView];
+    if (_videoView && _videoTrack) {
+        [_videoTrack removeRenderer:_videoView];
     }
     
-    [_remoteVideoView renderFrame:nil];
-    _remoteVideoView  = nil;
-    
-    _remoteVideoTrack = nil;
-    self.delegate     = nil;
+    [_videoView renderFrame:nil];
+    _videoView    = nil;
+
+    _videoTrack   = nil;
+    self.delegate = nil;
 }
 
 // PeerConnection 媒体约束
@@ -243,8 +252,11 @@
 
 // stun 、 turn服务地址
 - (RTCIceServer *)defaultIceServer {
-    NSArray *array = [NSArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
-    return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
+    //NSArray *array = [NSArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
+    //return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
+    return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers
+                                           username:_setting.iceServer.username
+                                         credential:_setting.iceServer.password];
 }
 
 #pragma mark - RTCPeerConnectionDelegate

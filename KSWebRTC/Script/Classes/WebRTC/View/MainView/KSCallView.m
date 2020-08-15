@@ -110,8 +110,8 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     [self.scrollView addSubview:localView];
 }
 
-- (void)setLocalViewSession:(AVCaptureSession *)session {
-    [_localView setSession:session];
+- (void)setMediaConnection:(KSMediaConnection *)connection {
+    _localView.connection = connection;
 }
 
 - (void)zoomOutLocalView {
@@ -368,7 +368,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     if (connection == nil) {
         return nil;
     }
-    if (connection.mediaInfo.isLocal) {
+    if (connection.isLocal) {
         KSLocalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:localCellIdentifier forIndexPath:indexPath];
         cell.connection   = connection;
         return cell;

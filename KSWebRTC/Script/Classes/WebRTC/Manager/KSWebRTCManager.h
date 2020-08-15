@@ -31,10 +31,10 @@
 
 @interface KSWebRTCManager : NSObject
 
-@property(nonatomic,weak)id<KSWebRTCManagerDelegate>      delegate;
+@property(nonatomic,weak)id<KSWebRTCManagerDelegate>    delegate;
+@property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
 
-@property (nonatomic, weak, readonly  ) AVCaptureSession  *captureSession;
-
+@property (nonatomic, strong) KSMediaSetting    *mediaSetting;
 @property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
 @property (nonatomic, weak  ) KSMediaConnection *localConnection;
 @property (nonatomic, assign) KSCallType        callType;
@@ -44,7 +44,7 @@
 @property (nonatomic, strong) NSMutableArray    *mediaConnections;
 
 + (instancetype)shared;
-- (void)initRTCWithCallType:(KSCallType)callType;
+- (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
 //MediaCapture
 + (void)switchCamera;

@@ -178,7 +178,7 @@
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
     [KSWebRTCManager closeMediaCapture];
-    [_callView setLocalViewSession:nil];
+    [_callView setMediaConnection:nil];
 }
 
 //会议主题面板中开启麦克风

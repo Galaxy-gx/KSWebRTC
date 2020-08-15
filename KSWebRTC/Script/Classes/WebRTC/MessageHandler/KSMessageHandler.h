@@ -21,6 +21,8 @@
 
 @required
 - (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId;
+- (KSMediaConnection *)messageHandlerOfLocalConnection;
+- (KSConnectionSetting *)messageHandlerOfConnectionSetting;
 - (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
 
 @optional
@@ -32,7 +34,7 @@
 
 @end
 
-@interface KSMessageHandler : NSObject
+@interface KSMessageHandler : NSObject<KSMediaConnectionDelegate>
 
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
 @property (nonatomic, assign )KSCallState callState;

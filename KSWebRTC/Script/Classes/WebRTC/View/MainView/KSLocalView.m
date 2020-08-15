@@ -9,62 +9,16 @@
 #import "KSLocalView.h"
 #import "UIView+Category.h"
 
-@implementation KSPreviewLayer
--(id<CAAction>)actionForKey:(NSString *)event {
-    return nil;
-}
-@end
-
-@interface KSLocalView()<KSMediaConnectionUpdateDelegate>
-
-@property (nonatomic,weak) KSPreviewLayer *previewLayer;
-
+@interface KSLocalView()
 @end
 
 @implementation KSLocalView
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        [self initKit];
-    }
-    return self;
-}
-
-- (void)initKit {
-    KSPreviewLayer *previewLayer = [[KSPreviewLayer alloc] init];
-    previewLayer.videoGravity    = AVLayerVideoGravityResizeAspectFill;//填充模式
-    _previewLayer                = previewLayer;
-    [self.layer addSublayer:previewLayer];
-}
-
--(void)layoutSubviews {
-    [super layoutSubviews];
-    _previewLayer.frame = self.bounds;
-}
-
--(void)setConnection:(KSMediaConnection *)connection {
-    _connection               = connection;
-    connection.updateDelegate = self;
-    if (connection.mediaInfo.isFocus) {
-        [self setSession:connection.captureSession];
-    }
-    if (connection == nil) {
-        [self removeVideoView];
-    }
-}
-
-- (void)setSession:(AVCaptureSession *)session {
-    KSLog(@"|------------| setSession 001 |------------|");
-    _previewLayer.session = session;//赋值非常慢
-    KSLog(@"|------------| setSession 002 |------------|");
-    _previewLayer.hidden  = session == nil ? YES : NO;
-    KSLog(@"|------------| setSession 003 |------------|");
-}
-
-- (void)removeVideoView {
-    [_previewLayer removeFromSuperlayer];
-    _previewLayer.session = nil;
-    _previewLayer = nil;
+- (void)updateKit {
+    self.profileBarView.hidden = YES;
+    self.roundImageView.hidden = YES;
+    
+    
 }
 
 //KSMediaConnectionUpdateDelegate

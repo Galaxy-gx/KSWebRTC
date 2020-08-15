@@ -10,6 +10,7 @@
 #import "KSMsg.h"
 #import "NSString+Category.h"
 #import "RTCSessionDescription+Category.h"
+#import "KSWebRTCManager.h"
 
 static int const KSRandomLength = 12;
 typedef NS_ENUM(NSInteger, KSActionType) {
@@ -23,7 +24,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     KSActionTypeStart,
 };
 
-@interface KSMessageHandler()<KSWebSocketDelegate,KSMediaConnectionDelegate>
+@interface KSMessageHandler()<KSWebSocketDelegate>
 
 @property (nonatomic,strong ) KSWebSocket         *socket;
 @property (nonatomic,strong ) NSNumber            *sessionId;
@@ -241,13 +242,14 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self createMediaConnection];
+    KSMediaConnection *mc             = [self.delegate messageHandlerOfLocalConnection];
+    mc.handleId                       = handleId;
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"configure";
-        body[@"audio"] = @YES;
-        body[@"video"] = @YES;
+        body[@"audio"] = @(mc.setting.audio);
+        body[@"video"] = @(mc.setting.video);
         
         NSString *type = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
@@ -255,20 +257,15 @@ typedef NS_ENUM(NSInteger, KSActionType) {
         jsep[@"sdp"] = [sdp sdp];
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
     }];
-    mc.handleId          = handleId;
-    mc.mediaInfo         = [[KSMediaInfo alloc] init];
-    mc.mediaInfo.isLocal = YES;
-    
-    if ([self.delegate respondsToSelector:@selector(messageHandler:didAddMediaConnection:)]) {
-        [self.delegate messageHandler:self didAddMediaConnection:mc];
-    }
 }
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc     = [self createMediaConnection];
-    mc.handleId               = handleId;
-    mc.mediaInfo              = [[KSMediaInfo alloc] init];
+    KSMediaConnection *mc        = [self createMediaConnection];
+    mc.handleId                  = handleId;
+    //KSConnectionSetting *setting = [[KSConnectionSetting alloc] init];
+    //mc.setting                   = setting;
+
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -326,9 +323,10 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 // 创建一个媒体连接
 -(KSMediaConnection *)createMediaConnection {
     KSMediaCapturer *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
-    KSMediaConnection *mc        = [[KSMediaConnection alloc] init];
+    KSConnectionSetting *setting  = [self.delegate messageHandlerOfConnectionSetting];
+    KSMediaConnection *mc         = [[KSMediaConnection alloc] initWithSetting:setting];
     [mc createPeerConnectionOfKSMediaCapture:mediaCapture];
-    mc.delegate                  = self;
+    mc.delegate                   = self;
     return mc;
 }
 
@@ -403,7 +401,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         dispatch_async(dispatch_get_main_queue(), ^{
-            mediaConnection.remoteVideoTrack = remoteVideoTrack;
+            mediaConnection.videoTrack = remoteVideoTrack;
             if ([self.delegate respondsToSelector:@selector(messageHandler:didAddMediaConnection:)]) {
                 [self.delegate messageHandler:self didAddMediaConnection:mediaConnection];
             }
@@ -441,7 +439,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
             if (mediaConnection.isClose) {
                 return;
             }
-            mediaConnection.isClose = YES;
+            mediaConnection.isClose      = YES;
             __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
                 if ([weakSelf.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {

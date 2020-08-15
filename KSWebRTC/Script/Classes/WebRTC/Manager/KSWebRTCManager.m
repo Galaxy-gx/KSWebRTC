@@ -29,19 +29,37 @@
     _msgHandler.delegate = self;
 }
 
-- (void)initRTCWithCallType:(KSCallType)callType {
-    _callType                  = callType;
-    KSCapturerSetting *setting = [[KSCapturerSetting alloc] init];
-    setting.isFront            = YES;
-    setting.callType           = callType;
-    setting.resolution         = CGSizeMake(540, 960);
-    _mediaCapture              = [[KSMediaCapturer alloc] initWithSetting:setting];
+- (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
+    _mediaSetting              = mediaSetting;
+    _callType                  = mediaSetting.callType;
+    _mediaCapture              = [[KSMediaCapturer alloc] initWithSetting:mediaSetting.capturerSetting];
+
+    [self createLocalConnection];
+}
+
+- (void)createLocalConnection {
+    KSMediaConnection *localConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
+    localConnection.delegate           = _msgHandler;
+    localConnection.isLocal            = YES;
+    localConnection.videoTrack         = _mediaCapture.videoTrack;
+    _localConnection                   = localConnection;
+    
+    [localConnection createPeerConnectionOfKSMediaCapture:_mediaCapture];
+    [self.mediaConnections addObject:localConnection];
 }
 
 #pragma mark - KSMessageHandlerDelegate
 - (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId {
     //若不返回错误，则ICE错误
     return  [self mediaConnectionOfHandleId:handleId];
+}
+
+- (KSMediaConnection *)messageHandlerOfLocalConnection {
+    return _localConnection;
+}
+
+- (KSConnectionSetting *)messageHandlerOfConnectionSetting {
+    return _mediaSetting.connectionSetting;
 }
 
 - (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
@@ -87,13 +105,12 @@
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection.mediaInfo.isLocal) {
-        _localConnection = connection;
+    if (connection == nil) {
+        return;
     }
     connection.index = (int)self.mediaConnections.count;
     [self.mediaConnections addObject:connection];
     if ([self.delegate respondsToSelector:@selector(webRTCManager:didAddMediaConnection:)]) {
-        connection.mediaInfo.isFocus = YES;
         [self.delegate webRTCManager:self didAddMediaConnection:connection];
     }
 }

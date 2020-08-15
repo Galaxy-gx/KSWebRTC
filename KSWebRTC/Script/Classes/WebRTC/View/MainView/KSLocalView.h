@@ -6,18 +6,11 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "KSConfigure.h"
-#import "KSMediaConnection.h"
-#import "KSTileLayout.h"
-@interface KSPreviewLayer : AVCaptureVideoPreviewLayer
-@end
+#import "KSMediaView.h"
 
-@interface KSLocalView : UIView
-@property (nonatomic,weak  ) KSMediaConnection *connection;
+@interface KSLocalView : KSMediaView
+
 @property (nonatomic,strong) KSTileLayout      *tileLayout;
 @property (nonatomic,assign) BOOL              isDrag;
-
-- (void)setSession:(AVCaptureSession *)session;
 
 @end

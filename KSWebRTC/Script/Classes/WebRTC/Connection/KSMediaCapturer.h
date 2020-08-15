@@ -9,14 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WebRTC/WebRTC.h>
 #import "KSConfigure.h"
-
-@interface KSCapturerSetting : NSObject
-@property (nonatomic,assign ) KSCallType callType;
-@property (nonatomic,assign ) BOOL       isSSL;
-@property (nonatomic,assign ) BOOL       isFront;
-@property (nonatomic,assign ) BOOL       isStartCapture;
-@property (nonatomic,assign ) CGSize     resolution;
-@end
+#import "KSMediaSetting.h"
 
 @interface KSMediaCapturer : NSObject
 

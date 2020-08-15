@@ -48,7 +48,7 @@
 - (void)initWebRTC {
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[KSWebRTCManager shared] initRTCWithCallType:weakSelf.callType];
+        //[[KSWebRTCManager shared] initRTCWithCallType:weakSelf.callType];
         [KSWebRTCManager shared].delegate = self;
         if (weakSelf.callType == KSCallTypeSingleVideo) {
             [weakSelf createLocalView];
@@ -64,7 +64,7 @@
         {
             _tileLayout.resizingMode = KSResizingModeScreen;
             [_callView createLocalViewWithTileLayout:_tileLayout];
-            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+            //[_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
         }
             break;
         case KSCallTypeManyAudio:
@@ -74,7 +74,7 @@
         {
             _tileLayout.resizingMode = KSResizingModeScreen;
             [_callView createLocalViewWithTileLayout:_tileLayout];
-            [_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
+            //[_callView setLocalViewSession:[KSWebRTCManager shared].captureSession];
         }
             break;
         case KSCallTypeManyVideo:
@@ -109,10 +109,10 @@
             
             break;
         case KSCallTypeSingleVideo:
-            [_callView leaveOfHandleId:connection.handleId];
+            //[_callView leaveOfHandleId:connection.handleId];
             break;
         case KSCallTypeManyVideo:
-            [_callView deleteItemsAtIndex:connection.index];
+            //[_callView deleteItemsAtIndex:connection.setting.index];
             break;
         default:
             break;
@@ -128,7 +128,7 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection.mediaInfo.isLocal && [KSWebRTCManager shared].callType == KSCallTypeSingleVideo) {
+    if (connection.isLocal && [KSWebRTCManager shared].callType == KSCallTypeSingleVideo) {
         return;
     }
     switch (_callType) {
@@ -139,7 +139,7 @@
             
             break;
         case KSCallTypeSingleVideo:
-            connection.mediaInfo.callType = _callType;
+            //connection.setting.callType = _callType;
             [_callView createRemoteViewOfConnection:connection];
             break;
         case KSCallTypeManyVideo:
