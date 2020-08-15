@@ -17,10 +17,9 @@
 @interface KSMediaView : UIView
 
 @property (nonatomic,weak) KSMediaConnection *connection;
-@property (nonatomic,weak) RTCMTLVideoView   *videoView;
-
 @property (nonatomic,weak) KSProfileBarView  *profileBarView;
 @property (nonatomic,weak) KSRoundImageView  *roundImageView;
+@property (nonatomic,weak) UIView<RTCVideoRenderer> *videoView;
 
 - (void)removeVideoView;
 

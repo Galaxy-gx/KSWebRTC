@@ -31,9 +31,9 @@
 @property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
 @property (nonatomic, weak  ) id<KSMediaConnectionUpdateDelegate> updateDelegate;
 @property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
+@property (nonatomic, weak  ) UIView<RTCVideoRenderer>  *videoView;
 @property (nonatomic, strong) RTCPeerConnection   *peerConnection;//WebRTC连接对象
 @property (nonatomic, strong) RTCVideoTrack       *videoTrack;// 视频轨
-@property (nonatomic, weak  ) RTCMTLVideoView     *videoView;
 @property (nonatomic, strong) KSConnectionSetting *setting;
 @property (nonatomic, strong) NSNumber            *handleId;
 @property (nonatomic,assign ) int                 index;

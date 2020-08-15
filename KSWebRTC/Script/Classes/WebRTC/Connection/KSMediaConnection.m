@@ -220,8 +220,9 @@
     if (_videoView && _videoTrack) {
         [_videoTrack removeRenderer:_videoView];
     }
-    
-    [_videoView renderFrame:nil];
+    if (_videoView) {
+        [_videoView renderFrame:nil];
+    }
     _videoView    = nil;
 
     _videoTrack   = nil;
