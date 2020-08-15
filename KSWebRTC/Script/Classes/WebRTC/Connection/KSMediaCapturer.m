@@ -115,6 +115,11 @@ static int const kFramerateLimit         = 25.0;
     [self startCaptureWithDevice:device];
 }
 
+- (void)updateResolution:(CGSize)resolution {
+    _setting.resolution = resolution;
+    [self startCapture];
+}
+
 - (void)configureAudioSession {
     [_rtcAudioSession lockForConfiguration];
     @try {
@@ -216,13 +221,18 @@ static int const kFramerateLimit         = 25.0;
 - (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
     NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
     int targetWidth                           = _setting.resolution.width;//540
-    int targetHeight                          = _setting.resolution.height;//960
+    //int targetHeight                        = _setting.resolution.height;//960
     AVCaptureDeviceFormat *selectedFormat     = nil;
-    int currentDiff                           = INT_MAX;
+    //int currentDiff                         = INT_MAX;
     
     for (AVCaptureDeviceFormat *format in formats) {
         CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
         FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
+        if (targetWidth >= dimension.height && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+            selectedFormat = format;
+            break;
+        }
+        /*
         int diff = abs(targetWidth - dimension.width) + abs(targetHeight - dimension.height);
         if (diff < currentDiff) {
             selectedFormat = format;
@@ -230,6 +240,7 @@ static int const kFramerateLimit         = 25.0;
         } else if (diff == currentDiff && pixelFormat == [_capturer preferredOutputPixelFormat]) {
             selectedFormat = format;
         }
+         */
     }
     return selectedFormat;
 }
