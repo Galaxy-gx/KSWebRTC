@@ -125,7 +125,8 @@
         KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
         capturerSetting.isFront                = YES;
         capturerSetting.callType               = _callType;
-        capturerSetting.resolution             = CGSizeMake(540, 960);
+        //capturerSetting.resolution             = CGSizeMake(540, 960);
+        capturerSetting.videoScale                  = _tileLayout.scale;
         
         KSMediaSetting *setting = [[KSMediaSetting alloc] initWithConnectionSetting:monnectionSetting capturerSetting:capturerSetting];
         [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
@@ -191,10 +192,14 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
+            [self.callView reloadCollectionView];
+            /*
+            NSMutableArray *mediaConnections = [NSMutableArray array];
             KSWebRTCManager *manager = [KSWebRTCManager shared];
             for (KSMediaConnection *mediaConnection in manager.mediaConnections) {
                 [self webRTCManager:manager didAddMediaConnection:mediaConnection];
             }
+             */
         }
         default:
             break;
@@ -456,10 +461,7 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection.isLocal) {
-        return;
-    }
-    
+
     if (self.topBarView.isHidden) {
         self.topBarView.hidden = NO;
     }
@@ -476,6 +478,7 @@
             break;
         case KSCallTypeManyVideo:
             [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+            //[self.callView insertItemsAtIndex:self.callView.mediaCount];
             break;
         default:
             break;

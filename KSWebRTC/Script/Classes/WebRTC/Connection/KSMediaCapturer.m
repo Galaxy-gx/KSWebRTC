@@ -26,7 +26,7 @@ static int const kFramerateLimit         = 25.0;
         [self addMediaSource];
 
         _rtcAudioSession = [RTCAudioSession sharedInstance];
-        [self configureAudioSession];
+        [self speakerOn];
     }
     return self;
 }
@@ -112,23 +112,38 @@ static int const kFramerateLimit         = 25.0;
     [self startCaptureWithDevice:device];
 }
 
+/*
 - (void)updateResolution:(CGSize)resolution {
     _setting.resolution = resolution;
     [self startCapture];
 }
+*/
 
+- (void)updateVideoScale:(KSScale)scale {
+    _setting.videoScale = scale;
+    if (_setting.audioSessionMode == AVAudioSessionModeVoiceChat) {
+        return;
+    }
+    [self startCapture];
+}
+
+/*
 - (void)configureAudioSession {
     [_rtcAudioSession lockForConfiguration];
     @try {
-        NSError *error = nil;
+        //NSError *error = nil;
         [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [_rtcAudioSession setMode:AVAudioSessionModeVoiceChat error:&error];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        if (_setting) {
+            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
+        }
     } @catch (NSException *exception) {
         NSLog(@"Error setting AVAudioSession category %@",exception);
     } @finally {
     }
     [_rtcAudioSession unlockForConfiguration];
 }
+*/
 
 - (void)switchTalkMode {
     _setting.isStartCapture = !_setting.isStartCapture;
@@ -144,9 +159,11 @@ static int const kFramerateLimit         = 25.0;
 - (void)speakerOff {
     [_rtcAudioSession lockForConfiguration];
     @try {
-        NSError *error = nil;
-        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+        if (_setting) {
+            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
+        }
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     } @catch (NSException *exception) {
         NSLog(@"Error setting AVAudioSession category %@",exception);
     } @finally {
@@ -158,12 +175,13 @@ static int const kFramerateLimit         = 25.0;
 - (void)speakerOn {
     [_rtcAudioSession lockForConfiguration];
     @try {
-        NSError *error = nil;
-        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        if (error == nil) {
-            [_rtcAudioSession setActive:YES error:&error];
+        if (_setting) {
+            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
         }
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [_rtcAudioSession setActive:YES error:nil];
+        
     } @catch (NSException *exception) {
         NSLog(@"Couldn't force audio to speaker: %@",exception);
     } @finally {
@@ -217,28 +235,17 @@ static int const kFramerateLimit         = 25.0;
 
 - (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
     NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
-    int targetWidth                           = _setting.resolution.width;//540
+    //int targetWidth                         = _setting.resolution.width;//540
     //int targetHeight                        = _setting.resolution.height;//960
     AVCaptureDeviceFormat *selectedFormat     = nil;
-    //int currentDiff                         = INT_MAX;
-    
     for (AVCaptureDeviceFormat *format in formats) {
         CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
-        FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
-        if (targetWidth <= dimension.height && pixelFormat == [_capturer preferredOutputPixelFormat]) {
+        //FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
+        if (dimension.width/_setting.videoScale.height*_setting.videoScale.width == dimension.height) {
             NSLog(@"|------------| dimension.width : %d, dimension.height : %d |------------|",dimension.width,dimension.height);
             selectedFormat = format;
             break;
         }
-        /*
-        int diff = abs(targetWidth - dimension.width) + abs(targetHeight - dimension.height);
-        if (diff < currentDiff) {
-            selectedFormat = format;
-            currentDiff = diff;
-        } else if (diff == currentDiff && pixelFormat == [_capturer preferredOutputPixelFormat]) {
-            selectedFormat = format;
-        }
-         */
     }
     return selectedFormat;
 }

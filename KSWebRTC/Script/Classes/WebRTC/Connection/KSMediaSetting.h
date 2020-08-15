@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "KSConfigure.h"
 #import "KSCallState.h"
 
@@ -24,7 +25,10 @@
 @property (nonatomic,assign ) BOOL       isMuteAudio;
 @property (nonatomic,assign ) BOOL       isMuteVideo;
 @property (nonatomic,assign ) BOOL       isStartCapture;
-@property (nonatomic,assign ) CGSize     resolution;
+//@property (nonatomic,assign ) CGSize     resolution;
+@property (nonatomic,assign ) KSScale    videoScale;
+@property (nonatomic,assign, readonly) AVAudioSessionMode audioSessionMode;
+
 @end
 
 @interface KSConnectionSetting : NSObject<NSCopying,NSMutableCopying>
@@ -32,7 +36,7 @@
 @property (nonatomic,assign ) KSCallType  callType;
 @property (nonatomic,assign ) BOOL        audio;
 @property (nonatomic,assign ) BOOL        video;
-@property (nonatomic, assign,readonly) BOOL isFocus;
+@property (nonatomic, assign, readonly) BOOL isFocus;
 
 @end
 

@@ -24,7 +24,8 @@
 
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting;
 - (void)addVideoSourceOfCallType:(KSCallType)callType;
-- (void)updateResolution:(CGSize)resolution;
+//- (void)updateResolution:(CGSize)resolution;
+- (void)updateVideoScale:(KSScale)scale;
 - (void)switchTalkMode;
 - (void)setSpeakerEnabled:(BOOL)enabled;
 - (void)switchCamera;

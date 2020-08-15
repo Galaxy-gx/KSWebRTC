@@ -263,9 +263,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
     KSMediaConnection *mc        = [self createMediaConnection];
     mc.handleId                  = handleId;
-    //KSConnectionSetting *setting = [[KSConnectionSetting alloc] init];
-    //mc.setting                   = setting;
-
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;

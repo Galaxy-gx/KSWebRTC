@@ -43,10 +43,19 @@
         _isMuteAudio    = NO;
         _isMuteVideo    = NO;
         _isStartCapture = YES;
-        _resolution     = CGSizeMake(540, 960);
+        _videoScale          = KSScaleMake(9, 16);
+        //_resolution     = CGSizeMake(540, 960);
     }
     return self;
 }
+
+- (AVAudioSessionMode)audioSessionMode {
+    if (_callType == KSCallTypeManyVideo || _callType == KSCallTypeSingleVideo) {
+        return AVAudioSessionModeVideoChat;//视频通话
+    }
+    return AVAudioSessionModeVoiceChat;//VoIP
+}
+
 @end
 
 @implementation KSConnectionSetting

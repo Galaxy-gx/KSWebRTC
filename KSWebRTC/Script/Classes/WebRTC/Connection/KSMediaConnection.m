@@ -190,8 +190,7 @@
     }else{
         [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
-    }
-     */
+    }*/
 }
 - (void)switchTalkMode {
     [_capturer switchTalkMode];

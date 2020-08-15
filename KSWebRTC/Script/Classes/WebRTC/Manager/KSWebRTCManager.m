@@ -51,7 +51,7 @@
 #pragma mark - KSMessageHandlerDelegate
 - (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId {
     //若不返回错误，则ICE错误
-    return  [self mediaConnectionOfHandleId:handleId];
+    return [self mediaConnectionOfHandleId:handleId];
 }
 
 - (KSMediaConnection *)messageHandlerOfLocalConnection {
@@ -131,10 +131,10 @@
     [[KSWebRTCManager shared].localConnection switchTalkMode];
 }
 + (void)startCapture {
-    [[KSWebRTCManager shared].localConnection muteVideo];
+    [[KSWebRTCManager shared].localConnection unmuteVideo];
 }
 + (void)stopCapture {
-    [[KSWebRTCManager shared].localConnection unmuteVideo];
+    [[KSWebRTCManager shared].localConnection muteVideo];
     //[[KSWebRTCManager shared].mediaCapture stopCapture];
 }
 + (void)speakerOff {

@@ -95,7 +95,7 @@
 - (void)onVoiceAnsweringClick {
     [self.coolHUB showMessage:@"您已打开摄像头"];
     [KSWebRTCManager shared].callState = KSCallStateNone;
-    [KSWebRTCManager shared].callType  = KSCallTypeSingleVideo;
+    [KSWebRTCManager shared].callType  = KSCallTypeManyVideo;
 
     //self.modalPresentationStyle     = UIModalPresentationFullScreen;
     KSCallController *ctrl             = [[KSCallController alloc] init];

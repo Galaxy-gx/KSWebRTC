@@ -23,10 +23,10 @@
 
 + (KSTileLayout *)manyAudioLayout {
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
-    tileLayout.scale         = KSScaleMake(1, 1);
+    tileLayout.scale         = KSScaleMake(3, 4);
     tileLayout.mode          = KSContentModeScaleAspectFit;
     int width                = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
-    int height               = width;
+    int height               = width / tileLayout.scale.width * tileLayout.scale.height;;
     tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
     tileLayout.callType      = KSCallTypeManyAudio;
     return tileLayout;
@@ -45,10 +45,10 @@
 
 + (KSTileLayout *)manyVideoLayout {
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
-    tileLayout.scale         = KSScaleMake(1, 1);
+    tileLayout.scale         = KSScaleMake(3, 4);
     tileLayout.mode          = KSContentModeScaleAspectFit;
     int width                = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
-    int height               = width;
+    int height               = width / tileLayout.scale.width * tileLayout.scale.height;;
     tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
     tileLayout.callType      = KSCallTypeManyVideo;
     return tileLayout;

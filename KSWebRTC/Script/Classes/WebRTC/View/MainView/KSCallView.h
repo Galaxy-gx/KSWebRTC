@@ -32,6 +32,7 @@
 
 @interface KSCallView : KSEventCallbackView
 @property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
+@property (nonatomic, assign) int mediaCount;
 
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout;
 - (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;

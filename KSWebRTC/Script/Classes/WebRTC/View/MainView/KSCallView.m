@@ -39,6 +39,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout {
     if (self = [super initWithFrame:frame]) {
         self.tileLayout   = tileLayout;
+        self.mediaCount   = 0;
         switch (tileLayout.callType) {
             case KSCallTypeSingleAudio:
                 [self initScrollView];
@@ -67,10 +68,11 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)initCollectionView {
-    CGFloat padding                        = 10;
-    CGFloat cell_wh                        = (self.bounds.size.width - padding)/2;
+    //CGFloat padding                        = 10;
+    CGFloat cell_w                         = _tileLayout.layout.width;
+    CGFloat cell_h                         = _tileLayout.layout.height;
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize                    = CGSizeMake(cell_wh, cell_wh);
+    flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
     flowLayout.minimumLineSpacing          = KS_Extern_Point10;
     flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
     flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -395,11 +397,13 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (void)insertItemsAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView insertItemsAtIndexPaths:@[indexPath]];
+    _mediaCount            += 1;
 }
 
 - (void)deleteItemsAtIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+    _mediaCount            -= 1;
 }
 
 - (void)reloadCollectionView {
