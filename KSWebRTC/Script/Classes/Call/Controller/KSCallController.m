@@ -22,6 +22,7 @@
 
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
+@property (nonatomic, weak ) KSCallView         *callView;
 @property (nonatomic, weak ) KSTopBarView       *topBarView;
 @property (nonatomic,assign) KSCallType         callType;
 @property (nonatomic,strong) KSTileLayout       *tileLayout;
@@ -121,14 +122,14 @@
         KSConnectionSetting *monnectionSetting = [[KSConnectionSetting alloc] init];
         monnectionSetting.callType             = _callType;
         monnectionSetting.iceServer            = [[KSIceServer alloc] init];
-        
+
         KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
         capturerSetting.isFront                = YES;
         capturerSetting.callType               = _callType;
         //capturerSetting.resolution             = CGSizeMake(540, 960);
-        capturerSetting.videoScale                  = _tileLayout.scale;
-        
-        KSMediaSetting *setting = [[KSMediaSetting alloc] initWithConnectionSetting:monnectionSetting capturerSetting:capturerSetting];
+        capturerSetting.videoScale             = _tileLayout.scale;
+
+        KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:monnectionSetting capturerSetting:capturerSetting];
         [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
         [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     }

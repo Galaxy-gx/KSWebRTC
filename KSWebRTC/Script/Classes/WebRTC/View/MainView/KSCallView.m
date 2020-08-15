@@ -80,7 +80,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     
     UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height)
                                                                 collectionViewLayout:flowLayout];
-    collectionView.backgroundColor         = [UIColor ks_grayBar];
+    collectionView.backgroundColor         = [UIColor clearColor];
     
     collectionView.dataSource              = self;
     collectionView.delegate                = self;

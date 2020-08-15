@@ -6,7 +6,7 @@
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSKitsController.h"
+#import "KSChatInterfaceController.h"
 #import "KSCallBarView.h"
 #import "KSTopBarView.h"
 #import "KSAnswerBarView.h"
@@ -22,16 +22,56 @@
 #import "UIColor+Category.h"
 #import "UIFont+Category.h"
 #import "KSWebRTCManager.h"
-@interface KSKitsController ()
+#import "KSTableViewCell.h"
 
-@property(nonatomic,weak)KSCoolHUB *coolHUB;
-
+@interface KSChatMenu : NSObject
+@property(nonatomic,assign)KSCallType callType;
+@property(nonatomic,copy)NSString *title;
++ (NSMutableArray *)chatMenus;
 @end
 
-@implementation KSKitsController
+@implementation KSChatMenu
++ (NSMutableArray *)chatMenus {
+    NSMutableArray *array = [NSMutableArray array];
+    KSChatMenu *cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeSingleAudio;
+    cm.title = @"KSCallTypeSingleAudio";
+    [array addObject:cm];
+    
+    cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeManyAudio;
+    cm.title = @"KSCallTypeManyAudio";
+    [array addObject:cm];
+    
+    cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeSingleVideo;
+    cm.title = @"KSCallTypeSingleVideo";
+    [array addObject:cm];
+    
+    cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeManyVideo;
+    cm.title = @"KSCallTypeManyVideo";
+    [array addObject:cm];
+    return array;
+}
+@end
+
+@interface KSChatInterfaceController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property(nonatomic,weak)KSCoolHUB *coolHUB;
+@property(nonatomic,strong)NSMutableArray *chatMenus;
+@end
+
+@implementation KSChatInterfaceController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _chatMenus = [KSChatMenu chatMenus];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+    
 //    int self_w = self.view.frame.size.width;
 //    int padding = 20;
 // 
@@ -76,18 +116,18 @@
 //    [self.view addSubview:waitingAnswersGroupView];
     
     
-    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, 100, KS_Extern_Point100, 46)
-                                                                   layoutType:KSButtonLayoutTypeTitleBottom
-                                                                        title:@"ks_meeting_btn_voice_answering"
-                                                                         font:[UIFont ks_fontRegularOfSize:KS_Extern_13Font]
-                                                                    textColor:[UIColor ks_white]
-                                                                    normalImg:@"icon_bar_rings_small_white"
-                                                                    selectImg:@"icon_bar_rings_small_white"
-                                                                        space:KS_Extern_Point08
-                                                                   imageWidth:KS_Extern_Point20
-                                                                  imageHeight:KS_Extern_Point20];
-    [self.view addSubview:voiceAnsweringBtn];
-    [voiceAnsweringBtn ks_addTarget:self action:@selector(onVoiceAnsweringClick)];
+//    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, 100, KS_Extern_Point100, 46)
+//                                                                   layoutType:KSButtonLayoutTypeTitleBottom
+//                                                                        title:@"ks_meeting_btn_voice_answering"
+//                                                                         font:[UIFont ks_fontRegularOfSize:KS_Extern_13Font]
+//                                                                    textColor:[UIColor ks_white]
+//                                                                    normalImg:@"icon_bar_rings_small_white"
+//                                                                    selectImg:@"icon_bar_rings_small_white"
+//                                                                        space:KS_Extern_Point08
+//                                                                   imageWidth:KS_Extern_Point20
+//                                                                  imageHeight:KS_Extern_Point20];
+//    [self.view addSubview:voiceAnsweringBtn];
+//    [voiceAnsweringBtn ks_addTarget:self action:@selector(onVoiceAnsweringClick)];
     
     // Do any additional setup after loading the view.
 }
@@ -97,13 +137,11 @@
     [KSWebRTCManager shared].callState = KSCallStateNone;
     [KSWebRTCManager shared].callType  = KSCallTypeManyVideo;
 
-    //self.modalPresentationStyle     = UIModalPresentationFullScreen;
     KSCallController *ctrl             = [[KSCallController alloc] init];
     ctrl.isSuperBar                    = YES;
     ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
     UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-
     [self presentViewController:navCtrl animated:NO completion:nil];
 }
 
@@ -116,4 +154,30 @@
     return _coolHUB;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _chatMenus.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    KSChatMenu *cm = _chatMenus[indexPath.row];
+    KSTableViewCell *cell = [KSTableViewCell initWithTableView:tableView];
+    cell.textLabel.text = cm.title;
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    KSChatMenu *cm                     = _chatMenus[indexPath.row];
+
+    [KSWebRTCManager shared].callState = KSCallStateNone;
+    [KSWebRTCManager shared].callType  = cm.callType;
+
+    KSCallController *ctrl             = [[KSCallController alloc] init];
+    ctrl.isSuperBar                    = YES;
+    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
+    [self presentViewController:navCtrl animated:NO completion:nil];
+}
+
 @end
+

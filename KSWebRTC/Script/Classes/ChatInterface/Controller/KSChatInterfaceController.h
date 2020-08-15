@@ -1,5 +1,5 @@
 //
-//  KSKitsController.h
+//  KSChatInterfaceController.h
 //  KSWebRTC
 //
 //  Created by saeipi on 2020/8/7.
@@ -8,6 +8,6 @@
 
 #import "KSSuperController.h"
 
-@interface KSKitsController : KSSuperController
+@interface KSChatInterfaceController : KSSuperController
 
 @end
