@@ -89,19 +89,6 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     self.navigationItem.rightBarButtonItems = @[addBarItem,deleteBarItem];
 }
 
-- (void)onVoiceAnsweringClick {
-    [self.coolHUB showMessage:@"您已打开摄像头"];
-    [KSWebRTCManager shared].callState = KSCallStateNone;
-    [KSWebRTCManager shared].callType  = KSCallTypeManyVideo;
-
-    KSCallController *ctrl             = [[KSCallController alloc] init];
-    ctrl.isSuperBar                    = YES;
-    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-    [self presentViewController:navCtrl animated:NO completion:nil];
-}
-
 -(KSCoolHUB *)coolHUB {
     if (_coolHUB == NULL) {
         KSCoolHUB *coolHUB = [[KSCoolHUB alloc] initWithFrame:self.view.bounds];
@@ -158,13 +145,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
     [KSWebRTCManager shared].callState = KSCallStateNone;
     [KSWebRTCManager shared].callType  = cm.callType;
-
-    KSCallController *ctrl             = [[KSCallController alloc] init];
-    ctrl.isSuperBar                    = YES;
-    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-    [self presentViewController:navCtrl animated:NO completion:nil];
+    
+    [self onCallClick];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -178,28 +160,39 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     cell.textLabel.text        = cm.title;
     return cell;
 }
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    KSChatMenu *cm                     = _chatMenus[indexPath.item];
 
+    [KSWebRTCManager shared].callState = KSCallStateNone;
+    [KSWebRTCManager shared].callType  = cm.callType;
+    
+    [self onCallClick];
+}
+//更新cell前，先更新数据
 - (void)onAddClick {
     KSChatMenu *cm = [[KSChatMenu alloc] init];
     cm.callType    = KSCallTypeManyVideo;
     cm.title       = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
     [_chatMenus addObject:cm];
     
-    cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeSingleVideo;
-    cm.title = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
-    [_chatMenus addObject:cm];
+//    cm = [[KSChatMenu alloc] init];
+//    cm.callType = KSCallTypeSingleVideo;
+//    cm.title = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
+//    [_chatMenus addObject:cm];
     
-    [self insertItems];
+    [self insertItemsAtIndex:(int)_chatMenus.count-1];
 }
 
 - (void)onDeleteClick {
-    [_chatMenus removeLastObject];
-    [self deleteItems];
+    int index = (int)_chatMenus.count - 2;//-1删除最后一个，-2删除倒数第二个
+    if (index < 0) {
+        return;
+    }
+    [_chatMenus removeObjectAtIndex:index];
+    [self deleteItemsAtIndex:index];
 }
 
-- (void)insertItems {
-    int index = (int)_chatMenus.count-1;
+- (void)insertItemsAtIndex:(int)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     if (_isCollection) {
         [_collectionView insertItemsAtIndexPaths:@[indexPath]];
@@ -209,8 +202,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     }
 }
 
-- (void)deleteItems {
-    int index = (int)_chatMenus.count;
+- (void)deleteItemsAtIndex:(int)index {
+    //int index = (int)_chatMenus.count;
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     if (_isCollection) {
         [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
@@ -220,6 +213,27 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     }
 }
 
-
+- (void)onCallClick {
+    [self.coolHUB showMessage:@"您已打开摄像头"];
+    
+    KSCallType callType = KSCallTypeManyVideo;
+    [KSWebRTCManager shared].callState = KSCallStateRecording;//KSCallStateNone;
+    [KSWebRTCManager shared].callType  = callType;
+    
+    for (int i = 0; i < 5; i++) {
+        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+        connectionSetting.callType             = callType;
+        connectionSetting.iceServer            = [[KSIceServer alloc] init];
+        KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
+        [[KSWebRTCManager shared].mediaConnections addObject:mc];
+    }
+    
+    KSCallController *ctrl             = [[KSCallController alloc] init];
+    ctrl.isSuperBar                    = YES;
+    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
+    [self presentViewController:navCtrl animated:NO completion:nil];
+}
 @end
 

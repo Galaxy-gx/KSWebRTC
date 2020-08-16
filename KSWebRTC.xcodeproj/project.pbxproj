@@ -385,6 +385,16 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		E632FE9F24E93C660049ED8A /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				E62B99C024DD5BA700152697 /* ChatInterface */,
+				E67A6A9924DE8EF100BCE4B9 /* Call */,
+				E646E5DA24E67B1B0098892F /* Media */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
 		E6400F2724B8507F004C7060 = {
 			isa = PBXGroup;
 			children = (
@@ -524,21 +534,19 @@
 			isa = PBXGroup;
 			children = (
 				E67BC59C24B853FE004BBA8A /* Main */,
-				E67BC59B24B853DE004BBA8A /* Classes */,
+				E67BC59B24B853DE004BBA8A /* Chat */,
 			);
 			path = Script;
 			sourceTree = "<group>";
 		};
-		E67BC59B24B853DE004BBA8A /* Classes */ = {
+		E67BC59B24B853DE004BBA8A /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				E646E5DA24E67B1B0098892F /* Media */,
+				E632FE9F24E93C660049ED8A /* Module */,
 				E6BC0B1524E29C55005A955A /* WebRTC */,
-				E67A6A9924DE8EF100BCE4B9 /* Call */,
-				E62B99C024DD5BA700152697 /* ChatInterface */,
 				E67BC59E24B85498004BBA8A /* Custom */,
 			);
-			path = Classes;
+			path = Chat;
 			sourceTree = "<group>";
 		};
 		E67BC59C24B853FE004BBA8A /* Main */ = {

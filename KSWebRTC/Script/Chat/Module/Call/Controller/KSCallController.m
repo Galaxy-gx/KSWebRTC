@@ -119,9 +119,9 @@
 
 - (void)initWebRTC {
     if ([KSWebRTCManager shared].mediaCapture == nil) {
-        KSConnectionSetting *monnectionSetting = [[KSConnectionSetting alloc] init];
-        monnectionSetting.callType             = _callType;
-        monnectionSetting.iceServer            = [[KSIceServer alloc] init];
+        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+        connectionSetting.callType             = _callType;
+        connectionSetting.iceServer            = [[KSIceServer alloc] init];
 
         KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
         capturerSetting.isFront                = YES;
@@ -129,7 +129,7 @@
         //capturerSetting.resolution             = CGSizeMake(540, 960);
         capturerSetting.videoScale             = _tileLayout.scale;
 
-        KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:monnectionSetting capturerSetting:capturerSetting];
+        KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting];
         [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
         [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     }
@@ -474,12 +474,10 @@
             
             break;
         case KSCallTypeSingleVideo:
-            //connection.callType = _callType;
             [self.callView createRemoteViewOfConnection:connection];
             break;
         case KSCallTypeManyVideo:
             [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
-            //[self.callView insertItemsAtIndex:self.callView.mediaCount];
             break;
         default:
             break;

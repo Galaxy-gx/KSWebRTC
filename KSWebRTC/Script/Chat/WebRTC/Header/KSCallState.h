@@ -11,15 +11,15 @@
 
 typedef NS_ENUM(NSInteger, KSCallState) {
     KSCallStateNone = 0,          //未连状态
-    KSCallStateCallerJoining,     //主叫方加入, 等待服务器返回结果，是否加入成功 （新的协议该状态省去）
-    KSCallStateCallerCalling,     //主叫方呼叫, 等待被叫方的加入
-    KSCallStateCallerOffering,    //主叫方发送offer, 等待被叫方的offer，和answer
+    //KSCallStateCallerJoining,     //主叫方加入, 等待服务器返回结果，是否加入成功 （新的协议该状态省去）
+    //KSCallStateCallerCalling,     //主叫方呼叫, 等待被叫方的加入
+    //KSCallStateCallerOffering,    //主叫方发送offer, 等待被叫方的offer，和answer
     KSCallStateCalleeBeingCalled, //被叫方正在收到主叫方的呼叫
-    KSCallStateCalleeRinging,     //被叫方，呼叫画面出现，处于响铃状态
-    KSCallStateCalleeJoining,     //被叫方加入，等待服务器的返回结果，是否加入成功，加入成功，如果此时还收到主叫方的的calling，则表明主叫方没有收到自己的加入成功的包，此时需要再次调用join
-    KSCallStateCalleeOffering,    //被叫方发送offer, 如果发送offer成功，但是此时还是收到主叫方的offer包，则表明主叫方没有收到
+    //KSCallStateCalleeRinging,     //被叫方，呼叫画面出现，处于响铃状态
+    //KSCallStateCalleeJoining,     //被叫方加入，等待服务器的返回结果，是否加入成功，加入成功，如果此时还收到主叫方的的calling，则表明主叫方没有收到自己的加入成功的包，此时需要再次调用join
+    //KSCallStateCalleeOffering,    //被叫方发送offer, 如果发送offer成功，但是此时还是收到主叫方的offer包，则表明主叫方没有收到
     KSCallStateRecording,         //通话中
-    KSCallStateCallEnded          //通话结束
+    //KSCallStateCallEnded          //通话结束
 };
 
 typedef NS_ENUM(NSInteger, KSCallEndType) {
