@@ -53,7 +53,8 @@
         [_connection.videoTrack removeRenderer:_videoView];
         [_videoView renderFrame:nil];
     }
-    
+    //记录Renderer
+    _connection.videoView = _videoView;
     if (connection == nil) {
         [self removeVideoView];
     }

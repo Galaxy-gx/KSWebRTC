@@ -151,7 +151,11 @@
 //    [[KSWebRTCManager shared].mediaCapture close];
 //    [KSWebRTCManager shared].mediaCapture = nil;
 //}
-
++ (void)clearAllRenderer {
+    for (KSMediaConnection *connection in [KSWebRTCManager shared].mediaConnections) {
+        [connection clearRenderer];
+    }
+}
 //MediaConnection
 //+ (void)closeMediaConnection {
 //    [[KSWebRTCManager shared].localConnection close];

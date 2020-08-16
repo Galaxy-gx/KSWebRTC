@@ -57,7 +57,7 @@
 //+ (void)closeMediaConnection;
 + (void)muteAudio;
 + (void)unmuteAudio;
-
++ (void)clearAllRenderer;
 //Socket
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;

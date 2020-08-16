@@ -288,7 +288,7 @@
 - (void)onSwitchCameraClick {
     //[KSWebRTCManager switchCamera];
     NSLog(@"%s",__FUNCTION__);
-    
+    [KSWebRTCManager clearAllRenderer];
     [KSWebRTCManager shared].callState = KSCallStateRecording;
     KSCallController *ctrl             = [[KSCallController alloc] init];
     ctrl.isSuperBar                    = YES;

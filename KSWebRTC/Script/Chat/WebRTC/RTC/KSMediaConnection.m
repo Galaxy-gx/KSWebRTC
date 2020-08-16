@@ -220,6 +220,13 @@
     [_peerConnection close];
     _peerConnection       = nil;
     
+    [self clearRenderer];
+
+    _videoTrack   = nil;
+    self.delegate = nil;
+}
+
+- (void)clearRenderer {
     if (_videoView && _videoTrack) {
         [_videoTrack removeRenderer:_videoView];
     }
@@ -227,9 +234,6 @@
         [_videoView renderFrame:nil];
     }
     _videoView    = nil;
-
-    _videoTrack   = nil;
-    self.delegate = nil;
 }
 
 // PeerConnection 媒体约束

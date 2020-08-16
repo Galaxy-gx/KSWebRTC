@@ -66,5 +66,6 @@
 - (void)startCapture;
 
 - (void)closeConnection;
+- (void)clearRenderer;
 
 @end
