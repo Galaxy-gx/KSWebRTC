@@ -44,7 +44,7 @@
     localConnection.videoTrack         = _mediaCapture.videoTrack;
     _localConnection                   = localConnection;
     
-    [localConnection createPeerConnectionOfKSMediaCapture:_mediaCapture];
+    [localConnection createPeerConnectionWithMediaCapturer:_mediaCapture];
     [self.mediaConnections addObject:localConnection];
 }
 
@@ -143,15 +143,15 @@
 + (void)speakerOn {
     [[KSWebRTCManager shared].localConnection speakerOn];
 }
-+ (void)closeMediaCapture {
-    [[KSWebRTCManager shared].mediaCapture close];
-    [KSWebRTCManager shared].mediaCapture = nil;
-}
+//+ (void)closeMediaCapture {
+//    [[KSWebRTCManager shared].mediaCapture close];
+//    [KSWebRTCManager shared].mediaCapture = nil;
+//}
 
 //MediaConnection
-+ (void)closeMediaConnection {
-    [[KSWebRTCManager shared].localConnection close];
-}
+//+ (void)closeMediaConnection {
+//    [[KSWebRTCManager shared].localConnection close];
+//}
 + (void)muteAudio {
     [[KSWebRTCManager shared].localConnection muteAudio];
 }
@@ -194,7 +194,7 @@
     }
     KSMediaConnection *connection = [KSWebRTCManager shared].mediaConnections[index];
     [[KSWebRTCManager shared].mediaConnections removeObjectAtIndex:index];
-    [connection close];
+    [connection closeConnection];
     connection                    = nil;
 }
 
@@ -203,20 +203,24 @@
         return;
     }
     [self.mediaConnections removeObject:connection];
-    [connection close];
+    [connection closeConnection];
 }
 
 - (void)close {
     for (KSMediaConnection *connection in self.mediaConnections) {
-        [connection close];
+        [connection closeConnection];
     }
     [self.mediaConnections removeAllObjects];
-    [self.mediaCapture close];
+    //[self.mediaCapture close];
 
     self.mediaCapture = nil;
     [self.msgHandler close];
     
     //self.msgHandler   = nil;
+}
+
++ (void)close {
+    [[KSWebRTCManager shared] close];
 }
 
 -(KSMediaConnection *)mediaConnectionOfHandleId:(NSNumber *)handleId {

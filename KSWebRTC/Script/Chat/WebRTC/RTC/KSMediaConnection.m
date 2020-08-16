@@ -38,7 +38,7 @@
     第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。但它并不属于观察者模式，这一点大家一定要清楚。
     RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
  */
-- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture {
+- (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capturer {
     // 媒体约束
     RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
     // 创建配置
@@ -47,15 +47,15 @@
     NSArray *iceServers               = @[[self defaultIceServer]];
     config.iceServers                 = iceServers;
     // 创建一个peerconnection
-    RTCPeerConnection *peerConnection = [capture.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
+    RTCPeerConnection *peerConnection = [capturer.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
 
     NSArray *mediaStreamLabels        = @[ @"ARDAMS" ];
     // 添加视频轨
-    [peerConnection addTrack:capture.videoTrack streamIds:mediaStreamLabels];
+    [peerConnection addTrack:capturer.videoTrack streamIds:mediaStreamLabels];
     // 添加音频轨
-    [peerConnection addTrack:capture.audioTrack streamIds:mediaStreamLabels];
+    [peerConnection addTrack:capturer.audioTrack streamIds:mediaStreamLabels];
     _peerConnection                   = peerConnection;
-    _capturer                         = capture;
+    _capturer                         = capturer;
     return peerConnection;
 }
 
@@ -207,9 +207,12 @@
     [_capturer stopCapture];
 }
 
-- (void)close {
-    //[_capture close];
-    //_capture          = nil;
+- (void)closeConnection {
+    if (_isLocal) {
+        [_capturer closeCapturer];
+        _capturer          = nil;
+    }
+    
     RTCMediaStream *mediaStream = [_peerConnection.localStreams firstObject];
     if (mediaStream) {
         [_peerConnection removeStream:mediaStream];

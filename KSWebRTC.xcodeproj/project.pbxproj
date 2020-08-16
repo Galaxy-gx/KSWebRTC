@@ -349,19 +349,19 @@
 		E632FED124E9406A0049ED8A /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				E632FED224E9406A0049ED8A /* ChatInterface */,
+				E632FED224E9406A0049ED8A /* Interface */,
 				E632FED624E9406A0049ED8A /* Call */,
 				E632FEDA24E9406A0049ED8A /* Media */,
 			);
 			path = Module;
 			sourceTree = "<group>";
 		};
-		E632FED224E9406A0049ED8A /* ChatInterface */ = {
+		E632FED224E9406A0049ED8A /* Interface */ = {
 			isa = PBXGroup;
 			children = (
 				E632FED324E9406A0049ED8A /* Controller */,
 			);
-			path = ChatInterface;
+			path = Interface;
 			sourceTree = "<group>";
 		};
 		E632FED324E9406A0049ED8A /* Controller */ = {
@@ -437,10 +437,10 @@
 		E632FEE324E9406A0049ED8A /* WebRTC */ = {
 			isa = PBXGroup;
 			children = (
-				E632FEE424E9406A0049ED8A /* Connection */,
+				E632FEE424E9406A0049ED8A /* RTC */,
 				E632FEEB24E9406A0049ED8A /* MessageHandler */,
 				E632FEEE24E9406A0049ED8A /* Utils */,
-				E632FEFD24E9406A0049ED8A /* KitManager */,
+				E632FEFD24E9406A0049ED8A /* RTCManager */,
 				E632FF0224E9406A0049ED8A /* Super */,
 				E632FF1524E9406A0049ED8A /* Model */,
 				E632FF1824E9406A0049ED8A /* View */,
@@ -449,17 +449,17 @@
 			path = WebRTC;
 			sourceTree = "<group>";
 		};
-		E632FEE424E9406A0049ED8A /* Connection */ = {
+		E632FEE424E9406A0049ED8A /* RTC */ = {
 			isa = PBXGroup;
 			children = (
-				E632FEE524E9406A0049ED8A /* KSMediaSetting.h */,
-				E632FEE624E9406A0049ED8A /* KSMediaConnection.h */,
 				E632FEE724E9406A0049ED8A /* KSMediaCapturer.h */,
-				E632FEE824E9406A0049ED8A /* KSMediaSetting.m */,
-				E632FEE924E9406A0049ED8A /* KSMediaConnection.m */,
 				E632FEEA24E9406A0049ED8A /* KSMediaCapturer.m */,
+				E632FEE624E9406A0049ED8A /* KSMediaConnection.h */,
+				E632FEE924E9406A0049ED8A /* KSMediaConnection.m */,
+				E632FEE524E9406A0049ED8A /* KSMediaSetting.h */,
+				E632FEE824E9406A0049ED8A /* KSMediaSetting.m */,
 			);
-			path = Connection;
+			path = RTC;
 			sourceTree = "<group>";
 		};
 		E632FEEB24E9406A0049ED8A /* MessageHandler */ = {
@@ -492,15 +492,15 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		E632FEFD24E9406A0049ED8A /* KitManager */ = {
+		E632FEFD24E9406A0049ED8A /* RTCManager */ = {
 			isa = PBXGroup;
 			children = (
 				E632FEFE24E9406A0049ED8A /* KSKitManager.m */,
-				E632FEFF24E9406A0049ED8A /* KSWebRTCManager.m */,
 				E632FF0024E9406A0049ED8A /* KSKitManager.h */,
 				E632FF0124E9406A0049ED8A /* KSWebRTCManager.h */,
+				E632FEFF24E9406A0049ED8A /* KSWebRTCManager.m */,
 			);
-			path = KitManager;
+			path = RTCManager;
 			sourceTree = "<group>";
 		};
 		E632FF0224E9406A0049ED8A /* Super */ = {

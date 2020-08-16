@@ -53,11 +53,11 @@
 + (void)stopCapture;
 + (void)speakerOff;
 + (void)speakerOn;
-+ (void)closeMediaCapture;
+//+ (void)closeMediaCapture;
 - (void)close;
-
++ (void)close;
 //MediaConnection
-+ (void)closeMediaConnection;
+//+ (void)closeMediaConnection;
 + (void)muteAudio;
 + (void)unmuteAudio;
 

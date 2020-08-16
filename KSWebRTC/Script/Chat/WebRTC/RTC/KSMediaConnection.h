@@ -43,7 +43,7 @@
 @property (nonatomic,assign ) KSCallType          callType;
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
-- (RTCPeerConnection *)createPeerConnectionOfKSMediaCapture:(KSMediaCapturer *)capture;
+- (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capture;
 - (void)addRenderer:(id<RTCVideoRenderer>)renderer;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 // 创建answer
@@ -65,6 +65,6 @@
 - (void)stopCapture;
 - (void)startCapture;
 
-- (void)close;
+- (void)closeConnection;
 
 @end

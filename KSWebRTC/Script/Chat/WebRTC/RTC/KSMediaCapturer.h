@@ -31,6 +31,6 @@
 - (void)switchCamera;
 - (void)stopCapture;
 - (void)startCapture;
-- (void)close;
+- (void)closeCapturer;
 
 @end

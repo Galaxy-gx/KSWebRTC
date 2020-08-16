@@ -177,7 +177,7 @@
 - (void)inConversationHangup {
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
-    [KSWebRTCManager closeMediaCapture];
+    [KSWebRTCManager close];
     [_callView setMediaConnection:nil];
 }
 

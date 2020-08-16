@@ -395,12 +395,14 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)insertItemsAtIndex:(NSInteger)index {
+    NSLog(@"|============| insert: %ld |============|",(long)index);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView insertItemsAtIndexPaths:@[indexPath]];
     _mediaCount            += 1;
 }
 
 - (void)deleteItemsAtIndex:(NSInteger)index {
+    NSLog(@"|============| delete: %ld |============|",(long)index);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
     _mediaCount            -= 1;

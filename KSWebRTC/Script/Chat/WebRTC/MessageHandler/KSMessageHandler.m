@@ -322,7 +322,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     KSMediaCapturer *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
     KSConnectionSetting *setting  = [self.delegate messageHandlerOfConnectionSetting];
     KSMediaConnection *mc         = [[KSMediaConnection alloc] initWithSetting:setting];
-    [mc createPeerConnectionOfKSMediaCapture:mediaCapture];
+    [mc createPeerConnectionWithMediaCapturer:mediaCapture];
     mc.delegate                   = self;
     return mc;
 }

@@ -258,7 +258,7 @@ static int const kFramerateLimit         = 25.0;
     return fmin(maxSupportedFramerate, kFramerateLimit);
 }
 
-- (void)close {
+- (void)closeCapturer {
     _videoTrack = nil;
     _audioTrack = nil;
     

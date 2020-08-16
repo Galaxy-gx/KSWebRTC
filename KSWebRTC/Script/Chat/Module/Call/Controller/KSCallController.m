@@ -147,7 +147,7 @@
 }
 
 /// 创建并展示一对一本地视频
-- (void)screenLocalViewOfSession:(BOOL)isSession {
+- (void)setLocalViewOfSession:(BOOL)isSession {
     _tileLayout.resizingMode = isSession ? KSResizingModeTile : KSResizingModeScreen;
     [self.callView createLocalViewWithTileLayout:_tileLayout];
 
@@ -163,7 +163,7 @@
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            [self screenLocalViewOfSession:NO];
+            [self setLocalViewOfSession:NO];
         }
             break;
         case KSCallTypeManyAudio:
@@ -185,7 +185,7 @@
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            [self screenLocalViewOfSession:YES];
+            [self setLocalViewOfSession:YES];
             KSWebRTCManager *manager = [KSWebRTCManager shared];
             [self webRTCManager:manager didAddMediaConnection:manager.mediaConnections.lastObject];
         }
@@ -193,14 +193,11 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            [self.callView reloadCollectionView];
-            /*
-            NSMutableArray *mediaConnections = [NSMutableArray array];
+            //[self.callView reloadCollectionView];
             KSWebRTCManager *manager = [KSWebRTCManager shared];
             for (KSMediaConnection *mediaConnection in manager.mediaConnections) {
                 [self webRTCManager:manager didAddMediaConnection:mediaConnection];
             }
-             */
         }
         default:
             break;
@@ -371,7 +368,7 @@
 - (void)inConversationHangup {
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
-    [KSWebRTCManager closeMediaCapture];
+    [KSWebRTCManager close];
     [self.callView setMediaConnection:nil];
 }
 
@@ -462,22 +459,27 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
-
     if (self.topBarView.isHidden) {
         self.topBarView.hidden = NO;
     }
     switch (_callType) {
         case KSCallTypeSingleAudio:
-
+        case KSCallTypeSingleVideo:
+        {
+            if (connection.isLocal) {
+                [self setLocalViewOfSession:YES];
+            }
+            else{
+                [self.callView createRemoteViewOfConnection:connection];
+            }
+        }
             break;
         case KSCallTypeManyAudio:
-            
-            break;
-        case KSCallTypeSingleVideo:
-            [self.callView createRemoteViewOfConnection:connection];
-            break;
         case KSCallTypeManyVideo:
-            [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+        {
+            [self.callView insertItemsAtIndex:_callView.mediaCount];
+            //[self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+        }
             break;
         default:
             break;
