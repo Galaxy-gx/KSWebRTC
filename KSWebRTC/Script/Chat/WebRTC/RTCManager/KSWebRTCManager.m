@@ -213,7 +213,7 @@
     [self.mediaConnections removeAllObjects];
     //[self.mediaCapture close];
 
-    self.mediaCapture = nil;
+    //self.mediaCapture = nil;
     [self.msgHandler close];
     
     //self.msgHandler   = nil;
@@ -230,6 +230,10 @@
         }
     }
     return nil;
+}
+#pragma mark - Get
+- (int)connectCount {
+    return (int)self.mediaConnections.count;;
 }
 
 #pragma mark - 懒加载

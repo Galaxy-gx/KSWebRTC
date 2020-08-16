@@ -42,21 +42,16 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         self.mediaCount   = 0;
         switch (tileLayout.callType) {
             case KSCallTypeSingleAudio:
-                [self initScrollView];
-                break;
-            case KSCallTypeManyAudio:
-                [self initCollectionView];
-                break;
             case KSCallTypeSingleVideo:
                 [self initScrollView];
                 break;
+            case KSCallTypeManyAudio:
             case KSCallTypeManyVideo:
                 [self initCollectionView];
                 break;
             default:
                 break;
         }
-        
     }
     return self;
 }

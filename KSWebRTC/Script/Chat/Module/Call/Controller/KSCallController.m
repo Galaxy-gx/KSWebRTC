@@ -45,6 +45,10 @@
     [self kitLogic];
 }
 
+-(void)dealloc {
+    [KSWebRTCManager close];
+}
+
 - (void)initTileLayout {
     KSTileLayout *tileLayout = [KSTileLayout layoutWithCallType:_callType];
     CGFloat statusHeight     = [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -187,7 +191,9 @@
         {
             [self setLocalViewOfSession:YES];
             KSWebRTCManager *manager = [KSWebRTCManager shared];
-            [self webRTCManager:manager didAddMediaConnection:manager.mediaConnections.lastObject];
+            if (manager.connectCount == 2) {
+                [self webRTCManager:manager didAddMediaConnection:manager.mediaConnections.lastObject];
+            }
         }
             break;
         case KSCallTypeManyAudio:

@@ -42,7 +42,7 @@
 @property (nonatomic, assign) KSCallState       callState;
 @property (nonatomic,strong ) KSKitManager      *kitManager;
 @property (nonatomic, strong) NSMutableArray    *mediaConnections;
-
+@property (nonatomic, assign, readonly) int     connectCount;
 + (instancetype)shared;
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
