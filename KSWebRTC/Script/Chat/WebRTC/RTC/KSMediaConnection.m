@@ -227,10 +227,10 @@
 }
 
 - (void)clearRenderer {
-    if (_videoView && _videoTrack) {
-        [_videoTrack removeRenderer:_videoView];
-    }
     if (_videoView) {
+        if (_videoTrack) {
+            [_videoTrack removeRenderer:_videoView];
+        }
         [_videoView renderFrame:nil];
     }
     _videoView    = nil;
