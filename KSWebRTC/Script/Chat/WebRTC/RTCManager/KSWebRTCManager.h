@@ -18,7 +18,7 @@
 @protocol KSWebRTCManagerDelegate <NSObject>
 @optional
 //socket
-- (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager;
+- (void)webRTCManagerHandlerEnd:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection;
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager;

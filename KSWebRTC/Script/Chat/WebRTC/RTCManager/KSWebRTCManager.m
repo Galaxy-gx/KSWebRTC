@@ -85,8 +85,8 @@
         [self.delegate webRTCManager:self leaveOfConnection:connection];
     }
     if (self.mediaConnections.count == 1) {
-        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEndOfSession:)]) {
-            [self.delegate webRTCManagerHandlerEndOfSession:self];
+        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEnd:)]) {
+            [self.delegate webRTCManagerHandlerEnd:self];
         }
         [self close];
     }

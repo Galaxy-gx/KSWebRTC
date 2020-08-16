@@ -424,7 +424,7 @@
 }
 
 //KSWebRTCManagerDelegate
-- (void)webRTCManagerHandlerEndOfSession:(KSWebRTCManager *)webRTCManager {
+- (void)webRTCManagerHandlerEnd:(KSWebRTCManager *)webRTCManager {
     //会话结束
     if (self.callType == KSCallTypeSingleVideo || self.callType == KSCallTypeSingleVideo) {
         //次方法省略？

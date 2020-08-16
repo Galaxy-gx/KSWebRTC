@@ -465,8 +465,8 @@
 		E632FEEB24E9406A0049ED8A /* MessageHandler */ = {
 			isa = PBXGroup;
 			children = (
-				E632FEEC24E9406A0049ED8A /* KSMessageHandler.m */,
 				E632FEED24E9406A0049ED8A /* KSMessageHandler.h */,
+				E632FEEC24E9406A0049ED8A /* KSMessageHandler.m */,
 			);
 			path = MessageHandler;
 			sourceTree = "<group>";
