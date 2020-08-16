@@ -7,7 +7,7 @@
 //
 
 #import "KSMsg.h"
-#import <MJExtension/MJExtension.h>
+#import "MJExtension.h"
 @implementation KSMsg
 
 + (KSMessageType)typeForMsg:(NSDictionary *)msg {
