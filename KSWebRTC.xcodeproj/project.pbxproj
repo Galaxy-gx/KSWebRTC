@@ -23,6 +23,7 @@
 		E62B99CF24DD75C100152697 /* KSProfileConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E62B99CE24DD75C100152697 /* KSProfileConfigure.m */; };
 		E6300CF724E3DF9300FB2A7A /* KSLocalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6300CF624E3DF9300FB2A7A /* KSLocalCell.m */; };
 		E630B64824B946E200A5CA72 /* KSMediaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E630B64724B946E200A5CA72 /* KSMediaConnection.m */; };
+		E632FE9E24E92ED20049ED8A /* KSCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FE9D24E92ED20049ED8A /* KSCollectionViewCell.m */; };
 		E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3424B8507F004C7060 /* AppDelegate.m */; };
 		E6400F3824B8507F004C7060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3724B8507F004C7060 /* ViewController.m */; };
 		E6400F3B24B8507F004C7060 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3924B8507F004C7060 /* Main.storyboard */; };
@@ -120,6 +121,8 @@
 		E6300CF624E3DF9300FB2A7A /* KSLocalCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSLocalCell.m; sourceTree = "<group>"; };
 		E630B64624B946E200A5CA72 /* KSMediaConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaConnection.h; sourceTree = "<group>"; };
 		E630B64724B946E200A5CA72 /* KSMediaConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaConnection.m; sourceTree = "<group>"; };
+		E632FE9C24E92ED20049ED8A /* KSCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSCollectionViewCell.h; sourceTree = "<group>"; };
+		E632FE9D24E92ED20049ED8A /* KSCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSCollectionViewCell.m; sourceTree = "<group>"; };
 		E6400F3024B8507F004C7060 /* KSWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KSWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6400F3324B8507F004C7060 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E6400F3424B8507F004C7060 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -436,6 +439,8 @@
 			children = (
 				E65CD17424E7D34F00B54D98 /* KSTableViewCell.h */,
 				E65CD17524E7D34F00B54D98 /* KSTableViewCell.m */,
+				E632FE9C24E92ED20049ED8A /* KSCollectionViewCell.h */,
+				E632FE9D24E92ED20049ED8A /* KSCollectionViewCell.m */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -944,6 +949,7 @@
 				E6FD82A124DBFBB500E10495 /* KSExtern.m in Sources */,
 				E67A6A9C24DE8F1A00BCE4B9 /* KSCallController.m in Sources */,
 				E67BC5AF24B857BA004BBA8A /* RTCSessionDescription+Category.m in Sources */,
+				E632FE9E24E92ED20049ED8A /* KSCollectionViewCell.m in Sources */,
 				E6FD82AE24DC18B100E10495 /* KSProfileBarView.m in Sources */,
 				E6AC70E824DCF4E700C7134D /* KSMeetingThemeView.m in Sources */,
 				E680288124E3B3E1003D849A /* KSRemoteCell.m in Sources */,

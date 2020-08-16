@@ -23,7 +23,7 @@
 #import "UIFont+Category.h"
 #import "KSWebRTCManager.h"
 #import "KSTableViewCell.h"
-
+#import "KSCollectionViewCell.h"
 @interface KSChatMenu : NSObject
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,copy)NSString *title;
@@ -56,80 +56,37 @@
 }
 @end
 
-@interface KSChatInterfaceController ()<UITableViewDelegate,UITableViewDataSource>
+@interface KSChatInterfaceController ()<UITableViewDelegate,
+UITableViewDataSource,
+UICollectionViewDataSource,
+UICollectionViewDelegate>
 
-@property(nonatomic,weak)KSCoolHUB *coolHUB;
-@property(nonatomic,strong)NSMutableArray *chatMenus;
+@property (nonatomic,weak  ) KSCoolHUB        *coolHUB;
+@property (nonatomic,strong) NSMutableArray   *chatMenus;
+@property (nonatomic,weak  ) UITableView      *tableView;
+@property (nonatomic,weak  ) UICollectionView *collectionView;
+@property (nonatomic,assign) BOOL             isCollection;
+
 @end
 
+static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 @implementation KSChatInterfaceController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _chatMenus = [KSChatMenu chatMenus];
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    [self.view addSubview:tableView];
-    
-//    int self_w = self.view.frame.size.width;
-//    int padding = 20;
-// 
-//    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-//    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height *2.5);
-//    scrollView.backgroundColor = [UIColor ks_colorWithHexString:@"#15161A"];
-//    self.view = scrollView;
-//    
-//    KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:CGRectMake(0, 0, self_w, 86)];
-//    [self.view addSubview:topBarView];
-//    
-//    KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, CGRectGetMaxY(topBarView.frame) + padding, self_w - KS_Extern_Point12 * 2, KS_Extern_Point48)];
-//    [self.view addSubview:callBarView];
-//    
-//    KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, CGRectGetMaxY(callBarView.frame) + padding, self_w - 56 * 2, 90)];
-//    answerBarView.answerState = KSAnswerStateJoin;
-//    [self.view addSubview:answerBarView];
-//    
-//    
-//    KSProfileConfigure *configure = [[KSProfileConfigure alloc] init];
-//    configure.title = @"Hamasaki Ayumi";
-//    configure.titleFont = [UIFont ks_fontRegularOfSize:KS_Extern_30Font];
-//    configure.titleOffst = KS_Extern_Point32;
-//    configure.desc = @"Invite you to a video call";
-//    configure.descFont = [UIFont ks_fontRegularOfSize:KS_Extern_16Font];
-//    configure.descOffst = KS_Extern_Point08;
-//    
-//    KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(answerBarView.frame) + padding, self_w, 204) configure:configure];
-//    [self.view addSubview:profileView];
-//    
-//    KSMeetingThemeView *meetingThemeView = [[KSMeetingThemeView alloc] initWithFrame:CGRectMake((self_w - 252)/2, CGRectGetMaxY(profileView.frame) + padding, 252, 257)];
-//    [self.view addSubview:meetingThemeView];
-//    
-//    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-//    [self.view addSubview:remoteView];
-//    
-//    KSRemoteView *remoteView1 = [[KSRemoteView alloc] initWithFrame:CGRectMake((self_w-4)/2 + 2, CGRectGetMaxY(meetingThemeView.frame) + padding, (self_w-4)/2, (self_w-4)/2) scale:KSScaleMake(1, 1) mode:KSContentModeScaleAspectFit callType:KSCallTypeManyAudio];
-//    [self.view addSubview:remoteView1];
-//    
-//    
-//    KSWaitingAnswersGroupView *waitingAnswersGroupView = [[KSWaitingAnswersGroupView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(remoteView.frame) + padding, self_w, KS_Extern_Point150)];
-//    [self.view addSubview:waitingAnswersGroupView];
-    
-    
-//    KSLayoutButton *voiceAnsweringBtn = [[KSLayoutButton alloc] initWithFrame:CGRectMake(0, 100, KS_Extern_Point100, 46)
-//                                                                   layoutType:KSButtonLayoutTypeTitleBottom
-//                                                                        title:@"ks_meeting_btn_voice_answering"
-//                                                                         font:[UIFont ks_fontRegularOfSize:KS_Extern_13Font]
-//                                                                    textColor:[UIColor ks_white]
-//                                                                    normalImg:@"icon_bar_rings_small_white"
-//                                                                    selectImg:@"icon_bar_rings_small_white"
-//                                                                        space:KS_Extern_Point08
-//                                                                   imageWidth:KS_Extern_Point20
-//                                                                  imageHeight:KS_Extern_Point20];
-//    [self.view addSubview:voiceAnsweringBtn];
-//    [voiceAnsweringBtn ks_addTarget:self action:@selector(onVoiceAnsweringClick)];
-    
-    // Do any additional setup after loading the view.
+    self.view.backgroundColor                = [UIColor whiteColor];
+    _chatMenus                              = [KSChatMenu chatMenus];
+    _isCollection                           = YES;
+    if (_isCollection) {
+        [self initCollectionView];
+    }
+    else{
+        [self initTableView];
+    }
+
+    UIBarButtonItem *addBarItem             = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(onAddClick)];
+    UIBarButtonItem *deleteBarItem          = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteClick)];
+    self.navigationItem.rightBarButtonItems = @[addBarItem,deleteBarItem];
 }
 
 - (void)onVoiceAnsweringClick {
@@ -154,6 +111,37 @@
     return _coolHUB;
 }
 
+- (void)initCollectionView {
+    CGFloat cell_w                         = self.view.bounds.size.width - KS_Extern_Point10;
+    CGFloat cell_h                         = KS_Extern_Point40;
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
+    flowLayout.minimumLineSpacing          = KS_Extern_Point10;
+    flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
+    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
+    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
+    
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:self.view.bounds
+                                                                collectionViewLayout:flowLayout];
+    collectionView.backgroundColor         = [UIColor whiteColor];
+    
+    collectionView.dataSource              = self;
+    collectionView.delegate                = self;
+    _collectionView                        = collectionView;
+    [collectionView registerClass:[KSCollectionViewCell class] forCellWithReuseIdentifier:collectionViewCellIdentifier];
+    
+    [self.view addSubview:collectionView];
+}
+
+-(void)initTableView {
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    tableView.delegate     = self;
+    tableView.dataSource   = self;
+    _tableView             = tableView;
+    [self.view addSubview:tableView];
+}
+
+#pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _chatMenus.count;
 }
@@ -178,6 +166,60 @@
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:NO completion:nil];
 }
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return _chatMenus.count;
+}
+
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    KSChatMenu *cm             = _chatMenus[indexPath.item];
+    KSCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionViewCellIdentifier forIndexPath:indexPath];
+    cell.textLabel.text        = cm.title;
+    return cell;
+}
+
+- (void)onAddClick {
+    KSChatMenu *cm = [[KSChatMenu alloc] init];
+    cm.callType    = KSCallTypeManyVideo;
+    cm.title       = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
+    [_chatMenus addObject:cm];
+    
+    cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeSingleVideo;
+    cm.title = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
+    [_chatMenus addObject:cm];
+    
+    [self insertItems];
+}
+
+- (void)onDeleteClick {
+    [_chatMenus removeLastObject];
+    [self deleteItems];
+}
+
+- (void)insertItems {
+    int index = (int)_chatMenus.count-1;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    if (_isCollection) {
+        [_collectionView insertItemsAtIndexPaths:@[indexPath]];
+    }
+    else{
+        [_tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (void)deleteItems {
+    int index = (int)_chatMenus.count;
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    if (_isCollection) {
+        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
+    }
+    else{
+        [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
 
 @end
 
