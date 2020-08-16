@@ -122,7 +122,7 @@
 }
 
 - (void)initWebRTC {
-    if ([KSWebRTCManager shared].mediaCapture == nil) {
+    if ([KSWebRTCManager shared].connectCount == 0) {
         KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
         connectionSetting.callType             = _callType;
         connectionSetting.iceServer            = [[KSIceServer alloc] init];

@@ -265,10 +265,10 @@ static int const kFramerateLimit         = 25.0;
     [_factory stopAecDump];
     _factory    = nil;
     
-    [_capturer stopCapture];
     [_capturer.captureSession stopRunning];
-    _capturer   = nil;
+    [_capturer stopCapture];
     
+    _capturer   = nil;
     _setting    = nil;
 }
 

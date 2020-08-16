@@ -33,14 +33,11 @@
 
 @property(nonatomic,weak)id<KSWebRTCManagerDelegate>    delegate;
 @property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
-
+@property (nonatomic, weak, readonly) KSMediaConnection *localConnection;
 @property (nonatomic, strong) KSMediaSetting    *mediaSetting;
-@property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
-@property (nonatomic, weak  ) KSMediaConnection *localConnection;
 @property (nonatomic, assign) KSCallType        callType;
-@property (nonatomic, assign) BOOL              isConnect;
+@property (nonatomic, assign) BOOL             isConnect;
 @property (nonatomic, assign) KSCallState       callState;
-@property (nonatomic,strong ) KSKitManager      *kitManager;
 @property (nonatomic, strong) NSMutableArray    *mediaConnections;
 @property (nonatomic, assign, readonly) int     connectCount;
 + (instancetype)shared;

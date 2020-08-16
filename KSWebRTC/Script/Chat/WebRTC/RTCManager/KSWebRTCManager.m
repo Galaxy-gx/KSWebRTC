@@ -10,6 +10,8 @@
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate>
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
+@property (nonatomic, weak) KSMediaConnection *peerConnection;//本地
 @end
 
 @implementation KSWebRTCManager
@@ -38,14 +40,14 @@
 }
 
 - (void)createLocalConnection {
-    KSMediaConnection *localConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
-    localConnection.delegate           = _msgHandler;
-    localConnection.isLocal            = YES;
-    localConnection.videoTrack         = _mediaCapture.videoTrack;
-    _localConnection                   = localConnection;
-    
-    [localConnection createPeerConnectionWithMediaCapturer:_mediaCapture];
-    [self.mediaConnections addObject:localConnection];
+    KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
+    peerConnection.delegate           = _msgHandler;
+    peerConnection.isLocal            = YES;
+    peerConnection.videoTrack         = _mediaCapture.videoTrack;
+    _peerConnection                   = peerConnection;
+
+    [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapture];
+    [self.mediaConnections addObject:peerConnection];
 }
 
 #pragma mark - KSMessageHandlerDelegate
@@ -55,7 +57,7 @@
 }
 
 - (KSMediaConnection *)messageHandlerOfLocalConnection {
-    return _localConnection;
+    return self.localConnection;
 }
 
 - (KSConnectionSetting *)messageHandlerOfConnectionSetting {
@@ -116,11 +118,13 @@
 }
 
 #pragma mark - Get
--(AVCaptureSession *)captureSession {
+- (AVCaptureSession *)captureSession {
     return self.mediaCapture.capturer.captureSession;
 }
 
-#pragma mark - Set
+- (KSMediaConnection *)localConnection {
+    return self.peerConnection;
+}
 
 #pragma mark - 事件
 //MediaCapture
