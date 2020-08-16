@@ -129,42 +129,38 @@
 #pragma mark - 事件
 //MediaCapture
 + (void)switchCamera {
-    [[KSWebRTCManager shared].localConnection switchCamera];
+    [[KSWebRTCManager shared].mediaCapture switchCamera];
 }
 + (void)switchTalkMode {
-    [[KSWebRTCManager shared].localConnection switchTalkMode];
+    [[KSWebRTCManager shared].mediaCapture switchTalkMode];
 }
 + (void)startCapture {
-    [[KSWebRTCManager shared].localConnection unmuteVideo];
+    [[KSWebRTCManager shared].mediaCapture unmuteVideo];
 }
 + (void)stopCapture {
-    [[KSWebRTCManager shared].localConnection muteVideo];
+    [[KSWebRTCManager shared].mediaCapture muteVideo];
     //[[KSWebRTCManager shared].mediaCapture stopCapture];
 }
 + (void)speakerOff {
-    [[KSWebRTCManager shared].localConnection speakerOff];
+    [[KSWebRTCManager shared].mediaCapture speakerOff];
 }
 + (void)speakerOn {
-    [[KSWebRTCManager shared].localConnection speakerOn];
+    [[KSWebRTCManager shared].mediaCapture speakerOn];
 }
-//+ (void)closeMediaCapture {
-//    [[KSWebRTCManager shared].mediaCapture close];
-//    [KSWebRTCManager shared].mediaCapture = nil;
-//}
+
++ (void)muteAudio {
+    [[KSWebRTCManager shared].mediaCapture muteAudio];
+}
+
++ (void)unmuteAudio {
+    [[KSWebRTCManager shared].mediaCapture unmuteAudio];
+}
+
+//SMediaConnection
 + (void)clearAllRenderer {
     for (KSMediaConnection *connection in [KSWebRTCManager shared].mediaConnections) {
         [connection clearRenderer];
     }
-}
-//MediaConnection
-//+ (void)closeMediaConnection {
-//    [[KSWebRTCManager shared].localConnection close];
-//}
-+ (void)muteAudio {
-    [[KSWebRTCManager shared].localConnection muteAudio];
-}
-+ (void)unmuteAudio {
-    [[KSWebRTCManager shared].localConnection unmuteAudio];
 }
 
 //Socket
@@ -219,12 +215,11 @@
         [connection closeConnection];
     }
     [self.mediaConnections removeAllObjects];
-    //[self.mediaCapture close];
-
-    //self.mediaCapture = nil;
-    [self.msgHandler close];
     
-    //self.msgHandler   = nil;
+    [self.mediaCapture closeCapturer];
+    self.mediaCapture = nil;
+    
+    [self.msgHandler close];
 }
 
 + (void)close {

@@ -26,11 +26,22 @@
 - (void)addVideoSourceOfCallType:(KSCallType)callType;
 //- (void)updateResolution:(CGSize)resolution;
 - (void)updateVideoScale:(KSScale)scale;
+
+- (void)muteAudio;
+- (void)unmuteAudio;
+
+- (void)muteVideo;
+- (void)unmuteVideo;
+
+- (void)speakerOff;
+- (void)speakerOn;
+
 - (void)switchTalkMode;
-- (void)setSpeakerEnabled:(BOOL)enabled;
 - (void)switchCamera;
-- (void)stopCapture;
+
 - (void)startCapture;
+- (void)stopCapture;
+
 - (void)closeCapturer;
 
 @end

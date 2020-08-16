@@ -145,14 +145,24 @@ static int const kFramerateLimit         = 25.0;
 }
 */
 
-- (void)switchTalkMode {
-    _setting.isStartCapture = !_setting.isStartCapture;
-    if (_setting.isStartCapture) {
-        [self startCapture];
-    }
-    else{
-        [self stopCapture];
-    }
+- (void)muteAudio {
+    NSLog(@"audio muted");
+    _audioTrack.isEnabled = NO;
+}
+
+- (void)unmuteAudio {
+    NSLog(@"audio unmuted");
+    _audioTrack.isEnabled = YES;
+}
+
+#pragma mark - Video mute/unmute
+- (void)muteVideo {
+    NSLog(@"video muted");
+    _videoTrack.isEnabled = NO;
+}
+- (void)unmuteVideo {
+    NSLog(@"video unmuted");
+    _videoTrack.isEnabled = YES;
 }
 
 //关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
@@ -189,11 +199,13 @@ static int const kFramerateLimit         = 25.0;
     [_rtcAudioSession unlockForConfiguration];
 }
 
-- (void)setSpeakerEnabled:(BOOL)enabled {
-    if (enabled) {
-        [self speakerOn];
-    } else {
-        [self speakerOff];
+- (void)switchTalkMode {
+    _setting.isStartCapture = !_setting.isStartCapture;
+    if (_setting.isStartCapture) {
+        [self startCapture];
+    }
+    else{
+        [self stopCapture];
     }
 }
 
@@ -202,13 +214,27 @@ static int const kFramerateLimit         = 25.0;
     [self startCapture];
 }
 
+- (void)startCapture {
+    AVCaptureDevice *device = [self currentCamera];
+    [self startCaptureWithDevice:device];
+}
+
 - (void)stopCapture {
     [_capturer stopCapture];
 }
 
-- (void)startCapture {
-    AVCaptureDevice *device = [self currentCamera];
-    [self startCaptureWithDevice:device];
+- (void)closeCapturer {
+    _videoTrack = nil;
+    _audioTrack = nil;
+    
+    [_factory stopAecDump];
+    _factory    = nil;
+    
+    [_capturer.captureSession stopRunning];
+    [_capturer stopCapture];
+    
+    _capturer   = nil;
+    _setting    = nil;
 }
 
 - (void)startCaptureWithDevice:(AVCaptureDevice *)device {
@@ -256,20 +282,6 @@ static int const kFramerateLimit         = 25.0;
         maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
     }
     return fmin(maxSupportedFramerate, kFramerateLimit);
-}
-
-- (void)closeCapturer {
-    _videoTrack = nil;
-    _audioTrack = nil;
-    
-    [_factory stopAecDump];
-    _factory    = nil;
-    
-    [_capturer.captureSession stopRunning];
-    [_capturer stopCapture];
-    
-    _capturer   = nil;
-    _setting    = nil;
 }
 
 @end

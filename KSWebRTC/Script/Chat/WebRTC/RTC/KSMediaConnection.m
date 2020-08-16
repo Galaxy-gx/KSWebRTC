@@ -10,7 +10,7 @@
 #import "RTCSessionDescription+Category.h"
 
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
-@property (nonatomic, weak)KSMediaCapturer *capturer;
+@property (nonatomic, strong) RTCPeerConnection *peerConnection;//WebRTC连接对象
 @end
 
 @implementation KSMediaConnection
@@ -55,16 +55,11 @@
     // 添加音频轨
     [peerConnection addTrack:capturer.audioTrack streamIds:mediaStreamLabels];
     _peerConnection                   = peerConnection;
-    _capturer                         = capturer;
     return peerConnection;
 }
 
 - (void)addRenderer:(id<RTCVideoRenderer>)renderer {
     [self.videoTrack addRenderer:renderer];
-}
-
--(AVCaptureSession *)captureSession {
-    return _capturer.capturer.captureSession;
 }
 
 // 设置远端的媒体描述
@@ -138,81 +133,8 @@
     _mediaState = mediaState;
 }
 
-#pragma mark - Audio mute/unmute
-- (void)muteAudio {
-    NSLog(@"audio muted");
-    _capturer.audioTrack.isEnabled = NO;
-}
-
-- (void)unmuteAudio {
-    NSLog(@"audio unmuted");
-    _capturer.audioTrack.isEnabled = YES;
-}
-
-#pragma mark - Video mute/unmute
-- (void)muteVideo {
-    _capturer.videoTrack.isEnabled = NO;
-    NSLog(@"video muted");
-
-}
-- (void)unmuteVideo {
-    NSLog(@"video unmuted");
-    _capturer.videoTrack.isEnabled = YES;
-}
-
-#pragma mark - enable/disable speaker
-/*
-- (void)enableSpeaker {
-    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-}
-
-- (void)disableSpeaker {
-    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-}
-*/
-- (void)speakerOff {
-    [self setSpeakerEnabled:NO];
-}
-
-- (void)speakerOn {
-    [self setSpeakerEnabled:YES];
-}
-
-- (void)setSpeakerEnabled:(BOOL)enabled {
-    [_capturer setSpeakerEnabled:enabled];
-    /*
-    if (enabled) {
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-        //此方法设置之后，如果此时插入耳机在拔掉。播放的声音会从听筒输出，而不是回到扬声器
-        //[[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        //此方法设置之后，始终输出到扬声器，而不是其他接收器 如果此时插入耳机在拔掉。播放的声音会从扬声器输出
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
-    }else{
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionInterruptSpokenAudioAndMixWithOthers error:nil];
-    }*/
-}
-- (void)switchTalkMode {
-    [_capturer switchTalkMode];
-}
-- (void)switchCamera {
-    [_capturer switchCamera];
-}
-
-- (void)startCapture {
-    [_capturer startCapture];
-}
-
-- (void)stopCapture {
-    [_capturer stopCapture];
-}
 
 - (void)closeConnection {
-    if (_isLocal) {
-        [_capturer closeCapturer];
-        _capturer          = nil;
-    }
-    
     RTCMediaStream *mediaStream = [_peerConnection.localStreams firstObject];
     if (mediaStream) {
         [_peerConnection removeStream:mediaStream];
@@ -223,7 +145,6 @@
     [self clearRenderer];
 
     _videoTrack   = nil;
-    self.delegate = nil;
 }
 
 - (void)clearRenderer {

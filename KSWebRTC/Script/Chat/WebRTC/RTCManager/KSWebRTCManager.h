@@ -50,14 +50,14 @@
 + (void)stopCapture;
 + (void)speakerOff;
 + (void)speakerOn;
-//+ (void)closeMediaCapture;
-- (void)close;
-+ (void)close;
-//MediaConnection
-//+ (void)closeMediaConnection;
 + (void)muteAudio;
 + (void)unmuteAudio;
+
 + (void)clearAllRenderer;
+
+- (void)close;
++ (void)close;
+
 //Socket
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;
