@@ -112,6 +112,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E627BD2824EA16F300F939A2 /* KSImport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSImport.h; sourceTree = "<group>"; };
 		E632FECC24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		E632FECD24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		E632FED424E9406A0049ED8A /* KSChatInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatInterfaceController.h; sourceTree = "<group>"; };
@@ -728,18 +729,18 @@
 				E632FF5A24E9406A0049ED8A /* KSCallView.m */,
 				E632FF5324E9406A0049ED8A /* KSMediaView.h */,
 				E632FF5824E9406A0049ED8A /* KSMediaView.m */,
-				E632FF4C24E9406A0049ED8A /* KSTileLayout.m */,
-				E632FF4D24E9406A0049ED8A /* KSRemoteView.h */,
-				E632FF4E24E9406A0049ED8A /* KSVisualEffectView.m */,
 				E632FF4F24E9406A0049ED8A /* KSLocalCell.h */,
-				E632FF5024E9406A0049ED8A /* KSLocalView.h */,
-				E632FF5224E9406A0049ED8A /* KSRemoteCell.h */,
-				E632FF5424E9406A0049ED8A /* KSTileLayout.h */,
 				E632FF5524E9406A0049ED8A /* KSLocalCell.m */,
-				E632FF5624E9406A0049ED8A /* KSVisualEffectView.h */,
-				E632FF5724E9406A0049ED8A /* KSRemoteView.m */,
 				E632FF5924E9406A0049ED8A /* KSRemoteCell.m */,
+				E632FF5224E9406A0049ED8A /* KSRemoteCell.h */,
+				E632FF5024E9406A0049ED8A /* KSLocalView.h */,
 				E632FF5B24E9406A0049ED8A /* KSLocalView.m */,
+				E632FF4D24E9406A0049ED8A /* KSRemoteView.h */,
+				E632FF5724E9406A0049ED8A /* KSRemoteView.m */,
+				E632FF5424E9406A0049ED8A /* KSTileLayout.h */,
+				E632FF4C24E9406A0049ED8A /* KSTileLayout.m */,
+				E632FF5624E9406A0049ED8A /* KSVisualEffectView.h */,
+				E632FF4E24E9406A0049ED8A /* KSVisualEffectView.m */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -759,7 +760,7 @@
 			children = (
 				E632FF6124E9406A0049ED8A /* Category */,
 				E632FF7824E9406A0049ED8A /* Kits */,
-				E632FF7F24E9406A0049ED8A /* GlobalImport */,
+				E632FF7F24E9406A0049ED8A /* Import */,
 				E632FF8424E9406A0049ED8A /* Socket */,
 			);
 			path = Custom;
@@ -807,15 +808,16 @@
 			path = Kits;
 			sourceTree = "<group>";
 		};
-		E632FF7F24E9406A0049ED8A /* GlobalImport */ = {
+		E632FF7F24E9406A0049ED8A /* Import */ = {
 			isa = PBXGroup;
 			children = (
 				E632FF8024E9406A0049ED8A /* KSPrefixHeader.pch */,
 				E632FF8224E9406A0049ED8A /* KSMacro.h */,
 				E632FF8124E9406A0049ED8A /* KSExtern.h */,
 				E632FF8324E9406A0049ED8A /* KSExtern.m */,
+				E627BD2824EA16F300F939A2 /* KSImport.h */,
 			);
-			path = GlobalImport;
+			path = Import;
 			sourceTree = "<group>";
 		};
 		E632FF8424E9406A0049ED8A /* Socket */ = {
@@ -1205,12 +1207,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 93K7Z755FY;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSWebRTC/Script/Chat/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/GlobalImport/KSPrefixHeader.pch";
+				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/Import/KSPrefixHeader.pch";
 				INFOPLIST_FILE = KSWebRTC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1228,12 +1232,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 93K7Z755FY;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSWebRTC/Script/Chat/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/GlobalImport/KSPrefixHeader.pch";
+				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/Import/KSPrefixHeader.pch";
 				INFOPLIST_FILE = KSWebRTC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

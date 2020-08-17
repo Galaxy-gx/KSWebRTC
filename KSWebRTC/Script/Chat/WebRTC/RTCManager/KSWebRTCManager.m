@@ -182,14 +182,14 @@
 
 //data
 + (KSMediaConnection *)connectionOfIndex:(NSInteger)index {
-    if (index >= [KSWebRTCManager shared].mediaConnections.count) {
+    if (index >= [KSWebRTCManager shared].connectCount) {
         return nil;
     }
     return [KSWebRTCManager shared].mediaConnections[index];
 }
 
 + (NSInteger)connectionCount {
-    return [KSWebRTCManager shared].mediaConnections.count;
+    return [KSWebRTCManager shared].connectCount;
 }
 
 + (void)removeConnectionAtIndex:(int)index {

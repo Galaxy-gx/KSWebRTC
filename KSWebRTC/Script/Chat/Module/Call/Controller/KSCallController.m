@@ -494,7 +494,7 @@
 
 //KSCallViewDataSource
 - (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {
-    return [KSWebRTCManager connectionCount];
+    return [KSWebRTCManager shared].connectCount;
 }
 
 - (KSMediaConnection *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath {

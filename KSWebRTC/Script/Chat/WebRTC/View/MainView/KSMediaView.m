@@ -50,8 +50,7 @@
 
 - (void)setConnection:(KSMediaConnection *)connection {
     if (_connection) {
-        [_connection.videoTrack removeRenderer:_videoView];
-        [_videoView renderFrame:nil];
+        [self removeVideoView];
     }
     //记录Renderer
     _connection.videoView = _videoView;
@@ -62,7 +61,9 @@
         _connection               = connection;
         connection.updateDelegate = self;
         if (_connection.setting.isFocus) {
-            [_connection.videoTrack addRenderer:_videoView];
+            if (connection.videoTrack) {
+                [connection.videoTrack addRenderer:_videoView];
+            }
         }
     }
     
@@ -74,9 +75,9 @@
 }
 
 - (void)removeVideoView {
-    [self.connection.videoTrack removeRenderer:self.videoView];
-    [self.videoView renderFrame:nil];
-    self.videoView = nil;
+    if (self.connection) {
+        [self.connection clearRenderer];
+    }
 }
 
 //KSMediaConnectionUpdateDelegate
