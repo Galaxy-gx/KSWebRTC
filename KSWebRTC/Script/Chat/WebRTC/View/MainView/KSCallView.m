@@ -39,7 +39,6 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout {
     if (self = [super initWithFrame:frame]) {
         self.tileLayout   = tileLayout;
-        self.mediaCount   = 0;
         switch (tileLayout.callType) {
             case KSCallTypeSingleAudio:
             case KSCallTypeSingleVideo:
@@ -73,7 +72,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
     
-    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height)
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height - _tileLayout.topPadding)
                                                                 collectionViewLayout:flowLayout];
     collectionView.backgroundColor         = [UIColor clearColor];
     
@@ -393,18 +392,29 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     NSLog(@"|============| insert: %ld |============|",(long)index);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView insertItemsAtIndexPaths:@[indexPath]];
-    _mediaCount            += 1;
 }
 
 - (void)deleteItemsAtIndex:(NSInteger)index {
     NSLog(@"|============| delete: %ld |============|",(long)index);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
-    _mediaCount            -= 1;
+}
+
+- (void)reloadSection {
+    int index                  = 0;
+    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+    if(cell != nil) {
+        NSIndexSet * indexSet = [NSIndexSet indexSetWithIndex:index];
+        [UIView performWithoutAnimation:^{
+          [self.collectionView reloadSections:indexSet];
+        }];
+    }
 }
 
 - (void)reloadCollectionView {
-    [_collectionView reloadData];
+    [UIView performWithoutAnimation:^{
+      [self.collectionView reloadData];
+    }];
 }
 
 @end

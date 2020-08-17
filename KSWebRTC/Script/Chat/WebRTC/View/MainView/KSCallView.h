@@ -32,7 +32,6 @@
 
 @interface KSCallView : KSEventCallbackView
 @property(nonatomic,weak)id<KSCallViewDataSource> dataSource;
-@property (nonatomic, assign) int mediaCount;
 
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout;
 - (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;
@@ -52,6 +51,7 @@
 - (void)reloadItemsAtIndex:(NSInteger)index;
 - (void)insertItemsAtIndex:(NSInteger)index;
 - (void)deleteItemsAtIndex:(NSInteger)index;
+- (void)reloadSection;
 - (void)reloadCollectionView;
 
 @end

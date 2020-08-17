@@ -220,7 +220,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     [KSWebRTCManager shared].callState = KSCallStateRecording;//KSCallStateNone;
     [KSWebRTCManager shared].callType  = callType;
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i <2; i++) {
         KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
         connectionSetting.callType             = callType;
         connectionSetting.iceServer            = [[KSIceServer alloc] init];

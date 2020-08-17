@@ -199,11 +199,13 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            //[self.callView reloadCollectionView];
+            [self.callView reloadCollectionView];
+            
+            /*
             KSWebRTCManager *manager = [KSWebRTCManager shared];
             for (KSMediaConnection *mediaConnection in manager.mediaConnections) {
                 [self webRTCManager:manager didAddMediaConnection:mediaConnection];
-            }
+            }*/
         }
         default:
             break;
@@ -300,6 +302,12 @@
 
 - (void)onAddMemberClick {
     NSLog(@"%s",__FUNCTION__);
+    KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+    connectionSetting.callType             = KSCallTypeManyVideo;
+    connectionSetting.iceServer            = [[KSIceServer alloc] init];
+    KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
+    [[KSWebRTCManager shared].mediaConnections addObject:mc];
+    [self.callView insertItemsAtIndex:[KSWebRTCManager shared].connectCount-1];
 }
 
 - (void)onScaleDownClick {
@@ -483,8 +491,7 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            [self.callView insertItemsAtIndex:_callView.mediaCount];
-            //[self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+            [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
         }
             break;
         default:
