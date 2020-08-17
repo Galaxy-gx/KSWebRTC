@@ -8,7 +8,7 @@
 
 #import "KSWebRTCManager.h"
 
-@interface KSWebRTCManager()<KSMessageHandlerDelegate>
+@interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate>
 @property (nonatomic, strong) KSMessageHandler *msgHandler;
 @property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
 @property (nonatomic, weak) KSMediaConnection *peerConnection;//本地
@@ -41,7 +41,7 @@
 
 - (void)createLocalConnection {
     KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
-    peerConnection.delegate           = _msgHandler;
+    peerConnection.delegate           = self;
     peerConnection.isLocal            = YES;
     peerConnection.videoTrack         = _mediaCapture.videoTrack;
     _peerConnection                   = peerConnection;
@@ -60,6 +60,13 @@
     return self.localConnection;
 }
 
+- (KSMediaConnection *)messageHandlerOfCreateConnection {
+    KSMediaConnection *mc         = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
+    [mc createPeerConnectionWithMediaCapturer:_mediaCapture];
+    mc.delegate                   = self;
+    return mc;
+}
+
 - (KSConnectionSetting *)messageHandlerOfConnectionSetting {
     return _mediaSetting.connectionSetting;
 }
@@ -71,24 +78,6 @@
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
     if ([self.delegate respondsToSelector:@selector(webRTCManager:didReceivedMessage:)]) {
         [self.delegate webRTCManager:self didReceivedMessage:message];
-    }
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId {
-    KSMediaConnection *connection = [self mediaConnectionOfHandleId:handleId];
-    if (connection == nil) {
-        return;
-    }
-    [self removeConnection:connection];
-    
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfConnection:)]) {
-        [self.delegate webRTCManager:self leaveOfConnection:connection];
-    }
-    if (self.mediaConnections.count == 1) {
-        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEnd:)]) {
-            [self.delegate webRTCManagerHandlerEnd:self];
-        }
-        [self close];
     }
 }
 
@@ -106,7 +95,42 @@
     }
 }
 
-- (void)messageHandler:(KSMessageHandler *)messageHandler didAddMediaConnection:(KSMediaConnection *)connection {
+#pragma mark - KSMediaConnectionDelegate
+// 收到远端流处理
+//- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
+
+- (RTCVideoTrack *)mediaConnectionOfVideoTrack:(KSMediaConnection *)mediaConnection {
+    return _mediaCapture.videoTrack;
+}
+
+// 收到候选者
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
+    NSMutableDictionary *body =[NSMutableDictionary dictionary];
+    if (candidate) {
+        body[@"candidate"] = candidate.sdp;
+        body[@"sdpMid"] = candidate.sdpMid;
+        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
+        [_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+    }
+    else{
+        body[@"completed"] = @YES;
+        [_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+    }
+}
+
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
+    RTCMediaStreamTrack *track = rtpReceiver.track;
+    if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
+        RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            mediaConnection.videoTrack = remoteVideoTrack;
+            [weakSelf didAddMediaConnection:mediaConnection];
+        });
+    }
+}
+
+- (void)didAddMediaConnection:(KSMediaConnection *)connection {
     if (connection == nil) {
         return;
     }
@@ -114,6 +138,46 @@
     [self.mediaConnections addObject:connection];
     if ([self.delegate respondsToSelector:@selector(webRTCManager:didAddMediaConnection:)]) {
         [self.delegate webRTCManager:self didAddMediaConnection:connection];
+    }
+}
+
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
+    switch (newState) {
+        case RTCIceConnectionStateDisconnected:
+        case RTCIceConnectionStateClosed:
+        case RTCIceConnectionStateFailed:
+        {
+            if (mediaConnection.isClose) {
+                return;
+            }
+            mediaConnection.isClose      = YES;
+            __weak typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf leaveOfHandleId:mediaConnection.handleId];
+            });
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)leaveOfHandleId:(NSNumber *)handleId {
+    KSMediaConnection *connection = [self mediaConnectionOfHandleId:handleId];
+    if (connection == nil) {
+        return;
+    }
+    [self removeConnection:connection];
+    
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfConnection:)]) {
+        [self.delegate webRTCManager:self leaveOfConnection:connection];
+    }
+    if (self.mediaConnections.count == 1) {
+        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEnd:)]) {
+            [self.delegate webRTCManagerHandlerEnd:self];
+        }
+        [self close];
     }
 }
 

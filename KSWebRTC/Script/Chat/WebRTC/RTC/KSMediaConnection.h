@@ -16,6 +16,8 @@
 @protocol KSMediaConnectionDelegate <NSObject>
 // 收到远端流处理
 //- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
+
+- (RTCVideoTrack *)mediaConnectionOfVideoTrack:(KSMediaConnection *)mediaConnection;
 // 收到候选者
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams;
@@ -41,6 +43,7 @@
 @property (nonatomic,assign ) KSCallType          callType;
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
+- (void)addVideoTrack;
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capture;
 - (void)addRenderer:(id<RTCVideoRenderer>)renderer;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;

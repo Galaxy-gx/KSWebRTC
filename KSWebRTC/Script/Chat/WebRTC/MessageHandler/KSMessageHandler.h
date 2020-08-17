@@ -17,24 +17,32 @@
 @class KSMediaCapturer;
 @class KSDetached;
 
+typedef NS_ENUM(NSInteger, KSActionType) {
+    KSActionTypeUnknown,
+    KSActionTypeCreateSession,
+    KSActionTypePluginBinding,
+    KSActionTypePluginBindingSubscriber,
+    KSActionTypeJoinRoom,
+    KSActionTypeConfigureRoom,
+    KSActionTypeSubscriber,
+    KSActionTypeStart,
+};
+
 @protocol KSMessageHandlerDelegate <NSObject>
 
 @required
 - (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId;
 - (KSMediaConnection *)messageHandlerOfLocalConnection;
-- (KSConnectionSetting *)messageHandlerOfConnectionSetting;
-- (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler;
+- (KSMediaConnection *)messageHandlerOfCreateConnection;
 
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
-- (void)messageHandler:(KSMessageHandler *)messageHandler leaveOfHandleId:(NSNumber *)handleId;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket;
-- (void)messageHandler:(KSMessageHandler *)messageHandler didAddMediaConnection:(KSMediaConnection *)connection;
 
 @end
 
-@interface KSMessageHandler : NSObject<KSMediaConnectionDelegate>
+@interface KSMessageHandler : NSObject
 
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
 @property (nonatomic, assign )KSCallState callState;
@@ -47,6 +55,10 @@
 - (void)createSession;
 //离开
 - (void)requestHangup;
+
+// 发送候选者
+- (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate;
+
 
 - (void)close;
 

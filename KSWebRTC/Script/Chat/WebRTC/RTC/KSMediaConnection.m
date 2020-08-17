@@ -9,6 +9,8 @@
 #import "KSMediaConnection.h"
 #import "RTCSessionDescription+Category.h"
 
+static NSString *const KARDStreamId = @"ARDAMS";
+
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
 @property (nonatomic, strong) RTCPeerConnection *peerConnection;//WebRTC连接对象
 @end
@@ -48,14 +50,25 @@
     config.iceServers                 = iceServers;
     // 创建一个peerconnection
     RTCPeerConnection *peerConnection = [capturer.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
-
-    NSArray *mediaStreamLabels        = @[ @"ARDAMS" ];
-    // 添加视频轨
-    [peerConnection addTrack:capturer.videoTrack streamIds:mediaStreamLabels];
-    // 添加音频轨
-    [peerConnection addTrack:capturer.audioTrack streamIds:mediaStreamLabels];
     _peerConnection                   = peerConnection;
+
+    // 添加音频轨
+    [peerConnection addTrack:capturer.audioTrack streamIds:@[ KARDStreamId ]];
+    // 添加视频轨
+    [self addVideoTrack];
     return peerConnection;
+}
+
+- (void)addVideoTrack {
+    if (_setting.video) {
+        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack:)]) {
+            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack:self];
+            if (videoTrack) {
+                // 添加视频轨
+                [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
+            }
+        }
+    }
 }
 
 - (void)addRenderer:(id<RTCVideoRenderer>)renderer {

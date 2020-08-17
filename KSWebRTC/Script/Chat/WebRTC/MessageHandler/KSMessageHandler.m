@@ -13,16 +13,6 @@
 #import "KSWebRTCManager.h"
 
 static int const KSRandomLength = 12;
-typedef NS_ENUM(NSInteger, KSActionType) {
-    KSActionTypeUnknown,
-    KSActionTypeCreateSession,
-    KSActionTypePluginBinding,
-    KSActionTypePluginBindingSubscriber,
-    KSActionTypeJoinRoom,
-    KSActionTypeConfigureRoom,
-    KSActionTypeSubscriber,
-    KSActionTypeStart,
-};
 
 @interface KSMessageHandler()<KSWebSocketDelegate>
 
@@ -319,11 +309,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 创建一个媒体连接
 -(KSMediaConnection *)createMediaConnection {
-    KSMediaCapturer *mediaCapture = [self.delegate mediaCaptureOfSectionsInMessageHandler:self];
-    KSConnectionSetting *setting  = [self.delegate messageHandlerOfConnectionSetting];
-    KSMediaConnection *mc         = [[KSMediaConnection alloc] initWithSetting:setting];
-    [mc createPeerConnectionWithMediaCapturer:mediaCapture];
-    mc.delegate                   = self;
+    KSMediaConnection *mc = [self.delegate messageHandlerOfCreateConnection];;
     return mc;
 }
 
@@ -376,79 +362,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
  */
 -(void)socket:(KSWebSocket *)socket isReachable:(BOOL)isReachable {
     
-}
-
-//KSPeerConnectionDelegate
-/*
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (stream.videoTracks.count > 0) {
-            RTCVideoTrack *remoteVideoTrack  = stream.videoTracks[0];
-            RTCEAGLVideoView *remoteView     = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
-            mediaConnection.remoteVideoView  = remoteView;
-            [remoteVideoTrack addRenderer:remoteView];
-            mediaConnection.remoteVideoTrack = remoteVideoTrack;
-        }
-    });
-}
-*/
-
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
-    RTCMediaStreamTrack *track = rtpReceiver.track;
-    if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
-        RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            mediaConnection.videoTrack = remoteVideoTrack;
-            if ([self.delegate respondsToSelector:@selector(messageHandler:didAddMediaConnection:)]) {
-                [self.delegate messageHandler:self didAddMediaConnection:mediaConnection];
-            }
-            //测试注释
-            /*
-            RTCEAGLVideoView *remoteView     = [self.delegate remoteViewOfSectionsInMessageHandler:self handleId:mediaConnection.handleId];
-            mediaConnection.remoteVideoView  = remoteView;
-            [remoteVideoTrack addRenderer:remoteView];
-            mediaConnection.remoteVideoTrack = remoteVideoTrack;
-            */
-        });
-    }
-}
-
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
-    NSMutableDictionary *body =[NSMutableDictionary dictionary];
-    if (candidate) {
-        body[@"candidate"] = candidate.sdp;
-        body[@"sdpMid"] = candidate.sdpMid;
-        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
-        [self trickleCandidate:mediaConnection.handleId candidate:body];
-    }
-    else{
-        body[@"completed"] = @YES;
-        [self trickleCandidate:mediaConnection.handleId candidate:body];
-    }
-}
-
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    switch (newState) {
-        case RTCIceConnectionStateDisconnected:
-        case RTCIceConnectionStateClosed:
-        case RTCIceConnectionStateFailed:
-        {
-            if (mediaConnection.isClose) {
-                return;
-            }
-            mediaConnection.isClose      = YES;
-            __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if ([weakSelf.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
-                    [weakSelf.delegate messageHandler:weakSelf leaveOfHandleId:mediaConnection.handleId];
-                }
-            });
-        }
-            break;
-            
-        default:
-            break;
-    }
 }
 
 @end
