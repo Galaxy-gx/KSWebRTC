@@ -94,6 +94,7 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E64224CD24EA603B000DE5C6 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -291,6 +292,8 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E64224CB24EA603B000DE5C6 /* NSDictionary+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
+		E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6E1E6B624E9444800536FBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -791,6 +794,8 @@
 				E632FF7524E9406A0049ED8A /* UIView+Category.h */,
 				E632FF7624E9406A0049ED8A /* UIButton+Category.h */,
 				E632FF7724E9406A0049ED8A /* UILabel+Category.h */,
+				E64224CB24EA603B000DE5C6 /* NSDictionary+Category.h */,
+				E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1009,6 +1014,7 @@
 				E632FFBF24E9406B0049ED8A /* UIView+Category.m in Sources */,
 				E632FFB424E9406B0049ED8A /* KSTileLayout.m in Sources */,
 				E632FFB324E9406B0049ED8A /* KSProfileBarView.m in Sources */,
+				E64224CD24EA603B000DE5C6 /* NSDictionary+Category.m in Sources */,
 				E632FFBB24E9406B0049ED8A /* KSLocalView.m in Sources */,
 				E632FF8924E9406B0049ED8A /* KSChatInterfaceController.m in Sources */,
 				E632FF9424E9406B0049ED8A /* ARDSettingsModel.m in Sources */,
