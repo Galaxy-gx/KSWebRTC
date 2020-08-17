@@ -412,6 +412,8 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (void)reloadCollectionView {
+    //[self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
+    
     [UIView performWithoutAnimation:^{
       [self.collectionView reloadData];
     }];
