@@ -216,17 +216,17 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 - (void)onCallClick {
     [self.coolHUB showMessage:@"您已打开摄像头"];
     
-    KSCallType callType = KSCallTypeManyVideo;
-    [KSWebRTCManager shared].callState = KSCallStateRecording;//KSCallStateNone;
-    [KSWebRTCManager shared].callType  = callType;
+    //KSCallType callType = KSCallTypeManyVideo;
+    [KSWebRTCManager shared].callState = KSCallStateNone;//KSCallStateRecording;//KSCallStateNone;
+    //[KSWebRTCManager shared].callType  = callType;
     
-    for (int i = 0; i <2; i++) {
-        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
-        connectionSetting.callType             = callType;
-        connectionSetting.iceServer            = [[KSIceServer alloc] init];
-        KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
-        [[KSWebRTCManager shared].mediaConnections addObject:mc];
-    }
+//    for (int i = 0; i <2; i++) {
+//        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+//        connectionSetting.callType             = callType;
+//        connectionSetting.iceServer            = [[KSIceServer alloc] init];
+//        KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
+//        [[KSWebRTCManager shared].mediaConnections addObject:mc];
+//    }
     
     KSCallController *ctrl             = [[KSCallController alloc] init];
     ctrl.isSuperBar                    = YES;
