@@ -75,8 +75,9 @@ static NSString *const KARDStreamId = @"ARDAMS";
     [self.videoTrack addRenderer:renderer];
 }
 
-// 设置远端的媒体描述
+// 设置远端的媒体描述 self.isLocal = YES; type : answer; self.isLocal = NO; type = offer;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
+    NSLog(@"|============| setRemoteDescription isLocal : %d; type : %@ |============|", _isLocal, jsep[@"type"]);
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
     [_peerConnection setRemoteDescription:answerDescription
                         completionHandler:^(NSError *_Nullable error){
@@ -104,6 +105,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
  */
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
+    NSLog(@"|============| answerForConstraints isLocal : %d |============|", _isLocal);
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
     [_peerConnection answerForConstraints:constraints
@@ -124,6 +126,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 // 创建offer 进行媒体协商
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
+    NSLog(@"|============| offerForConstraints isLocal : %d |============|", _isLocal);
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
     [_peerConnection offerForConstraints:constraints
