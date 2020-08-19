@@ -274,6 +274,7 @@ static int const KSRandomLength = 12;
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
     if ([self.delegate respondsToSelector:@selector(messageHandler:connectionOfHandleId:)]) {
         KSMediaConnection *mc = [self.delegate messageHandler:self connectionOfHandleId:handleId];
+        NSLog(@"|============| 发布者收到远端媒体信息后的回调 isLocal : %d |============|",mc.isLocal);
         [mc setRemoteDescriptionWithJsep:jsep];
     }
 }
