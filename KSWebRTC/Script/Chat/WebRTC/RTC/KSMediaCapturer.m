@@ -13,7 +13,9 @@ static NSString *const KARDAudioTrackId  = @"ARDAMSa0";
 static NSString *const KARDVideoTrackId  = @"ARDAMSv0";
 static int const kFramerateLimit         = 25.0;
 
-@interface KSMediaCapturer()
+@interface KSMediaCapturer() {
+    dispatch_queue_t audioQueue;
+}
 @property(nonatomic,weak)RTCAudioSession *rtcAudioSession;
 @end
 @implementation KSMediaCapturer
@@ -21,7 +23,7 @@ static int const kFramerateLimit         = 25.0;
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting {
     if (self = [super init]) {
         _setting         = setting;
-
+        audioQueue       = dispatch_queue_create("com.saeipi.KSWebRTC", NULL);
         [self createPeerConnectionFactory];
         [self addMediaSource];
 
@@ -125,18 +127,21 @@ static int const kFramerateLimit         = 25.0;
 }
 
 - (void)configureAudioSession {
-    [_rtcAudioSession lockForConfiguration];
-    @try {
-        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        //[_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        if (_setting) {
-            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
-        }
-    } @catch (NSException *exception) {
-        NSLog(@"Error changeing AVAudioSession categor %@",exception);
-    } @finally {
-    }
-    [_rtcAudioSession unlockForConfiguration];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(audioQueue, ^{
+        [weakSelf.rtcAudioSession lockForConfiguration];
+           @try {
+               [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+               //[_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+               if (weakSelf.setting) {
+                   [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
+               }
+           } @catch (NSException *exception) {
+               NSLog(@"Error changeing AVAudioSession categor %@",exception);
+           } @finally {
+           }
+           [weakSelf.rtcAudioSession unlockForConfiguration];
+    });
 }
 
 - (void)muteAudio {
@@ -161,36 +166,42 @@ static int const kFramerateLimit         = 25.0;
 
 //关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
 - (void)speakerOff {
-    [_rtcAudioSession lockForConfiguration];
-    @try {
-        if (_setting) {
-            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(audioQueue, ^{
+        [weakSelf.rtcAudioSession lockForConfiguration];
+        @try {
+            if (weakSelf.setting) {
+                [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
+            }
+            [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+            [weakSelf.rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        } @catch (NSException *exception) {
+            NSLog(@"Error setting AVAudioSession category: %@",exception);
+        } @finally {
         }
-        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
-        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    } @catch (NSException *exception) {
-        NSLog(@"Error setting AVAudioSession category: %@",exception);
-    } @finally {
-    }
-    [_rtcAudioSession unlockForConfiguration];
+        [weakSelf.rtcAudioSession unlockForConfiguration];
+    });
 }
 
 //开启扬声器
 - (void)speakerOn {
-    [_rtcAudioSession lockForConfiguration];
-    @try {
-        if (_setting) {
-            [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(audioQueue, ^{
+        [weakSelf.rtcAudioSession lockForConfiguration];
+        @try {
+            if (weakSelf.setting) {
+                [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
+            }
+            [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
+            [weakSelf.rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            [weakSelf.rtcAudioSession setActive:YES error:nil];
+            
+        } @catch (NSException *exception) {
+            NSLog(@"Couldn't force audio to speaker: %@",exception);
+        } @finally {
         }
-        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
-        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-        [_rtcAudioSession setActive:YES error:nil];
-        
-    } @catch (NSException *exception) {
-        NSLog(@"Couldn't force audio to speaker: %@",exception);
-    } @finally {
-    }
-    [_rtcAudioSession unlockForConfiguration];
+        [weakSelf.rtcAudioSession unlockForConfiguration];
+    });
 }
 
 - (void)switchTalkMode {
