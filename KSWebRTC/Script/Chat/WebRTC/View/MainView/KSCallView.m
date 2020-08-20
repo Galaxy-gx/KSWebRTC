@@ -106,8 +106,8 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     [self.scrollView addSubview:localView];
 }
 
-- (void)setMediaConnection:(KSMediaConnection *)connection {
-    _localView.connection = connection;
+- (void)setLocalVideoTrack:(KSVideoTrack *)videoTrack {
+    _localView.videoTrack = videoTrack;
 }
 
 - (void)zoomOutLocalView {
@@ -211,7 +211,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            self.localView.connection = nil;
+            self.localView.videoTrack = nil;
             [self.localView removeFromSuperview];
         }
             break;
@@ -229,7 +229,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 
 - (void)leaveOfHandleId:(NSNumber *)handleId {
     for (KSRemoteView *videoView in _remoteKits) {
-        if (videoView.connection.handleId == handleId) {
+        if (videoView.videoTrack.handleId == handleId) {
             [_remoteKits removeObject:videoView];
             [videoView removeVideoView];
             [videoView removeFromSuperview];
@@ -268,10 +268,10 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     return remoteView;
 }
 
-- (void)createRemoteViewOfConnection:(KSMediaConnection *)connection {
+- (void)createRemoteViewOfVideoTrack:(KSVideoTrack *)videoTrack {
     KSRemoteView *remoteView = nil;
     for (KSRemoteView *itemView in self.remoteKits) {
-        if (itemView.connection.handleId == connection.handleId) {
+        if (itemView.videoTrack.handleId == videoTrack.handleId) {
             remoteView = itemView;
             break;
         }
@@ -279,7 +279,7 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     if (remoteView == nil) {
         remoteView = [self createRemoteView];
     }
-    remoteView.connection = connection;
+    remoteView.videoTrack = videoTrack;
     
     if (self.tileLayout.callType == KSCallTypeSingleVideo) {//测试
         [self zoomOutLocalView];
@@ -357,21 +357,21 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    KSMediaConnection *connection = nil;
+    KSVideoTrack *videoTrack = nil;
     if ([self.dataSource respondsToSelector:@selector(callView:itemAtIndexPath:)]) {
-        connection = [self.dataSource callView:self itemAtIndexPath:indexPath];
+        videoTrack = [self.dataSource callView:self itemAtIndexPath:indexPath];
     }
-    if (connection == nil) {
+    if (videoTrack == nil) {
         return nil;
     }
-    if (connection.isLocal) {
+    if (videoTrack.isLocal) {
         KSLocalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:localCellIdentifier forIndexPath:indexPath];
-        cell.connection   = connection;
+        cell.videoTrack   = videoTrack;
         return cell;
     }
     else{
         KSRemoteCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:remoteCellIdentifier forIndexPath:indexPath];
-        cell.connection    = connection;
+        cell.videoTrack    = videoTrack;
         return cell;
     }
 }

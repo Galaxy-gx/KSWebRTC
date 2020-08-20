@@ -21,7 +21,7 @@
 // 收到候选者
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams;
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState;
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState;
 @end
 
 @protocol KSMediaConnectionUpdateDelegate <NSObject>
@@ -32,26 +32,19 @@
 
 @property (nonatomic, weak  ) id<KSMediaConnectionDelegate> delegate;
 @property (nonatomic, weak  ) id<KSMediaConnectionUpdateDelegate> updateDelegate;
-@property (nonatomic, weak  ) UIView<RTCVideoRenderer>  *videoView;
-@property (nonatomic, strong) RTCVideoTrack       *videoTrack;// 视频轨
 @property (nonatomic, strong) KSConnectionSetting *setting;
-@property (nonatomic, strong) NSNumber            *handleId;
-@property (nonatomic,assign ) int                 index;
 @property (nonatomic, assign) BOOL                isClose;
-@property (nonatomic, assign) BOOL                isLocal;
 @property (nonatomic,assign ) KSMediaState        mediaState;
 @property (nonatomic,assign ) KSCallType          callType;
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
 - (void)addVideoTrack;
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capture;
-- (void)addRenderer:(id<RTCVideoRenderer>)renderer;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep;
 
 - (void)closeConnection;
-- (void)clearRenderer;
 
 @end

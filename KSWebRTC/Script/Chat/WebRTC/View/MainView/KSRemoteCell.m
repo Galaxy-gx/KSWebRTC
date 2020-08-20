@@ -29,9 +29,9 @@
     [self addSubview:remoteView];
 }
 
--(void)setConnection:(KSMediaConnection *)connection {
-    _connection            = connection;
-    _remoteView.connection = connection;
+-(void)setVideoTrack:(KSVideoTrack *)videoTrack {
+    _videoTrack            = videoTrack;
+    _remoteView.videoTrack = videoTrack;
 }
 
 @end

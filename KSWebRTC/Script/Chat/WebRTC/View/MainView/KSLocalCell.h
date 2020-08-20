@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KSMediaConnection.h"
+#import "KSVideoTrack.h"
 
 @interface KSLocalCell : UICollectionViewCell
 
-@property(nonatomic,weak)KSMediaConnection *connection;
+@property (nonatomic,weak) KSVideoTrack *videoTrack;
 
 @end

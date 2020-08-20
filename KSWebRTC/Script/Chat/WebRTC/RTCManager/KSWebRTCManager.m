@@ -9,9 +9,10 @@
 #import "KSWebRTCManager.h"
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate>
-@property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, strong) KSMediaCapturer   *mediaCapture;//本地
-@property (nonatomic, weak) KSMediaConnection *peerConnection;//本地
+@property (nonatomic, strong) KSMessageHandler  *msgHandler;
+@property (nonatomic, strong) KSMediaCapturer   *mediaCapture;
+@property (nonatomic, weak  ) KSMediaConnection *peerConnection;
+@property (nonatomic, strong) NSMutableArray    *videoTracks;
 @end
 
 @implementation KSWebRTCManager
@@ -42,33 +43,26 @@
 - (void)createLocalConnection {
     KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
     peerConnection.delegate           = self;
-    peerConnection.isLocal            = YES;
-    peerConnection.videoTrack         = _mediaCapture.videoTrack;
     _peerConnection                   = peerConnection;
-
     [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapture];
-    [self.mediaConnections addObject:peerConnection];
+    
+    KSVideoTrack *videoTrack = [[KSVideoTrack alloc] init];
+    videoTrack.videoTrack    = _mediaCapture.videoTrack;
+    videoTrack.isLocal       = YES;
+    videoTrack.callType      = _callType;
+    videoTrack.handleId      = [self randomNumber];
+    _localVideoTrack         = videoTrack;
+    [self.videoTracks addObject:videoTrack];
+}
+
+- (NSNumber *)randomNumber {
+    int random = (arc4random() % 10000) + 10000;
+    return [NSNumber numberWithInt:random];
 }
 
 #pragma mark - KSMessageHandlerDelegate
-- (KSMediaConnection *)messageHandler:(KSMessageHandler *)messageHandler connectionOfHandleId:(NSNumber *)handleId {
-    //若不返回错误，则ICE错误
-    return [self mediaConnectionOfHandleId:handleId];
-}
-
 - (KSMediaConnection *)messageHandlerOfLocalConnection {
-    return self.localConnection;
-}
-
-- (KSMediaConnection *)messageHandlerOfCreateConnection {
-    KSMediaConnection *mc         = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
-    [mc createPeerConnectionWithMediaCapturer:_mediaCapture];
-    mc.delegate                   = self;
-    return mc;
-}
-
-- (KSConnectionSetting *)messageHandlerOfConnectionSetting {
-    return _mediaSetting.connectionSetting;
+    return self.peerConnection;
 }
 
 - (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
@@ -110,11 +104,11 @@
         body[@"candidate"] = candidate.sdp;
         body[@"sdpMid"] = candidate.sdpMid;
         body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
-        [_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+        //[_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
     }
     else{
         body[@"completed"] = @YES;
-        [_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+        //[_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
     }
 }
 
@@ -124,24 +118,24 @@
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            mediaConnection.videoTrack = remoteVideoTrack;
-            [weakSelf didAddMediaConnection:mediaConnection];
+            [weakSelf addVideoTrack:remoteVideoTrack];
         });
     }
 }
 
-- (void)didAddMediaConnection:(KSMediaConnection *)connection {
-    if (connection == nil) {
-        return;
-    }
-    connection.index = (int)self.mediaConnections.count;
-    [self.mediaConnections addObject:connection];
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:didAddMediaConnection:)]) {
-        [self.delegate webRTCManager:self didAddMediaConnection:connection];
+- (void)addVideoTrack:(RTCVideoTrack *)videoTrack {
+    KSVideoTrack *remoteVideoTrack = [[KSVideoTrack alloc] init];
+    remoteVideoTrack.videoTrack    = videoTrack;
+    remoteVideoTrack.callType      = _callType;
+    remoteVideoTrack.handleId      = [self randomNumber];
+    remoteVideoTrack.index         = self.videoTrackCount;
+    [self.videoTracks addObject:remoteVideoTrack];
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:didAddVideoTrack:)]) {
+        [self.delegate webRTCManager:self didAddVideoTrack:remoteVideoTrack];
     }
 }
 
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
     switch (newState) {
         case RTCIceConnectionStateDisconnected:
         case RTCIceConnectionStateClosed:
@@ -153,7 +147,7 @@
             mediaConnection.isClose      = YES;
             __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf leaveOfHandleId:mediaConnection.handleId];
+                //[weakSelf leaveOfHandleId:mediaConnection.handleId];
             });
         }
             break;
@@ -164,16 +158,16 @@
 }
 
 - (void)leaveOfHandleId:(NSNumber *)handleId {
-    KSMediaConnection *connection = [self mediaConnectionOfHandleId:handleId];
-    if (connection == nil) {
+    KSVideoTrack *videoTrack = [self videoTrackOfHandleId:handleId];
+    if (videoTrack == nil) {
         return;
     }
-    [self removeConnection:connection];
+    [self removeVideoTrack:videoTrack];
     
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfConnection:)]) {
-        [self.delegate webRTCManager:self leaveOfConnection:connection];
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:leaveOfVideoTrack:)]) {
+        [self.delegate webRTCManager:self leaveOfVideoTrack:videoTrack];
     }
-    if (self.mediaConnections.count == 1) {
+    if (self.videoTracks.count == 1) {
         if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEnd:)]) {
             [self.delegate webRTCManagerHandlerEnd:self];
         }
@@ -184,10 +178,6 @@
 #pragma mark - Get
 - (AVCaptureSession *)captureSession {
     return self.mediaCapture.capturer.captureSession;
-}
-
-- (KSMediaConnection *)localConnection {
-    return self.peerConnection;
 }
 
 #pragma mark - 事件
@@ -222,8 +212,8 @@
 
 //SMediaConnection
 + (void)clearAllRenderer {
-    for (KSMediaConnection *connection in [KSWebRTCManager shared].mediaConnections) {
-        [connection clearRenderer];
+    for (KSVideoTrack *videoTrack in [KSWebRTCManager shared].videoTracks) {
+        [videoTrack clearRenderer];
     }
 }
 
@@ -245,41 +235,41 @@
 }
 
 //data
-+ (KSMediaConnection *)connectionOfIndex:(NSInteger)index {
-    if (index >= [KSWebRTCManager shared].connectCount) {
++ (KSVideoTrack *)videoTrackOfIndex:(NSInteger)index {
+    if (index >= [KSWebRTCManager shared].videoTracks.count) {
         return nil;
     }
-    return [KSWebRTCManager shared].mediaConnections[index];
+    return [KSWebRTCManager shared].videoTracks[index];
 }
 
-+ (NSInteger)connectionCount {
-    return [KSWebRTCManager shared].connectCount;
++ (NSInteger)videoTrackCount {
+    return [KSWebRTCManager shared].videoTracks.count;
 }
 
-+ (void)removeConnectionAtIndex:(int)index {
-    if (index >= [KSWebRTCManager shared].mediaConnections.count) {
++ (void)removeVideoTrackAtIndex:(int)index {
+    if (index >= [KSWebRTCManager shared].videoTracks.count) {
         return;
     }
-    KSMediaConnection *connection = [KSWebRTCManager shared].mediaConnections[index];
-    [[KSWebRTCManager shared].mediaConnections removeObjectAtIndex:index];
-    [connection closeConnection];
-    connection                    = nil;
+    KSVideoTrack *videoTrack = [KSWebRTCManager shared].videoTracks[index];
+    [[KSWebRTCManager shared].videoTracks removeObjectAtIndex:index];
+    [videoTrack clearRenderer];
+    videoTrack               = nil;
 }
 
-- (void)removeConnection:(KSMediaConnection *)connection {
-    if (connection == nil) {
+- (void)removeVideoTrack:(KSVideoTrack *)videoTrack {
+    if (videoTrack == nil) {
         return;
     }
-    [self.mediaConnections removeObject:connection];
-    [connection closeConnection];
+    [self.videoTracks removeObject:videoTrack];
+    [videoTrack clearRenderer];
 }
 
 - (void)close {
-    for (KSMediaConnection *connection in self.mediaConnections) {
-        [connection closeConnection];
+    for (KSVideoTrack *videoTrack in [KSWebRTCManager shared].videoTracks) {
+        [videoTrack clearRenderer];
     }
-    [self.mediaConnections removeAllObjects];
-    
+    [[KSWebRTCManager shared].videoTracks removeAllObjects];
+
     [self.mediaCapture closeCapturer];
     self.mediaCapture = nil;
     
@@ -290,25 +280,26 @@
     [[KSWebRTCManager shared] close];
 }
 
--(KSMediaConnection *)mediaConnectionOfHandleId:(NSNumber *)handleId {
-    for (KSMediaConnection *connection in self.mediaConnections) {
-        if (connection.handleId == handleId) {
-            return connection;
+-(KSVideoTrack *)videoTrackOfHandleId:(NSNumber *)handleId {
+    for (KSVideoTrack *videoTrack in self.videoTracks) {
+        if (videoTrack.handleId == handleId) {
+            return videoTrack;
         }
     }
     return nil;
 }
+
 #pragma mark - Get
-- (int)connectCount {
-    return (int)self.mediaConnections.count;;
+- (int)videoTrackCount {
+    return (int)self.videoTracks.count;
 }
 
 #pragma mark - 懒加载
--(NSMutableArray *)mediaConnections {
-    if (_mediaConnections == nil) {
-        _mediaConnections = [NSMutableArray array];
-    }
-    return _mediaConnections;
+- (NSMutableArray *)videoTracks {
+    if (_videoTracks == nil) {
+           _videoTracks = [NSMutableArray array];
+       }
+       return _videoTracks;
 }
 
 @end

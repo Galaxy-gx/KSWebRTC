@@ -11,7 +11,7 @@
 #import "UIColor+Category.h"
 #import "KSProfileView.h"
 
-@interface KSMediaView()<KSMediaConnectionUpdateDelegate,RTCVideoViewDelegate>
+@interface KSMediaView()<KSVideoTrackDelegate,RTCVideoViewDelegate>
 @end
 
 @implementation KSMediaView
@@ -48,25 +48,16 @@
     self.clipsToBounds               = YES;
 }
 
-- (void)setConnection:(KSMediaConnection *)connection {
-    if (_connection) {
-        [self removeVideoView];
-    }
-    //记录Renderer
-    _connection.videoView = _videoView;
-    if (connection == nil) {
-        [self removeVideoView];
-    }
-    else{
-        _connection               = connection;
-        connection.updateDelegate = self;
-        if (_connection.setting.isFocus) {
-            if (connection.videoTrack) {
-                [connection.videoTrack addRenderer:_videoView];
-            }
+-(void)setVideoTrack:(KSVideoTrack *)videoTrack {
+    [self removeVideoView];
+    
+    if (videoTrack) {
+        _videoTrack         = videoTrack;
+        videoTrack.delegate = self;
+        if (videoTrack.videoTrack) {
+            [videoTrack.videoTrack addRenderer:_videoView];
         }
     }
-    
     [self updateKit];
 }
 
@@ -75,13 +66,12 @@
 }
 
 - (void)removeVideoView {
-    if (self.connection) {
-        [self.connection clearRenderer];
+    if (_videoTrack) {
+        [_videoTrack clearRenderer];
     }
 }
-
-//KSMediaConnectionUpdateDelegate
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeMediaState:(KSMediaState)mediaState {
+//KSVideoTrackDelegate
+- (void)videoTrack:(KSVideoTrack *)videoTrack didChangeMediaState:(KSMediaState)mediaState {
     
 }
 

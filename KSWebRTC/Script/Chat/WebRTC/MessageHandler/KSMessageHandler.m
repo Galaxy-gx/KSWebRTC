@@ -232,8 +232,7 @@ static int const KSRandomLength = 12;
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate messageHandlerOfLocalConnection];
-    mc.handleId                       = handleId;
+    KSMediaConnection *mc             = [self localConnection];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -251,8 +250,7 @@ static int const KSRandomLength = 12;
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc        = [self createMediaConnection];
-    mc.handleId                  = handleId;
+    KSMediaConnection *mc        = [self localConnection];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -272,9 +270,8 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    if ([self.delegate respondsToSelector:@selector(messageHandler:connectionOfHandleId:)]) {
-        KSMediaConnection *mc = [self.delegate messageHandler:self connectionOfHandleId:handleId];
-        NSLog(@"|============| 发布者收到远端媒体信息后的回调 isLocal : %d |============|",mc.isLocal);
+    KSMediaConnection *mc = [self localConnection];
+    if (mc) {
         [mc setRemoteDescriptionWithJsep:jsep];
     }
 }
@@ -308,9 +305,12 @@ static int const KSRandomLength = 12;
     [_socket sendMessage:sendMessage];
 }
 
-// 创建一个媒体连接
--(KSMediaConnection *)createMediaConnection {
-    KSMediaConnection *mc = [self.delegate messageHandlerOfCreateConnection];;
+// 媒体连接
+-(KSMediaConnection *)localConnection {
+    KSMediaConnection *mc = nil;
+    if ([self.delegate respondsToSelector:@selector(messageHandlerOfLocalConnection)]) {
+        mc = [self.delegate messageHandlerOfLocalConnection];
+    }
     return mc;
 }
 

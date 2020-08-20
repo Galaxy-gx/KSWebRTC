@@ -21,8 +21,8 @@
     
 }
 
-//KSMediaConnectionUpdateDelegate
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeMediaState:(KSMediaState)mediaState {
+//KSVideoTrackDelegate
+- (void)videoTrack:(KSVideoTrack *)videoTrack didChangeMediaState:(KSMediaState)mediaState {
     
 }
 

@@ -12,7 +12,7 @@
 #import "KSCallState.h"
 #import "KSMsg.h"
 #import "KSMessageHandler.h"
-#import "KSKitManager.h"
+#import "KSVideoTrack.h"
 
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
@@ -20,26 +20,25 @@
 //socket
 - (void)webRTCManagerHandlerEnd:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection;
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManagerSocketDidFail:(KSWebRTCManager *)webRTCManager;
 
 //Media
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection;
-
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddVideoTrack:(KSVideoTrack *)videoTrack;
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfVideoTrack:(KSVideoTrack *)videoTrack;
 @end
 
 @interface KSWebRTCManager : NSObject
 
 @property(nonatomic,weak)id<KSWebRTCManagerDelegate>    delegate;
 @property (nonatomic, weak, readonly) AVCaptureSession  *captureSession;
-@property (nonatomic, weak, readonly) KSMediaConnection *localConnection;
-@property (nonatomic, strong) KSMediaSetting    *mediaSetting;
-@property (nonatomic, assign) KSCallType        callType;
-@property (nonatomic, assign) BOOL             isConnect;
-@property (nonatomic, assign) KSCallState       callState;
-@property (nonatomic, strong) NSMutableArray    *mediaConnections;
-@property (nonatomic, assign, readonly) int     connectCount;
+@property (nonatomic, weak, readonly) KSVideoTrack *localVideoTrack;
+@property (nonatomic, assign, readonly) int     videoTrackCount;
+@property (nonatomic, strong) KSMediaSetting *mediaSetting;
+@property (nonatomic, assign) KSCallType     callType;
+@property (nonatomic, assign) BOOL           isConnect;
+@property (nonatomic, assign) KSCallState    callState;
+
 + (instancetype)shared;
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
@@ -65,7 +64,7 @@
 + (void)socketSendHangup;
 
 //data
-+ (KSMediaConnection *)connectionOfIndex:(NSInteger)index;
++ (KSVideoTrack *)videoTrackOfIndex:(NSInteger)index;
 + (NSInteger)connectionCount;
 + (void)removeConnectionAtIndex:(int)index;
 

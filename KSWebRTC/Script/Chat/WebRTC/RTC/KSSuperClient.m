@@ -1,21 +1,20 @@
 //
-//  KSMediaConnection.m
+//  KSSuperClient.m
 //  KSWebRTC
 //
-//  Created by saeipi on 2020/7/11.
+//  Created by saeipi on 2020/8/20.
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
-#import "KSMediaConnection.h"
+#import "KSSuperClient.h"
 #import "RTCSessionDescription+Category.h"
 
 static NSString *const KARDStreamId = @"ARDAMS";
 
-@interface KSMediaConnection ()<RTCPeerConnectionDelegate>
-@property (nonatomic, strong) RTCPeerConnection *peerConnection;//WebRTC连接对象
-@end
+@interface KSSuperClient()<RTCDataChannelDelegate>
 
-@implementation KSMediaConnection
+@end
+@implementation KSSuperClient
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting {
     if (self = [super init]) {
@@ -25,21 +24,56 @@ static NSString *const KARDStreamId = @"ARDAMS";
     return self;
 }
 
-/*
- 要想从远端获取数据，我们就必须创建 PeerConnection 对象。该对象的用处就是与远端建立联接，并最终为双方通讯提供网络通道。
- 
- 当 PeerConnection 对象创建好后，我们应该将本地的音视频轨添加进去，这样 WebRTC 才能帮我们生成包含相应媒体信息的 SDP，以便于后面做媒体能力协商使用。
- //---------- !!! ----------
- 以 PeerConnection 对象的创建为例，该在什么时候创建 PeerConnection 对象呢？最好的时机当然是在用户加入房间之后了 。
- 
- 客户端收到 joined 消息后，就要创建 RTCPeerConnection 了，也就是要建立一条与远端通话的音视频数据传输通道。
- 
- 对于 iOS 的 RTCPeerConnection 对象有三个参数：
-    第一个，是 RTCConfiguration 类型的对象，该对象中最重要的一个字段是 iceservers。它里边存放了 stun/turn 服务器地址。其主要作用是用于NAT穿越。对于 NAT 穿越的知识大家可以自行学习。
-    第二个参数，是 RTCMediaConstraints 类型对象，也就是对 RTCPeerConnection 的限制。如，是否接收视频数据？是否接收音频数据？如果要与浏览器互通还要开启 DtlsSrtpKeyAgreement 选项。
-    第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。但它并不属于观察者模式，这一点大家一定要清楚。
-    RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
- */
+-(void)test:(KSMediaCapturer *)capturer {
+    // 创建配置
+    RTCConfiguration *config          = [[RTCConfiguration alloc] init];
+    NSArray *iceServers               = @[[self defaultIceServer]];
+    config.iceServers                 = iceServers;
+    // Unified plan is more superior than planB
+    config.sdpSemantics               = RTCSdpSemanticsUnifiedPlan;
+    // gatherContinually will let WebRTC to listen to any network changes and send any new candidates to the other client
+    config.continualGatheringPolicy   = RTCContinualGatheringPolicyGatherContinually;
+    // 媒体约束
+    RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
+    // 创建一个peerconnection
+    RTCPeerConnection *peerConnection = [capturer.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
+    _peerConnection                   = peerConnection;
+    [self createMediaSenders:capturer];
+    [self configureAudioSession];
+}
+
+- (void)createMediaSenders:(KSMediaCapturer *)capturer  {
+    // 添加音/视频轨
+    [_peerConnection addTrack:capturer.audioTrack streamIds:@[ KARDStreamId ]];
+    [_peerConnection addTrack:capturer.videoTrack streamIds:@[ KARDStreamId ]];
+    self.localVideoTrack = capturer.videoTrack;
+    
+    _localDataChannel = [self createDataChannel];
+    _localDataChannel.delegate = self;
+}
+
+-(RTCDataChannel *)createDataChannel {
+    RTCDataChannelConfiguration *config = [[RTCDataChannelConfiguration alloc] init];
+    RTCDataChannel *dataChannel = [_peerConnection dataChannelForLabel:@"WebRTCData" configuration:config];
+    return dataChannel;
+}
+
+
+- (void)configureAudioSession {
+    [_rtcAudioSession lockForConfiguration];
+    @try {
+        [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        [_rtcAudioSession setMode:AVAudioSessionModeVoiceChat error:nil];
+    } @catch (NSException *exception) {
+        NSLog(@"Error changeing AVAudioSession category: %@",exception);
+    } @finally {
+    }
+    
+    [_rtcAudioSession unlockForConfiguration];
+}
+
+
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capturer {
     // 媒体约束
     RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
@@ -61,19 +95,19 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 - (void)addVideoTrack {
     if (_setting.video) {
-        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack:)]) {
-            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack:self];
-            if (videoTrack) {
-                // 添加视频轨
-                [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
-            }
-        }
+//        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack:)]) {
+//            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack:self];
+//            if (videoTrack) {
+//                // 添加视频轨
+//                [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
+//            }
+//        }
     }
 }
 
 // 设置远端的媒体描述 self.isLocal = YES; type : answer; self.isLocal = NO; type = offer;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
-    NSLog(@"|============| setRemoteDescription type : %@ |============|",jsep[@"type"]);
+    NSLog(@"|============| setRemoteDescription type : %@ |============|", jsep[@"type"]);
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
     [_peerConnection setRemoteDescription:answerDescription
                         completionHandler:^(NSError *_Nullable error){
@@ -103,7 +137,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     NSLog(@"|============| answerForConstraints |============|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
-    __weak KSMediaConnection *weakSelf = self;
+    __weak KSSuperClient *weakSelf = self;
     [_peerConnection answerForConstraints:constraints
                         completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if (error) {
@@ -124,7 +158,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     NSLog(@"|============| offerForConstraints |============|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
-    __weak KSMediaConnection *weakSelf = self;
+    __weak KSSuperClient *weakSelf = self;
     [_peerConnection offerForConstraints:constraints
                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
@@ -138,13 +172,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
 }
 
 #pragma mark - Set
--(void)setMediaState:(KSMediaState)mediaState {
-    if ([self.updateDelegate respondsToSelector:@selector(mediaConnection:didChangeMediaState:)]) {
-        [self.updateDelegate mediaConnection:self didChangeMediaState:mediaState];
-    }
-    _mediaState = mediaState;
-}
-
 
 - (void)closeConnection {
     RTCMediaStream *mediaStream = [_peerConnection.localStreams firstObject];
@@ -153,13 +180,14 @@ static NSString *const KARDStreamId = @"ARDAMS";
     }
     [_peerConnection close];
     _peerConnection       = nil;
+    
 }
 
 // PeerConnection 媒体约束
 - (RTCMediaConstraints *)defaultMediaConstraint {
     // DTLS
     NSDictionary *mandatoryContraints = [self mandatoryConstraints];
-    NSDictionary *option = @{ @"DtlsSrtpKeyAgreement" : @"true" };
+    NSDictionary *option = @{ @"DtlsSrtpKeyAgreement" : kRTCMediaConstraintsValueTrue};
     RTCMediaConstraints *constrants = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:option];
     return constrants;
 }
@@ -186,23 +214,23 @@ static NSString *const KARDStreamId = @"ARDAMS";
 }
 
 #pragma mark - RTCPeerConnectionDelegate
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream { 
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream {
     //[self.delegate mediaConnection:self peerConnection:peerConnection didAddStream:stream];
 }
 
 //该方法用于收集可用的 Candidate。
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
     NSLog(@"已找到新的候选者。");
-    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didGenerateIceCandidate:)]) {
-        [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
-    }
+//    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didGenerateIceCandidate:)]) {
+//        [self.delegate mediaConnection:self peerConnection:peerConnection didGenerateIceCandidate:candidate];
+//    }
 }
 
 //当 ICE 连接状态发生变化时会触发该方法
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didChangeIceConnectionState:)]) {
-        [self.delegate mediaConnection:self peerConnection:peerConnection didChangeIceConnectionState:newState];
-    }
+//    if ([self.delegate respondsToSelector:@selector(mediaConnection:didChangeIceConnectionState:)]) {
+//        [self.delegate mediaConnection:self didChangeIceConnectionState:newState];
+//    }
     
     NSLog(@"每当IceConnectionState更改时调用。");
     switch (newState) {
@@ -240,9 +268,9 @@ static NSString *const KARDStreamId = @"ARDAMS";
 //当函数被调用后，我们可以通过 rtpReceiver 参数获取到 track。这个track有可能是音频trak，也有可能是视频trak。所以，我们首先要对 track 做个判断，看其是视频还是音频。
 - (void)peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
     NSLog(@"在创建接收者及其音轨时调用。");
-    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didAddReceiver:streams:)]) {
-        [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
-    }
+//    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didAddReceiver:streams:)]) {
+//        [self.delegate mediaConnection:self peerConnection:peerConnection didAddReceiver:rtpReceiver streams:mediaStreams];
+//    }
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {

@@ -18,15 +18,14 @@
 
 //Kit
 #import "KSRemoteView.h"
+#import "KSVideoTrack.h"
 
-//Other
-#import "KSMediaConnection.h"
 
 @class KSCallView;
 @protocol KSCallViewDataSource <NSObject>
 
 - (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section;
-- (KSMediaConnection *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath;
+- (KSVideoTrack *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -35,10 +34,10 @@
 
 - (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout;
 - (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout;
-- (void)setMediaConnection:(KSMediaConnection *)connection;
+- (void)setLocalVideoTrack:(KSVideoTrack *)videoTrack;
+- (void)createRemoteViewOfVideoTrack:(KSVideoTrack *)videoTrack;
 - (void)leaveLocal;
 - (void)leaveOfHandleId:(NSNumber *)handleId;
-- (void)createRemoteViewOfConnection:(KSMediaConnection *)connection;
 
 #pragma mark - KSProfileView
 - (void)setProfileConfigure:(KSProfileConfigure *)configure;

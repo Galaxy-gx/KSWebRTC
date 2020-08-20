@@ -19,7 +19,7 @@
 @implementation KSRemoteView
 
 - (void)updateKit {
-    switch (self.connection.callType) {
+    switch (self.videoTrack.callType) {
         case KSCallTypeSingleAudio:
 
             break;
@@ -39,8 +39,8 @@
     }
 }
 
-//KSMediaConnectionUpdateDelegate
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection didChangeMediaState:(KSMediaState)mediaState {
+//KSVideoTrackDelegate
+- (void)videoTrack:(KSVideoTrack *)videoTrack didChangeMediaState:(KSMediaState)mediaState {
     
 }
 

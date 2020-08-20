@@ -18,7 +18,6 @@
 #import "KSCallBarView.h"
 #import "UIFont+Category.h"
 #import "KSSuperController+Category.h"
-#import "KSKitManager.h"
 
 @interface KSCallController ()<KSWebRTCManagerDelegate,KSCallViewDataSource>
 
@@ -46,7 +45,7 @@
 }
 
 -(void)dealloc {
-    [KSWebRTCManager close];
+    //[KSWebRTCManager close];
 }
 
 - (void)initTileLayout {
@@ -122,7 +121,7 @@
 }
 
 - (void)initWebRTC {
-    if ([KSWebRTCManager shared].connectCount == 0) {
+    if ([KSWebRTCManager shared].videoTrackCount == 0) {
         KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
         connectionSetting.callType             = _callType;
         connectionSetting.iceServer            = [[KSIceServer alloc] init];
@@ -157,7 +156,7 @@
 
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.callView setMediaConnection:[KSWebRTCManager shared].localConnection];
+        [weakSelf.callView setLocalVideoTrack:[KSWebRTCManager shared].localVideoTrack];
     });
 }
 
@@ -191,8 +190,8 @@
         {
             [self setLocalViewOfSession:YES];
             KSWebRTCManager *manager = [KSWebRTCManager shared];
-            if (manager.connectCount == 2) {
-                [self webRTCManager:manager didAddMediaConnection:manager.mediaConnections.lastObject];
+            if (manager.videoTrackCount == 2) {
+                [self webRTCManager:manager didAddVideoTrack:manager.localVideoTrack];
             }
         }
             break;
@@ -302,12 +301,12 @@
 
 - (void)onAddMemberClick {
     NSLog(@"%s",__FUNCTION__);
-    KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
-    connectionSetting.callType             = KSCallTypeManyVideo;
-    connectionSetting.iceServer            = [[KSIceServer alloc] init];
-    KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
-    [[KSWebRTCManager shared].mediaConnections addObject:mc];
-    [self.callView insertItemsAtIndex:[KSWebRTCManager shared].connectCount-1];
+//    KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+//    connectionSetting.callType             = KSCallTypeManyVideo;
+//    connectionSetting.iceServer            = [[KSIceServer alloc] init];
+//    KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
+//    [[KSWebRTCManager shared].mediaConnections addObject:mc];
+//    [self.callView insertItemsAtIndex:[KSWebRTCManager shared].connectCount-1];
 }
 
 - (void)onScaleDownClick {
@@ -383,7 +382,6 @@
     [KSWebRTCManager socketSendHangup];
     [KSWebRTCManager socketClose];
     [KSWebRTCManager close];
-    [self.callView setMediaConnection:nil];
 }
 
 //会议主题面板中开启麦克风
@@ -445,25 +443,6 @@
     
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfConnection:(KSMediaConnection *)connection {
-    switch (_callType) {
-        case KSCallTypeSingleAudio:
-
-            break;
-        case KSCallTypeManyAudio:
-            
-            break;
-        case KSCallTypeSingleVideo:
-            [self.callView leaveOfHandleId:connection.handleId];
-            break;
-        case KSCallTypeManyVideo:
-            [self.callView deleteItemsAtIndex:connection.index];
-            break;
-        default:
-            break;
-    }
-}
-
 - (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager {
     
 }
@@ -472,7 +451,7 @@
     
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaConnection:(KSMediaConnection *)connection {
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddVideoTrack:(KSVideoTrack *)videoTrack {
     if (self.topBarView.isHidden) {
         self.topBarView.hidden = NO;
     }
@@ -480,11 +459,11 @@
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            if (connection.isLocal) {
+            if (videoTrack.isLocal) {
                 [self setLocalViewOfSession:YES];
             }
             else{
-                [self.callView createRemoteViewOfConnection:connection];
+                [self.callView createRemoteViewOfVideoTrack:videoTrack];
             }
         }
             break;
@@ -499,13 +478,32 @@
     }
 }
 
-//KSCallViewDataSource
-- (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {
-    return [KSWebRTCManager shared].connectCount;
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager leaveOfVideoTrack:(KSVideoTrack *)videoTrack {
+    switch (_callType) {
+        case KSCallTypeSingleAudio:
+
+            break;
+        case KSCallTypeManyAudio:
+            
+            break;
+        case KSCallTypeSingleVideo:
+            [self.callView leaveOfHandleId:videoTrack.handleId];
+            break;
+        case KSCallTypeManyVideo:
+            [self.callView deleteItemsAtIndex:videoTrack.index];
+            break;
+        default:
+            break;
+    }
 }
 
-- (KSMediaConnection *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath {
-    return [KSWebRTCManager connectionOfIndex:indexPath.item];
+//KSCallViewDataSource
+- (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {
+    return [KSWebRTCManager shared].videoTrackCount;
+}
+
+- (KSVideoTrack *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath {
+    return [KSWebRTCManager videoTrackOfIndex:indexPath.item];
 }
 
 //懒加载

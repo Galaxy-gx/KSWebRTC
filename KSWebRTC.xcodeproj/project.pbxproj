@@ -22,7 +22,6 @@
 		E632FF9524E9406B0049ED8A /* ARDRoomServerClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEF924E9406A0049ED8A /* ARDRoomServerClient.m */; };
 		E632FF9624E9406B0049ED8A /* ARDAppClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEFB24E9406A0049ED8A /* ARDAppClient.m */; };
 		E632FF9724E9406B0049ED8A /* ARDSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEFC24E9406A0049ED8A /* ARDSettingsStore.m */; };
-		E632FF9824E9406B0049ED8A /* KSKitManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEFE24E9406A0049ED8A /* KSKitManager.m */; };
 		E632FF9924E9406B0049ED8A /* KSWebRTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEFF24E9406A0049ED8A /* KSWebRTCManager.m */; };
 		E632FF9A24E9406B0049ED8A /* KSSuperController.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FF0524E9406A0049ED8A /* KSSuperController.m */; };
 		E632FF9B24E9406B0049ED8A /* KSCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FF0724E9406A0049ED8A /* KSCollectionViewCell.m */; };
@@ -95,6 +94,8 @@
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
 		E64224CD24EA603B000DE5C6 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */; };
+		E6ABF84824EE1D0F00EE2E1D /* KSVideoTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */; };
+		E6ABF84B24EE1D7F00EE2E1D /* KSSuperClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -146,9 +147,7 @@
 		E632FEFA24E9406A0049ED8A /* KSCaptureController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCaptureController.h; sourceTree = "<group>"; };
 		E632FEFB24E9406A0049ED8A /* ARDAppClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDAppClient.m; sourceTree = "<group>"; };
 		E632FEFC24E9406A0049ED8A /* ARDSettingsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDSettingsStore.m; sourceTree = "<group>"; };
-		E632FEFE24E9406A0049ED8A /* KSKitManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSKitManager.m; sourceTree = "<group>"; };
 		E632FEFF24E9406A0049ED8A /* KSWebRTCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebRTCManager.m; sourceTree = "<group>"; };
-		E632FF0024E9406A0049ED8A /* KSKitManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSKitManager.h; sourceTree = "<group>"; };
 		E632FF0124E9406A0049ED8A /* KSWebRTCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebRTCManager.h; sourceTree = "<group>"; };
 		E632FF0424E9406A0049ED8A /* KSSuperController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSSuperController.h; sourceTree = "<group>"; };
 		E632FF0524E9406A0049ED8A /* KSSuperController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSSuperController.m; sourceTree = "<group>"; };
@@ -294,6 +293,10 @@
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E64224CB24EA603B000DE5C6 /* NSDictionary+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
+		E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoTrack.m; sourceTree = "<group>"; };
+		E6ABF84724EE1D0F00EE2E1D /* KSVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoTrack.h; sourceTree = "<group>"; };
+		E6ABF84924EE1D7F00EE2E1D /* KSSuperClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSSuperClient.h; sourceTree = "<group>"; };
+		E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSSuperClient.m; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6E1E6B624E9444800536FBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -460,8 +463,12 @@
 				E632FEEA24E9406A0049ED8A /* KSMediaCapturer.m */,
 				E632FEE624E9406A0049ED8A /* KSMediaConnection.h */,
 				E632FEE924E9406A0049ED8A /* KSMediaConnection.m */,
+				E6ABF84724EE1D0F00EE2E1D /* KSVideoTrack.h */,
+				E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */,
 				E632FEE524E9406A0049ED8A /* KSMediaSetting.h */,
 				E632FEE824E9406A0049ED8A /* KSMediaSetting.m */,
+				E6ABF84924EE1D7F00EE2E1D /* KSSuperClient.h */,
+				E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */,
 			);
 			path = RTC;
 			sourceTree = "<group>";
@@ -499,8 +506,6 @@
 		E632FEFD24E9406A0049ED8A /* RTCManager */ = {
 			isa = PBXGroup;
 			children = (
-				E632FEFE24E9406A0049ED8A /* KSKitManager.m */,
-				E632FF0024E9406A0049ED8A /* KSKitManager.h */,
 				E632FF0124E9406A0049ED8A /* KSWebRTCManager.h */,
 				E632FEFF24E9406A0049ED8A /* KSWebRTCManager.m */,
 			);
@@ -734,8 +739,8 @@
 				E632FF5824E9406A0049ED8A /* KSMediaView.m */,
 				E632FF4F24E9406A0049ED8A /* KSLocalCell.h */,
 				E632FF5524E9406A0049ED8A /* KSLocalCell.m */,
-				E632FF5924E9406A0049ED8A /* KSRemoteCell.m */,
 				E632FF5224E9406A0049ED8A /* KSRemoteCell.h */,
+				E632FF5924E9406A0049ED8A /* KSRemoteCell.m */,
 				E632FF5024E9406A0049ED8A /* KSLocalView.h */,
 				E632FF5B24E9406A0049ED8A /* KSLocalView.m */,
 				E632FF4D24E9406A0049ED8A /* KSRemoteView.h */,
@@ -1020,7 +1025,6 @@
 				E632FF9424E9406B0049ED8A /* ARDSettingsModel.m in Sources */,
 				E632FFB824E9406B0049ED8A /* KSMediaView.m in Sources */,
 				E632FFAE24E9406B0049ED8A /* KSRoundImageView.m in Sources */,
-				E632FF9824E9406B0049ED8A /* KSKitManager.m in Sources */,
 				E632FFB224E9406B0049ED8A /* KSTopBarView.m in Sources */,
 				E632FFCC24E9406B0049ED8A /* KSWebSocket.m in Sources */,
 				E632FFBE24E9406B0049ED8A /* UIButton+Category.m in Sources */,
@@ -1032,6 +1036,7 @@
 				E632FF9C24E9406B0049ED8A /* KSTableViewCell.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,
 				E632FF9D24E9406B0049ED8A /* KSExecuteArgs.m in Sources */,
+				E6ABF84824EE1D0F00EE2E1D /* KSVideoTrack.m in Sources */,
 				E632FFA324E9406B0049ED8A /* KSCallBarView.m in Sources */,
 				E632FFC624E9406B0049ED8A /* UIColor+Category.m in Sources */,
 				E632FFA824E9406B0049ED8A /* KSWaitingAnswersView.m in Sources */,
@@ -1052,6 +1057,7 @@
 				E632FFA724E9406B0049ED8A /* KSWaitingAnswersMemberCell.m in Sources */,
 				E632FFB924E9406B0049ED8A /* KSRemoteCell.m in Sources */,
 				E632FFED24E942050049ED8A /* MJPropertyType.m in Sources */,
+				E6ABF84B24EE1D7F00EE2E1D /* KSSuperClient.m in Sources */,
 				E632FFAC24E9406B0049ED8A /* KSMeetingThemeView.m in Sources */,
 				E632FFA624E9406B0049ED8A /* KSCellAlignmentFlowLayout.m in Sources */,
 				E632FFB024E9406B0049ED8A /* KSCoolTipsView.m in Sources */,

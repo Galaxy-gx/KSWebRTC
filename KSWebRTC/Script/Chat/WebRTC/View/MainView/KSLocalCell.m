@@ -34,9 +34,9 @@
     [super layoutSubviews];
 }
 
--(void)setConnection:(KSMediaConnection *)connection {
-    _connection           = connection;
-    _localView.connection = connection;
+-(void)setVideoTrack:(KSVideoTrack *)videoTrack {
+    _videoTrack           = videoTrack;
+    _localView.videoTrack = videoTrack;
 }
 
 @end

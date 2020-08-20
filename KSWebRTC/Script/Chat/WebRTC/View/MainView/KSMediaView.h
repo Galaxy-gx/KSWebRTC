@@ -9,16 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <WebRTC/WebRTC.h>
 #import "KSConfigure.h"
-#import "KSMediaConnection.h"
 #import "KSTileLayout.h"
 #import "KSProfileBarView.h"
 #import "KSRoundImageView.h"
+#import "KSVideoTrack.h"
 
 @interface KSMediaView : UIView
 
-@property (nonatomic,weak) KSMediaConnection *connection;
-@property (nonatomic,weak) KSProfileBarView  *profileBarView;
-@property (nonatomic,weak) KSRoundImageView  *roundImageView;
+@property (nonatomic,weak) KSProfileBarView *profileBarView;
+@property (nonatomic,weak) KSRoundImageView *roundImageView;
+@property (nonatomic,weak) KSVideoTrack     *videoTrack;
 @property (nonatomic,weak) UIView<RTCVideoRenderer> *videoView;
 
 - (void)removeVideoView;
