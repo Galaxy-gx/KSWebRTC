@@ -35,10 +35,10 @@ static NSString *const KARDStreamId = @"ARDAMS";
  客户端收到 joined 消息后，就要创建 RTCPeerConnection 了，也就是要建立一条与远端通话的音视频数据传输通道。
  
  对于 iOS 的 RTCPeerConnection 对象有三个参数：
-    第一个，是 RTCConfiguration 类型的对象，该对象中最重要的一个字段是 iceservers。它里边存放了 stun/turn 服务器地址。其主要作用是用于NAT穿越。对于 NAT 穿越的知识大家可以自行学习。
+    第一个，是 RTCConfiguration 类型的对象，该对象中最重要的一个字段是 iceservers。它里边存放了 stun/turn 服务器地址。其主要作用是用于NAT穿越。
     第二个参数，是 RTCMediaConstraints 类型对象，也就是对 RTCPeerConnection 的限制。如，是否接收视频数据？是否接收音频数据？如果要与浏览器互通还要开启 DtlsSrtpKeyAgreement 选项。
-    第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。但它并不属于观察者模式，这一点大家一定要清楚。
-    RTCPeerConnection 对象创建好后，接下来我们介绍的是整个实时通话过程中，最重要的一部分知识，那就是 媒体协商。
+    第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。
+    RTCPeerConnection 对象创建好后，接下来，最重要的一部分知识，那就是 媒体协商。
  */
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capturer {
     // 媒体约束
@@ -89,8 +89,8 @@ static NSString *const KARDStreamId = @"ARDAMS";
 }
 
 - (void)addIceCandidate:(NSDictionary *)candidate {
-    if (candidate[@"candidate"] && candidate[@"sdpMLineIndex"] && candidate[@"sdpMid"]) {
-        RTCIceCandidate *ice = [[RTCIceCandidate alloc] initWithSdp:candidate[@"candidate"] sdpMLineIndex:[candidate[@"sdpMLineIndex"] intValue] sdpMid:candidate[@"sdpMid"]];
+    if (candidate[@"sdp"] && candidate[@"sdpMLineIndex"] && candidate[@"sdpMid"]) {
+        RTCIceCandidate *ice = [[RTCIceCandidate alloc] initWithSdp:candidate[@"sdp"] sdpMLineIndex:[candidate[@"sdpMLineIndex"] intValue] sdpMid:candidate[@"sdpMid"]];
         [self.peerConnection addIceCandidate:ice];
     }
 }
@@ -152,7 +152,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
     [_peerConnection offerForConstraints:constraints
                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
-            NSLog(@"Failed to create offer SDP, err=%@", error);
+            NSLog(@"Failure to create offer SDP, err=%@", error);
         }
         [weakSelf.peerConnection setLocalDescription:sdp
                                    completionHandler:^(NSError *_Nullable error) {
@@ -193,20 +193,18 @@ static NSString *const KARDStreamId = @"ARDAMS";
         kRTCMediaConstraintsOfferToReceiveAudio:kRTCMediaConstraintsValueTrue,
         kRTCMediaConstraintsOfferToReceiveVideo:kRTCMediaConstraintsValueTrue
     };
-    /*
-     return @{
-     @"OfferToReceiveAudio" : @"true",
-     @"OfferToReceiveVideo" : @"true"
-     };*/
 }
 
 // stun 、 turn服务地址
 - (RTCIceServer *)defaultIceServer {
     //NSArray *array = [NSArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
     //return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
+    return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers];
+    /*
     return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers
                                            username:_setting.iceServer.username
                                          credential:_setting.iceServer.password];
+     */
 }
 
 #pragma mark - RTCPeerConnectionDelegate

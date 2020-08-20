@@ -61,11 +61,10 @@
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;
 + (void)socketCreateSession;
-+ (void)sendOffer;
+- (void)sendOffer;
 + (void)socketSendHangup;
 
 //data
 + (KSVideoTrack *)videoTrackOfIndex:(NSInteger)index;
-+ (void)removeConnectionAtIndex:(int)index;
 
 @end

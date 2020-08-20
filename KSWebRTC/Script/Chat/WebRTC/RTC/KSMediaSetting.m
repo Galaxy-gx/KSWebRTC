@@ -26,9 +26,15 @@
 }
 - (instancetype)init {
     if (self = [super init]) {
-        _servers = [NSMutableArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
-        _username = @"root";
-        _password = @"mypasswd";
+        NSArray *array = @[@"stun:stun.l.google.com:19302",
+                           @"stun:stun1.l.google.com:19302",
+                           @"stun:stun2.l.google.com:19302",
+                           @"stun:stun3.l.google.com:19302",
+                           @"stun:stun4.l.google.com:19302"];
+        //_servers       = [NSMutableArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
+        _servers       = [NSMutableArray arrayWithArray:array];
+        //_username      = @"root";
+        //_password = @"mypasswd";
     }
     return self;
 }

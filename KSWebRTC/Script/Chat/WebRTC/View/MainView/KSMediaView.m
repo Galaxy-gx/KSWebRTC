@@ -55,7 +55,7 @@
         _videoTrack         = videoTrack;
         videoTrack.delegate = self;
         if (videoTrack.videoTrack) {
-            [videoTrack.videoTrack addRenderer:_videoView];
+            [videoTrack addRenderer:_videoView];
         }
     }
     [self updateKit];

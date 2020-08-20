@@ -33,11 +33,15 @@
 }
 
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
-    _mediaSetting              = mediaSetting;
-    _callType                  = mediaSetting.callType;
-    _mediaCapture              = [[KSMediaCapturer alloc] initWithSetting:mediaSetting.capturerSetting];
+    _mediaSetting = mediaSetting;
+    _callType     = mediaSetting.callType;
+    _mediaCapture = [[KSMediaCapturer alloc] initWithSetting:mediaSetting.capturerSetting];
 
     [self createLocalConnection];
+    
+    if (_callType == KSCallTypeSingleVideo || _callType == KSCallTypeManyVideo) {
+        [_mediaCapture startCapture];
+    }
 }
 
 - (void)createLocalConnection {
@@ -89,6 +93,23 @@
     }
 }
 
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveOffer:(NSDictionary *)offer {
+    if (offer) {
+        [self sendAnswerOfJsep:offer];
+    }
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveAnswer:(NSDictionary *)answer {
+    if (answer) {
+        [self setRemoteJsep:answer];
+    }
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate {
+    if (candidate) {
+        [self.peerConnection addIceCandidate:candidate];
+    }
+}
 #pragma mark - KSMediaConnectionDelegate
 // 收到远端流处理
 //- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
@@ -117,6 +138,7 @@
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
     RTCMediaStreamTrack *track = rtpReceiver.track;
+    NSLog(@"|============| didAddReceiver : %@ |============|",track.kind);
     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
         RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         __weak typeof(self) weakSelf = self;
@@ -229,8 +251,37 @@
     [[KSWebRTCManager shared].msgHandler close];
 }
 
-+ (void)sendOffer {
-    [[KSWebRTCManager shared].msgHandler sendOffer];
+- (void)sendOffer {
+    KSMediaConnection *mc        = self.peerConnection;
+    __weak typeof(self) weakSelf = self;
+    [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+        NSString *type = [RTCSessionDescription stringForType:sdp.type];
+        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
+        jsep[@"type"]  = type;
+        jsep[@"sdp"]   = [sdp sdp];
+        [weakSelf.msgHandler sendPayload:jsep];
+    }];
+}
+
+// 观察者收到远端offer后，发送anwser
+- (void)sendAnswerOfJsep:(NSDictionary *)jsep {
+    KSMediaConnection *mc = self.peerConnection;
+    [mc setRemoteDescriptionWithJsep:jsep];
+
+    __weak typeof(self) weakSelf = self;
+    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+        NSString *type = [RTCSessionDescription stringForType:sdp.type];
+        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
+        jsep[@"type"]  = type;
+        jsep[@"sdp"]   = [sdp sdp];
+        [weakSelf.msgHandler sendPayload:jsep];
+    }];
+}
+
+// 发布者收到远端媒体信息后的回调 answer
+- (void)setRemoteJsep:(NSDictionary *)jsep {
+    KSMediaConnection *mc = self.peerConnection;
+    [mc setRemoteDescriptionWithJsep:jsep];
 }
 
 + (void)socketCreateSession {

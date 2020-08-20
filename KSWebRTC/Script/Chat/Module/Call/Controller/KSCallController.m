@@ -333,7 +333,7 @@
         return;
     }
     
-    [KSWebRTCManager sendOffer];
+    [[KSWebRTCManager shared] sendOffer];
     //[self.callView displayCallBar];
 }
 

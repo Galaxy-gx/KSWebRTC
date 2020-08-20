@@ -37,6 +37,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket;
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveOffer:(NSDictionary *)offer;
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveAnswer:(NSDictionary *)answer;
+- (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate;
 
 @end
 
@@ -53,7 +56,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 // 发送候选者
 - (void)trickleCandidate:(NSMutableDictionary *)candidate;
-
+- (void)sendPayload:(NSDictionary *)payload;
 - (void)close;
 
 @end
