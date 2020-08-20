@@ -58,16 +58,28 @@ static NSString *const KARDStreamId = @"ARDAMS";
     _peerConnection                   = peerConnection;
 
     // 添加音频轨
-    [peerConnection addTrack:capturer.audioTrack streamIds:@[ KARDStreamId ]];
+    [self addAudioTrack];
     // 添加视频轨
     [self addVideoTrack];
     return peerConnection;
 }
 
+- (void)addAudioTrack {
+    if (_setting.audio) {
+        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfAudioTrack)]) {
+            RTCAudioTrack *audioTrack = [self.delegate mediaConnectionOfAudioTrack];
+            if (audioTrack) {
+                // 添加音频轨
+                [_peerConnection addTrack:audioTrack streamIds:@[ KARDStreamId ]];
+            }
+        }
+    }
+}
+
 - (void)addVideoTrack {
     if (_setting.video) {
-        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack:)]) {
-            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack:self];
+        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack)]) {
+            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack];
             if (videoTrack) {
                 // 添加视频轨
                 [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
@@ -171,7 +183,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
 - (RTCMediaConstraints *)defaultMediaConstraint {
     // DTLS
     NSDictionary *mandatoryContraints = [self mandatoryConstraints];
-    NSDictionary *option = @{ @"DtlsSrtpKeyAgreement" : @"true" };
+    NSDictionary *option = @{ @"DtlsSrtpKeyAgreement" : kRTCMediaConstraintsValueTrue };
     RTCMediaConstraints *constrants = [[RTCMediaConstraints alloc] initWithMandatoryConstraints:mandatoryContraints optionalConstraints:option];
     return constrants;
 }

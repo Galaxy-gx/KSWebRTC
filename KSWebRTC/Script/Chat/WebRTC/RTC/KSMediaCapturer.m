@@ -20,13 +20,13 @@ static int const kFramerateLimit         = 25.0;
 
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting {
     if (self = [super init]) {
-        _setting = setting;
+        _setting         = setting;
 
         [self createPeerConnectionFactory];
         [self addMediaSource];
 
         _rtcAudioSession = [RTCAudioSession sharedInstance];
-        [self speakerOn];
+        [self configureAudioSession];
     }
     return self;
 }
@@ -42,8 +42,8 @@ static int const kFramerateLimit         = 25.0;
         //设置SSL传输
         [RTCPeerConnectionFactory initialize];
     }
-    RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
+    RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     //NSArray *codes = [encoderFactory supportedCodecs];
     //[encoderFactory setPreferredCodec:codes[2]];
     _factory = [[RTCPeerConnectionFactory alloc] initWithEncoderFactory:encoderFactory decoderFactory:decoderFactory];
@@ -60,6 +60,7 @@ static int const kFramerateLimit         = 25.0;
 
 - (void)addMediaSource {
     [self addAudioSource];
+    
     if (_setting.callType == KSCallTypeManyVideo || _setting.callType == KSCallTypeSingleVideo) {
         [self addVideoSourceOfCallType:_setting.callType];
     }
@@ -106,10 +107,6 @@ static int const kFramerateLimit         = 25.0;
     RTCVideoSource *videoSource = [_factory videoSource];
     _capturer                   = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
     _videoTrack                 = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
-    if ([_capturer.captureSession canSetSessionPreset:AVCaptureSessionPresetiFrame960x540]) {
-        _capturer.captureSession.sessionPreset = AVCaptureSessionPresetiFrame960x540;
-    }
-    [self startCaptureWithDevice:device];
 }
 
 /*
@@ -127,23 +124,20 @@ static int const kFramerateLimit         = 25.0;
     [self startCapture];
 }
 
-/*
 - (void)configureAudioSession {
     [_rtcAudioSession lockForConfiguration];
     @try {
-        //NSError *error = nil;
         [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
-        [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        //[_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
         if (_setting) {
             [_rtcAudioSession setMode:_setting.audioSessionMode error:nil];
         }
     } @catch (NSException *exception) {
-        NSLog(@"Error setting AVAudioSession category %@",exception);
+        NSLog(@"Error changeing AVAudioSession categor %@",exception);
     } @finally {
     }
     [_rtcAudioSession unlockForConfiguration];
 }
-*/
 
 - (void)muteAudio {
     NSLog(@"audio muted");
@@ -175,7 +169,7 @@ static int const kFramerateLimit         = 25.0;
         [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
         [_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     } @catch (NSException *exception) {
-        NSLog(@"Error setting AVAudioSession category %@",exception);
+        NSLog(@"Error setting AVAudioSession category: %@",exception);
     } @finally {
     }
     [_rtcAudioSession unlockForConfiguration];

@@ -470,7 +470,7 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            [self.callView insertItemsAtIndex:[KSWebRTCManager connectionCount] - 1];
+            [self.callView insertItemsAtIndex:[KSWebRTCManager shared].videoTrackCount - 1];
         }
             break;
         default:

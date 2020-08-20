@@ -17,7 +17,8 @@
 // 收到远端流处理
 //- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
 
-- (RTCVideoTrack *)mediaConnectionOfVideoTrack:(KSMediaConnection *)mediaConnection;
+- (RTCVideoTrack *)mediaConnectionOfVideoTrack;
+- (RTCAudioTrack *)mediaConnectionOfAudioTrack;
 // 收到候选者
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams;

@@ -66,7 +66,6 @@
 
 //data
 + (KSVideoTrack *)videoTrackOfIndex:(NSInteger)index;
-+ (NSInteger)connectionCount;
 + (void)removeConnectionAtIndex:(int)index;
 
 @end

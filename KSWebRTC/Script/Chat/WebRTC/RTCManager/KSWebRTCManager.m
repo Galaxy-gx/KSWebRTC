@@ -45,13 +45,13 @@
     peerConnection.delegate           = self;
     _peerConnection                   = peerConnection;
     [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapture];
-    
-    KSVideoTrack *videoTrack = [[KSVideoTrack alloc] init];
-    videoTrack.videoTrack    = _mediaCapture.videoTrack;
-    videoTrack.isLocal       = YES;
-    videoTrack.callType      = _callType;
-    videoTrack.handleId      = [self randomNumber];
-    _localVideoTrack         = videoTrack;
+
+    KSVideoTrack *videoTrack          = [[KSVideoTrack alloc] init];
+    videoTrack.videoTrack             = _mediaCapture.videoTrack;
+    videoTrack.isLocal                = YES;
+    videoTrack.callType               = _callType;
+    videoTrack.handleId               = [self randomNumber];
+    _localVideoTrack                  = videoTrack;
     [self.videoTracks addObject:videoTrack];
 }
 
@@ -93,8 +93,12 @@
 // 收到远端流处理
 //- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
 
-- (RTCVideoTrack *)mediaConnectionOfVideoTrack:(KSMediaConnection *)mediaConnection {
+- (RTCVideoTrack *)mediaConnectionOfVideoTrack {
     return _mediaCapture.videoTrack;
+}
+
+- (RTCAudioTrack *)mediaConnectionOfAudioTrack {
+    return _mediaCapture.audioTrack;
 }
 
 // 收到候选者
