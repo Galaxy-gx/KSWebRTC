@@ -140,9 +140,11 @@
     RTCMediaStreamTrack *track = rtpReceiver.track;
     NSLog(@"|============| didAddReceiver : %@ |============|",track.kind);
     if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
-        RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
         __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
+        //黑屏处理
+        dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC));
+        dispatch_after(delayTime, dispatch_get_main_queue(), ^{
+            RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
             [weakSelf addVideoTrack:remoteVideoTrack];
         });
     }
