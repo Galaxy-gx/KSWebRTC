@@ -95,7 +95,6 @@
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
 		E64224CD24EA603B000DE5C6 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */; };
 		E6ABF84824EE1D0F00EE2E1D /* KSVideoTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */; };
-		E6ABF84B24EE1D7F00EE2E1D /* KSSuperClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -295,8 +294,6 @@
 		E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
 		E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoTrack.m; sourceTree = "<group>"; };
 		E6ABF84724EE1D0F00EE2E1D /* KSVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoTrack.h; sourceTree = "<group>"; };
-		E6ABF84924EE1D7F00EE2E1D /* KSSuperClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSSuperClient.h; sourceTree = "<group>"; };
-		E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSSuperClient.m; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6E1E6B624E9444800536FBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -467,8 +464,6 @@
 				E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */,
 				E632FEE524E9406A0049ED8A /* KSMediaSetting.h */,
 				E632FEE824E9406A0049ED8A /* KSMediaSetting.m */,
-				E6ABF84924EE1D7F00EE2E1D /* KSSuperClient.h */,
-				E6ABF84A24EE1D7F00EE2E1D /* KSSuperClient.m */,
 			);
 			path = RTC;
 			sourceTree = "<group>";
@@ -1057,7 +1052,6 @@
 				E632FFA724E9406B0049ED8A /* KSWaitingAnswersMemberCell.m in Sources */,
 				E632FFB924E9406B0049ED8A /* KSRemoteCell.m in Sources */,
 				E632FFED24E942050049ED8A /* MJPropertyType.m in Sources */,
-				E6ABF84B24EE1D7F00EE2E1D /* KSSuperClient.m in Sources */,
 				E632FFAC24E9406B0049ED8A /* KSMeetingThemeView.m in Sources */,
 				E632FFA624E9406B0049ED8A /* KSCellAlignmentFlowLayout.m in Sources */,
 				E632FFB024E9406B0049ED8A /* KSCoolTipsView.m in Sources */,
