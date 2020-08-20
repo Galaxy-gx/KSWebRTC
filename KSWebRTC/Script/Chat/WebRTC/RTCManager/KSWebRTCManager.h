@@ -61,6 +61,7 @@
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;
 + (void)socketCreateSession;
++ (void)sendOffer;
 + (void)socketSendHangup;
 
 //data

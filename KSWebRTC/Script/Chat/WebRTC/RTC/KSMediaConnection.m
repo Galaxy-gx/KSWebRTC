@@ -48,6 +48,11 @@ static NSString *const KARDStreamId = @"ARDAMS";
     // ICE 中继服务器地址
     NSArray *iceServers               = @[[self defaultIceServer]];
     config.iceServers                 = iceServers;
+    // Unified plan is more superior than planB
+    config.sdpSemantics               = RTCSdpSemanticsUnifiedPlan;
+    // gatherContinually will let WebRTC to listen to any network changes and send any new candidates to the other client
+    config.continualGatheringPolicy   = RTCContinualGatheringPolicyGatherContinually;
+    
     // 创建一个peerconnection
     RTCPeerConnection *peerConnection = [capturer.factory peerConnectionWithConfiguration:config constraints:constraints delegate:self];
     _peerConnection                   = peerConnection;
@@ -68,6 +73,13 @@ static NSString *const KARDStreamId = @"ARDAMS";
                 [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
             }
         }
+    }
+}
+
+- (void)addIceCandidate:(NSDictionary *)candidate {
+    if (candidate[@"candidate"] && candidate[@"sdpMLineIndex"] && candidate[@"sdpMid"]) {
+        RTCIceCandidate *ice = [[RTCIceCandidate alloc] initWithSdp:candidate[@"candidate"] sdpMLineIndex:[candidate[@"sdpMLineIndex"] intValue] sdpMid:candidate[@"sdpMid"]];
+        [self.peerConnection addIceCandidate:ice];
     }
 }
 

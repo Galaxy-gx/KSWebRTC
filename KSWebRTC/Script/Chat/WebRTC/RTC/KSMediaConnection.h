@@ -39,6 +39,7 @@
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
 - (void)addVideoTrack;
+- (void)addIceCandidate:(NSDictionary *)candidate;
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capture;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 // 创建answer

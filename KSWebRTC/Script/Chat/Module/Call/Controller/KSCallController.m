@@ -134,9 +134,9 @@
 
         KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting];
         [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
-        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+        //[KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     }
-
+    [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:6080"];
     [KSWebRTCManager shared].delegate = self;
     [self createLocalView];
 }
@@ -333,8 +333,8 @@
         return;
     }
     
-    [KSWebRTCManager socketCreateSession];
-    [self.callView displayCallBar];
+    [KSWebRTCManager sendOffer];
+    //[self.callView displayCallBar];
 }
 
 //会话中开启麦克风

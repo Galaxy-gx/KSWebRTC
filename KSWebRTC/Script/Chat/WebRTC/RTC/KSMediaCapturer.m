@@ -44,8 +44,8 @@ static int const kFramerateLimit         = 25.0;
     }
     RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
-    NSArray *codes = [encoderFactory supportedCodecs];
-    [encoderFactory setPreferredCodec:codes[2]];
+    //NSArray *codes = [encoderFactory supportedCodecs];
+    //[encoderFactory setPreferredCodec:codes[2]];
     _factory = [[RTCPeerConnectionFactory alloc] initWithEncoderFactory:encoderFactory decoderFactory:decoderFactory];
 }
 

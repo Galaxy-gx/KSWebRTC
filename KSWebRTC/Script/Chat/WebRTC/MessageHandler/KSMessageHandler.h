@@ -43,20 +43,16 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 @interface KSMessageHandler : NSObject
 
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
-@property (nonatomic, assign )KSCallState callState;
-//@property (nonatomic, readonly) KSMediaConnection *localConnection;
 
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;
 
 //创建会话
 - (void)createSession;
-//离开
-- (void)requestHangup;
+- (void)sendOffer;
 
 // 发送候选者
-- (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate;
-
+- (void)trickleCandidate:(NSMutableDictionary *)candidate;
 
 - (void)close;
 

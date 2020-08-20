@@ -11,7 +11,7 @@
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate>
 @property (nonatomic, strong) KSMessageHandler  *msgHandler;
 @property (nonatomic, strong) KSMediaCapturer   *mediaCapture;
-@property (nonatomic, weak  ) KSMediaConnection *peerConnection;
+@property (nonatomic, strong) KSMediaConnection *peerConnection;
 @property (nonatomic, strong) NSMutableArray    *videoTracks;
 @end
 
@@ -101,14 +101,13 @@
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     NSMutableDictionary *body =[NSMutableDictionary dictionary];
     if (candidate) {
-        body[@"candidate"] = candidate.sdp;
+        body[@"sdp"] = candidate.sdp;
         body[@"sdpMid"] = candidate.sdpMid;
         body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
-        //[_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+        [_msgHandler trickleCandidate:body];
     }
     else{
-        body[@"completed"] = @YES;
-        //[_msgHandler trickleCandidate:mediaConnection.handleId candidate:body];
+        [_msgHandler trickleCandidate:body];
     }
 }
 
@@ -226,12 +225,16 @@
     [[KSWebRTCManager shared].msgHandler close];
 }
 
++ (void)sendOffer {
+    [[KSWebRTCManager shared].msgHandler sendOffer];
+}
+
 + (void)socketCreateSession {
     [[KSWebRTCManager shared].msgHandler createSession];
 }
 
 + (void)socketSendHangup {
-    [[KSWebRTCManager shared].msgHandler requestHangup];
+    //[[KSWebRTCManager shared].msgHandler requestHangup];
 }
 
 //data
