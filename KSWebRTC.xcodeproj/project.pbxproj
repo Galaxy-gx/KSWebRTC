@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E63116A724F0C88A00DB1415 /* KSTimekeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = E63116A624F0C88A00DB1415 /* KSTimekeeper.m */; };
 		E632FF8924E9406B0049ED8A /* KSChatInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FED524E9406A0049ED8A /* KSChatInterfaceController.m */; };
 		E632FF8A24E9406B0049ED8A /* KSCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FED924E9406A0049ED8A /* KSCallController.m */; };
 		E632FF8B24E9406B0049ED8A /* KSMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = E632FEDC24E9406A0049ED8A /* KSMediaController.m */; };
@@ -114,6 +115,8 @@
 
 /* Begin PBXFileReference section */
 		E627BD2824EA16F300F939A2 /* KSImport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSImport.h; sourceTree = "<group>"; };
+		E63116A524F0C88A00DB1415 /* KSTimekeeper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSTimekeeper.h; sourceTree = "<group>"; };
+		E63116A624F0C88A00DB1415 /* KSTimekeeper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSTimekeeper.m; sourceTree = "<group>"; };
 		E632FECC24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		E632FECD24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		E632FED424E9406A0049ED8A /* KSChatInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatInterfaceController.h; sourceTree = "<group>"; };
@@ -310,6 +313,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E63116A024F0C54A00DB1415 /* ARD */ = {
+			isa = PBXGroup;
+			children = (
+				E632FEEF24E9406A0049ED8A /* ARDRoomServerClient.h */,
+				E632FEF024E9406A0049ED8A /* ARDSettingsModel.h */,
+				E632FEF124E9406A0049ED8A /* ARDSignalingChannel.m */,
+				E632FEF224E9406A0049ED8A /* ARDTURNClient.h */,
+				E632FEF324E9406A0049ED8A /* KSCaptureController.m */,
+				E632FEF424E9406A0049ED8A /* ARDSettingsStore.h */,
+				E632FEF524E9406A0049ED8A /* ARDAppClient.h */,
+				E632FEF624E9406A0049ED8A /* ARDTURNClient.m */,
+				E632FEF724E9406A0049ED8A /* ARDSignalingChannel.h */,
+				E632FEF824E9406A0049ED8A /* ARDSettingsModel.m */,
+				E632FEF924E9406A0049ED8A /* ARDRoomServerClient.m */,
+				E632FEFA24E9406A0049ED8A /* KSCaptureController.h */,
+				E632FEFB24E9406A0049ED8A /* ARDAppClient.m */,
+				E632FEFC24E9406A0049ED8A /* ARDSettingsStore.m */,
+			);
+			path = ARD;
+			sourceTree = "<group>";
+		};
+		E63116A124F0C55B00DB1415 /* Countdown */ = {
+			isa = PBXGroup;
+			children = (
+				E63116A524F0C88A00DB1415 /* KSTimekeeper.h */,
+				E63116A624F0C88A00DB1415 /* KSTimekeeper.m */,
+			);
+			path = Countdown;
+			sourceTree = "<group>";
+		};
 		E632FECB24E93FFF0049ED8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,20 +513,8 @@
 		E632FEEE24E9406A0049ED8A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E632FEEF24E9406A0049ED8A /* ARDRoomServerClient.h */,
-				E632FEF024E9406A0049ED8A /* ARDSettingsModel.h */,
-				E632FEF124E9406A0049ED8A /* ARDSignalingChannel.m */,
-				E632FEF224E9406A0049ED8A /* ARDTURNClient.h */,
-				E632FEF324E9406A0049ED8A /* KSCaptureController.m */,
-				E632FEF424E9406A0049ED8A /* ARDSettingsStore.h */,
-				E632FEF524E9406A0049ED8A /* ARDAppClient.h */,
-				E632FEF624E9406A0049ED8A /* ARDTURNClient.m */,
-				E632FEF724E9406A0049ED8A /* ARDSignalingChannel.h */,
-				E632FEF824E9406A0049ED8A /* ARDSettingsModel.m */,
-				E632FEF924E9406A0049ED8A /* ARDRoomServerClient.m */,
-				E632FEFA24E9406A0049ED8A /* KSCaptureController.h */,
-				E632FEFB24E9406A0049ED8A /* ARDAppClient.m */,
-				E632FEFC24E9406A0049ED8A /* ARDSettingsStore.m */,
+				E63116A124F0C55B00DB1415 /* Countdown */,
+				E63116A024F0C54A00DB1415 /* ARD */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1042,6 +1063,7 @@
 				E632FFAF24E9406B0049ED8A /* KSProfileView.m in Sources */,
 				E632FF9924E9406B0049ED8A /* KSWebRTCManager.m in Sources */,
 				E632FF8E24E9406B0049ED8A /* KSMediaConnection.m in Sources */,
+				E63116A724F0C88A00DB1415 /* KSTimekeeper.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
 				E632FF9E24E9406B0049ED8A /* KSAbstract.m in Sources */,
 				E632FFEE24E942050049ED8A /* NSObject+MJKeyValue.m in Sources */,
