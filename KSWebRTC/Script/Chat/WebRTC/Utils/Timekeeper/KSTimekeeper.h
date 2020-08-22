@@ -21,5 +21,7 @@
 
 @interface KSTimekeeper : NSObject
 -(void)countdownOfTime:(int)time callback:(void(^)(KSTimekeeperInfo *countdown))callback;
--(void)timingOfCallback:(void(^)(KSTimekeeperInfo *countdown))callback;
+-(void)timingOfCallback:(void(^)(KSTimekeeperInfo *timing))callback;
+-(void)invalidate;
 @end
+

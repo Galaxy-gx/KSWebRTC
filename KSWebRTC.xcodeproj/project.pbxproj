@@ -334,13 +334,13 @@
 			path = ARD;
 			sourceTree = "<group>";
 		};
-		E63116A124F0C55B00DB1415 /* Countdown */ = {
+		E63116A124F0C55B00DB1415 /* Timekeeper */ = {
 			isa = PBXGroup;
 			children = (
 				E63116A524F0C88A00DB1415 /* KSTimekeeper.h */,
 				E63116A624F0C88A00DB1415 /* KSTimekeeper.m */,
 			);
-			path = Countdown;
+			path = Timekeeper;
 			sourceTree = "<group>";
 		};
 		E632FECB24E93FFF0049ED8A /* Resources */ = {
@@ -513,7 +513,7 @@
 		E632FEEE24E9406A0049ED8A /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				E63116A124F0C55B00DB1415 /* Countdown */,
+				E63116A124F0C55B00DB1415 /* Timekeeper */,
 				E63116A024F0C54A00DB1415 /* ARD */,
 			);
 			path = Utils;

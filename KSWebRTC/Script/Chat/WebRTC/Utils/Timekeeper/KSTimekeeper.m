@@ -66,7 +66,7 @@
     }
 }
 
--(void)timingOfCallback:(void(^)(KSTimekeeperInfo *countdown))callback {
+-(void)timingOfCallback:(void(^)(KSTimekeeperInfo *timing))callback {
     NSDate *startDate            = [NSDate dateWithTimeIntervalSinceNow:0];
     NSTimeInterval startInterval = [startDate timeIntervalSince1970];
     __weak typeof(self) weakSelf = self;
@@ -109,3 +109,4 @@
     return _timekeeperInfo;
 }
 @end
+
