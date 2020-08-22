@@ -69,6 +69,11 @@
 -(void)timingOfCallback:(void(^)(KSTimekeeperInfo *timing))callback {
     NSDate *startDate            = [NSDate dateWithTimeIntervalSinceNow:0];
     NSTimeInterval startInterval = [startDate timeIntervalSince1970];
+    [self timingOfTime:startInterval callback:callback];
+}
+
+-(void)timingOfTime:(int)time callback:(void(^)(KSTimekeeperInfo *timing))callback {
+    NSTimeInterval startInterval = time;
     __weak typeof(self) weakSelf = self;
     if (_timer == nil) {
         __block int timeSign   = 0;
