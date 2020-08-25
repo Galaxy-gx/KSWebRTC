@@ -69,27 +69,27 @@
 -(instancetype)initWithFrame:(CGRect)frame textColor:(UIColor*)textColor font:(UIFont *)font alignment:(NSTextAlignment)alignment titleHeight:(int)titleHeight imageSize:(CGSize)imageSize layoutType:(KSButtonLayoutType)layoutType spacing:(CGFloat)spacing {
     if (self = [super initWithFrame:frame]) {
         
-        _titleHeight = titleHeight;
-        _imageSize = imageSize;
-        _spacing = spacing;
-        _layoutType = layoutType;
-        
-        UIImageView *iconView = [[UIImageView alloc] init];
-        
-        UILabel *titleLabel = [[UILabel alloc] init];
-        titleLabel.textColor = textColor;
-        titleLabel.font =font;
+        _titleHeight             = titleHeight;
+        _imageSize               = imageSize;
+        _spacing                 = spacing;
+        _layoutType              = layoutType;
+
+        UIImageView *iconView    = [[UIImageView alloc] init];
+
+        UILabel *titleLabel      = [[UILabel alloc] init];
+        titleLabel.textColor     = textColor;
+        titleLabel.font          = font;
         titleLabel.textAlignment = alignment;
-        
+
         [self addSubview:iconView];
         [self addSubview:titleLabel];
-        
-        _iconView = iconView;
-        _titleLabel = titleLabel;
-        
+
+        _iconView                = iconView;
+        _titleLabel              = titleLabel;
+
         [self updateKitsCoordinate];
-        
-        iconView.frame = CGRectMake(image_x, image_y, imageSize.width, imageSize.height);
+
+        iconView.frame           = CGRectMake(image_x, image_y, imageSize.width, imageSize.height);
         titleLabel.frame = CGRectMake(title_x, title_y, title_w, titleHeight);
     }
     return self;
@@ -175,18 +175,31 @@
     }
 }
 
--(void)updateTitle:(NSString *)title {
-    _titleLabel.text = title.localizde;
-    [self updateConstraints];
+- (void)updateLayout {
+    _iconView.frame   = CGRectMake(image_x, image_y, _imageSize.width, _imageSize.height);
+    _titleLabel.frame = CGRectMake(title_x, title_y, title_w, _titleHeight);
 }
 
--(void)updateDefaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected {
-    _defaultIcon = defaultIcon;
+- (void)updateTitle:(NSString *)title {
+    _titleLabel.text = title.localizde;
+}
+
+- (void)updateDefaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected {
+    _defaultIcon  = defaultIcon;
     _selectedIcon = selectedIcon;
     self.selected = selected;
 }
 
--(void)setSelected:(BOOL)selected {
+- (void)updateTitle:(NSString *)title defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected {
+    _defaultIcon     = defaultIcon;
+    _selectedIcon    = selectedIcon;
+    _titleLabel.text = title.localizde;
+    self.selected    = selected;
+    [self updateKitsCoordinate];
+    [self updateLayout];
+}
+
+- (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     if (selected) {
         if (!_selectedIcon) {

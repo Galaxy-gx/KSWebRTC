@@ -16,3 +16,7 @@
 "ks_app_global_text_bluetoot"        = "蓝牙";
 "ks_app_global_text_hang_up"         = "挂断";
 "ks_app_global_text_answer"          = "接听";
+
+"ks_app_global_text_video_call"          = "拨打视频";
+"ks_app_global_text_voice_call"          = "拨打语音";
+"ks_app_global_text_cancel"          = "取消";

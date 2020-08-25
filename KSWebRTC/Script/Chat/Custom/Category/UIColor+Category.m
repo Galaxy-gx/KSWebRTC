@@ -79,4 +79,12 @@
     return [UIColor ks_colorWithHexString:@"#292C33"];
 }
 
++ (UIColor *)ks_blackMenu {
+    return [UIColor ks_colorWithHexString:@"#0F131A"];
+}
+
++ (UIColor *)ks_grayMenu {
+    return [UIColor ks_colorWithHexString:@"#F5F7FA"];
+}
+
 @end

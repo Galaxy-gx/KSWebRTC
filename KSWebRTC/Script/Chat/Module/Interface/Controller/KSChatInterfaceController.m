@@ -24,6 +24,8 @@
 #import "KSWebRTCManager.h"
 #import "KSTableViewCell.h"
 #import "KSCollectionViewCell.h"
+#import "KSCallMenuController.h"
+
 @interface KSChatMenu : NSObject
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,copy)NSString *title;
@@ -52,6 +54,12 @@
     cm.callType = KSCallTypeManyVideo;
     cm.title = @"KSCallTypeManyVideo";
     [array addObject:cm];
+    
+    cm = [[KSChatMenu alloc] init];
+    cm.callType = KSCallTypeUnknown;
+    cm.title = @"菜单";
+    [array addObject:cm];
+    
     return array;
 }
 @end
@@ -166,7 +174,18 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     [KSWebRTCManager shared].callState = KSCallStateNone;
     [KSWebRTCManager shared].callType  = cm.callType;
     
-    [self onCallClick];
+    if (cm.callType == KSCallTypeUnknown) {
+        KSCallMenuController *ctrl = [[KSCallMenuController alloc] init];
+        KSCallMenuCallback callback = ^(KSCallMenuType menuType) {
+            
+        };
+        ctrl.callback = callback;
+        [KSCallMenuController enterCallMenuWithCallback:callback target:self];
+
+    }
+    else {
+        [self onCallClick];
+    }
 }
 //更新cell前，先更新数据
 - (void)onAddClick {

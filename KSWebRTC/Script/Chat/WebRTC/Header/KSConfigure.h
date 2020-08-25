@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, KSResizingMode) {
 };
 
 typedef NS_ENUM(NSInteger, KSCallType) {
+    KSCallTypeUnknown,
     KSCallTypeSingleAudio,//一对一语音
     KSCallTypeManyAudio,//多人语音
     KSCallTypeSingleVideo,//一对一视频

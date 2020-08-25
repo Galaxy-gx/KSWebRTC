@@ -33,6 +33,14 @@ typedef NS_ENUM(NSInteger, KSEventType) {
     KSEventTypeStartMeeting                  = 20,//开始会议
 };
 
+typedef NS_ENUM(NSInteger, KSCallMenuType) {
+    KSCallMenuTypeVideo,
+    KSCallMenuTypeVoice,
+    KSCallMenuTypeCancel,
+};
+
 typedef void(^KSEventCallback)(KSEventType eventType,NSDictionary *info);
+
+typedef void(^KSCallMenuCallback)(KSCallMenuType menuType);
 
 #endif /* KSBlock_h */

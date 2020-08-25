@@ -16,5 +16,7 @@
 + (UIColor *)ks_white;
 + (UIColor *)ks_blueBtn;
 + (UIColor *)ks_grayBar;
++ (UIColor *)ks_blackMenu;
++ (UIColor *)ks_grayMenu;
 
 @end
