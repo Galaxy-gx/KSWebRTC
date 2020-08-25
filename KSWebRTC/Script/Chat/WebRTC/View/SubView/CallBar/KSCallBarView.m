@@ -13,9 +13,7 @@
 #import "UIColor+Category.h"
 
 @interface KSCallBarView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,KSCallBarCellDelegate>
-
 @property(nonatomic,strong)NSMutableArray *bars;
-
 @end
 
 static NSString *callBarCellIdentifier = @"callBarCellIdentifier";

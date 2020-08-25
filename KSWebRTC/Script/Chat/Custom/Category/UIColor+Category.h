@@ -13,6 +13,7 @@
 //设置十六进制颜色
 + (UIColor *)ks_colorWithHexString:(NSString *)hexString;
 + (UIImage *)ks_imageWithColor:(UIColor *)color;
++ (UIImage *)ks_imageWithColor:(UIColor *)color radius:(CGFloat)radius;
 + (UIColor *)ks_white;
 + (UIColor *)ks_blueBtn;
 + (UIColor *)ks_grayBar;

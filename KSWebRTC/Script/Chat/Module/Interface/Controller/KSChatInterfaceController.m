@@ -25,6 +25,7 @@
 #import "KSTableViewCell.h"
 #import "KSCollectionViewCell.h"
 #import "KSCallMenuController.h"
+#import "KSFunctionalBarView.h"
 
 @interface KSChatMenu : NSObject
 @property(nonatomic,assign)KSCallType callType;
@@ -82,6 +83,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.view.backgroundColor                = [UIColor whiteColor];
     _chatMenus                              = [KSChatMenu chatMenus];
     _isCollection                           = YES;

@@ -56,5 +56,15 @@
     return btns;
 }
 
++(NSMutableArray *)threeBarBtns {
+    KSBtnInfo *btn1      = [[KSBtnInfo alloc] initWithTitle:@"ks_app_global_text_microphone"
+                                           defaultIcon:@"icon_bar_microphone_white" selectedIcon:@"icon_bar_microphone_red" isSelected:NO btnType:KSCallBarBtnTypeMicrophone];
+    KSBtnInfo *btn2      = [[KSBtnInfo alloc] initWithTitle:@"ks_app_global_text_volume"
+                                           defaultIcon:@"icon_bar_volume_white" selectedIcon:@"icon_bar_volume_red" isSelected:NO btnType:KSCallBarBtnTypeVolume];
+    KSBtnInfo *btn3      = [[KSBtnInfo alloc] initWithTitle:@"ks_app_global_text_bluetoot"
+                                           defaultIcon:@"icon_bar_bluetoot_white" selectedIcon:@"icon_bar_bluetoot_white" isSelected:NO btnType:KSCallBarBtnTypeBluetooth];
+    NSMutableArray *btns = [NSMutableArray arrayWithObjects:btn1,btn2,btn3, nil];
+    return btns;
+}
 
 @end

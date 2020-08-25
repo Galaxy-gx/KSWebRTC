@@ -14,7 +14,7 @@
 #import "KSRemoteCell.h"
 #import "KSLocalCell.h"
 #import "UIColor+Category.h"
-
+#import "KSFunctionalBarView.h"
 @interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic,weak  ) UIScrollView    *scrollView;
@@ -22,7 +22,7 @@
 @property (nonatomic,weak  ) KSProfileView   *profileView;
 @property (nonatomic,weak  ) KSAnswerBarView *answerBarView;
 @property (nonatomic,weak  ) KSCallBarView   *callBarView;
-
+@property (nonatomic,weak  ) KSFunctionalBarView *functionalBarView;
 @property (nonatomic,strong) NSMutableArray  *remoteKits;
 @property (nonatomic,strong) KSTileLayout    *tileLayout;
 @property (nonatomic,assign) CGPoint         tilePoint;
@@ -42,7 +42,12 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
         switch (tileLayout.callType) {
             case KSCallTypeSingleAudio:
             case KSCallTypeSingleVideo:
+            {
                 [self initScrollView];
+                if (tileLayout.callType == KSCallTypeSingleAudio) {
+                    [self initFunctionalBarView];
+                }
+            }
                 break;
             case KSCallTypeManyAudio:
             case KSCallTypeManyVideo:
@@ -59,6 +64,12 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
     _scrollView = scrollView;
     [self addSubview:scrollView];
+}
+
+- (void)initFunctionalBarView {
+    CGFloat y                              = self.bounds.size.height - (68 + 62 + 90 + 20);
+    KSFunctionalBarView *functionalBarView = [[KSFunctionalBarView alloc] initWithFrame:CGRectMake(0, y, self.bounds.size.width, 90)];
+    [self addSubview:functionalBarView];
 }
 
 - (void)initCollectionView {

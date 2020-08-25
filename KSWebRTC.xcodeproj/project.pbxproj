@@ -95,6 +95,9 @@
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
 		E64224CD24EA603B000DE5C6 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */; };
+		E6A0323724F4FAC2001EF0F7 /* KSFunctionalBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A0323624F4FAC2001EF0F7 /* KSFunctionalBarView.m */; };
+		E6A0323A24F4FB78001EF0F7 /* KSFunctionalBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A0323924F4FB78001EF0F7 /* KSFunctionalBarCell.m */; };
+		E6A0323F24F51035001EF0F7 /* KSComposeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A0323E24F51035001EF0F7 /* KSComposeButton.m */; };
 		E6ABF84824EE1D0F00EE2E1D /* KSVideoTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
 		E6F7091124F3D61E0093D40B /* KSCallMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F7091024F3D61E0093D40B /* KSCallMenuController.m */; };
@@ -299,6 +302,12 @@
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E64224CB24EA603B000DE5C6 /* NSDictionary+Category.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
 		E64224CC24EA603B000DE5C6 /* NSDictionary+Category.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
+		E6A0323524F4FAC2001EF0F7 /* KSFunctionalBarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarView.h; sourceTree = "<group>"; };
+		E6A0323624F4FAC2001EF0F7 /* KSFunctionalBarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarView.m; sourceTree = "<group>"; };
+		E6A0323824F4FB78001EF0F7 /* KSFunctionalBarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarCell.h; sourceTree = "<group>"; };
+		E6A0323924F4FB78001EF0F7 /* KSFunctionalBarCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarCell.m; sourceTree = "<group>"; };
+		E6A0323D24F51035001EF0F7 /* KSComposeButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSComposeButton.h; sourceTree = "<group>"; };
+		E6A0323E24F51035001EF0F7 /* KSComposeButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSComposeButton.m; sourceTree = "<group>"; };
 		E6ABF84624EE1D0F00EE2E1D /* KSVideoTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVideoTrack.m; sourceTree = "<group>"; };
 		E6ABF84724EE1D0F00EE2E1D /* KSVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVideoTrack.h; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -630,11 +639,15 @@
 		E632FF1A24E9406A0049ED8A /* CallBar */ = {
 			isa = PBXGroup;
 			children = (
-				E632FF1B24E9406A0049ED8A /* KSCallBarView.h */,
-				E632FF1C24E9406A0049ED8A /* ViewModel */,
 				E632FF1F24E9406A0049ED8A /* KSCallBarCell.h */,
-				E632FF2024E9406A0049ED8A /* KSCallBarView.m */,
 				E632FF2124E9406A0049ED8A /* KSCallBarCell.m */,
+				E632FF1B24E9406A0049ED8A /* KSCallBarView.h */,
+				E632FF2024E9406A0049ED8A /* KSCallBarView.m */,
+				E632FF1C24E9406A0049ED8A /* ViewModel */,
+				E6A0323524F4FAC2001EF0F7 /* KSFunctionalBarView.h */,
+				E6A0323624F4FAC2001EF0F7 /* KSFunctionalBarView.m */,
+				E6A0323824F4FB78001EF0F7 /* KSFunctionalBarCell.h */,
+				E6A0323924F4FB78001EF0F7 /* KSFunctionalBarCell.m */,
 			);
 			path = CallBar;
 			sourceTree = "<group>";
@@ -664,8 +677,8 @@
 		E632FF2524E9406A0049ED8A /* FlowLayout */ = {
 			isa = PBXGroup;
 			children = (
-				E632FF2624E9406A0049ED8A /* KSCellAlignmentFlowLayout.m */,
 				E632FF2724E9406A0049ED8A /* KSCellAlignmentFlowLayout.h */,
+				E632FF2624E9406A0049ED8A /* KSCellAlignmentFlowLayout.m */,
 			);
 			path = FlowLayout;
 			sourceTree = "<group>";
@@ -843,6 +856,8 @@
 				E632FF7A24E9406A0049ED8A /* KSLayoutButton.m */,
 				E632FF7B24E9406A0049ED8A /* KSIputView.h */,
 				E632FF7E24E9406A0049ED8A /* KSIputView.m */,
+				E6A0323D24F51035001EF0F7 /* KSComposeButton.h */,
+				E6A0323E24F51035001EF0F7 /* KSComposeButton.m */,
 			);
 			path = Kits;
 			sourceTree = "<group>";
@@ -1050,6 +1065,7 @@
 				E632FF9324E9406B0049ED8A /* ARDTURNClient.m in Sources */,
 				E632FF9B24E9406B0049ED8A /* KSCollectionViewCell.m in Sources */,
 				E632FF9F24E9406B0049ED8A /* KSNavigationBar.m in Sources */,
+				E6A0323724F4FAC2001EF0F7 /* KSFunctionalBarView.m in Sources */,
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
 				E632FFB124E9406B0049ED8A /* KSCoolHUB.m in Sources */,
 				E632FFF324E942050049ED8A /* NSObject+MJClass.m in Sources */,
@@ -1072,6 +1088,7 @@
 				E632FFB224E9406B0049ED8A /* KSTopBarView.m in Sources */,
 				E632FFCC24E9406B0049ED8A /* KSWebSocket.m in Sources */,
 				E632FFBE24E9406B0049ED8A /* UIButton+Category.m in Sources */,
+				E6A0323F24F51035001EF0F7 /* KSComposeButton.m in Sources */,
 				E632FFF224E942050049ED8A /* NSObject+MJProperty.m in Sources */,
 				E6F7091124F3D61E0093D40B /* KSCallMenuController.m in Sources */,
 				E6F7091724F3D7BC0093D40B /* KSCallMenuCell.m in Sources */,
@@ -1091,6 +1108,7 @@
 				E632FF8C24E9406B0049ED8A /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				E632FFC324E9406B0049ED8A /* KSSuperController+Category.m in Sources */,
 				E632FF9224E9406B0049ED8A /* KSCaptureController.m in Sources */,
+				E6A0323A24F4FB78001EF0F7 /* KSFunctionalBarCell.m in Sources */,
 				E632FFAF24E9406B0049ED8A /* KSProfileView.m in Sources */,
 				E632FF9924E9406B0049ED8A /* KSWebRTCManager.m in Sources */,
 				E632FF8E24E9406B0049ED8A /* KSMediaConnection.m in Sources */,

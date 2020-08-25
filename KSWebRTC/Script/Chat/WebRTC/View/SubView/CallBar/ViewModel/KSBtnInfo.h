@@ -26,4 +26,5 @@ typedef NS_ENUM(NSInteger, KSCallBarBtnType) {
 
 +(NSMutableArray *)callBarBtns;
 +(NSMutableArray *)meetingBarBtns;
++(NSMutableArray *)threeBarBtns;
 @end

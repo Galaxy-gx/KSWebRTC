@@ -67,6 +67,18 @@
     return image;
 }
 
++ (UIImage *)ks_imageWithColor:(UIColor *)color radius:(CGFloat)radius {
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(radius*2, radius*2), NO, 0);
+    CGContextRef cxt = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(cxt, color.CGColor);
+    CGContextAddArc(cxt, radius, radius, radius, 0, 2*M_PI, 0);
+    CGContextDrawPath(cxt, kCGPathFill);
+    CGContextClosePath(cxt);
+    UIImage *image   = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
 + (UIColor *)ks_white {
     return [UIColor whiteColor];
 }
