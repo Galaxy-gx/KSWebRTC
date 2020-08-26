@@ -131,6 +131,16 @@
     }
 }
 
+-(void)updateTitle:(NSString *)title backgroundImage:(UIImage *)backgroundImage normalImage:(UIImage *)normalImage {
+    [self updateTitle:title];
+    if (backgroundImage) {
+        [self setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    }
+    if (normalImage) {
+        [self setImage:normalImage forState:UIControlStateNormal];
+    }
+}
+
 -(void)updateTitle:(NSString *)title normalIcon:(NSString *)normalIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected {
     if (normalIcon) {
         [self setImage:[UIImage imageNamed:normalIcon] forState:UIControlStateNormal];
@@ -141,5 +151,6 @@
     [self updateTitle:title];
     self.selected = selected;
 }
+
 @end
 

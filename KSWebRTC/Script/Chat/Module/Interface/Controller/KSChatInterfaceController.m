@@ -83,6 +83,9 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    KSFunctionalBarView *fv = [[KSFunctionalBarView alloc] initWithFrame:CGRectMake(0, 100, 300, 150)];
+    [self.view addSubview:fv];
+    return;
     
     self.view.backgroundColor                = [UIColor whiteColor];
     _chatMenus                              = [KSChatMenu chatMenus];

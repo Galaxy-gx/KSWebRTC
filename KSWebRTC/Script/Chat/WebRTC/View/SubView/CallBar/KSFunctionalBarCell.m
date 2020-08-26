@@ -10,6 +10,7 @@
 #import "KSComposeButton.h"
 #import "UIFont+Category.h"
 #import "UIColor+Category.h"
+#import "KSLayoutButton.h"
 
 @interface KSFunctionalBarCell()
 @property(nonatomic,weak)KSComposeButton *button;
