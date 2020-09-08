@@ -31,7 +31,6 @@
 		E6008961250798E70065B68E /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008880250798E60065B68E /* KSWebSocketConfigure.m */; };
 		E6008962250798E70065B68E /* KSRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008884250798E60065B68E /* KSRegex.m */; };
 		E6008963250798E70065B68E /* KSTimekeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008887250798E60065B68E /* KSTimekeeper.m */; };
-		E6008964250798E70065B68E /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6008889250798E60065B68E /* WebRTC.framework */; };
 		E6008965250798E70065B68E /* KSChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E600888D250798E60065B68E /* KSChatController.m */; };
 		E6008966250798E70065B68E /* KSAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008891250798E60065B68E /* KSAlertController.m */; };
 		E6008967250798E70065B68E /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008894250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.m */; };
@@ -107,6 +106,8 @@
 		E60089AD250798E70065B68E /* KSCellAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008947250798E70065B68E /* KSCellAlignmentFlowLayout.m */; };
 		E60089AE250798E70065B68E /* KSWaitingAnswersGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008949250798E70065B68E /* KSWaitingAnswersGroupView.m */; };
 		E60089AF250798E70065B68E /* KSWaitingAnswersView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600894B250798E70065B68E /* KSWaitingAnswersView.m */; };
+		E60089B025079A810065B68E /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6008889250798E60065B68E /* WebRTC.framework */; };
+		E60089B125079A810065B68E /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6008889250798E60065B68E /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3424B8507F004C7060 /* AppDelegate.m */; };
 		E6400F3824B8507F004C7060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3724B8507F004C7060 /* ViewController.m */; };
 		E6400F3B24B8507F004C7060 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3924B8507F004C7060 /* Main.storyboard */; };
@@ -123,6 +124,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				E60089B125079A810065B68E /* WebRTC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,7 +358,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6008964250798E70065B68E /* WebRTC.framework in Frameworks */,
+				E60089B025079A810065B68E /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

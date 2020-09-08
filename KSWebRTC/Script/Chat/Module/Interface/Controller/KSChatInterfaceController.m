@@ -208,17 +208,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 - (void)callWithType:(KSCallType)type {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceCaller;
-    [KSWebRTCManager callToPeerId:[NSString stringWithFormat:@"%lld",_peerId]];
-    
-    KSChatController *ctrl             = [[KSChatController alloc] init];
-    //ctrl.callType                      = type;
-    ctrl.isSuperBar                    = YES;
-    //ctrl.peerId                        = _peerId;
-    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-    [self presentViewController:navCtrl animated:NO completion:nil];
+    [KSChatController callWithType:type callState:KSCallStateMaintenanceNormal isCaller:YES peerId:(int)_peerId target:self];
 }
 
 @end
