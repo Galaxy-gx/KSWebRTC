@@ -33,7 +33,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 @required
 - (KSMediaConnection *)messageHandlerOfLocalConnection;
-
+- (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep;
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;

@@ -116,8 +116,8 @@
     return self.peerConnection;
 }
 
-- (KSMediaCapturer *)mediaCaptureOfSectionsInMessageHandler:(KSMessageHandler *)messageHandler {
-    return _mediaCapturer;
+- (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep {
+    KSMediaTrack *mediaTrack = [self mediaTrackOfSdp:jsep[@"sdp"]];
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
