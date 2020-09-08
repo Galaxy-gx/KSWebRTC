@@ -22,6 +22,7 @@ CGFloat const KS_Extern_24Font                       = 24;
 CGFloat const KS_Extern_26Font                       = 26;
 CGFloat const KS_Extern_28Font                       = 28;
 CGFloat const KS_Extern_30Font                       = 30;
+CGFloat const KS_Extern_36Font                       = 36;
 
 int const KS_Extern_Point01                          = 1;
 int const KS_Extern_Point02                          = 2;

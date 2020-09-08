@@ -29,9 +29,9 @@ KSLayoutMake(CGFloat width, CGFloat height, CGFloat hpadding, CGFloat vpadding)
 @property (nonatomic,assign) KSLayout       layout;
 @property (nonatomic,assign) KSScale        scale;
 @property (nonatomic,assign) KSContentMode  mode;
-@property (nonatomic,assign) KSCallType     callType;
 @property (nonatomic,assign) KSResizingMode resizingMode;
 @property (nonatomic,assign) CGFloat        topPadding;
+@property (nonatomic,assign) BOOL           isCalled;//是否是被叫
 
 + (KSTileLayout *)singleAudioLayout;
 + (KSTileLayout *)manyAudioLayout;

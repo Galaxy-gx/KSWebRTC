@@ -13,4 +13,6 @@
 
 @property(nonatomic,assign)KSAnswerState answerState;
 
+- (instancetype)initWithFrame:(CGRect)frame callType:(KSCallType)callType;
+
 @end

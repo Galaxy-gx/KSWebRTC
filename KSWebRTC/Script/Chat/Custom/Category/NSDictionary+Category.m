@@ -1,9 +1,8 @@
 //
 //  NSDictionary+Category.m
-//  KSWebRTC
+//  Telegraph
 //
 //  Created by saeipi on 2020/8/17.
-//  Copyright © 2020 saeipi. All rights reserved.
 //
 
 #import "NSDictionary+Category.h"

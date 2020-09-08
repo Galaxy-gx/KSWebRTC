@@ -51,4 +51,10 @@ static const NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRS
     NSDictionary *attrs = @{NSFontAttributeName : font};
     return [self boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 }
+
+- (NSDictionary *)ks_toDictionary {
+    NSData *jsonData = [self dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:nil];
+    return dict;
+}
 @end

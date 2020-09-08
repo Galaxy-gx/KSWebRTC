@@ -20,7 +20,6 @@ typedef NS_ENUM(NSInteger, KSButtonLayoutType) {
 @interface KSButton : UIControl
 -(instancetype)initWithFrame:(CGRect)frame title:(NSString *)title textColor:(UIColor*)textColor font:(UIFont *)font alignment:(NSTextAlignment)alignment titleHeight:(int)titleHeight defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon imageSize:(CGSize)imageSize layoutType:(KSButtonLayoutType)layoutType spacing:(CGFloat)spacing;
 -(instancetype)initWithFrame:(CGRect)frame textColor:(UIColor*)textColor font:(UIFont *)font alignment:(NSTextAlignment)alignment titleHeight:(int)titleHeight imageSize:(CGSize)imageSize layoutType:(KSButtonLayoutType)layoutType spacing:(CGFloat)spacing;
--(void)updateTitle:(NSString *)title defaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected;
 -(void)updateDefaultIcon:(NSString *)defaultIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected;
 -(void)updateTitle:(NSString *)title;
 

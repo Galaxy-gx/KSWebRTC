@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "KSBlock.h"
 @interface KSFunctionalBarView : UIView
+
+@property (nonatomic,copy  ) KSEventCallback callback;
+@property (nonatomic,assign) BOOL            isSession;
+
+- (void)setEventCallback:(KSEventCallback)callback;
 
 @end

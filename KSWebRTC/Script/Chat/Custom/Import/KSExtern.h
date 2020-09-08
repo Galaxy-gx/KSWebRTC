@@ -24,6 +24,7 @@ UIKIT_EXTERN CGFloat const KS_Extern_24Font;
 UIKIT_EXTERN CGFloat const KS_Extern_26Font;
 UIKIT_EXTERN CGFloat const KS_Extern_28Font;
 UIKIT_EXTERN CGFloat const KS_Extern_30Font;
+UIKIT_EXTERN CGFloat const KS_Extern_36Font;
 
 UIKIT_EXTERN int const KS_Extern_Point01;
 UIKIT_EXTERN int const KS_Extern_Point02;

@@ -10,4 +10,6 @@
 
 @interface KSChatInterfaceController : KSSuperController
 
+@property(nonatomic,assign)int64_t peerId;
+
 @end

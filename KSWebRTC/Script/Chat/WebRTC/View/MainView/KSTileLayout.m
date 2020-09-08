@@ -14,10 +14,9 @@
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
     tileLayout.scale         = KSScaleMake(9, 16);
     tileLayout.mode          = KSContentModeScaleAspectFit;
-    int width                = 96;
-    int height               = width / tileLayout.scale.width * tileLayout.scale.height;
-    tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
-    tileLayout.callType      = KSCallTypeSingleAudio;
+    CGFloat width            = 99;
+    CGFloat height           = width / tileLayout.scale.width * tileLayout.scale.height;
+    tileLayout.layout        = KSLayoutMake(width, height, KS_Extern_Point10, KS_Extern_Point10);//KSLayoutMake(width, height, 0, 0);
     return tileLayout;
 }
 
@@ -25,10 +24,9 @@
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
     tileLayout.scale         = KSScaleMake(3, 4);
     tileLayout.mode          = KSContentModeScaleAspectFit;
-    int width                = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
-    int height               = width / tileLayout.scale.width * tileLayout.scale.height;;
+    CGFloat width            = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
+    CGFloat height           = width / tileLayout.scale.width * tileLayout.scale.height;;
     tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
-    tileLayout.callType      = KSCallTypeManyAudio;
     return tileLayout;
 }
 
@@ -36,10 +34,9 @@
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
     tileLayout.scale         = KSScaleMake(9, 16);
     tileLayout.mode          = KSContentModeScaleAspectFit;
-    int width                = 96;
-    int height               = width / tileLayout.scale.width * tileLayout.scale.height;
+    CGFloat width            = 96;
+    CGFloat height           = width / tileLayout.scale.width * tileLayout.scale.height;
     tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
-    tileLayout.callType      = KSCallTypeSingleVideo;
     return tileLayout;
 }
 
@@ -47,10 +44,9 @@
     KSTileLayout *tileLayout = [[KSTileLayout alloc] init];
     tileLayout.scale         = KSScaleMake(3, 4);
     tileLayout.mode          = KSContentModeScaleAspectFit;
-    int width                = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
-    int height               = width / tileLayout.scale.width * tileLayout.scale.height;;
+    CGFloat width            = ([[UIScreen mainScreen]bounds].size.width - KS_Extern_Point10)/2;
+    CGFloat height           = width / tileLayout.scale.width * tileLayout.scale.height;;
     tileLayout.layout        = KSLayoutMake(width, height, 0, 0);
-    tileLayout.callType      = KSCallTypeManyVideo;
     return tileLayout;
 }
 

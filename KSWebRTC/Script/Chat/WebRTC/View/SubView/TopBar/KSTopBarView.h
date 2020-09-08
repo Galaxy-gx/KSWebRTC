@@ -8,11 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import "KSButton.h"
+#import "KSBtnInfo.h"
+@class KSTopBarView;
+
+@protocol KSTopBarViewDataSource <NSObject>
+- (NSMutableArray *)menuDatasOfTopBarView:(KSTopBarView *)topBarView;
+- (NSString *)sessionIDOfTopBarView:(KSTopBarView *)topBarView;
+@end
+
+@protocol KSTopBarViewDelegate <NSObject>
+- (void)topBarView:(KSTopBarView *)topBarView btnInfo:(KSBtnInfo *)btnInfo;
+@end
 
 @interface KSTopBarView : UIView
 
-@property(nonatomic,weak)UIButton *switchBtn;
-@property(nonatomic,weak)UIButton *addBtn;
-@property(nonatomic,weak)UIButton *scaleDownBtn;
 @property(nonatomic,weak)KSButton *identifierBtn;
+@property(nonatomic,weak)id<KSTopBarViewDataSource> dataSource;
+@property(nonatomic,weak)id<KSTopBarViewDelegate> delegate;
+
+- (void)reloadBar;
+- (void)showKitOfStartingTime:(int)time;
+- (void)hiddenKit;
+
 @end

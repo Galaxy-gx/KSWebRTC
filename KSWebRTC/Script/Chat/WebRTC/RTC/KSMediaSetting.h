@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "KSConfigure.h"
 #import "KSCallState.h"
+#import "KSBlock.h"
 
 @interface KSIceServer : NSObject<NSCopying,NSMutableCopying>
 @property(nonatomic,copy)NSMutableArray<NSString *> *servers;
@@ -18,25 +19,20 @@
 @end
 
 @interface KSCapturerSetting : NSObject
-@property (nonatomic,assign ) KSCallType callType;
 @property (nonatomic,assign ) BOOL       isSSL;
 @property (nonatomic,assign ) BOOL       isFront;
 @property (nonatomic,assign ) BOOL       isOpenSpeaker;
 @property (nonatomic,assign ) BOOL       isMuteAudio;
 @property (nonatomic,assign ) BOOL       isMuteVideo;
 @property (nonatomic,assign ) BOOL       isStartCapture;
-//@property (nonatomic,assign ) CGSize     resolution;
-@property (nonatomic,assign ) KSScale    videoScale;
-@property (nonatomic,assign, readonly) AVAudioSessionMode audioSessionMode;
-
+@property (nonatomic,assign ) BOOL       videoEnabled;
+@property(nonatomic,copy)KSAuthorizationCallback authCallback;
 @end
 
 @interface KSConnectionSetting : NSObject<NSCopying,NSMutableCopying>
 @property (nonatomic,strong ) KSIceServer *iceServer;
-@property (nonatomic,assign ) KSCallType  callType;
-@property (nonatomic,assign ) BOOL        audio;
-@property (nonatomic,assign ) BOOL        video;
-@property (nonatomic, assign, readonly) BOOL isFocus;
+@property (nonatomic,assign ) BOOL        addVideoTrack;
+@property (nonatomic,assign ) BOOL        addAudioTrack;
 
 @end
 
@@ -45,7 +41,7 @@
 @property (nonatomic,strong) KSCapturerSetting   *capturerSetting;
 @property (nonatomic,strong) KSConnectionSetting *connectionSetting;
 
--(instancetype)initWithConnectionSetting:(KSConnectionSetting *)connectionSetting capturerSetting:(KSCapturerSetting *)capturerSetting;
+-(instancetype)initWithConnectionSetting:(KSConnectionSetting *)connectionSetting capturerSetting:(KSCapturerSetting *)capturerSetting callType:(KSCallType)callType;
 
 @end
 

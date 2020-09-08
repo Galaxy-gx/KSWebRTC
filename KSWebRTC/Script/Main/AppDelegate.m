@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "KSChatInterfaceController.h"
-#import "KSCallController.h"
+#import "KSChatController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +21,7 @@
     // Override point for customization after application launch.
     [self.window makeKeyAndVisible];
 
-    KSChatInterfaceController *ctrl = [[KSChatInterfaceController alloc] init];
+    KSChatController *ctrl = [[KSChatController alloc] init];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     //UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [UIApplication sharedApplication].keyWindow.rootViewController = navCtrl;

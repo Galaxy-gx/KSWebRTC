@@ -15,10 +15,10 @@
 @property (nonatomic, assign) CGFloat space;
 @property (nonatomic, assign) CGFloat imgWidth;
 @property (nonatomic, assign) CGFloat imgHeight;
+@property (nonatomic, assign) BOOL    isChoose;
 
 - (instancetype)initWithFrame:(CGRect)frame layoutType:(KSButtonLayoutType)layoutType title:(NSString *)title font:(UIFont *)font textColor:(UIColor *)textColor normalImg:(NSString *)normalImg selectImg:(NSString *) selectImg  space:(CGFloat)space imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight;
 - (instancetype)initWithFrame:(CGRect)frame layoutType:(KSButtonLayoutType)layoutType font:(UIFont *)font textColor:(UIColor *)textColor space:(CGFloat)space imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight;
 -(void)updateTitle:(NSString *)title;
 -(void)updateTitle:(NSString *)title normalIcon:(NSString *)normalIcon selectedIcon:(NSString *)selectedIcon selected:(BOOL)selected;
--(void)updateTitle:(NSString *)title backgroundImage:(UIImage *)backgroundImage normalImage:(UIImage *)normalImage;
 @end

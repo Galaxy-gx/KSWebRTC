@@ -7,131 +7,135 @@
 //
 
 #import "KSCallView.h"
-#import "KSLocalView.h"
+#import "KSScreenMediaView.h"
 #import "KSProfileView.h"
 #import "KSAnswerBarView.h"
 #import "KSCallBarView.h"
-#import "KSRemoteCell.h"
-#import "KSLocalCell.h"
+#import "KSTileMediaCell.h"
 #import "UIColor+Category.h"
 #import "KSFunctionalBarView.h"
-@interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+#import "KSLayoutButton.h"
+#import "UIFont+Category.h"
 
-@property (nonatomic,weak  ) UIScrollView    *scrollView;
-@property (nonatomic,weak  ) KSLocalView     *localView;
-@property (nonatomic,weak  ) KSProfileView   *profileView;
-@property (nonatomic,weak  ) KSAnswerBarView *answerBarView;
-@property (nonatomic,weak  ) KSCallBarView   *callBarView;
+@interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,KSCallBarViewDataSource>
+
+@property (nonatomic,weak  ) UIScrollView        *scrollView;
+@property (nonatomic,weak  ) KSScreenMediaView   *screenMediaView;//全屏
+@property (nonatomic,weak  ) KSTileMediaView     *tileMediaView;//小窗
+@property (nonatomic,weak  ) KSAnswerBarView     *answerBarView;
+@property (nonatomic,weak  ) KSCallBarView       *callBarView;
 @property (nonatomic,weak  ) KSFunctionalBarView *functionalBarView;
-@property (nonatomic,strong) NSMutableArray  *remoteKits;
-@property (nonatomic,strong) KSTileLayout    *tileLayout;
-@property (nonatomic,assign) CGPoint         tilePoint;
-
-@property(nonatomic,weak)UICollectionView    *collectionView;
-
+@property (nonatomic,weak  ) KSLayoutButton      *switchButton;
+@property (nonatomic,strong) KSTileLayout        *tileLayout;
+@property (nonatomic,assign) CGPoint             tilePoint;
+@property (nonatomic,weak  ) UICollectionView    *collectionView;
+@property (nonatomic,assign,readonly) KSCallType myType;
+@property (nonatomic,weak  ) KSDeviceSwitch      *deviceSwitch;
 @end
 
-static NSString *const remoteCellIdentifier = @"remoteCellIdentifier";
-static NSString *const localCellIdentifier = @"localCellIdentifier";
+static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
 
 @implementation KSCallView
 
-- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout {
+- (instancetype)initWithFrame:(CGRect)frame tileLayout:(KSTileLayout *)tileLayout deviceSwitch:(KSDeviceSwitch *)deviceSwitch {
     if (self = [super initWithFrame:frame]) {
         self.tileLayout   = tileLayout;
-        switch (tileLayout.callType) {
-            case KSCallTypeSingleAudio:
-            case KSCallTypeSingleVideo:
-            {
-                [self initScrollView];
-                if (tileLayout.callType == KSCallTypeSingleAudio) {
-                    [self initFunctionalBarView];
-                }
-            }
-                break;
-            case KSCallTypeManyAudio:
-            case KSCallTypeManyVideo:
-                [self initCollectionView];
-                break;
-            default:
-                break;
-        }
+        self.deviceSwitch = deviceSwitch;
     }
     return self;
 }
 
-- (void)initScrollView {
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-    _scrollView = scrollView;
-    [self addSubview:scrollView];
-}
-
-- (void)initFunctionalBarView {
-    CGFloat y                              = self.bounds.size.height - (68 + 62 + 90 + 20);
-    KSFunctionalBarView *functionalBarView = [[KSFunctionalBarView alloc] initWithFrame:CGRectMake(0, y, self.bounds.size.width, 90)];
-    [self addSubview:functionalBarView];
-}
-
-- (void)initCollectionView {
-    //CGFloat padding                        = 10;
-    CGFloat cell_w                         = _tileLayout.layout.width;
-    CGFloat cell_h                         = _tileLayout.layout.height;
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
-    flowLayout.minimumLineSpacing          = KS_Extern_Point10;
-    flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
-    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
-    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
-    
-    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height - _tileLayout.topPadding)
-                                                                collectionViewLayout:flowLayout];
-    collectionView.backgroundColor         = [UIColor clearColor];
-    
-    collectionView.dataSource              = self;
-    collectionView.delegate                = self;
-    _collectionView                        = collectionView;
-    [collectionView registerClass:[KSRemoteCell class] forCellWithReuseIdentifier:remoteCellIdentifier];
-    [collectionView registerClass:[KSLocalCell class] forCellWithReuseIdentifier:localCellIdentifier];
-    
-    [self addSubview:collectionView];
-}
-
-- (void)createLocalViewWithTileLayout:(KSTileLayout *)tileLayout {
-    CGRect rect = CGRectZero;
-    switch (tileLayout.resizingMode) {
-        case KSResizingModeTile:
-            rect = CGRectMake(self.bounds.size.width - tileLayout.layout.width - tileLayout.layout.hpadding,
-                              tileLayout.layout.vpadding,
-                              tileLayout.layout.width,
-                              tileLayout.layout.height);
+- (void)initKits {
+    switch (self.myType) {
+        case KSCallTypeSingleAudio:
+        case KSCallTypeSingleVideo:
+        {
+            [self initScrollView];
+            if (_tileLayout.isCalled) {
+                [self initSwitch];
+            }
+        }
             break;
-        case KSResizingModeScreen:
-            rect = self.bounds;
+        case KSCallTypeManyAudio:
+        case KSCallTypeManyVideo:
             break;
         default:
             break;
     }
-    KSLocalView *localView = [[KSLocalView alloc] initWithFrame:rect];
-    localView.tileLayout   = tileLayout;
-    _localView             = localView;
-    [self.scrollView addSubview:localView];
 }
 
-- (void)setLocalVideoTrack:(KSVideoTrack *)videoTrack {
-    _localView.videoTrack = videoTrack;
+- (void)initScrollView {
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    _scrollView              = scrollView;
+    [self addSubview:scrollView];
 }
 
-- (void)zoomOutLocalView {
-    CGRect target        = CGRectMake(self.bounds.size.width - 10 - self.localView.tileLayout.layout.width,
-                                      _tileLayout.topPadding + KS_Extern_Point10,
-                                      self.localView.tileLayout.layout.width,
-                                      self.localView.tileLayout.layout.height);
-    self.localView.frame = target;
-    [self localToFront];
+- (void)initSwitch {
+    NSString *title = (self.myType == KSCallTypeSingleAudio) ? @"ks_app_global_text_switch_to_video" : @"ks_app_global_text_switch_to_voice";
+    KSLayoutButton *switchButton = [[KSLayoutButton alloc] initWithFrame:CGRectMake(self.bounds.size.width - 100 - 37, self.bounds.size.height - 162 - 46, 100, 46)
+                                                              layoutType:KSButtonLayoutTypeTitleBottom
+                                                                   title:title
+                                                                    font:[UIFont ks_fontRegularOfSize:KS_Extern_14Font]
+                                                               textColor:[UIColor ks_white]
+                                                               normalImg:@"icon_bar_rings_small_white"
+                                                               selectImg:@"icon_bar_rings_small_white"
+                                                                   space:KS_Extern_Point08
+                                                              imageWidth:20
+                                                             imageHeight:20];
+    _switchButton                = switchButton;
+    [switchButton addTarget:self action:@selector(onSwitchClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:switchButton];
+}
+
+- (void)updateSwitchOfCalltype:(KSCallType)callType {
+    //此时calltype为最新的
+    if (callType == KSCallTypeSingleAudio || callType == KSCallTypeSingleVideo) {
+        NSString *title = (callType == KSCallTypeSingleAudio) ? @"ks_app_global_text_switch_to_video" : @"ks_app_global_text_switch_to_voice";
+        [_switchButton updateTitle:title];
+    }
+}
+
+- (void)setSwitchButtonHidden:(BOOL)hidden {
+    _switchButton.hidden = hidden;
+}
+
+- (void)onSwitchClick:(KSLayoutButton *)button {
+    //此时calltype还没有改，取反
+    KSCallMenuType menuType = KSCallMenuTypeVideo;
+    KSCallType callType = KSCallTypeSingleVideo;
+    if (self.myType == KSCallTypeSingleAudio) {
+    }
+    else if (self.myType == KSCallTypeSingleVideo){
+        menuType = KSCallMenuTypeVoice;
+        callType = KSCallTypeSingleAudio;
+    }
+    
+    [self updateSwitchOfCalltype:callType];
+    
+    if (self.callback) {
+        KSMediaSwitch *ms = [[KSMediaSwitch alloc] init];
+        ms.mediaType      = menuType;
+        ms.callType       = callType;
+        self.callback(KSEventTypeStartSwitch, ms);
+    }
+}
+
+- (void)setScreenMediaTrack:(KSMediaTrack *)mediaTrack {
+    self.screenMediaView.mediaTrack = mediaTrack;
+}
+
+- (void)setTileMediaTrack:(KSMediaTrack *)mediaTrack {
+    self.tileMediaView.hidden     = NO;
+    self.tileMediaView.mediaTrack = mediaTrack;
+}
+
+- (void)clearRender {
+    _screenMediaView.mediaTrack = nil;
+    _tileMediaView.mediaTrack   = nil;
 }
 
 - (void)localToFront {
-    [self.scrollView bringSubviewToFront:self.localView];
+    [self.scrollView bringSubviewToFront:self.screenMediaView];
 }
 
 - (void)panSwipeGesture:(UIGestureRecognizer *)gestureRecognizer {
@@ -170,10 +174,10 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (BOOL)inLocalView:(CGPoint)point {
-    if(_localView.frame.size.width < self.bounds.size.width) {
-        if(point.x > _localView.frame.origin.x && point.y > _localView.frame.origin.y) {
-            if(point.x < (_localView.frame.origin.x + _localView.frame.size.width)) {
-                if(point.y < (_localView.frame.origin.y + _localView.frame.size.height)) {
+    if(self.screenMediaView.frame.size.width < self.bounds.size.width) {
+        if(point.x > _screenMediaView.frame.origin.x && point.y > _screenMediaView.frame.origin.y) {
+            if(point.x < (_screenMediaView.frame.origin.x + _screenMediaView.frame.size.width)) {
+                if(point.y < (_screenMediaView.frame.origin.y + _screenMediaView.frame.size.height)) {
                     return YES;
                 }
             }
@@ -182,144 +186,22 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     return NO;
 }
 
-- (void)localViewAddPanGesture {
-    UIPanGestureRecognizer *panSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer)];
-    [_localView addGestureRecognizer:panSwipeGesture];
-}
-
--(CGPoint)pointOfIndex:(NSInteger)index {
-    int x = _tileLayout.layout.hpadding;
-    int y = 0;
-    if (index == 0) {
-        x = _tileLayout.layout.width + _tileLayout.layout.hpadding * 2;
-        y = _tileLayout.layout.vpadding;
-    }
-    else {
-        if ((index % 2) == 0) {
-            x = _tileLayout.layout.width + _tileLayout.layout.hpadding * 2;
-        }
-        y = _tileLayout.layout.vpadding + (index / 2) * _tileLayout.layout.height + _tileLayout.layout.vpadding * (index / 2);
-    }
-    return CGPointMake(x, y);
-}
-
--(void)layoutRemoteViews {
-    for (int index = 0; index < _remoteKits.count; index++) {
-        CGPoint point= [self pointOfIndex:(int)_remoteKits.count + 1];
-        KSRemoteView *remoteView = _remoteKits[index];
-        remoteView.frame = CGRectMake(point.x, point.y, _tileLayout.layout.width, _tileLayout.layout.height);
-    }
-    if (_remoteKits.lastObject) {
-        KSRemoteView *remoteView = _remoteKits.lastObject;
-        if (remoteView.frame.origin.y + _tileLayout.layout.height > self.bounds.size.height) {
-            _scrollView.contentSize = CGSizeMake(self.bounds.size.width, remoteView.frame.origin.y + _tileLayout.layout.height);
-        }
-    }
-}
-
-- (void)leaveLocal {
-    switch (_tileLayout.callType) {
-        case KSCallTypeSingleAudio:
-        case KSCallTypeSingleVideo:
-        {
-            self.localView.videoTrack = nil;
-            [self.localView removeFromSuperview];
-        }
-            break;
-        case KSCallTypeManyAudio:
-        case KSCallTypeManyVideo:
-        {
-            
-        }
-            break;
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)leaveOfHandleId:(NSNumber *)handleId {
-    for (KSRemoteView *videoView in _remoteKits) {
-        if (videoView.videoTrack.handleId == handleId) {
-            [_remoteKits removeObject:videoView];
-            [videoView removeVideoView];
-            [videoView removeFromSuperview];
-            break;
-        }
-    }
-    if (_remoteKits.count > 0) {
-        [self layoutRemoteViews];
-    }
-}
-
-- (KSRemoteView *)createRemoteView {
-    CGRect rect = CGRectZero;
-    switch (_tileLayout.callType) {
-        case KSCallTypeSingleAudio:
-        case KSCallTypeSingleVideo:
-        {
-            rect = self.bounds;
-        }
-            break;
-        case KSCallTypeManyAudio:
-        case KSCallTypeManyVideo:
-        {
-            CGPoint point = [self pointOfIndex:self.remoteKits.count];
-            rect = CGRectMake(point.x, point.y, _tileLayout.layout.width, _tileLayout.layout.height);
-        }
-            break;
-            break;
-        default:
-            break;
-    }
-    
-    KSRemoteView *remoteView = [[KSRemoteView alloc] initWithFrame:rect];
-    [self.scrollView addSubview:remoteView];
-    [self.remoteKits addObject:remoteView];
-    return remoteView;
-}
-
-- (void)createRemoteViewOfVideoTrack:(KSVideoTrack *)videoTrack {
-    KSRemoteView *remoteView = nil;
-    for (KSRemoteView *itemView in self.remoteKits) {
-        if (itemView.videoTrack.handleId == videoTrack.handleId) {
-            remoteView = itemView;
-            break;
-        }
-    }
-    if (remoteView == nil) {
-        remoteView = [self createRemoteView];
-    }
-    remoteView.videoTrack = videoTrack;
-    
-    if (self.tileLayout.callType == KSCallTypeSingleVideo) {//测试
-        [self zoomOutLocalView];
-    }
-}
-
--(NSMutableArray *)remoteKits {
-    if (_remoteKits == nil) {
-        _remoteKits = [NSMutableArray array];
-    }
-    return _remoteKits;
+- (void)tileViewAddPanGesture {
+    UIPanGestureRecognizer *panSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panSwipeGesture:)];
+    [self.screenMediaView addGestureRecognizer:panSwipeGesture];
 }
 
 #pragma mark - KSProfileView
-- (void)setProfileConfigure:(KSProfileConfigure *)configure {
-    if (_profileView == nil) {
-        KSProfileView *profileView = [[KSProfileView alloc] initWithFrame:CGRectMake(0, configure.topPaddding, self.bounds.size.width, 204) configure:configure];
-        _profileView = profileView;
-        [self addSubview:profileView];
-        
-    }
-    else{
-        [_profileView updateConfiure:configure];
-    }
+- (void)setProfileInfo:(KSProfileInfo *)profileInfo {
+    self.screenMediaView.profileInfo = profileInfo;
 }
 
-- (void)hideProfile {
-    if (_profileView.isHidden == NO) {
-        _profileView.hidden = YES;
+- (void)hiddenProfileView {
+    if (self.myType == KSCallTypeSingleAudio) {
+        [self.screenMediaView displayAvatar];
+    }
+    else{
+        [self.screenMediaView hiddenProfileView];
     }
 }
 
@@ -327,14 +209,13 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 - (void)setAnswerState:(KSAnswerState)state {
     if (_answerBarView == nil) {
         CGFloat y                      = self.bounds.size.height - (68 + 62);
-        KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(56, y, self.bounds.size.width - 56 * 2, 90)];
+        KSAnswerBarView *answerBarView = [[KSAnswerBarView alloc] initWithFrame:CGRectMake(0, y, self.bounds.size.width, 90) callType:self.myType];
         answerBarView.answerState      = state;
         _answerBarView                 = answerBarView;
         [answerBarView setEventCallback:self.callback];
         [self addSubview:answerBarView];
     }
     else{
-        _callBarView.hidden        = NO;
         _answerBarView.answerState = state;
     }
 }
@@ -348,15 +229,34 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 #pragma mark - KSCallBarView
 - (void)displayCallBar {
     [self hideAnswerBar];
-    [self hideProfile];
+    [self hiddenProfileView];
+    [self setSwitchButtonHidden:YES];
     
     if (_callBarView == nil) {
         CGFloat y                  = self.bounds.size.height - (40 + 48);
         KSCallBarView *callBarView = [[KSCallBarView alloc] initWithFrame:CGRectMake(KS_Extern_12Font, y, self.bounds.size.width - KS_Extern_Point12 * 2, KS_Extern_Point48)];
+        callBarView.dataSource     = self;
         _callBarView               = callBarView;
         [callBarView setEventCallback:self.callback];
+        [callBarView initKits];
         [self addSubview:callBarView];
     }
+    else{
+        [_callBarView reloadBar];
+    }
+}
+
+- (void)setCallBarHidden:(BOOL)hidden {
+    self.callBarView.hidden = hidden;
+}
+
+//KSCallBarViewDataSource
+-(KSDeviceSwitch *)deviceSwitchOfCallBarView:(KSCallBarView *)callBarView {
+    return self.deviceSwitch;
+}
+
+-(KSCallType)callTypeOfCallBarView:(KSCallBarView *)callBarView {
+    return self.myType;
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -368,23 +268,16 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    KSVideoTrack *videoTrack = nil;
+    KSMediaTrack *mediaTrack = nil;
     if ([self.dataSource respondsToSelector:@selector(callView:itemAtIndexPath:)]) {
-        videoTrack = [self.dataSource callView:self itemAtIndexPath:indexPath];
+        mediaTrack = [self.dataSource callView:self itemAtIndexPath:indexPath];
     }
-    if (videoTrack == nil) {
+    if (mediaTrack == nil) {
         return nil;
     }
-    if (videoTrack.isLocal) {
-        KSLocalCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:localCellIdentifier forIndexPath:indexPath];
-        cell.videoTrack   = videoTrack;
-        return cell;
-    }
-    else{
-        KSRemoteCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:remoteCellIdentifier forIndexPath:indexPath];
-        cell.videoTrack    = videoTrack;
-        return cell;
-    }
+    KSTileMediaCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:tileCellIdentifier forIndexPath:indexPath];
+    cell.mediaTrack       = mediaTrack;
+    return cell;
 }
 
 /*
@@ -430,4 +323,75 @@ static NSString *const localCellIdentifier = @"localCellIdentifier";
     }];
 }
 
+//Get
+-(KSCallType)myType {
+    if ([self.dataSource respondsToSelector:@selector(callTypeOfCallView:)]) {
+        return [self.dataSource callTypeOfCallView:self];
+    }
+    return KSCallTypeSingleVideo;
+}
+-(void)setMyType:(KSCallType)myType {
+}
+
+#pragma mark - 懒加载
+-(KSFunctionalBarView *)functionalBarView {
+    if (_functionalBarView == nil) {
+        CGFloat y                              = self.bounds.size.height - (68 + 62 + 90 + 20);
+        KSFunctionalBarView *functionalBarView = [[KSFunctionalBarView alloc] initWithFrame:CGRectMake(0, y, self.bounds.size.width, 90)];
+        _functionalBarView                     = functionalBarView;
+        [self addSubview:functionalBarView];
+    }
+    return _functionalBarView;;
+}
+
+-(KSScreenMediaView *)screenMediaView {
+    if (_screenMediaView == nil) {
+        KSScreenMediaView *screenMediaView = [[KSScreenMediaView alloc] initWithFrame:self.bounds];
+        _screenMediaView                   = screenMediaView;
+        [self.scrollView addSubview:screenMediaView];
+    }
+    return _screenMediaView;
+}
+
+-(KSTileMediaView *)tileMediaView {
+    if (_tileMediaView == nil) {
+        CGRect rect                    = CGRectMake(self.bounds.size.width - _tileLayout.layout.width - _tileLayout.layout.hpadding,
+                                                    _tileLayout.topPadding,
+                                                    _tileLayout.layout.width,
+                                                    _tileLayout.layout.height);
+        KSTileMediaView *tileMediaView = [[KSTileMediaView alloc] initWithFrame:rect];
+        _tileMediaView                 = tileMediaView;
+        [self.scrollView addSubview:tileMediaView];
+        tileMediaView.hidden         = YES;
+    }
+    return _tileMediaView;
+}
+
+-(UICollectionView *)collectionView {
+    if (_collectionView == nil) {
+        CGFloat cell_w                         = _tileLayout.layout.width;
+        CGFloat cell_h                         = _tileLayout.layout.height;
+        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
+        flowLayout.minimumLineSpacing          = KS_Extern_Point10;
+        flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
+        flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
+        flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
+        
+        UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height - _tileLayout.topPadding)
+                                                                    collectionViewLayout:flowLayout];
+        collectionView.backgroundColor         = [UIColor clearColor];
+        
+        collectionView.dataSource              = self;
+        collectionView.delegate                = self;
+        _collectionView                        = collectionView;
+        [collectionView registerClass:[KSTileMediaCell class] forCellWithReuseIdentifier:tileCellIdentifier];
+
+        [self addSubview:collectionView];
+    }
+    return _collectionView;
+}
+@end
+
+@implementation KSMediaSwitch
 @end

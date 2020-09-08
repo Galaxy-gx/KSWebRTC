@@ -16,4 +16,5 @@
 + (NSString *)ks_localizde:(NSString *)text;
 + (NSMutableAttributedString *)ks_attributesOfText:(NSString *)text color:(UIColor *)color font:(UIFont *)font;
 - (CGSize)ks_sizeWithFont:(UIFont *)font maxSize:(CGSize)maxSize;
+- (NSDictionary *)ks_toDictionary;
 @end

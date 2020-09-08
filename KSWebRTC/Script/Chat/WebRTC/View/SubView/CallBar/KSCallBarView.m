@@ -11,9 +11,13 @@
 #import "KSBtnInfo.h"
 #import "UIView+Category.h"
 #import "UIColor+Category.h"
+#import "KSCellAlignmentFlowLayout.h"
 
 @interface KSCallBarView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,KSCallBarCellDelegate>
-@property(nonatomic,strong)NSMutableArray *bars;
+
+@property (nonatomic, strong) NSMutableArray   *bars;
+@property (nonatomic, weak  ) UICollectionView *collectionView;
+@property (nonatomic, weak  ) KSDeviceSwitch   *deviceSwitch;
 @end
 
 static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
@@ -22,19 +26,38 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self initProperty];
-        [self initKit];
+        
     }
     return self;
 }
 
-- (void)initProperty {
-    _bars = [KSBtnInfo callBarBtns];
+- (void)initKits {
+    [self initProperty];
+    [self initCollectionView];
 }
 
-- (void)initKit {
-    [self ks_drawFilletOfRadius:24 backgroundColor:[UIColor ks_grayBar]];
+- (void)initProperty {
+    if ([self.dataSource respondsToSelector:@selector(deviceSwitchOfCallBarView:)]) {
+        _deviceSwitch = [self.dataSource deviceSwitchOfCallBarView:self];
+    }
+    if ([self.dataSource respondsToSelector:@selector(callTypeOfCallBarView:)]) {
+        KSCallType type = [self.dataSource callTypeOfCallBarView:self];
+        _bars           = [KSBtnInfo callBarBtnsWithCallType:type deviceSwitch:_deviceSwitch];
+    }
+}
 
+- (void)reloadBar {
+    [self initProperty];
+    [_collectionView reloadData];
+}
+
+- (void)initCollectionView {
+    [self ks_drawFilletOfRadius:24 backgroundColor:[UIColor ks_grayBar]];
+    
+    CGFloat collection_w                  = self.frame.size.width - KS_Extern_Point32 * 2;
+    CGFloat minimumInteritemSpacing       = (collection_w - _bars.count * KS_Extern_Point40)/(_bars.count - 1) - 1;
+    
+    //KSCellAlignmentFlowLayout *flowLayout = [[KSCellAlignmentFlowLayout alloc]initWithType:KSCellAlignmentCenter spacing:KS_Extern_Point08];
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.itemSize                    = CGSizeMake(KS_Extern_Point40, KS_Extern_Point40);
     /*
@@ -46,19 +69,20 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
      @property (nonatomic) UIEdgeInsets sectionInset;
      */
     flowLayout.minimumLineSpacing          = 0;
-    flowLayout.minimumInteritemSpacing     = KS_Extern_Point08;
+    flowLayout.minimumInteritemSpacing     = minimumInteritemSpacing;
     flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
     flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
 
     UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(KS_Extern_Point32,
                                                                                           KS_Extern_Point04,
-                                                                                          self.frame.size.width - KS_Extern_Point32 * 2,
+                                                                                          collection_w,
                                                                                           KS_Extern_Point40)
                                                           collectionViewLayout:flowLayout];
     collectionView.backgroundColor         = [UIColor ks_grayBar];
 
     collectionView.dataSource              = self;
     collectionView.delegate                = self;
+    _collectionView                        = collectionView;
     [collectionView registerClass:[KSCallBarCell class] forCellWithReuseIdentifier:callBarCellIdentifier];
     [self addSubview:collectionView];
 }
@@ -83,19 +107,22 @@ static NSString *callBarCellIdentifier = @"callBarCellIdentifier";
     KSEventType type;
     switch (btnInfo.btnType) {
         case KSCallBarBtnTypeMicrophone:
+            _deviceSwitch.microphoneEnabled = !btnInfo.isSelected;
             type = btnInfo.isSelected ? KSEventTypeInConversationMicrophoneClose : KSEventTypeInConversationMicrophoneOpen;
             break;
-        case KSCallBarBtnTypeVolume:
+        case KSCallBarBtnTypeSpeaker:
+            _deviceSwitch.speakerEnabled = !btnInfo.isSelected;
             type = btnInfo.isSelected ? KSEventTypeInConversationVolumeClose: KSEventTypeInConversationVolumeOpen;
             break;
         case KSCallBarBtnTypeCamera:
+            _deviceSwitch.cameraEnabled = !btnInfo.isSelected;
             type = btnInfo.isSelected ? KSEventTypeInConversationCameraClose : KSEventTypeInConversationCameraOpen;
             break;
         case KSCallBarBtnTypeBluetooth:
             type = btnInfo.isSelected ? KSEventTypeInConversationBluetoothClose : KSEventTypeInConversationBluetoothOpen;
             break;
         case KSCallBarBtnTypePhone:
-            type = KSEventTypeInConversationHangup;
+            type = KSEventTypeCallHangup;
             break;
         default:
             break;

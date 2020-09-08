@@ -11,6 +11,7 @@
 #import "KSCallState.h"
 #import "KSMediaConnection.h"
 #import "KSWebSocket.h"
+#import "KSAckMessage.h"
 
 @class KSMsg;
 @class KSMessageHandler;
@@ -40,23 +41,56 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveOffer:(NSDictionary *)offer;
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveAnswer:(NSDictionary *)answer;
 - (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate;
+- (void)messageHandler:(KSMessageHandler *)messageHandler requestError:(KSRequestError *)error;
 
 @end
 
 @interface KSMessageHandler : NSObject
 
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
+@property (nonatomic, copy) NSString *peerId;
 
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;
+- (void)sendPayload:(NSDictionary *)payload;
+- (void)trickleCandidate:(NSMutableDictionary *)candidate;
+
 
 //创建会话
 - (void)createSession;
 - (void)sendOffer;
 
+- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
 // 发送候选者
-- (void)trickleCandidate:(NSMutableDictionary *)candidate;
-- (void)sendPayload:(NSDictionary *)payload;
+- (void)sendOfferPayload:(NSDictionary *)payload;
+- (void)sendAnswerPayload:(NSDictionary *)payload;
+///ice更新
+- (void)sendCandidate:(NSDictionary *)candidate;
+
 - (void)close;
 
+///呼叫
+- (void)callToPeerId:(int)peerId type:(KSCallType)type;
+
+/// 响铃
+- (void)ringed;
+///接听
+- (void)answoerOfCallType:(KSCallType)callType;
+/////开始通话
+- (void)start;
+
+///加入聊天
+- (void)joinWithOffer:(NSString *)offer;
+
+///离开
+- (void)leave;
+
+- (void)didReceivedMessage:(NSDictionary *)message;
+
+- (void)sendOffer:(NSDictionary *)offer;
+- (void)sendAnswer:(NSDictionary *)answer;
+- (void)handlerRemoteJsep:(NSDictionary *)jsep;
+
+//测试
+- (void)startFlag;
 @end

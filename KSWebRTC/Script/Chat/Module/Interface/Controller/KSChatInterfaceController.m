@@ -12,11 +12,10 @@
 #import "KSAnswerBarView.h"
 #import "KSProfileView.h"
 #import "KSMeetingThemeView.h"
-#import "KSRemoteView.h"
+#import "KSTileMediaView.h"
 #import "KSWaitingAnswersGroupView.h"
 #import "KSLayoutButton.h"
 #import "KSCoolHUB.h"
-#import "KSCallController.h"
 #import "KSSuperController+Category.h"
 #import "UIButton+Category.h"
 #import "UIColor+Category.h"
@@ -24,9 +23,7 @@
 #import "KSWebRTCManager.h"
 #import "KSTableViewCell.h"
 #import "KSCollectionViewCell.h"
-#import "KSCallMenuController.h"
-#import "KSFunctionalBarView.h"
-
+#import "KSChatController.h"
 @interface KSChatMenu : NSObject
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,copy)NSString *title;
@@ -55,12 +52,6 @@
     cm.callType = KSCallTypeManyVideo;
     cm.title = @"KSCallTypeManyVideo";
     [array addObject:cm];
-    
-    cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeUnknown;
-    cm.title = @"菜单";
-    [array addObject:cm];
-    
     return array;
 }
 @end
@@ -83,10 +74,6 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    KSFunctionalBarView *fv = [[KSFunctionalBarView alloc] initWithFrame:CGRectMake(0, 100, 300, 150)];
-    [self.view addSubview:fv];
-    return;
-    
     self.view.backgroundColor                = [UIColor whiteColor];
     _chatMenus                              = [KSChatMenu chatMenus];
     _isCollection                           = YES;
@@ -156,10 +143,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     KSChatMenu *cm                     = _chatMenus[indexPath.row];
 
-    [KSWebRTCManager shared].callState = KSCallStateNone;
-    [KSWebRTCManager shared].callType  = cm.callType;
-    
-    [self onCallClick];
+    [self callWithType:cm.callType];
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -175,23 +159,9 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     KSChatMenu *cm                     = _chatMenus[indexPath.item];
-
-    [KSWebRTCManager shared].callState = KSCallStateNone;
-    [KSWebRTCManager shared].callType  = cm.callType;
-    
-    if (cm.callType == KSCallTypeUnknown) {
-        KSCallMenuController *ctrl = [[KSCallMenuController alloc] init];
-        KSCallMenuCallback callback = ^(KSCallMenuType menuType) {
-            
-        };
-        ctrl.callback = callback;
-        [KSCallMenuController enterCallMenuWithCallback:callback target:self];
-
-    }
-    else {
-        [self onCallClick];
-    }
+    [self callWithType:cm.callType];
 }
+
 //更新cell前，先更新数据
 - (void)onAddClick {
     KSChatMenu *cm = [[KSChatMenu alloc] init];
@@ -237,27 +207,19 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     }
 }
 
-- (void)onCallClick {
-    [self.coolHUB showMessage:@"您已打开摄像头"];
+- (void)callWithType:(KSCallType)type {
+    [KSWebRTCManager shared].callState = KSCallStateMaintenanceCaller;
+    [KSWebRTCManager callToPeerId:[NSString stringWithFormat:@"%lld",_peerId]];
     
-    //KSCallType callType = KSCallTypeManyVideo;
-    [KSWebRTCManager shared].callState = KSCallStateNone;//KSCallStateRecording;//KSCallStateNone;
-    //[KSWebRTCManager shared].callType  = callType;
-    
-//    for (int i = 0; i <2; i++) {
-//        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
-//        connectionSetting.callType             = callType;
-//        connectionSetting.iceServer            = [[KSIceServer alloc] init];
-//        KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
-//        [[KSWebRTCManager shared].mediaConnections addObject:mc];
-//    }
-    
-    KSCallController *ctrl             = [[KSCallController alloc] init];
+    KSChatController *ctrl             = [[KSChatController alloc] init];
+    //ctrl.callType                      = type;
     ctrl.isSuperBar                    = YES;
+    //ctrl.peerId                        = _peerId;
     ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
     UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     [self presentViewController:navCtrl animated:NO completion:nil];
 }
+
 @end
 

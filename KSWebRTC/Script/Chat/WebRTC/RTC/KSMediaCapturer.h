@@ -10,9 +10,16 @@
 #import <WebRTC/WebRTC.h>
 #import "KSConfigure.h"
 #import "KSMediaSetting.h"
+@class KSMediaCapturer;
 
+@protocol KSMediaCapturerDelegate <NSObject>
+- (KSCallType)callTypeOfMediaCapturer:(KSMediaCapturer *)mediaCapturer;
+@optional
+- (KSScale)scaleOfMediaCapturer:(KSMediaCapturer *)mediaCapturer;
+@end
 @interface KSMediaCapturer : NSObject
 
+@property(nonatomic, weak)id<KSMediaCapturerDelegate>  delegate;
 //连接工厂
 @property (nonatomic, strong) RTCPeerConnectionFactory *factory;
 //视频生产者
@@ -23,9 +30,9 @@
 @property (nonatomic, strong) KSCapturerSetting        *setting;
 
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting;
-- (void)addVideoSourceOfCallType:(KSCallType)callType;
+- (void)addMediaSource;
+- (void)addVideoSource;
 //- (void)updateResolution:(CGSize)resolution;
-- (void)updateVideoScale:(KSScale)scale;
 
 - (void)muteAudio;
 - (void)unmuteAudio;

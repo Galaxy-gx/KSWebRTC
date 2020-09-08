@@ -7,12 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KSConfigure.h"
+#import "KSDeviceSwitch.h"
 typedef NS_ENUM(NSInteger, KSCallBarBtnType) {
     KSCallBarBtnTypeMicrophone,
-    KSCallBarBtnTypeVolume,
+    KSCallBarBtnTypeSpeaker,
     KSCallBarBtnTypeCamera,
     KSCallBarBtnTypeBluetooth,
     KSCallBarBtnTypePhone,
+    KSCallBarBtnTypeSwitchCamera,
+    KSCallBarBtnTypeAddMember,
+    KSCallBarBtnTypeZoomOut 
 };
 
 @interface KSBtnInfo : NSObject
@@ -22,9 +27,13 @@ typedef NS_ENUM(NSInteger, KSCallBarBtnType) {
 @property(nonatomic,copy)NSString *selectedIcon;
 @property(nonatomic,copy)NSString *icon;
 @property(nonatomic,assign)BOOL isSelected;
+@property(nonatomic,assign)BOOL isTouch;
 @property(nonatomic,assign)KSCallBarBtnType btnType;
 
-+(NSMutableArray *)callBarBtns;
++(NSMutableArray *)callBarBtnsWithCallType:(KSCallType)callType deviceSwitch:(KSDeviceSwitch *)deviceSwitch;
 +(NSMutableArray *)meetingBarBtns;
 +(NSMutableArray *)threeBarBtns;
++(NSMutableArray *)topVideoBarBtns;
++(NSMutableArray *)topAudioBarBtns;
+
 @end

@@ -8,11 +8,14 @@
 
 #import "KSMediaConnection.h"
 #import "RTCSessionDescription+Category.h"
+#import "RTCPeerConnection+Category.h"
+#import "RTCIceCandidate+Category.h"
 
 static NSString *const KARDStreamId = @"ARDAMS";
 
 @interface KSMediaConnection ()<RTCPeerConnectionDelegate>
 @property (nonatomic, strong) RTCPeerConnection *peerConnection;//WebRTC连接对象
+@property (nonatomic,assign,readonly) KSCallType myType;
 @end
 
 @implementation KSMediaConnection
@@ -20,7 +23,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting {
     if (self = [super init]) {
         _setting  = setting;
-        _callType = setting.callType;
     }
     return self;
 }
@@ -65,49 +67,106 @@ static NSString *const KARDStreamId = @"ARDAMS";
 }
 
 - (void)addAudioTrack {
-    if (_setting.audio) {
-        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfAudioTrack)]) {
-            RTCAudioTrack *audioTrack = [self.delegate mediaConnectionOfAudioTrack];
-            if (audioTrack) {
-                // 添加音频轨
-                [_peerConnection addTrack:audioTrack streamIds:@[ KARDStreamId ]];
-            }
+    if (_setting.addAudioTrack == NO) {
+        KSMediaCapturer *mediaCapturer = nil;
+        if ([self.delegate respondsToSelector:@selector(mediaCapturerOfMediaConnection:)]) {
+            mediaCapturer = [self.delegate mediaCapturerOfMediaConnection:self];
+        }
+        if (mediaCapturer == nil) {
+            return;
+        }
+        if (mediaCapturer.audioTrack) {
+            // 添加音频轨
+            [_peerConnection addTrack:mediaCapturer.audioTrack streamIds:@[ KARDStreamId ]];
+            _setting.addAudioTrack = YES;
         }
     }
 }
 
 - (void)addVideoTrack {
-    if (_setting.video) {
-        if ([self.delegate respondsToSelector:@selector(mediaConnectionOfVideoTrack)]) {
-            RTCVideoTrack *videoTrack = [self.delegate mediaConnectionOfVideoTrack];
-            if (videoTrack) {
-                // 添加视频轨
-                [_peerConnection addTrack:videoTrack streamIds:@[ KARDStreamId ]];
-            }
+    if (self.myType == KSCallTypeSingleAudio || self.myType == KSCallTypeManyAudio) {
+        return;
+    }
+    if (_setting.addVideoTrack == NO) {
+        KSMediaCapturer *mediaCapturer = nil;
+        if ([self.delegate respondsToSelector:@selector(mediaCapturerOfMediaConnection:)]) {
+            mediaCapturer = [self.delegate mediaCapturerOfMediaConnection:self];
+        }
+        if (mediaCapturer == nil) {
+            return;
+        }
+        if (mediaCapturer.videoTrack == nil) {
+            [mediaCapturer addVideoSource];
+        }
+        if (mediaCapturer.videoTrack) {
+            // 添加视频轨
+            [_peerConnection addTrack:mediaCapturer.videoTrack streamIds:@[ KARDStreamId ]];
+            _setting.addVideoTrack = YES;
         }
     }
 }
 
 - (void)addIceCandidate:(NSDictionary *)candidate {
+    NSLog(@"|~~~~~~~~~~~~|更新ICE:\n%@\n|~~~~~~~~~~~~|",candidate);
+    RTCIceCandidate *ice = [RTCIceCandidate candidateFromJSONDictionary:candidate];
+    if (ice == nil) {
+        return;
+    }
+    [self.peerConnection addIceCandidate:ice];
+    /*
     if (candidate[@"sdp"] && candidate[@"sdpMLineIndex"] && candidate[@"sdpMid"]) {
         RTCIceCandidate *ice = [[RTCIceCandidate alloc] initWithSdp:candidate[@"sdp"] sdpMLineIndex:[candidate[@"sdpMLineIndex"] intValue] sdpMid:candidate[@"sdpMid"]];
         [self.peerConnection addIceCandidate:ice];
-    }
+    }*/
 }
 
-// 设置远端的媒体描述 self.isLocal = YES; type : answer; self.isLocal = NO; type = offer;
+- (void)removeIceCandidates:(NSArray<RTCIceCandidate *> *)candidates {
+    [self.peerConnection removeIceCandidates:candidates];
+}
+
+// 设置远端的媒体描述 self.isLocal = YES; type : answer; type = offer;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
-    NSLog(@"|============| setRemoteDescription type : %@ |============|",jsep[@"type"]);
+    NSLog(@"|~~~~~~~~~~~~|设置远端的媒体描述:\n%@\n|~~~~~~~~~~~~|",jsep);
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
     [_peerConnection setRemoteDescription:answerDescription
                         completionHandler:^(NSError *_Nullable error){
         if(!error){
             NSLog(@"Success to set remote Answer SDP");
         }else{
-            NSLog(@"Failure to set remote Answer SDP, err=%@", error);
+            NSLog(@"|============| 错误:设置远程Answer错误 |============|");
+            //NSLog(@"Failure to set remote Answer SDP, err=%@", error);
         }
     }];
 }
+
+- (NSMutableDictionary *)jseps {
+    return [self.peerConnection ks_jseps];
+    /*
+    RTCSessionDescription *localDescription = self.peerConnection.localDescription;
+    NSString *type                          = [RTCSessionDescription stringForType:localDescription.type];
+    NSString *sdp                           = localDescription.sdp;
+    if (type && sdp) {
+        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
+        jseps[@"type"] = type;
+        jseps[@"sdp"]  = sdp;
+        jseps[@"flag"] = @"flag";
+        return jseps;
+    }
+    return nil;
+     */
+}
+
+/*
+- (void)setLocalDescriptionWithJsep:(NSDictionary *)jsep {
+    RTCSessionDescription *sessionDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
+    [self.peerConnection setLocalDescription:sessionDescription
+                           completionHandler:^(NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"|============| 错误:设置本地会话描述错误 |============|");
+        }
+    }];
+}
+*/
 
 /*
  在WebRTC的每一端，当创建好RTCPeerConnection对象，且调用了setLocalDescription方法后，就开始收集ICE候选者了。
@@ -125,40 +184,57 @@ static NSString *const KARDStreamId = @"ARDAMS";
  */
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
-    NSLog(@"|============| answerForConstraints |============|");
+    NSLog(@"|~~~~~~~~~~~~| 创建Answer |~~~~~~~~~~~~|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
     [_peerConnection answerForConstraints:constraints
                         completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
-        if (error) {
-            NSLog(@"Failure to create local answer sdp!");
-        }
-        else{
-            NSLog(@"Success to create local answer sdp!");
-        }
-        [weakSelf.peerConnection setLocalDescription:sdp
-                                   completionHandler:^(NSError *_Nullable error) {
-            completionHandler(sdp, error);
-        }];
-        
-    }];
+                            if (error) {
+                                //NSLog(@"Failure to create local answer sdp!");
+                                NSLog(@"|============| 错误:创建Answer，生成SDP错误 |============|");
+                            }
+                            else{
+                                NSLog(@"Success to create local answer sdp!");
+                            }
+                            [weakSelf.peerConnection setLocalDescription:sdp
+                                                       completionHandler:^(NSError *_Nullable error) {
+                                                           if (error) {
+                                                               NSLog(@"|============| 错误:创建Answer，设置本地SDP错误 |============|");
+                                                           }
+                                                           completionHandler(sdp, error);
+                                                       }];
+                            
+                        }];
 }
 
 // 创建offer 进行媒体协商
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
-    NSLog(@"|============| offerForConstraints |============|");
+    NSLog(@"|============| 创建Offer |============|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
     [_peerConnection offerForConstraints:constraints
                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
-            NSLog(@"Failure to create offer SDP, err=%@", error);
+            NSLog(@"|============| 错误:创建Offer， 生成SDP错误 |============|");
         }
         [weakSelf.peerConnection setLocalDescription:sdp
                                    completionHandler:^(NSError *_Nullable error) {
+                                       if (error) {
+                                           NSLog(@"|============| 错误:创建Offer，设置本地SDP错误 |============|");
+                                       }
             completionHandler(sdp, error);
         }];
     }];
+}
+
+#pragma mark - Get
+-(KSCallType)myType {
+    if ([self.delegate respondsToSelector:@selector(callTypeOfMediaConnection:)]) {
+        return [self.delegate callTypeOfMediaConnection:self];
+    }
+    return KSCallTypeSingleVideo;
+}
+-(void)setMyType:(KSCallType)myType {
 }
 
 #pragma mark - Set
@@ -176,7 +252,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
         [_peerConnection removeStream:mediaStream];
     }
     [_peerConnection close];
-    _peerConnection       = nil;
+    _peerConnection = nil;
 }
 
 // PeerConnection 媒体约束
@@ -197,14 +273,10 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 // stun 、 turn服务地址
 - (RTCIceServer *)defaultIceServer {
-    //NSArray *array = [NSArray arrayWithObject:@"turn:turn.al.mancangyun:3478"];
-    //return [[RTCIceServer alloc] initWithURLStrings:array username:@"root" credential:@"mypasswd"];
-    return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers];
-    /*
+    //return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers];
     return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers
                                            username:_setting.iceServer.username
                                          credential:_setting.iceServer.password];
-     */
 }
 
 #pragma mark - RTCPeerConnectionDelegate
@@ -222,11 +294,8 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 //当 ICE 连接状态发生变化时会触发该方法
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didChangeIceConnectionState:)]) {
-        [self.delegate mediaConnection:self peerConnection:peerConnection didChangeIceConnectionState:newState];
-    }
-    
     NSLog(@"每当IceConnectionState更改时调用。");
+    NSMutableDictionary *jseps = nil;
     switch (newState) {
         case RTCIceConnectionStateNew:
             NSLog(@"|------| RTCIceConnectionStateNew : %d |------|",(int)newState);
@@ -241,9 +310,13 @@ static NSString *const KARDStreamId = @"ARDAMS";
             NSLog(@"|------| RTCIceConnectionStateCompleted : %d |------|",(int)newState);
             break;
         case RTCIceConnectionStateFailed:
+        {
             NSLog(@"|------| RTCIceConnectionStateFailed : %d |------|",(int)newState);
+            //jseps = [self jseps];
+        }
             break;
         case RTCIceConnectionStateDisconnected:
+            jseps = [self jseps];
             NSLog(@"|------| RTCIceConnectionStateDisconnected : %d |------|",(int)newState);
             break;
         case RTCIceConnectionStateClosed:
@@ -254,6 +327,9 @@ static NSString *const KARDStreamId = @"ARDAMS";
             break;
         default:
             break;
+    }
+    if ([self.delegate respondsToSelector:@selector(mediaConnection:peerConnection:didChangeIceConnectionState:jseps:)]) {
+        [self.delegate mediaConnection:self peerConnection:peerConnection didChangeIceConnectionState:newState jseps: jseps];
     }
 }
 

@@ -9,7 +9,7 @@
 #import "KSWaitingAnswersMemberCell.h"
 #import "KSRoundImageView.h"
 #import "UIColor+Category.h"
-
+#import "UIFont+Category.h"
 @interface KSWaitingAnswersMemberCell()
 
 @property(nonatomic,weak)KSRoundImageView *iconView;
@@ -26,10 +26,17 @@
 }
 
 - (void)initKit {
-    int icon_wh = 38;
-    KSRoundImageView *iconView = [[KSRoundImageView alloc] initWithFrame:CGRectMake(0, 0, icon_wh, icon_wh)
-                                                             strokeColor:[UIColor ks_white] lineWidth:0.5];
-    _iconView = iconView;
+    int icon_wh                = 38;
+    CGFloat self_w             = self.bounds.size.width;
+    CGFloat icon_x             = (self_w - icon_wh)/2;
+    int icon_y                 = 0;
+    KSRoundImageView *iconView = [[KSRoundImageView alloc] initWithFrame:CGRectMake(icon_x, icon_y, icon_wh, icon_wh)
+                                                         backgroundColor:[UIColor ks_blueBtn]
+                                                               textColor:[UIColor ks_white]
+                                                                    font:[UIFont ks_fontMediumOfSize:KS_Extern_18Font]
+                                                             strokeColor:[UIColor ks_white]
+                                                               lineWidth:0.5];
+    _iconView                  = iconView;
     [self addSubview:iconView];
 }
 

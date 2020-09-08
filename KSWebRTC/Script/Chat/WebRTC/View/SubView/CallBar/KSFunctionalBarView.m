@@ -44,6 +44,10 @@ static NSString *const functionalBarCell = @"KSFunctionalBarCell";
     [self addSubview:collectionView];
 }
 
+- (void)setEventCallback:(KSEventCallback)callback {
+    _callback = callback;
+}
+
 //UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -55,6 +59,34 @@ static NSString *const functionalBarCell = @"KSFunctionalBarCell";
     KSBtnInfo *btnInfo        = _bars[indexPath.item];
     cell.btnInfo              = btnInfo;
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    KSBtnInfo *btnInfo = _bars[indexPath.item];
+    KSEventType type   = KSEventTypeStartUnknown;
+    switch (btnInfo.btnType) {
+        case KSCallBarBtnTypeCamera:
+        {
+            type = btnInfo.isSelected ? (_isSession ? KSEventTypeInConversationCameraClose : KSEventTypeMeetingThemeCameraClose) : (_isSession ? KSEventTypeInConversationCameraOpen : KSEventTypeMeetingThemeCameraOpen);
+        }
+            break;
+        case KSCallBarBtnTypeMicrophone:
+        {
+            type = btnInfo.isSelected ? (_isSession ? KSEventTypeInConversationMicrophoneClose : KSEventTypeMeetingThemeMicrophoneClose) : (_isSession ? KSEventTypeInConversationMicrophoneOpen : KSEventTypeMeetingThemeMicrophoneOpen);
+        }
+            break;
+        case KSCallBarBtnTypeSpeaker:
+        {
+            type = btnInfo.isSelected ? (_isSession ? KSEventTypeInConversationVolumeClose : KSEventTypeMeetingThemeVolumeClose) : (_isSession ? KSEventTypeInConversationVolumeOpen : KSEventTypeMeetingThemeVolumeOpen);
+        }
+            
+            break;
+        default:
+            break;
+    }
+    if (_callback) {
+        _callback(type,nil);
+    }
 }
 
 @end

@@ -12,15 +12,15 @@
 #import "KSTileLayout.h"
 #import "KSProfileBarView.h"
 #import "KSRoundImageView.h"
-#import "KSVideoTrack.h"
+#import "KSMediaTrack.h"
 
 @interface KSMediaView : UIView
 
-@property (nonatomic,weak) KSProfileBarView *profileBarView;
-@property (nonatomic,weak) KSRoundImageView *roundImageView;
-@property (nonatomic,weak) KSVideoTrack     *videoTrack;
+@property (nonatomic,weak) KSMediaTrack *mediaTrack;
 @property (nonatomic,weak) UIView<RTCVideoRenderer> *videoView;
 
-- (void)removeVideoView;
+- (void)initKit;
+- (void)updateKit;
+- (void)removeMediaView;
 
 @end

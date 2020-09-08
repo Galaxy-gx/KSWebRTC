@@ -34,16 +34,20 @@
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    int btn_w = 21;
-    int btn_h = 20;
-    if (_btnInfo.btnType == KSCallBarBtnTypePhone) {
-        btn_w = 32;
-        btn_h = 32;
-    }
-    _button.frame = CGRectMake((self.frame.size.width - btn_w)/2, (self.frame.size.height - btn_h)/2, btn_w, btn_h);
+    _button.frame = self.bounds;
+//    int btn_w = 21;
+//    int btn_h = 20;
+//    if (_btnInfo.btnType == KSCallBarBtnTypePhone) {
+//        btn_w = 32;
+//        btn_h = 32;
+//    }
+//    _button.frame = CGRectMake((self.frame.size.width - btn_w)/2, (self.frame.size.height - btn_h)/2, btn_w, btn_h);
 }
 
 -(void)onButtonClick {
+    if (_btnInfo.isTouch == false) {
+        return;
+    }
     _btnInfo.isSelected = !_btnInfo.isSelected;
     [_button setImage:[UIImage imageNamed:_btnInfo.icon] forState:UIControlStateNormal];
     [self.delegate callBarCell:self didSelectBarBtn:_btnInfo];

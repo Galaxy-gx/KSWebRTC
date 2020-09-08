@@ -11,7 +11,7 @@
 #import "UIColor+Category.h"
 #import "KSProfileView.h"
 
-@interface KSMediaView()<KSVideoTrackDelegate,RTCVideoViewDelegate>
+@interface KSMediaView()<KSMediaTrackDelegate,RTCVideoViewDelegate>
 @end
 
 @implementation KSMediaView
@@ -24,38 +24,30 @@
 }
 
 - (void)initKit {
+    
     #if TARGET_IPHONE_SIMULATOR //模拟器
     RTCEAGLVideoView *videoView      = [[RTCEAGLVideoView alloc] initWithFrame:self.bounds];
-    videoView.delegate               = self;
     #elif TARGET_OS_IPHONE //真机
     RTCMTLVideoView *videoView       = [[RTCMTLVideoView alloc] initWithFrame:self.bounds];
     videoView.videoContentMode       = UIViewContentModeScaleAspectFill;
     #endif
+    videoView.delegate               = self;
+    videoView.userInteractionEnabled = NO;
     _videoView                       = videoView;
     
     [self ks_embedView:videoView containerView:self];
-
-    KSProfileBarView *profileBarView = [[KSProfileBarView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - KS_Extern_Point20, self.bounds.size.width, KS_Extern_Point20)];
-    _profileBarView                  = profileBarView;
-    [self addSubview:profileBarView];
-    [profileBarView setUserName:@"Sevtin"];
-    [profileBarView updateMediaState:KSMediaStateMuteAudio];
-
-    KSRoundImageView *roundImageView = [[KSRoundImageView alloc] initWithFrame:CGRectMake((self.bounds.size.width - KS_Extern_Point50)/2, (self.bounds.size.height - KS_Extern_Point50)/2, KS_Extern_Point50, KS_Extern_Point50) strokeColor:[UIColor ks_white] lineWidth:0.5];
-    _roundImageView                  = roundImageView;
-    [self addSubview:roundImageView];
-    
-    self.clipsToBounds               = YES;
 }
 
--(void)setVideoTrack:(KSVideoTrack *)videoTrack {
-    [self removeVideoView];
+-(void)setMediaTrack:(KSMediaTrack *)mediaTrack {
+    [self removeMediaView];
     
-    if (videoTrack) {
-        _videoTrack         = videoTrack;
-        videoTrack.delegate = self;
-        if (videoTrack.videoTrack) {
-            [videoTrack addRenderer:_videoView];
+    if (mediaTrack) {
+        _mediaTrack         = mediaTrack;
+        mediaTrack.delegate = self;
+        if (mediaTrack.myType == KSCallTypeSingleVideo || mediaTrack.myType == KSCallTypeManyVideo) {
+            if (mediaTrack.videoTrack) {
+                [mediaTrack addRenderer:_videoView];
+            }
         }
     }
     [self updateKit];
@@ -65,13 +57,15 @@
     
 }
 
-- (void)removeVideoView {
-    if (_videoTrack) {
-        [_videoTrack clearRenderer];
+- (void)removeMediaView {
+    if (_mediaTrack) {
+        [_mediaTrack clearRenderer];
     }
+    _mediaTrack.delegate = nil;
+    _mediaTrack          = nil;
 }
-//KSVideoTrackDelegate
-- (void)videoTrack:(KSVideoTrack *)videoTrack didChangeMediaState:(KSMediaState)mediaState {
+//KSMediaTrackDelegate
+- (void)mediaTrack:(KSMediaTrack *)mediaTrack didChangeMediaState:(KSMediaState)mediaState {
     
 }
 

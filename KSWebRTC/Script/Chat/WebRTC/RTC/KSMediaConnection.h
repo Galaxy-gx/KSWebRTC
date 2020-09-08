@@ -17,12 +17,13 @@
 // 收到远端流处理
 //- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddStream:(RTCMediaStream *)stream;
 
-- (RTCVideoTrack *)mediaConnectionOfVideoTrack;
-- (RTCAudioTrack *)mediaConnectionOfAudioTrack;
+- (KSCallType)callTypeOfMediaConnection:(KSMediaConnection *)mediaConnection;
+- (KSMediaCapturer *)mediaCapturerOfMediaConnection:(KSMediaConnection *)mediaConnection;
+
 // 收到候选者
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams;
-- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState;
+- (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState jseps:(NSMutableDictionary *)jseps;
 @end
 
 @protocol KSMediaConnectionUpdateDelegate <NSObject>
@@ -35,18 +36,18 @@
 @property (nonatomic, weak  ) id<KSMediaConnectionUpdateDelegate> updateDelegate;
 @property (nonatomic, strong) KSConnectionSetting *setting;
 @property (nonatomic, assign) BOOL                isClose;
-@property (nonatomic,assign ) KSMediaState        mediaState;
-@property (nonatomic,assign ) KSCallType          callType;
+@property (nonatomic, assign ) KSMediaState       mediaState;
 
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
 - (void)addVideoTrack;
 - (void)addIceCandidate:(NSDictionary *)candidate;
+- (void)removeIceCandidates:(NSArray<RTCIceCandidate *> *)candidates;
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capture;
 - (void)createOfferWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep;
-
+- (NSMutableDictionary *)jseps;
 - (void)closeConnection;
 
 @end

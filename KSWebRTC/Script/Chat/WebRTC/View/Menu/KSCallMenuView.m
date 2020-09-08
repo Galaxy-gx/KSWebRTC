@@ -32,7 +32,7 @@
     tableView.delegate       = self;
     tableView.dataSource     = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //tableView.scrollEnabled = NO;
+    tableView.scrollEnabled  = NO;
     _tableView               = tableView;
     [self addSubview:tableView];
 }

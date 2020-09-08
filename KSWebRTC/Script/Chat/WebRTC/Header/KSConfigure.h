@@ -20,16 +20,16 @@ typedef NS_ENUM(NSInteger, KSResizingMode) {
 };
 
 typedef NS_ENUM(NSInteger, KSCallType) {
-    KSCallTypeUnknown,
     KSCallTypeSingleAudio,//一对一语音
-    KSCallTypeManyAudio,//多人语音
     KSCallTypeSingleVideo,//一对一视频
+    KSCallTypeManyAudio,//多人语音
     KSCallTypeManyVideo,//多人视频
 };
 
 typedef NS_ENUM(NSInteger, KSAnswerState) {
-    KSAnswerStateAwait,//等待
-    KSAnswerStateJoin,//接通
+    KSAnswerStateAwait,//等待对方接听（只显示挂断按钮）
+    KSAnswerStateJoin,//弹窗响铃（出现挂断/接听）
+    KSAnswerStateSession,//会话中（只显示挂断按钮）
 };
 
 typedef NS_ENUM(NSInteger, KSIdentity) {

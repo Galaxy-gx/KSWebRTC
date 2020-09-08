@@ -26,9 +26,9 @@
 }
 
 - (void)initKit {
-    int btn_wh              = 90;
-    UIColor *bgColor = [UIColor colorWithRed:192/255.0 green:192/255.0 blue:192/255.0 alpha:0.25];
-    KSComposeButton *button = [[KSComposeButton alloc] initWithFrame:CGRectMake(0, 0, btn_wh, btn_wh)
+    int btn_wh                    = 90;
+    UIColor *bgColor              = [UIColor colorWithRed:192/255.0 green:192/255.0 blue:192/255.0 alpha:0.25];
+    KSComposeButton *button       = [[KSComposeButton alloc] initWithFrame:CGRectMake(0, 0, btn_wh, btn_wh)
                                                            textColor:[UIColor ks_white]
                                                                 font:[UIFont ks_fontRegularOfSize:KS_Extern_16Font]
                                                            alignment:NSTextAlignmentCenter
@@ -37,7 +37,8 @@
                                                      backgroundColor:bgColor
                                                       backgroundSize:CGSizeMake(62, 62)
                                                              spacing:KS_Extern_Point08];
-    _button                 = button;
+    button.userInteractionEnabled = YES;
+    _button                       = button;
     [self addSubview:button];
 }
 

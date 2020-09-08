@@ -19,5 +19,5 @@
 + (UIColor *)ks_grayBar;
 + (UIColor *)ks_blackMenu;
 + (UIColor *)ks_grayMenu;
-
 @end
+

@@ -16,22 +16,29 @@ static int const kFramerateLimit         = 25.0;
 @interface KSMediaCapturer() {
     dispatch_queue_t audioQueue;
 }
-@property(nonatomic,weak)RTCAudioSession *rtcAudioSession;
+@property (nonatomic,weak  ) RTCAudioSession            *rtcAudioSession;
+@property (nonatomic,assign) AVAudioSessionPortOverride portOverride;
+
+@property (nonatomic,assign,readonly) KSCallType   myType;
+
 @end
 @implementation KSMediaCapturer
 
 - (instancetype)initWithSetting:(KSCapturerSetting *)setting {
-    if (self = [super init]) {
+    if(self = [super init]) {
         _setting         = setting;
-        audioQueue       = dispatch_queue_create("com.saeipi.KSWebRTC", NULL);
         [self createPeerConnectionFactory];
-        [self addMediaSource];
-
+        audioQueue       = dispatch_queue_create("com.saeipi.KSWebRTC", NULL);
         _rtcAudioSession = [RTCAudioSession sharedInstance];
-        [self configureAudioSession];
+        //[self configureAudioSession];
+        [self outputAudioPortChange];
     }
     return self;
 }
+
+//- (void)updateSetting:(KSCapturerSetting *)setting {
+//    _setting = setting;
+//}
 
 /*
  在 WebRTC Native 层，factory 可以说是 “万物的根源”，像 RTCVideoSource、RTCVideoTrack、RTCPeerConnection 这些类型的对象，都需要通过 factory 来创建。
@@ -42,10 +49,22 @@ static int const kFramerateLimit         = 25.0;
 - (void)createPeerConnectionFactory {
     if (_setting.isSSL) {
         //设置SSL传输
-        [RTCPeerConnectionFactory initialize];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            [RTCPeerConnectionFactory initialize];
+        });
     }
     RTCDefaultVideoEncoderFactory *encoderFactory = [[RTCDefaultVideoEncoderFactory alloc] init];
     RTCDefaultVideoDecoderFactory *decoderFactory = [[RTCDefaultVideoDecoderFactory alloc] init];
+    /*
+    NSDictionary<NSString *, NSString *> *constrainedHighParams = @{
+        @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedHigh,
+        @"level-asymmetry-allowed" : @"1",
+        @"packetization-mode" : @"1",
+    };
+    RTCVideoCodecInfo *constrainedHighInfo = [[RTCVideoCodecInfo alloc] initWithName:kRTCVideoCodecH264Name parameters:constrainedHighParams];
+    encoderFactory.preferredCodec = constrainedHighInfo;
+     */
     //NSArray *codes = [encoderFactory supportedCodecs];
     //[encoderFactory setPreferredCodec:codes[2]];
     _factory = [[RTCPeerConnectionFactory alloc] initWithEncoderFactory:encoderFactory decoderFactory:decoderFactory];
@@ -62,21 +81,22 @@ static int const kFramerateLimit         = 25.0;
 
 - (void)addMediaSource {
     [self addAudioSource];
-    
-    if (_setting.callType == KSCallTypeManyVideo || _setting.callType == KSCallTypeSingleVideo) {
-        [self addVideoSourceOfCallType:_setting.callType];
-    }
+    [self addVideoSource];
 }
 
 - (void)addAudioSource {
     if (_audioTrack) {
-        return;
+        _audioTrack = nil;
     }
     // 检测权限
+    NSLog(@"检测权限");
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
         NSLog(@"麦克风访问受限");
+        if (_setting.authCallback) {
+            _setting.authCallback(KSDeviceTypeMicrophone,authStatus);
+        }
         return;
     }
     
@@ -86,10 +106,13 @@ static int const kFramerateLimit         = 25.0;
     _audioTrack                        = [_factory audioTrackWithSource:audioSource trackId:KARDAudioTrackId];
 }
 
-- (void)addVideoSourceOfCallType:(KSCallType)callType {
-    _setting.callType                = callType;
-    if (_videoTrack) {
+- (void)addVideoSource {
+    if (self.myType == KSCallTypeManyAudio || self.myType == KSCallTypeSingleAudio) {
         return;
+    }
+    
+    if (_videoTrack) {
+        _videoTrack = nil;
     }
     AVCaptureDevice *device          = [self currentCamera];
     if (!device) {
@@ -101,6 +124,9 @@ static int const kFramerateLimit         = 25.0;
     if (authStatus == AVAuthorizationStatusRestricted ||
         authStatus == AVAuthorizationStatusDenied) {
         NSLog(@"相机访问受限");
+        if (_setting.authCallback) {
+            _setting.authCallback(KSDeviceTypeCamera,authStatus);
+        }
         return;
     }
     /*
@@ -109,6 +135,9 @@ static int const kFramerateLimit         = 25.0;
     RTCVideoSource *videoSource = [_factory videoSource];
     _capturer                   = [[RTCCameraVideoCapturer alloc] initWithDelegate:videoSource];
     _videoTrack                 = [_factory videoTrackWithSource:videoSource trackId:KARDVideoTrackId];
+    _setting.videoEnabled       = YES;
+    NSLog(@"|============| videoTrack.trackId : %@|============|",_videoTrack.trackId);
+    [self videoMirored];
 }
 
 /*
@@ -118,14 +147,6 @@ static int const kFramerateLimit         = 25.0;
 }
 */
 
-- (void)updateVideoScale:(KSScale)scale {
-    _setting.videoScale = scale;
-    if (_setting.audioSessionMode == AVAudioSessionModeVoiceChat) {
-        return;
-    }
-    [self startCapture];
-}
-
 - (void)configureAudioSession {
     __weak typeof(self) weakSelf = self;
     dispatch_async(audioQueue, ^{
@@ -133,15 +154,35 @@ static int const kFramerateLimit         = 25.0;
            @try {
                [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
                //[_rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
-               if (weakSelf.setting) {
-                   [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
-               }
+               [weakSelf.rtcAudioSession setMode:[self audioSessionMode] error:nil];
            } @catch (NSException *exception) {
                NSLog(@"Error changeing AVAudioSession categor %@",exception);
            } @finally {
            }
            [weakSelf.rtcAudioSession unlockForConfiguration];
     });
+}
+
+- (AVAudioSessionMode)audioSessionMode {
+    if (self.myType == KSCallTypeManyVideo || self.myType == KSCallTypeSingleVideo) {
+        return AVAudioSessionModeVideoChat;//视频通话
+    }
+    return AVAudioSessionModeVoiceChat;//VoIP
+}
+
+//解决前置摄像头录制视频左右颠倒问题
+- (void)videoMirored {
+    AVCaptureSession* session = self.capturer.captureSession;
+    for (AVCaptureVideoDataOutput* output in session.outputs) {
+        for (AVCaptureConnection * connection in output.connections) {
+            if (_setting.isFront) {
+                if (connection.supportsVideoMirroring) {
+                    connection.videoMirrored = YES;
+                    return;
+                }
+            }
+        }
+    }
 }
 
 - (void)muteAudio {
@@ -164,17 +205,55 @@ static int const kFramerateLimit         = 25.0;
     _videoTrack.isEnabled = YES;
 }
 
+- (void)proximityChange {
+    dispatch_async(audioQueue, ^{
+        if ([[[AVAudioSession sharedInstance] category] isEqualToString:AVAudioSessionCategoryPlayback]) {
+            //切换为听筒播放
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+        }
+        else {
+            //切换为扬声器播放
+            [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+        }
+    });
+}
+
+- (void)outputAudioPortChange {
+    __weak typeof(self) weakSelf = self;
+    AVAudioSessionPortOverride override = AVAudioSessionPortOverrideNone;
+    if (_portOverride == AVAudioSessionPortOverrideNone) {
+      override = AVAudioSessionPortOverrideSpeaker;
+    }
+    [RTCDispatcher dispatchAsyncOnType:RTCDispatcherTypeAudioSession block:^{
+        [weakSelf.rtcAudioSession lockForConfiguration];
+        NSError *error = nil;
+        if ([weakSelf.rtcAudioSession overrideOutputAudioPort:override error:&error]) {
+            weakSelf.portOverride = override;
+        }
+        else {
+            RTCLog(@"Error overriding output port: %@", error.localizedDescription);
+        }
+        [weakSelf.rtcAudioSession unlockForConfiguration];
+    }];
+}
+
 //关闭扬声器至默认播放设备：耳机/蓝牙/入耳式扬声器
 - (void)speakerOff {
+    [self outputAudioPortChange];
+    return;
+    [self proximityChange];
+    return;
+    
     __weak typeof(self) weakSelf = self;
     dispatch_async(audioQueue, ^{
         [weakSelf.rtcAudioSession lockForConfiguration];
         @try {
             if (weakSelf.setting) {
-                [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
+                //[weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
             }
             [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
             [weakSelf.rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+            [weakSelf.rtcAudioSession setActive:NO error:nil];
         } @catch (NSException *exception) {
             NSLog(@"Error setting AVAudioSession category: %@",exception);
         } @finally {
@@ -185,12 +264,17 @@ static int const kFramerateLimit         = 25.0;
 
 //开启扬声器
 - (void)speakerOn {
+    [self outputAudioPortChange];
+    return;
+    [self proximityChange];
+    return;
+    
     __weak typeof(self) weakSelf = self;
     dispatch_async(audioQueue, ^{
         [weakSelf.rtcAudioSession lockForConfiguration];
         @try {
             if (weakSelf.setting) {
-                [weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
+                //[weakSelf.rtcAudioSession setMode:weakSelf.setting.audioSessionMode error:nil];
             }
             [weakSelf.rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker error:nil];
             [weakSelf.rtcAudioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
@@ -220,6 +304,9 @@ static int const kFramerateLimit         = 25.0;
 }
 
 - (void)startCapture {
+    if (self.myType == KSCallTypeSingleAudio || self.myType == KSCallTypeManyAudio) {
+        return;
+    }
     AVCaptureDevice *device = [self currentCamera];
     [self startCaptureWithDevice:device];
 }
@@ -266,13 +353,15 @@ static int const kFramerateLimit         = 25.0;
 
 - (AVCaptureDeviceFormat *)selectFormatForDevice:(AVCaptureDevice *)device {
     NSArray<AVCaptureDeviceFormat *> *formats = [RTCCameraVideoCapturer supportedFormatsForDevice:device];
-    //int targetWidth                         = _setting.resolution.width;//540
-    //int targetHeight                        = _setting.resolution.height;//960
     AVCaptureDeviceFormat *selectedFormat     = nil;
+    KSScale scale                             = KSScaleMake(9, 16);
+    if ([self.delegate respondsToSelector:@selector(scaleOfMediaCapturer:)]) {
+        scale = [self.delegate scaleOfMediaCapturer:self];
+    }
     for (AVCaptureDeviceFormat *format in formats) {
         CMVideoDimensions dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription);
         //FourCharCode pixelFormat = CMFormatDescriptionGetMediaSubType(format.formatDescription);
-        if (dimension.width/_setting.videoScale.height*_setting.videoScale.width == dimension.height) {
+        if (dimension.width/scale.height*scale.width == dimension.height) {
             NSLog(@"|------------| dimension.width : %d, dimension.height : %d |------------|",dimension.width,dimension.height);
             selectedFormat = format;
             break;
@@ -282,11 +371,21 @@ static int const kFramerateLimit         = 25.0;
 }
 
 - (NSInteger)selectFpsForFormat:(AVCaptureDeviceFormat *)format {
-    int maxSupportedFramerate = 0;
+    NSInteger maxSupportedFramerate = 0;
     for (AVFrameRateRange *fpsRange in format.videoSupportedFrameRateRanges) {
-        maxSupportedFramerate = fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
+        maxSupportedFramerate = (NSInteger)fmax(maxSupportedFramerate, fpsRange.maxFrameRate);
     }
-    return fmin(maxSupportedFramerate, kFramerateLimit);
+    return (NSInteger)fmin(maxSupportedFramerate, kFramerateLimit);
+}
+
+#pragma mark - Get
+-(KSCallType)myType {
+    if ([self.delegate respondsToSelector:@selector(callTypeOfMediaCapturer:)]) {
+        return [self.delegate callTypeOfMediaCapturer:self];
+    }
+    return KSCallTypeSingleVideo;
+}
+-(void)setMyType:(KSCallType)myType {
 }
 
 @end

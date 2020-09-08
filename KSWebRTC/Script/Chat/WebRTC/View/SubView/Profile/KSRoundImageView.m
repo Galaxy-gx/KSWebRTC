@@ -20,17 +20,17 @@
 
 @implementation KSRoundImageView
 
--(instancetype)initWithFrame:(CGRect)frame strokeColor:(UIColor *)strokeColor lineWidth:(CGFloat)lineWidth {
+-(instancetype)initWithFrame:(CGRect)frame backgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor font:(UIFont *)font strokeColor:(UIColor *)strokeColor lineWidth:(CGFloat)lineWidth {
     if (self = [super initWithFrame:frame]) {
-        [self createKitOfStrokeColor:strokeColor lineWidth:lineWidth];
+        [self createKitWithBackgroundColor:backgroundColor textColor:textColor font:font strokeColor:strokeColor lineWidth:lineWidth];
     }
     return self;
 }
 
--(void)createKitOfStrokeColor:(UIColor *)strokeColor lineWidth:(CGFloat)lineWidth {
+-(void)createKitWithBackgroundColor:(UIColor *)backgroundColor textColor:(UIColor *)textColor font:(UIFont *)font strokeColor:(UIColor *)strokeColor lineWidth:(CGFloat)lineWidth {
     CGFloat self_w                = self.bounds.size.width;
     UIImageView *photoView        = [[UIImageView alloc] initWithFrame:CGRectMake(2, 2, self_w - 4, self_w - 4)];
-    photoView.backgroundColor     = [UIColor ks_blueBtn];
+    photoView.backgroundColor     = backgroundColor;//[UIColor ks_blueBtn];
     photoView.layer.cornerRadius  = photoView.bounds.size.width/2;
     photoView.layer.masksToBounds = YES;
     [self addSubview:photoView];
@@ -46,8 +46,9 @@
     roundLayer.path               = [path CGPath];
     [self.layer addSublayer:roundLayer];
 
-    int title_h                   = 25;
-    UILabel *titleLabel           = [UILabel ks_labelWithFrame:CGRectMake(0, (self.bounds.size.height - title_h)/2, self_w, title_h) textColor:[UIColor ks_white] font:[UIFont ks_fontMediumOfSize:KS_Extern_18Font]  alignment:NSTextAlignmentCenter];
+    CGFloat title_h               = self.bounds.size.height;
+    //[UIColor ks_white] [UIFont ks_fontMediumOfSize:KS_Extern_18Font]
+    UILabel *titleLabel           = [UILabel ks_labelWithFrame:CGRectMake(0, 0, self_w, title_h) textColor:textColor font:font  alignment:NSTextAlignmentCenter];
     _titleLabel                   = titleLabel;
     [self addSubview:titleLabel];
 }
@@ -57,7 +58,15 @@
 }
 
 -(void)updateTitle:(NSString *)title {
+    if ([title length] > 3) {
+        title = [title substringToIndex:2];
+    }
     _titleLabel.text = title;
+}
+
+-(void)updateTitle:(NSString *)title font:(UIFont *)font {
+    [self updateTitle:title];
+    _titleLabel.font = font;;
 }
 
 @end

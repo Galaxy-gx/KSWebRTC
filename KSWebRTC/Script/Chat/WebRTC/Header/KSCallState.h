@@ -9,6 +9,7 @@
 #ifndef KSCallState_h
 #define KSCallState_h
 
+/*
 typedef NS_ENUM(NSInteger, KSCallState) {
     KSCallStateNone = 0,          //未连状态
     //KSCallStateCallerJoining,     //主叫方加入, 等待服务器返回结果，是否加入成功 （新的协议该状态省去）
@@ -21,12 +22,34 @@ typedef NS_ENUM(NSInteger, KSCallState) {
     KSCallStateRecording,         //通话中
     //KSCallStateCallEnded          //通话结束
 };
+*/
+
+//typedef NS_ENUM(NSInteger, KSCallState) {
+//    KSCallStateNone = 0,          //未连状态
+//    KSCallStateCalleeBeingCalled, //被叫方正在收到主叫方的呼叫
+//    KSCallStateRecording,         //通话中
+//};
+
 
 typedef NS_ENUM(NSInteger, KSCallEndType) {
     KSCallEndTypeNormal = 0,  //通话正常结束
     KSCallEndTypeCancel,      //通话未成功，主叫方取消
     KSCallEndTypeDecline,     //通话为成功，被叫方挂断
     KSCallEndTypeNoAnswer     //通话结束无人接听
+};
+
+//通话状态维护
+typedef NS_ENUM(NSInteger, KSCallStateMaintenance) {
+    KSCallStateMaintenanceNormal = 0,//初始状态
+    KSCallStateMaintenanceCaller,//主叫方发起Call
+    KSCallStateMaintenanceRinger,//被叫方收到Call准备响铃
+    KSCallStateMaintenanceRinged,//被叫方发送响铃/主叫方收到响铃（此时等待被叫方接听）
+    KSCallStateMaintenanceAnswoer,//主叫方收到接听/被叫方按下接听
+    KSCallStateMaintenanceRecording,//通话中
+    //KSCallStateMaintenanceLeave,//一方发送Leave消息（发送后不再处理收到的消息！！！）
+    //KSCallStateMaintenanceLeft,//一方收到Left，回一个Leave消息（发送后不再处理收到的消息！！！）
+    //KSCallStateMaintenanceDecline,//一方送到Decline,再收到Left后收到（不做任何处理）
+    //KSCallStateMaintenanceCallEnded//通话结束
 };
 
 typedef NS_ENUM(NSInteger, KSWebRTCStatus) {
@@ -52,11 +75,12 @@ typedef NS_ENUM(NSInteger, KSWebRTCStatus) {
 };
 
 typedef NS_ENUM(NSInteger, KSMediaState) {
-    KSMediaStateMuteAudio,
-    KSMediaStateUnmuteAudio,
-    KSMediaStateMuteVideo,
-    KSMediaStateUnmuteVideo,
-    KSMediaStateTalking,
+    KSMediaStateUnknown     = 0,
+    KSMediaStateUnmuteAudio = 1,
+    KSMediaStateMuteAudio   = 2,//静音
+    KSMediaStateUnmuteVideo = 3,
+    KSMediaStateMuteVideo   = 4,//关闭视频
+    KSMediaStateTalking     = 5,//发声中
 };
 
 #endif /* KSCallState_h */
