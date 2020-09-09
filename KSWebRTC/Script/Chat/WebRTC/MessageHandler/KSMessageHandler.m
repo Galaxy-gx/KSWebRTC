@@ -118,8 +118,6 @@ static int const KSRandomLength = 12;
             [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
         }
     } else if (event.jsep) {
-        [self.delegate messageHandler:self joinedJsep:event.jsep];
-        
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
             [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];

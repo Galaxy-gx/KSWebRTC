@@ -126,10 +126,6 @@
     return self.localMediaTrack.peerConnection;
 }
 
-- (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep {
-    KSMediaTrack *mediaTrack = [self mediaTrackOfSdp:jsep[@"sdp"]];
-}
-
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
     if ([self.delegate respondsToSelector:@selector(webRTCManager:didReceivedMessage:)]) {
         [self.delegate webRTCManager:self didReceivedMessage:message];
