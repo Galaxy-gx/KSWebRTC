@@ -119,12 +119,12 @@ static int const kLocalRTCSessionId = 10101024;
 
 #pragma mark - KSMessageHandlerDelegate 调试
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
-    return [self remoteMediaTrackWithSdp:sdp userId:[handleId intValue]].peerConnection;
+    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]%10000].peerConnection;
 }
 
 - (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    self.localMediaTrack.userInfo.ID = [handleId intValue];
-    self.localMediaTrack.sessionId   = [handleId intValue];
+    self.localMediaTrack.userInfo.ID = [handleId longLongValue]%10000;
+    self.localMediaTrack.sessionId   = [handleId longLongValue]%10000;
     return self.localMediaTrack.peerConnection;
 }
 
