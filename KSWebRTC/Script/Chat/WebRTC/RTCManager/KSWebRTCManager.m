@@ -19,6 +19,8 @@
 #import "KSCoolTile.h"
 #import "KSAudioPlayer.h"
 
+static int const kLocalRTCSessionId = 10101024;
+
 @interface KSRTCConnect : NSObject
 @property (nonatomic,assign) int          ID;
 @property (nonatomic,strong) NSDictionary *jsep;
@@ -98,7 +100,7 @@
     localMediaTrack.dataSource        = self;
     localMediaTrack.isLocal           = YES;
     localMediaTrack.index             = 0;
-    localMediaTrack.handleId          = 10101024;//[self randomNumber];
+    localMediaTrack.sessionId         = kLocalRTCSessionId;//[self randomNumber];
     localMediaTrack.userInfo          = [KSUserInfo myself];
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
@@ -122,7 +124,7 @@
 
 - (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
     self.localMediaTrack.userInfo.ID = [handleId intValue];
-    self.localMediaTrack.handleId    = [handleId intValue];
+    self.localMediaTrack.sessionId   = [handleId intValue];
     return self.localMediaTrack.peerConnection;
 }
 
@@ -402,7 +404,7 @@
     if (array.count > 1) {
         NSString *ID        = [KSRegex sdpSessionOfString:array[1]];
         KSMediaTrack *track = [self remoteMediaTrackOfUserId:userId];
-        track.handleId      = [ID longLongValue];
+        track.sessionId     = [ID longLongValue];
         return track;
     }
     return nil;
@@ -437,7 +439,7 @@
 
 - (KSMediaTrack *)mediaTrackOfHandleId:(long long)ID {
     for (KSMediaTrack *track in self.mediaTracks) {
-        if (track.handleId == ID) {
+        if (track.sessionId == ID) {
             return track;
         }
     }
@@ -1082,7 +1084,7 @@
 
 - (void)displayTile {
     KSMediaTrack *mediaTrack = [self displayMediaTrack];
-    if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.handleId == mediaTrack.handleId)) {
+    if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.sessionId == mediaTrack.sessionId)) {
         return;
     }
     [self.coolTile showMediaTrack:mediaTrack];
