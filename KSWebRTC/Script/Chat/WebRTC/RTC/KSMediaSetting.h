@@ -13,7 +13,7 @@
 #import "KSBlock.h"
 
 @interface KSIceServer : NSObject<NSCopying,NSMutableCopying>
-@property(nonatomic,copy)NSMutableArray<NSString *> *servers;
+@property(nonatomic,copy)NSArray<NSString *> *servers;
 @property(nonatomic,copy)NSString *username;
 @property(nonatomic,copy)NSString *password;
 @end

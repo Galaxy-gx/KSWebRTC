@@ -723,14 +723,14 @@
 		E60088E2250798E60065B68E /* RTCManager */ = {
 			isa = PBXGroup;
 			children = (
+				E60088E9250798E60065B68E /* KSWebRTCManager.h */,
+				E60088EA250798E60065B68E /* KSWebRTCManager.m */,
 				E60088E3250798E60065B68E /* KSAudioPlayer.h */,
 				E60088E4250798E60065B68E /* KSAudioPlayer.m */,
 				E60088E5250798E60065B68E /* KSDeviceSwitch.h */,
 				E60088E6250798E60065B68E /* KSDeviceSwitch.m */,
 				E60088E7250798E60065B68E /* KSSession.h */,
 				E60088E8250798E60065B68E /* KSSession.m */,
-				E60088E9250798E60065B68E /* KSWebRTCManager.h */,
-				E60088EA250798E60065B68E /* KSWebRTCManager.m */,
 			);
 			path = RTCManager;
 			sourceTree = "<group>";

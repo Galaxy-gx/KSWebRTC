@@ -27,19 +27,17 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        /*
-        NSArray *array = @[@"stun:stun.l.google.com:19302",
+        _servers       = @[@"stun:stun.l.google.com:19302",
                            @"stun:stun1.l.google.com:19302",
                            @"stun:stun2.l.google.com:19302",
                            @"stun:stun3.l.google.com:19302",
                            @"stun:stun4.l.google.com:19302"];
-         _servers       = [NSMutableArray arrayWithArray:array];
-         */
         
-        NSArray *array = @[@"turn:apturn.hiapponline.com:443", @"turn:209.51.174.23:53"];
-        _servers       = [NSMutableArray arrayWithArray:array];
+        /*
+        _servers       = @[@"turn:apturn.hiapponline.com:443", @"turn:209.51.174.23:53"];
         _username      = @"digi";
         _password      = @"createyourownturnserver";
+         */
     }
     return self;
 }

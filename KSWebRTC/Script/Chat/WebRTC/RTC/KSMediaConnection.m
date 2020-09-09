@@ -124,7 +124,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
     [self.peerConnection removeIceCandidates:candidates];
 }
 
-// 设置远端的媒体描述 self.isLocal = YES; type : answer; type = offer;
+// 设置远端的媒体描述
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep {
     NSLog(@"|~~~~~~~~~~~~|设置远端的媒体描述:\n%@\n|~~~~~~~~~~~~|",jsep);
     RTCSessionDescription *answerDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
@@ -133,7 +133,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
         if(!error){
             NSLog(@"Success to set remote Answer SDP");
         }else{
-            NSLog(@"|============| 错误:设置远程Answer错误 |============|");
+            NSLog(@"|============| 错误:设置远程Answer错误 \n%@ |============|",error);
             //NSLog(@"Failure to set remote Answer SDP, err=%@", error);
         }
     }];
@@ -191,7 +191,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
                         completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
                             if (error) {
                                 //NSLog(@"Failure to create local answer sdp!");
-                                NSLog(@"|============| 错误:创建Answer，生成SDP错误 |============|");
+                                NSLog(@"|============| 错误:创建Answer，生成SDP错误 \n%@ |============|",error);
                             }
                             else{
                                 NSLog(@"Success to create local answer sdp!");
@@ -199,7 +199,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
                             [weakSelf.peerConnection setLocalDescription:sdp
                                                        completionHandler:^(NSError *_Nullable error) {
                                                            if (error) {
-                                                               NSLog(@"|============| 错误:创建Answer，设置本地SDP错误 |============|");
+                                                               NSLog(@"|============| 错误:创建Answer，设置本地SDP错误 \n%@ |============|",error);
                                                            }
                                                            completionHandler(sdp, error);
                                                        }];
@@ -215,12 +215,12 @@ static NSString *const KARDStreamId = @"ARDAMS";
     [_peerConnection offerForConstraints:constraints
                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
-            NSLog(@"|============| 错误:创建Offer， 生成SDP错误 |============|");
+            NSLog(@"|============| 错误:创建Offer， 生成SDP错误 \n%@ |============|",error);
         }
         [weakSelf.peerConnection setLocalDescription:sdp
                                    completionHandler:^(NSError *_Nullable error) {
                                        if (error) {
-                                           NSLog(@"|============| 错误:创建Offer，设置本地SDP错误 |============|");
+                                           NSLog(@"|============| 错误:创建Offer，设置本地SDP错误 \n%@ |============|",error);
                                        }
             completionHandler(sdp, error);
         }];
@@ -273,7 +273,8 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 // stun 、 turn服务地址
 - (RTCIceServer *)defaultIceServer {
-    //return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers];
+    return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers];
+    
     return [[RTCIceServer alloc] initWithURLStrings:_setting.iceServer.servers
                                            username:_setting.iceServer.username
                                          credential:_setting.iceServer.password];

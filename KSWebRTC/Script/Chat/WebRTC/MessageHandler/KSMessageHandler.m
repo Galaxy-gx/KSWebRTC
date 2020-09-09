@@ -122,7 +122,8 @@ static int const KSRandomLength = 12;
         
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
-            [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
+            //[self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
+            [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
         }
         else if ([event.jsep[@"type"] isEqualToString:@"answer"]) {
             //WebRTC:08
