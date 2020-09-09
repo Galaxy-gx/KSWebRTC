@@ -10,6 +10,7 @@
 #import "KSConfigure.h"
 #import "KSCallState.h"
 #import "KSUserInfo.h"
+#import "KSMediaConnection.h"
 
 @class KSMediaTrack;
 
@@ -26,13 +27,14 @@
 @property (nonatomic,weak   ) id<KSMediaTrackDataSource> dataSource;
 @property (nonatomic, weak  ) UIView<RTCVideoRenderer>   *videoView;
 @property (nonatomic, assign,readonly) KSCallType         myType;
-@property (nonatomic, strong ) RTCVideoTrack *videoTrack;
-@property (nonatomic, strong ) RTCAudioTrack *audioTrack;
-@property (nonatomic, assign ) KSMediaState  mediaState;
-@property (nonatomic, assign ) BOOL          isLocal;
-@property (nonatomic, assign ) int           index;
-@property (nonatomic, assign ) long long     handleId;
-@property (nonatomic, strong) KSUserInfo     *userInfo;
+@property (nonatomic, strong ) KSMediaConnection *peerConnection;
+@property (nonatomic, strong ) RTCVideoTrack     *videoTrack;
+@property (nonatomic, strong ) RTCAudioTrack     *audioTrack;
+@property (nonatomic, assign ) KSMediaState      mediaState;
+@property (nonatomic, assign ) BOOL              isLocal;
+@property (nonatomic, assign ) int               index;
+@property (nonatomic, strong ) KSUserInfo        *userInfo;
+@property (nonatomic, assign ) long long         handleId;
 
 - (void)addRenderer:(UIView<RTCVideoRenderer> *)renderer;
 - (void)clearRenderer;

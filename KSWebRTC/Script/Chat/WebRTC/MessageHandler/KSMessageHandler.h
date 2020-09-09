@@ -12,6 +12,7 @@
 #import "KSMediaConnection.h"
 #import "KSWebSocket.h"
 #import "KSAckMessage.h"
+#import "KSMediaTrack.h"
 
 @class KSMsg;
 @class KSMessageHandler;
@@ -32,7 +33,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 @protocol KSMessageHandlerDelegate <NSObject>
 
 @required
-- (KSMediaConnection *)messageHandlerOfLocalConnection;
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId isLocal:(BOOL)isLocal;
 - (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep;
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;

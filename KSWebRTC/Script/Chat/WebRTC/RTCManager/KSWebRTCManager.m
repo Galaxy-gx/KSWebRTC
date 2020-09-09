@@ -88,12 +88,11 @@
 
 #pragma mark - KSMediaConnection
 - (void)createLocalConnection {
-    KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
-    peerConnection.delegate           = self;
+    KSMediaConnection *peerConnection = [self createPeerConnection];
     _peerConnection                   = peerConnection;
-    [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapturer];
-
+    
     KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
+    localMediaTrack.peerConnection    = peerConnection;
     localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
     localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
     localMediaTrack.dataSource        = self;
@@ -103,17 +102,28 @@
     localMediaTrack.userInfo          = [KSUserInfo myself];
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
-    //[self.mediaTracks addObject:localMediaTrack];
 }
 
+- (KSMediaConnection *)createPeerConnection {
+    KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
+    peerConnection.delegate           = self;
+    [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapturer];
+    return peerConnection;
+}
 //- (NSNumber *)randomNumber {
 //    int random = (arc4random() % 10000) + 10000;
 //    return [NSNumber numberWithInt:random];
 //}
 
 #pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)messageHandlerOfLocalConnection {
-    return self.peerConnection;
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId isLocal:(BOOL)isLocal {
+    if (isLocal) {
+        self.localMediaTrack.handleId = [handleId intValue];
+        return self.peerConnection;
+    }
+    else{
+        return [self remoteMediaTrackOfUserId:[handleId intValue]].peerConnection;
+    }
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep {
@@ -453,6 +463,7 @@
         return track;
     }
     track                = [[KSMediaTrack alloc] init];
+    track.peerConnection = [self createPeerConnection];
     track.index          = self.mediaTrackCount;
     track.dataSource     = self;
     track.mediaState     = KSMediaStateUnmuteAudio;
