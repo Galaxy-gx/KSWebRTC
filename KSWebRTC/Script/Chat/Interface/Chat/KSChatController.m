@@ -237,7 +237,7 @@
             break;
         case KSCallTypeManyVideo:
         {
-            
+            [self.callView reloadCollectionView];
         }
             break;
         default:
@@ -590,7 +590,8 @@
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
         {
-            [self.callView insertItemsAtIndex:[KSWebRTCManager shared].mediaTrackCount - 1];
+            [self.callView reloadCollectionView];
+            //[self.callView insertItemsAtIndex:[KSWebRTCManager shared].mediaTrackCount - 1];
         }
             break;
         default:

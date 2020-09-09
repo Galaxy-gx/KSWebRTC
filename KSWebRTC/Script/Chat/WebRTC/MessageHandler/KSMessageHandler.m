@@ -378,11 +378,18 @@ static int const KSRandomLength = 12;
 }
 
 - (void)trickleCandidate:(NSMutableDictionary *)candidate {
-    candidate[@"candidate"] = candidate[@"sdp"];//兼容作用
-    [self trickleCandidate:_myHandleId candidate:candidate];
+    NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
+    candidates[@"candidate"]        = candidate[@"sdp"];//兼容作用
+    candidates[@"sdpMLineIndex"]    = candidate[@"sdpMLineIndex"];
+    candidates[@"sdpMid"]           = candidate[@"sdpMid"];
+    [self trickleCandidate:_myHandleId candidate:candidates];
 }
 
 - (void)leave {
+    
+}
+
+- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type {
     
 }
 

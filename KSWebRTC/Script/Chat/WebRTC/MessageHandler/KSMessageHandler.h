@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 };
 
 @protocol KSMessageHandlerDelegate <NSObject>
-
 @required
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp;
 - (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;

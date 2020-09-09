@@ -34,7 +34,7 @@
     videoView.delegate               = self;
     videoView.userInteractionEnabled = NO;
     _videoView                       = videoView;
-    
+    self.layer.masksToBounds         = YES;
     [self ks_embedView:videoView containerView:self];
 }
 
