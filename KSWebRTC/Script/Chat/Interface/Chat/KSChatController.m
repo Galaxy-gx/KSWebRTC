@@ -51,6 +51,10 @@
     [self kitLogic];
 }
 
+-(void)dealloc {
+    [KSWebRTCManager close];
+}
+
 + (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller peerId:(int)peerId target:(UIViewController *)target {
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;

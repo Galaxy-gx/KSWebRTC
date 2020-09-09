@@ -545,6 +545,9 @@
     if (_audioPlayer) {
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
+    if (_isTest) {
+        [_msgHandler close];
+    }
 }
 
 + (void)close {

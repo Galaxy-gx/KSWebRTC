@@ -72,7 +72,7 @@ static int const KSRandomLength = 12;
             break;
         case KSActionTypeJoinRoom:
             //WebRTC:04
-            //这里应该创建PeerConnection
+            //发送offer
             [self configureRoom:_myHandleId];
             break;
         case KSActionTypeConfigureRoom:
@@ -276,7 +276,7 @@ static int const KSRandomLength = 12;
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"start";
         body[@"room"] = weakSelf.roomMumber;
-        //body[@"video"] = @YES;
+        body[@"video"] = @YES;
         
         NSString *type = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
@@ -382,6 +382,10 @@ static int const KSRandomLength = 12;
 - (void)trickleCandidate:(NSMutableDictionary *)candidate {
     candidate[@"candidate"] = candidate[@"sdp"];//兼容作用
     [self trickleCandidate:_myHandleId candidate:candidate];
+}
+
+- (void)leave {
+    
 }
 
 @end
