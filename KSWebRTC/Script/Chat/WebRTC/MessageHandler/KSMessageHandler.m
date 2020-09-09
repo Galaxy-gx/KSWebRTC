@@ -122,8 +122,7 @@ static int const KSRandomLength = 12;
         
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
-            //[self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
-            [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
+            [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
         }
         else if ([event.jsep[@"type"] isEqualToString:@"answer"]) {
             //WebRTC:08
@@ -251,7 +250,7 @@ static int const KSRandomLength = 12;
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId isLocal:YES];
+    KSMediaConnection *mc             = [self.delegate localpeerConnectionOfMessageHandler:self handleId:handleId];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -269,7 +268,7 @@ static int const KSRandomLength = 12;
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId isLocal:NO];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -289,7 +288,7 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId isLocal:YES];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 

@@ -116,14 +116,14 @@
 //}
 
 #pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId isLocal:(BOOL)isLocal {
-    if (isLocal) {
-        self.localMediaTrack.handleId = [handleId intValue];
-        return self.peerConnection;
-    }
-    else{
-        return [self remoteMediaTrackOfUserId:[handleId intValue]].peerConnection;
-    }
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
+    return [self remoteMediaTrackWithSdp:sdp userId:[handleId intValue]].peerConnection;
+}
+
+- (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    self.localMediaTrack.userInfo.ID = [handleId intValue];
+    self.localMediaTrack.handleId    = [handleId intValue];
+    return self.localMediaTrack.peerConnection;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler joinedJsep:(NSDictionary *)jsep {
