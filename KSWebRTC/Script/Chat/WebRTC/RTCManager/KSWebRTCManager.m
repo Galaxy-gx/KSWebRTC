@@ -204,9 +204,9 @@ static int const kLocalRTCSessionId = 10101024;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     NSMutableDictionary *body =[NSMutableDictionary dictionary];
     if (candidate) {
-        body[@"sdp"] = candidate.sdp;
-        body[@"sdpMid"] = candidate.sdpMid;
-        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
+        body[@"sdp"]           = candidate.sdp;
+        body[@"sdpMid"]        = candidate.sdpMid;
+        body[@"sdpMLineIndex"] = @(candidate.sdpMLineIndex);
     }
     if (_isTest) {
         [_msgHandler trickleCandidate:body];

@@ -10,6 +10,10 @@
 #import "KSWebRTCManager.h"
 #import "NSDictionary+Category.h"
 #import "NSString+Category.h"
+typedef NS_ENUM(NSInteger, KSRelayType) {
+    KSRelayTypeAll,
+    KSRelayTypeAssigner,
+};
 
 static NSString *const KMsgTypeIceCandidate       = @"IceCandidate";
 static NSString *const KMsgTypeSessionDescription = @"SessionDescription";
@@ -89,6 +93,8 @@ static int const KSRandomLength = 12;
                 jseps[@"type"]    = type;
                 jseps[@"sdp"]     = [sdp sdp];
                 jseps[@"user_id"] = @([KSUserInfo myID]);
+                jseps[@"relay"] = @(KSRelayTypeAssigner);
+                jseps[@"target"] = dict[@"payload"][@"user_id"];
                 [weakSelf sendPayload:jseps];
             }];
         }
@@ -100,7 +106,17 @@ static int const KSRandomLength = 12;
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
         [KSWebRTCManager shared].isRemote = YES;
-        [[KSWebRTCManager shared] sendOffer];
+        KSMediaConnection *mc        = [self myPeerConnection];
+        __weak typeof(self) weakSelf = self;
+        [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+            NSString *type = [RTCSessionDescription stringForType:sdp.type];
+            NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
+            jsep[@"type"]      = type;
+            jsep[@"sdp"]       = [sdp sdp];
+            jsep[@"user_id"]   = @([KSUserInfo myID]);
+            jsep[@"relay"]     = @(KSRelayTypeAll);
+            [weakSelf sendPayload:jsep];
+        }];
     }
 }
 // 观察者收到远端offer后，发送anwser
@@ -375,6 +391,7 @@ static int const KSRandomLength = 12;
     sendMessage[@"handle_id"]        = handleId;
     sendMessage[@"user_id"]          = self.userId;
     sendMessage[@"type"]             = KMsgTypeIceCandidate;
+    sendMessage[@"relay"]            = @(KSRelayTypeAll);
     [_socket sendMessage:sendMessage];
 }
 
