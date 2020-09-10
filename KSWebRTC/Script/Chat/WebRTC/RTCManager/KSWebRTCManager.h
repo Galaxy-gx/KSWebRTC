@@ -123,4 +123,6 @@
 
 //显示小窗
 - (void)displayTile;
+
+- (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(int)userId;
 @end

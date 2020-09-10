@@ -54,6 +54,10 @@ static int const KSRandomLength = 12;
     return [NSNumber numberWithInt:random];
 }
 
+- (KSMediaConnection *)myPeerConnection {
+    KSMediaConnection *mc = [KSWebRTCManager shared].localMediaTrack.peerConnection;
+    return mc;
+}
 - (void)handlerMsg:(id)message {
     NSError *error;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:message
@@ -65,20 +69,47 @@ static int const KSRandomLength = 12;
     _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
     NSLog(@"|============|\nReceived: %@\n|============|",dict);
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        KSMediaConnection *mc = [self.delegate peerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]]];
-        [mc addIceCandidate:dict[@"payload"]];
+        //KSMediaConnection *mc = [self.delegate peerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]]];
+        KSMediaConnection *mc = [self myPeerConnection];//[self.delegate peerConnectionOfMessageHandler:self handleId: [NSNumber numberWithInt:[KSUserInfo myID]]];
+        NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
+        NSDictionary *candidate         = dict[@"candidate"];
+        candidates[@"candidate"]        = candidate[@"sdp"];//兼容作用
+        candidates[@"sdpMLineIndex"]    = candidate[@"sdpMLineIndex"];
+        candidates[@"sdpMid"]           = candidate[@"sdpMid"];
+
+        [mc addIceCandidate:candidates];
         
         //[self.delegate messageHandler:self addIceCandidate:dict[@"payload"]];
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
+            [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
+            
+            KSMediaConnection *mc        = [self myPeerConnection];
+            [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
+            __weak typeof(self) weakSelf = self;
+            [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+                NSString *type = [RTCSessionDescription stringForType:sdp.type];
+                NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
+                jseps[@"type"]      = type;
+                jseps[@"sdp"]       = [sdp sdp];
+                jseps[@"user_id"]   = @([KSUserInfo myID]);
+                [weakSelf sendPayload:jseps];
+            }];
+            
             //[self.delegate messageHandler:self didReceiveOffer:dict[@"payload"]];
-            [self anwserRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
+            //[self anwserRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
+            //[self anwserRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
         }
         else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
             //[self.delegate messageHandler:self didReceiveAnswer:dict[@"payload"]];
-            [self onPublisherRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
+            //[self onPublisherRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
             //[self onPublisherRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
+            
+            
+            [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
+            KSMediaConnection *mc = [self myPeerConnection];
+            [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
         }
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
@@ -101,7 +132,6 @@ static int const KSRandomLength = 12;
         [weakSelf sendPayload:jseps];
     }];
 }
-
 
 - (void)startFlag {
     if (!_isConnect) {
@@ -358,6 +388,7 @@ static int const KSRandomLength = 12;
     sendMessage[@"candidate"]        = candidate;
     sendMessage[@"handle_id"]        = handleId;
     sendMessage[@"user_id"]          = self.userId;
+    sendMessage[@"type"]             = KMsgTypeIceCandidate;
     [_socket sendMessage:sendMessage];
 }
 
