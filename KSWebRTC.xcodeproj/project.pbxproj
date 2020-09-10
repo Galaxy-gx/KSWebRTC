@@ -7,113 +7,113 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E600894C250798E70065B68E /* KSSuperController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008850250798E60065B68E /* KSSuperController+Category.m */; };
-		E600894D250798E70065B68E /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008852250798E60065B68E /* NSDictionary+Category.m */; };
-		E600894E250798E70065B68E /* NSObject+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008854250798E60065B68E /* NSObject+Category.m */; };
-		E600894F250798E70065B68E /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008856250798E60065B68E /* NSString+Category.m */; };
-		E6008950250798E70065B68E /* RTCIceCandidate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008858250798E60065B68E /* RTCIceCandidate+Category.m */; };
-		E6008951250798E70065B68E /* RTCPeerConnection+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E600885A250798E60065B68E /* RTCPeerConnection+Category.m */; };
-		E6008952250798E70065B68E /* RTCSessionDescription+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E600885C250798E60065B68E /* RTCSessionDescription+Category.m */; };
-		E6008953250798E70065B68E /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E600885E250798E60065B68E /* UIButton+Category.m */; };
-		E6008954250798E70065B68E /* UIColor+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008860250798E60065B68E /* UIColor+Category.m */; };
-		E6008955250798E70065B68E /* UIFont+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008862250798E60065B68E /* UIFont+Category.m */; };
-		E6008956250798E70065B68E /* UIImage+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008864250798E60065B68E /* UIImage+Category.m */; };
-		E6008957250798E70065B68E /* UIImageView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008866250798E60065B68E /* UIImageView+Category.m */; };
-		E6008958250798E70065B68E /* UILabel+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008868250798E60065B68E /* UILabel+Category.m */; };
-		E6008959250798E70065B68E /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E600886A250798E60065B68E /* UIView+Category.m */; };
-		E600895A250798E70065B68E /* UIViewController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E600886C250798E60065B68E /* UIViewController+Category.m */; };
-		E600895B250798E70065B68E /* KSExtern.m in Sources */ = {isa = PBXBuildFile; fileRef = E600886F250798E60065B68E /* KSExtern.m */; };
-		E600895C250798E70065B68E /* KSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008875250798E60065B68E /* KSButton.m */; };
-		E600895D250798E70065B68E /* KSComposeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008877250798E60065B68E /* KSComposeButton.m */; };
-		E600895E250798E70065B68E /* KSIputView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008879250798E60065B68E /* KSIputView.m */; };
-		E600895F250798E70065B68E /* KSLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E600887B250798E60065B68E /* KSLayoutButton.m */; };
-		E6008960250798E70065B68E /* KSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E600887E250798E60065B68E /* KSWebSocket.m */; };
-		E6008961250798E70065B68E /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008880250798E60065B68E /* KSWebSocketConfigure.m */; };
-		E6008962250798E70065B68E /* KSRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008884250798E60065B68E /* KSRegex.m */; };
-		E6008963250798E70065B68E /* KSTimekeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008887250798E60065B68E /* KSTimekeeper.m */; };
-		E6008965250798E70065B68E /* KSChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E600888D250798E60065B68E /* KSChatController.m */; };
-		E6008966250798E70065B68E /* KSAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008891250798E60065B68E /* KSAlertController.m */; };
-		E6008967250798E70065B68E /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008894250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.m */; };
-		E6008968250798E70065B68E /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008898250798E60065B68E /* MJExtensionConst.m */; };
-		E6008969250798E70065B68E /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = E600889A250798E60065B68E /* MJFoundation.m */; };
-		E600896A250798E70065B68E /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E600889C250798E60065B68E /* MJProperty.m */; };
-		E600896B250798E70065B68E /* MJPropertyKey.m in Sources */ = {isa = PBXBuildFile; fileRef = E600889E250798E60065B68E /* MJPropertyKey.m */; };
-		E600896C250798E70065B68E /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088A0250798E60065B68E /* MJPropertyType.m */; };
-		E600896D250798E70065B68E /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088A2250798E60065B68E /* NSObject+MJClass.m */; };
-		E600896E250798E70065B68E /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088A4250798E60065B68E /* NSObject+MJCoding.m */; };
-		E600896F250798E70065B68E /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088A6250798E60065B68E /* NSObject+MJKeyValue.m */; };
-		E6008970250798E70065B68E /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088A8250798E60065B68E /* NSObject+MJProperty.m */; };
-		E6008971250798E70065B68E /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088AA250798E60065B68E /* NSString+MJExtension.m */; };
-		E6008972250798E70065B68E /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088AE250798E60065B68E /* SRWebSocket.m */; };
-		E6008973250798E70065B68E /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088B1250798E60065B68E /* SVIndefiniteAnimatedView.m */; };
-		E6008974250798E70065B68E /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088B3250798E60065B68E /* SVProgressAnimatedView.m */; };
-		E6008975250798E70065B68E /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E60088B5250798E60065B68E /* SVProgressHUD.bundle */; };
-		E6008976250798E70065B68E /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088B7250798E60065B68E /* SVProgressHUD.m */; };
-		E6008977250798E70065B68E /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088B9250798E60065B68E /* SVRadialGradientLayer.m */; };
-		E6008978250798E70065B68E /* KSChatInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088BE250798E60065B68E /* KSChatInterfaceController.m */; };
-		E6008979250798E70065B68E /* KSCoolTile.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088C2250798E60065B68E /* KSCoolTile.m */; };
-		E600897A250798E70065B68E /* KSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088C8250798E60065B68E /* KSNotification.m */; };
-		E600897B250798E70065B68E /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088CB250798E60065B68E /* KSMessageHandler.m */; };
-		E600897C250798E70065B68E /* AckCall.md in Resources */ = {isa = PBXBuildFile; fileRef = E60088CD250798E60065B68E /* AckCall.md */; };
-		E600897D250798E70065B68E /* AckJoined.md in Resources */ = {isa = PBXBuildFile; fileRef = E60088CE250798E60065B68E /* AckJoined.md */; };
-		E600897E250798E70065B68E /* KSAckMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088D0250798E60065B68E /* KSAckMessage.m */; };
-		E600897F250798E70065B68E /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088D2250798E60065B68E /* KSMsg.m */; };
-		E6008980250798E70065B68E /* KSUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088D4250798E60065B68E /* KSUserInfo.m */; };
-		E6008981250798E70065B68E /* mozart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E60088D7250798E60065B68E /* mozart.mp3 */; };
-		E6008982250798E70065B68E /* KSMediaCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088DA250798E60065B68E /* KSMediaCapturer.m */; };
-		E6008983250798E70065B68E /* KSMediaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088DC250798E60065B68E /* KSMediaConnection.m */; };
-		E6008984250798E70065B68E /* KSMediaSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088DE250798E60065B68E /* KSMediaSetting.m */; };
-		E6008985250798E70065B68E /* KSMediaTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088E0250798E60065B68E /* KSMediaTrack.m */; };
-		E6008986250798E70065B68E /* KSAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088E4250798E60065B68E /* KSAudioPlayer.m */; };
-		E6008987250798E70065B68E /* KSDeviceSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088E6250798E60065B68E /* KSDeviceSwitch.m */; };
-		E6008988250798E70065B68E /* KSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088E8250798E60065B68E /* KSSession.m */; };
-		E6008989250798E70065B68E /* KSWebRTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088EA250798E60065B68E /* KSWebRTCManager.m */; };
-		E600898A250798E70065B68E /* KSCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088EE250798E60065B68E /* KSCollectionViewCell.m */; };
-		E600898B250798E70065B68E /* KSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088F0250798E60065B68E /* KSTableViewCell.m */; };
-		E600898C250798E70065B68E /* KSSuperController.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088F3250798E60065B68E /* KSSuperController.m */; };
-		E600898D250798E70065B68E /* KSAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088F6250798E60065B68E /* KSAbstract.m */; };
-		E600898E250798E70065B68E /* KSExecuteArgs.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088F8250798E60065B68E /* KSExecuteArgs.m */; };
-		E600898F250798E70065B68E /* KSEventCallbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088FB250798E60065B68E /* KSEventCallbackView.m */; };
-		E6008990250798E70065B68E /* KSNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E60088FD250798E60065B68E /* KSNavigationBar.m */; };
-		E6008991250798E70065B68E /* KSCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008901250798E60065B68E /* KSCallView.m */; };
-		E6008992250798E70065B68E /* KSMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008903250798E60065B68E /* KSMediaView.m */; };
-		E6008993250798E70065B68E /* KSScreenMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008905250798E60065B68E /* KSScreenMediaView.m */; };
-		E6008994250798E70065B68E /* KSTileLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008907250798E60065B68E /* KSTileLayout.m */; };
-		E6008995250798E70065B68E /* KSTileMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008909250798E60065B68E /* KSTileMediaCell.m */; };
-		E6008996250798E70065B68E /* KSTileMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600890B250798E60065B68E /* KSTileMediaView.m */; };
-		E6008997250798E70065B68E /* KSVisualEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600890D250798E70065B68E /* KSVisualEffectView.m */; };
-		E6008998250798E70065B68E /* KSCallMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008910250798E70065B68E /* KSCallMenu.m */; };
-		E6008999250798E70065B68E /* KSCallMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008912250798E70065B68E /* KSCallMenuCell.m */; };
-		E600899A250798E70065B68E /* KSCallMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008914250798E70065B68E /* KSCallMenuController.m */; };
-		E600899B250798E70065B68E /* KSCallMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008916250798E70065B68E /* KSCallMenuView.m */; };
-		E600899C250798E70065B68E /* KSAnswerBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600891A250798E70065B68E /* KSAnswerBarView.m */; };
-		E600899D250798E70065B68E /* KSCallBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E600891D250798E70065B68E /* KSCallBarCell.m */; };
-		E600899E250798E70065B68E /* KSCallBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600891F250798E70065B68E /* KSCallBarView.m */; };
-		E600899F250798E70065B68E /* KSFunctionalBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008921250798E70065B68E /* KSFunctionalBarCell.m */; };
-		E60089A0250798E70065B68E /* KSFunctionalBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008923250798E70065B68E /* KSFunctionalBarView.m */; };
-		E60089A1250798E70065B68E /* KSBtnInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008926250798E70065B68E /* KSBtnInfo.m */; };
-		E60089A2250798E70065B68E /* KSMeetingBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E600892A250798E70065B68E /* KSMeetingBarCell.m */; };
-		E60089A3250798E70065B68E /* KSMeetingBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600892C250798E70065B68E /* KSMeetingBarView.m */; };
-		E60089A4250798E70065B68E /* KSMeetingThemeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600892E250798E70065B68E /* KSMeetingThemeView.m */; };
-		E60089A5250798E70065B68E /* KSProfileBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008931250798E70065B68E /* KSProfileBarView.m */; };
-		E60089A6250798E70065B68E /* KSProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008933250798E70065B68E /* KSProfileView.m */; };
-		E60089A7250798E70065B68E /* KSRoundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008935250798E70065B68E /* KSRoundImageView.m */; };
-		E60089A8250798E70065B68E /* KSProfileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008938250798E70065B68E /* KSProfileInfo.m */; };
-		E60089A9250798E70065B68E /* KSCoolHUB.m in Sources */ = {isa = PBXBuildFile; fileRef = E600893B250798E70065B68E /* KSCoolHUB.m */; };
-		E60089AA250798E70065B68E /* KSCoolTipsView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600893D250798E70065B68E /* KSCoolTipsView.m */; };
-		E60089AB250798E70065B68E /* KSTopBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008940250798E70065B68E /* KSTopBarView.m */; };
-		E60089AC250798E70065B68E /* KSWaitingAnswersMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008944250798E70065B68E /* KSWaitingAnswersMemberCell.m */; };
-		E60089AD250798E70065B68E /* KSCellAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008947250798E70065B68E /* KSCellAlignmentFlowLayout.m */; };
-		E60089AE250798E70065B68E /* KSWaitingAnswersGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E6008949250798E70065B68E /* KSWaitingAnswersGroupView.m */; };
-		E60089AF250798E70065B68E /* KSWaitingAnswersView.m in Sources */ = {isa = PBXBuildFile; fileRef = E600894B250798E70065B68E /* KSWaitingAnswersView.m */; };
-		E60089B025079A810065B68E /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6008889250798E60065B68E /* WebRTC.framework */; };
-		E60089B125079A810065B68E /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E6008889250798E60065B68E /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3424B8507F004C7060 /* AppDelegate.m */; };
 		E6400F3824B8507F004C7060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F3724B8507F004C7060 /* ViewController.m */; };
 		E6400F3B24B8507F004C7060 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3924B8507F004C7060 /* Main.storyboard */; };
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E66C2BE4250A338D00153CD7 /* KSSuperController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */; };
+		E66C2BE5250A338D00153CD7 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE5250A338D00153CD7 /* NSDictionary+Category.m */; };
+		E66C2BE6250A338D00153CD7 /* NSObject+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE7250A338D00153CD7 /* NSObject+Category.m */; };
+		E66C2BE7250A338D00153CD7 /* NSString+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE9250A338D00153CD7 /* NSString+Category.m */; };
+		E66C2BE8250A338D00153CD7 /* RTCIceCandidate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AEB250A338D00153CD7 /* RTCIceCandidate+Category.m */; };
+		E66C2BE9250A338D00153CD7 /* RTCPeerConnection+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AED250A338D00153CD7 /* RTCPeerConnection+Category.m */; };
+		E66C2BEA250A338D00153CD7 /* RTCSessionDescription+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AEF250A338D00153CD7 /* RTCSessionDescription+Category.m */; };
+		E66C2BEB250A338D00153CD7 /* UIButton+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AF1250A338D00153CD7 /* UIButton+Category.m */; };
+		E66C2BEC250A338D00153CD7 /* UIColor+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AF3250A338D00153CD7 /* UIColor+Category.m */; };
+		E66C2BED250A338D00153CD7 /* UIFont+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AF5250A338D00153CD7 /* UIFont+Category.m */; };
+		E66C2BEE250A338D00153CD7 /* UIImage+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AF7250A338D00153CD7 /* UIImage+Category.m */; };
+		E66C2BEF250A338D00153CD7 /* UIImageView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AF9250A338D00153CD7 /* UIImageView+Category.m */; };
+		E66C2BF0250A338D00153CD7 /* UILabel+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AFB250A338D00153CD7 /* UILabel+Category.m */; };
+		E66C2BF1250A338D00153CD7 /* UIView+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AFD250A338D00153CD7 /* UIView+Category.m */; };
+		E66C2BF2250A338D00153CD7 /* UIViewController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AFF250A338D00153CD7 /* UIViewController+Category.m */; };
+		E66C2BF3250A338D00153CD7 /* KSExtern.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B02250A338D00153CD7 /* KSExtern.m */; };
+		E66C2BF4250A338D00153CD7 /* KSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B08250A338D00153CD7 /* KSButton.m */; };
+		E66C2BF5250A338D00153CD7 /* KSComposeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B0A250A338D00153CD7 /* KSComposeButton.m */; };
+		E66C2BF6250A338D00153CD7 /* KSIputView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B0C250A338D00153CD7 /* KSIputView.m */; };
+		E66C2BF7250A338D00153CD7 /* KSLayoutButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B0E250A338D00153CD7 /* KSLayoutButton.m */; };
+		E66C2BF8250A338D00153CD7 /* KSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B11250A338D00153CD7 /* KSWebSocket.m */; };
+		E66C2BF9250A338D00153CD7 /* KSWebSocketConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B13250A338D00153CD7 /* KSWebSocketConfigure.m */; };
+		E66C2BFA250A338D00153CD7 /* KSRegex.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B17250A338D00153CD7 /* KSRegex.m */; };
+		E66C2BFB250A338D00153CD7 /* KSTimekeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B1A250A338D00153CD7 /* KSTimekeeper.m */; };
+		E66C2BFD250A338D00153CD7 /* KSChatController.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B20250A338D00153CD7 /* KSChatController.m */; };
+		E66C2BFE250A338D00153CD7 /* KSAlertController.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B24250A338D00153CD7 /* KSAlertController.m */; };
+		E66C2BFF250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B27250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.m */; };
+		E66C2C00250A338D00153CD7 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B2B250A338D00153CD7 /* MJExtensionConst.m */; };
+		E66C2C01250A338D00153CD7 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B2D250A338D00153CD7 /* MJFoundation.m */; };
+		E66C2C02250A338D00153CD7 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B2F250A338D00153CD7 /* MJProperty.m */; };
+		E66C2C03250A338D00153CD7 /* MJPropertyKey.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B31250A338D00153CD7 /* MJPropertyKey.m */; };
+		E66C2C04250A338D00153CD7 /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B33250A338D00153CD7 /* MJPropertyType.m */; };
+		E66C2C05250A338D00153CD7 /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B35250A338D00153CD7 /* NSObject+MJClass.m */; };
+		E66C2C06250A338D00153CD7 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B37250A338D00153CD7 /* NSObject+MJCoding.m */; };
+		E66C2C07250A338D00153CD7 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B39250A338D00153CD7 /* NSObject+MJKeyValue.m */; };
+		E66C2C08250A338D00153CD7 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B3B250A338D00153CD7 /* NSObject+MJProperty.m */; };
+		E66C2C09250A338D00153CD7 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B3D250A338D00153CD7 /* NSString+MJExtension.m */; };
+		E66C2C0A250A338D00153CD7 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B41250A338D00153CD7 /* SRWebSocket.m */; };
+		E66C2C0B250A338D00153CD7 /* SVIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B44250A338D00153CD7 /* SVIndefiniteAnimatedView.m */; };
+		E66C2C0C250A338D00153CD7 /* SVProgressAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B46250A338D00153CD7 /* SVProgressAnimatedView.m */; };
+		E66C2C0D250A338D00153CD7 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B48250A338D00153CD7 /* SVProgressHUD.bundle */; };
+		E66C2C0E250A338D00153CD7 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B4A250A338D00153CD7 /* SVProgressHUD.m */; };
+		E66C2C0F250A338D00153CD7 /* SVRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B4C250A338D00153CD7 /* SVRadialGradientLayer.m */; };
+		E66C2C10250A338D00153CD7 /* KSChatInterfaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B51250A338D00153CD7 /* KSChatInterfaceController.m */; };
+		E66C2C11250A338D00153CD7 /* KSCoolTile.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B55250A338D00153CD7 /* KSCoolTile.m */; };
+		E66C2C12250A338D00153CD7 /* KSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B5B250A338D00153CD7 /* KSNotification.m */; };
+		E66C2C13250A338D00153CD7 /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */; };
+		E66C2C14250A338D00153CD7 /* AckCall.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B60250A338D00153CD7 /* AckCall.md */; };
+		E66C2C15250A338D00153CD7 /* AckJoined.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B61250A338D00153CD7 /* AckJoined.md */; };
+		E66C2C16250A338D00153CD7 /* KSAckMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B63250A338D00153CD7 /* KSAckMessage.m */; };
+		E66C2C17250A338D00153CD7 /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B65250A338D00153CD7 /* KSMsg.m */; };
+		E66C2C18250A338D00153CD7 /* KSUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B67250A338D00153CD7 /* KSUserInfo.m */; };
+		E66C2C19250A338D00153CD7 /* mozart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B6A250A338D00153CD7 /* mozart.mp3 */; };
+		E66C2C1A250A338D00153CD7 /* KSMediaCapturer.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B6D250A338D00153CD7 /* KSMediaCapturer.m */; };
+		E66C2C1B250A338D00153CD7 /* KSMediaConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B6F250A338D00153CD7 /* KSMediaConnection.m */; };
+		E66C2C1C250A338D00153CD7 /* KSMediaSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B71250A338D00153CD7 /* KSMediaSetting.m */; };
+		E66C2C1D250A338D00153CD7 /* KSMediaTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B73250A338D00153CD7 /* KSMediaTrack.m */; };
+		E66C2C1E250A338D00153CD7 /* KSAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B77250A338D00153CD7 /* KSAudioPlayer.m */; };
+		E66C2C1F250A338D00153CD7 /* KSDeviceSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B79250A338D00153CD7 /* KSDeviceSwitch.m */; };
+		E66C2C20250A338D00153CD7 /* KSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B7B250A338D00153CD7 /* KSSession.m */; };
+		E66C2C21250A338D00153CD7 /* KSWebRTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B7D250A338D00153CD7 /* KSWebRTCManager.m */; };
+		E66C2C22250A338D00153CD7 /* KSCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B81250A338D00153CD7 /* KSCollectionViewCell.m */; };
+		E66C2C23250A338D00153CD7 /* KSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B83250A338D00153CD7 /* KSTableViewCell.m */; };
+		E66C2C24250A338D00153CD7 /* KSSuperController.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B86250A338D00153CD7 /* KSSuperController.m */; };
+		E66C2C25250A338D00153CD7 /* KSAbstract.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B89250A338D00153CD7 /* KSAbstract.m */; };
+		E66C2C26250A338D00153CD7 /* KSExecuteArgs.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B8B250A338D00153CD7 /* KSExecuteArgs.m */; };
+		E66C2C27250A338D00153CD7 /* KSEventCallbackView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B8E250A338D00153CD7 /* KSEventCallbackView.m */; };
+		E66C2C28250A338D00153CD7 /* KSNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B90250A338D00153CD7 /* KSNavigationBar.m */; };
+		E66C2C29250A338D00153CD7 /* KSCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B94250A338D00153CD7 /* KSCallView.m */; };
+		E66C2C2A250A338D00153CD7 /* KSMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B96250A338D00153CD7 /* KSMediaView.m */; };
+		E66C2C2B250A338D00153CD7 /* KSScreenMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B98250A338D00153CD7 /* KSScreenMediaView.m */; };
+		E66C2C2C250A338D00153CD7 /* KSTileLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B9A250A338D00153CD7 /* KSTileLayout.m */; };
+		E66C2C2D250A338D00153CD7 /* KSTileMediaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B9C250A338D00153CD7 /* KSTileMediaCell.m */; };
+		E66C2C2E250A338D00153CD7 /* KSTileMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B9E250A338D00153CD7 /* KSTileMediaView.m */; };
+		E66C2C2F250A338D00153CD7 /* KSVisualEffectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BA0250A338D00153CD7 /* KSVisualEffectView.m */; };
+		E66C2C30250A338D00153CD7 /* KSCallMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BA3250A338D00153CD7 /* KSCallMenu.m */; };
+		E66C2C31250A338D00153CD7 /* KSCallMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BA5250A338D00153CD7 /* KSCallMenuCell.m */; };
+		E66C2C32250A338D00153CD7 /* KSCallMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BA7250A338D00153CD7 /* KSCallMenuController.m */; };
+		E66C2C33250A338D00153CD7 /* KSCallMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BA9250A338D00153CD7 /* KSCallMenuView.m */; };
+		E66C2C34250A338D00153CD7 /* KSAnswerBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BAD250A338D00153CD7 /* KSAnswerBarView.m */; };
+		E66C2C35250A338D00153CD7 /* KSCallBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BB0250A338D00153CD7 /* KSCallBarCell.m */; };
+		E66C2C36250A338D00153CD7 /* KSCallBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BB2250A338D00153CD7 /* KSCallBarView.m */; };
+		E66C2C37250A338D00153CD7 /* KSFunctionalBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BB4250A338D00153CD7 /* KSFunctionalBarCell.m */; };
+		E66C2C38250A338D00153CD7 /* KSFunctionalBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BB6250A338D00153CD7 /* KSFunctionalBarView.m */; };
+		E66C2C39250A338D00153CD7 /* KSBtnInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BB9250A338D00153CD7 /* KSBtnInfo.m */; };
+		E66C2C3A250A338D00153CD7 /* KSMeetingBarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BBD250A338D00153CD7 /* KSMeetingBarCell.m */; };
+		E66C2C3B250A338D00153CD7 /* KSMeetingBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BBF250A338D00153CD7 /* KSMeetingBarView.m */; };
+		E66C2C3C250A338D00153CD7 /* KSMeetingThemeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BC1250A338D00153CD7 /* KSMeetingThemeView.m */; };
+		E66C2C3D250A338D00153CD7 /* KSProfileBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BC4250A338D00153CD7 /* KSProfileBarView.m */; };
+		E66C2C3E250A338D00153CD7 /* KSProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BC6250A338D00153CD7 /* KSProfileView.m */; };
+		E66C2C3F250A338D00153CD7 /* KSRoundImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BC8250A338D00153CD7 /* KSRoundImageView.m */; };
+		E66C2C40250A338D00153CD7 /* KSProfileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BCB250A338D00153CD7 /* KSProfileInfo.m */; };
+		E66C2C41250A338D00153CD7 /* KSCoolHUB.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BCE250A338D00153CD7 /* KSCoolHUB.m */; };
+		E66C2C42250A338D00153CD7 /* KSCoolTipsView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BD0250A338D00153CD7 /* KSCoolTipsView.m */; };
+		E66C2C43250A338D00153CD7 /* KSTopBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BD3250A338D00153CD7 /* KSTopBarView.m */; };
+		E66C2C44250A338D00153CD7 /* KSWaitingAnswersMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BD7250A338D00153CD7 /* KSWaitingAnswersMemberCell.m */; };
+		E66C2C45250A338D00153CD7 /* KSCellAlignmentFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BDA250A338D00153CD7 /* KSCellAlignmentFlowLayout.m */; };
+		E66C2C46250A338D00153CD7 /* KSWaitingAnswersGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BDC250A338D00153CD7 /* KSWaitingAnswersGroupView.m */; };
+		E66C2C47250A338D00153CD7 /* KSWaitingAnswersView.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2BDE250A338D00153CD7 /* KSWaitingAnswersView.m */; };
+		E66C2C50250A375700153CD7 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E66C2B1C250A338D00153CD7 /* WebRTC.framework */; };
+		E66C2C51250A375700153CD7 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E66C2B1C250A338D00153CD7 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -124,7 +124,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E60089B125079A810065B68E /* WebRTC.framework in Embed Frameworks */,
+				E66C2C51250A375700153CD7 /* WebRTC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -132,211 +132,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		E600884F250798E60065B68E /* KSSuperController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KSSuperController+Category.h"; sourceTree = "<group>"; };
-		E6008850250798E60065B68E /* KSSuperController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KSSuperController+Category.m"; sourceTree = "<group>"; };
-		E6008851250798E60065B68E /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
-		E6008852250798E60065B68E /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
-		E6008853250798E60065B68E /* NSObject+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Category.h"; sourceTree = "<group>"; };
-		E6008854250798E60065B68E /* NSObject+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Category.m"; sourceTree = "<group>"; };
-		E6008855250798E60065B68E /* NSString+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
-		E6008856250798E60065B68E /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
-		E6008857250798E60065B68E /* RTCIceCandidate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCIceCandidate+Category.h"; sourceTree = "<group>"; };
-		E6008858250798E60065B68E /* RTCIceCandidate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCIceCandidate+Category.m"; sourceTree = "<group>"; };
-		E6008859250798E60065B68E /* RTCPeerConnection+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCPeerConnection+Category.h"; sourceTree = "<group>"; };
-		E600885A250798E60065B68E /* RTCPeerConnection+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCPeerConnection+Category.m"; sourceTree = "<group>"; };
-		E600885B250798E60065B68E /* RTCSessionDescription+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCSessionDescription+Category.h"; sourceTree = "<group>"; };
-		E600885C250798E60065B68E /* RTCSessionDescription+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCSessionDescription+Category.m"; sourceTree = "<group>"; };
-		E600885D250798E60065B68E /* UIButton+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Category.h"; sourceTree = "<group>"; };
-		E600885E250798E60065B68E /* UIButton+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Category.m"; sourceTree = "<group>"; };
-		E600885F250798E60065B68E /* UIColor+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Category.h"; sourceTree = "<group>"; };
-		E6008860250798E60065B68E /* UIColor+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Category.m"; sourceTree = "<group>"; };
-		E6008861250798E60065B68E /* UIFont+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Category.h"; sourceTree = "<group>"; };
-		E6008862250798E60065B68E /* UIFont+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Category.m"; sourceTree = "<group>"; };
-		E6008863250798E60065B68E /* UIImage+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Category.h"; sourceTree = "<group>"; };
-		E6008864250798E60065B68E /* UIImage+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Category.m"; sourceTree = "<group>"; };
-		E6008865250798E60065B68E /* UIImageView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Category.h"; sourceTree = "<group>"; };
-		E6008866250798E60065B68E /* UIImageView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Category.m"; sourceTree = "<group>"; };
-		E6008867250798E60065B68E /* UILabel+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Category.h"; sourceTree = "<group>"; };
-		E6008868250798E60065B68E /* UILabel+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Category.m"; sourceTree = "<group>"; };
-		E6008869250798E60065B68E /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
-		E600886A250798E60065B68E /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
-		E600886B250798E60065B68E /* UIViewController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Category.h"; sourceTree = "<group>"; };
-		E600886C250798E60065B68E /* UIViewController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Category.m"; sourceTree = "<group>"; };
-		E600886E250798E60065B68E /* KSExtern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSExtern.h; sourceTree = "<group>"; };
-		E600886F250798E60065B68E /* KSExtern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSExtern.m; sourceTree = "<group>"; };
-		E6008870250798E60065B68E /* KSImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSImport.h; sourceTree = "<group>"; };
-		E6008871250798E60065B68E /* KSMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMacro.h; sourceTree = "<group>"; };
-		E6008872250798E60065B68E /* KSPrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSPrefixHeader.pch; sourceTree = "<group>"; };
-		E6008874250798E60065B68E /* KSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSButton.h; sourceTree = "<group>"; };
-		E6008875250798E60065B68E /* KSButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSButton.m; sourceTree = "<group>"; };
-		E6008876250798E60065B68E /* KSComposeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSComposeButton.h; sourceTree = "<group>"; };
-		E6008877250798E60065B68E /* KSComposeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSComposeButton.m; sourceTree = "<group>"; };
-		E6008878250798E60065B68E /* KSIputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSIputView.h; sourceTree = "<group>"; };
-		E6008879250798E60065B68E /* KSIputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSIputView.m; sourceTree = "<group>"; };
-		E600887A250798E60065B68E /* KSLayoutButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSLayoutButton.h; sourceTree = "<group>"; };
-		E600887B250798E60065B68E /* KSLayoutButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSLayoutButton.m; sourceTree = "<group>"; };
-		E600887D250798E60065B68E /* KSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocket.h; sourceTree = "<group>"; };
-		E600887E250798E60065B68E /* KSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocket.m; sourceTree = "<group>"; };
-		E600887F250798E60065B68E /* KSWebSocketConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocketConfigure.h; sourceTree = "<group>"; };
-		E6008880250798E60065B68E /* KSWebSocketConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocketConfigure.m; sourceTree = "<group>"; };
-		E6008883250798E60065B68E /* KSRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRegex.h; sourceTree = "<group>"; };
-		E6008884250798E60065B68E /* KSRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRegex.m; sourceTree = "<group>"; };
-		E6008886250798E60065B68E /* KSTimekeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTimekeeper.h; sourceTree = "<group>"; };
-		E6008887250798E60065B68E /* KSTimekeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTimekeeper.m; sourceTree = "<group>"; };
-		E6008889250798E60065B68E /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
-		E600888C250798E60065B68E /* KSChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatController.h; sourceTree = "<group>"; };
-		E600888D250798E60065B68E /* KSChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSChatController.m; sourceTree = "<group>"; };
-		E6008890250798E60065B68E /* KSAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAlertController.h; sourceTree = "<group>"; };
-		E6008891250798E60065B68E /* KSAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAlertController.m; sourceTree = "<group>"; };
-		E6008893250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
-		E6008894250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
-		E6008896250798E60065B68E /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
-		E6008897250798E60065B68E /* MJExtensionConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtensionConst.h; sourceTree = "<group>"; };
-		E6008898250798E60065B68E /* MJExtensionConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJExtensionConst.m; sourceTree = "<group>"; };
-		E6008899250798E60065B68E /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
-		E600889A250798E60065B68E /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
-		E600889B250798E60065B68E /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
-		E600889C250798E60065B68E /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
-		E600889D250798E60065B68E /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
-		E600889E250798E60065B68E /* MJPropertyKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyKey.m; sourceTree = "<group>"; };
-		E600889F250798E60065B68E /* MJPropertyType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyType.h; sourceTree = "<group>"; };
-		E60088A0250798E60065B68E /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyType.m; sourceTree = "<group>"; };
-		E60088A1250798E60065B68E /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
-		E60088A2250798E60065B68E /* NSObject+MJClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJClass.m"; sourceTree = "<group>"; };
-		E60088A3250798E60065B68E /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
-		E60088A4250798E60065B68E /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
-		E60088A5250798E60065B68E /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
-		E60088A6250798E60065B68E /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
-		E60088A7250798E60065B68E /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
-		E60088A8250798E60065B68E /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
-		E60088A9250798E60065B68E /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
-		E60088AA250798E60065B68E /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
-		E60088AC250798E60065B68E /* SocketRocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketRocket.h; sourceTree = "<group>"; };
-		E60088AD250798E60065B68E /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
-		E60088AE250798E60065B68E /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
-		E60088B0250798E60065B68E /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
-		E60088B1250798E60065B68E /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
-		E60088B2250798E60065B68E /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressAnimatedView.h; sourceTree = "<group>"; };
-		E60088B3250798E60065B68E /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressAnimatedView.m; sourceTree = "<group>"; };
-		E60088B4250798E60065B68E /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
-		E60088B5250798E60065B68E /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
-		E60088B6250798E60065B68E /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
-		E60088B7250798E60065B68E /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
-		E60088B8250798E60065B68E /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRadialGradientLayer.h; sourceTree = "<group>"; };
-		E60088B9250798E60065B68E /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRadialGradientLayer.m; sourceTree = "<group>"; };
-		E60088BD250798E60065B68E /* KSChatInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatInterfaceController.h; sourceTree = "<group>"; };
-		E60088BE250798E60065B68E /* KSChatInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSChatInterfaceController.m; sourceTree = "<group>"; };
-		E60088C1250798E60065B68E /* KSCoolTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolTile.h; sourceTree = "<group>"; };
-		E60088C2250798E60065B68E /* KSCoolTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolTile.m; sourceTree = "<group>"; };
-		E60088C4250798E60065B68E /* KSBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBlock.h; sourceTree = "<group>"; };
-		E60088C5250798E60065B68E /* KSCallState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallState.h; sourceTree = "<group>"; };
-		E60088C6250798E60065B68E /* KSConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSConfigure.h; sourceTree = "<group>"; };
-		E60088C7250798E60065B68E /* KSNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSNotification.h; sourceTree = "<group>"; };
-		E60088C8250798E60065B68E /* KSNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSNotification.m; sourceTree = "<group>"; };
-		E60088CA250798E60065B68E /* KSMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMessageHandler.h; sourceTree = "<group>"; };
-		E60088CB250798E60065B68E /* KSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
-		E60088CD250798E60065B68E /* AckCall.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckCall.md; sourceTree = "<group>"; };
-		E60088CE250798E60065B68E /* AckJoined.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckJoined.md; sourceTree = "<group>"; };
-		E60088CF250798E60065B68E /* KSAckMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAckMessage.h; sourceTree = "<group>"; };
-		E60088D0250798E60065B68E /* KSAckMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAckMessage.m; sourceTree = "<group>"; };
-		E60088D1250798E60065B68E /* KSMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
-		E60088D2250798E60065B68E /* KSMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
-		E60088D3250798E60065B68E /* KSUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSUserInfo.h; sourceTree = "<group>"; };
-		E60088D4250798E60065B68E /* KSUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSUserInfo.m; sourceTree = "<group>"; };
-		E60088D7250798E60065B68E /* mozart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozart.mp3; sourceTree = "<group>"; };
-		E60088D9250798E60065B68E /* KSMediaCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaCapturer.h; sourceTree = "<group>"; };
-		E60088DA250798E60065B68E /* KSMediaCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaCapturer.m; sourceTree = "<group>"; };
-		E60088DB250798E60065B68E /* KSMediaConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaConnection.h; sourceTree = "<group>"; };
-		E60088DC250798E60065B68E /* KSMediaConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaConnection.m; sourceTree = "<group>"; };
-		E60088DD250798E60065B68E /* KSMediaSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaSetting.h; sourceTree = "<group>"; };
-		E60088DE250798E60065B68E /* KSMediaSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaSetting.m; sourceTree = "<group>"; };
-		E60088DF250798E60065B68E /* KSMediaTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaTrack.h; sourceTree = "<group>"; };
-		E60088E0250798E60065B68E /* KSMediaTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaTrack.m; sourceTree = "<group>"; };
-		E60088E1250798E60065B68E /* KSRTCKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRTCKey.h; sourceTree = "<group>"; };
-		E60088E3250798E60065B68E /* KSAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAudioPlayer.h; sourceTree = "<group>"; };
-		E60088E4250798E60065B68E /* KSAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAudioPlayer.m; sourceTree = "<group>"; };
-		E60088E5250798E60065B68E /* KSDeviceSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSDeviceSwitch.h; sourceTree = "<group>"; };
-		E60088E6250798E60065B68E /* KSDeviceSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSDeviceSwitch.m; sourceTree = "<group>"; };
-		E60088E7250798E60065B68E /* KSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSSession.h; sourceTree = "<group>"; };
-		E60088E8250798E60065B68E /* KSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSSession.m; sourceTree = "<group>"; };
-		E60088E9250798E60065B68E /* KSWebRTCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebRTCManager.h; sourceTree = "<group>"; };
-		E60088EA250798E60065B68E /* KSWebRTCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebRTCManager.m; sourceTree = "<group>"; };
-		E60088ED250798E60065B68E /* KSCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCollectionViewCell.h; sourceTree = "<group>"; };
-		E60088EE250798E60065B68E /* KSCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCollectionViewCell.m; sourceTree = "<group>"; };
-		E60088EF250798E60065B68E /* KSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTableViewCell.h; sourceTree = "<group>"; };
-		E60088F0250798E60065B68E /* KSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTableViewCell.m; sourceTree = "<group>"; };
-		E60088F2250798E60065B68E /* KSSuperController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSSuperController.h; sourceTree = "<group>"; };
-		E60088F3250798E60065B68E /* KSSuperController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSSuperController.m; sourceTree = "<group>"; };
-		E60088F5250798E60065B68E /* KSAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAbstract.h; sourceTree = "<group>"; };
-		E60088F6250798E60065B68E /* KSAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAbstract.m; sourceTree = "<group>"; };
-		E60088F7250798E60065B68E /* KSExecuteArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSExecuteArgs.h; sourceTree = "<group>"; };
-		E60088F8250798E60065B68E /* KSExecuteArgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSExecuteArgs.m; sourceTree = "<group>"; };
-		E60088FA250798E60065B68E /* KSEventCallbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSEventCallbackView.h; sourceTree = "<group>"; };
-		E60088FB250798E60065B68E /* KSEventCallbackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSEventCallbackView.m; sourceTree = "<group>"; };
-		E60088FC250798E60065B68E /* KSNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSNavigationBar.h; sourceTree = "<group>"; };
-		E60088FD250798E60065B68E /* KSNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSNavigationBar.m; sourceTree = "<group>"; };
-		E6008900250798E60065B68E /* KSCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallView.h; sourceTree = "<group>"; };
-		E6008901250798E60065B68E /* KSCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallView.m; sourceTree = "<group>"; };
-		E6008902250798E60065B68E /* KSMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaView.h; sourceTree = "<group>"; };
-		E6008903250798E60065B68E /* KSMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaView.m; sourceTree = "<group>"; };
-		E6008904250798E60065B68E /* KSScreenMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSScreenMediaView.h; sourceTree = "<group>"; };
-		E6008905250798E60065B68E /* KSScreenMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSScreenMediaView.m; sourceTree = "<group>"; };
-		E6008906250798E60065B68E /* KSTileLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileLayout.h; sourceTree = "<group>"; };
-		E6008907250798E60065B68E /* KSTileLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileLayout.m; sourceTree = "<group>"; };
-		E6008908250798E60065B68E /* KSTileMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileMediaCell.h; sourceTree = "<group>"; };
-		E6008909250798E60065B68E /* KSTileMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileMediaCell.m; sourceTree = "<group>"; };
-		E600890A250798E60065B68E /* KSTileMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileMediaView.h; sourceTree = "<group>"; };
-		E600890B250798E60065B68E /* KSTileMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileMediaView.m; sourceTree = "<group>"; };
-		E600890C250798E70065B68E /* KSVisualEffectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVisualEffectView.h; sourceTree = "<group>"; };
-		E600890D250798E70065B68E /* KSVisualEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVisualEffectView.m; sourceTree = "<group>"; };
-		E600890F250798E70065B68E /* KSCallMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenu.h; sourceTree = "<group>"; };
-		E6008910250798E70065B68E /* KSCallMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenu.m; sourceTree = "<group>"; };
-		E6008911250798E70065B68E /* KSCallMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuCell.h; sourceTree = "<group>"; };
-		E6008912250798E70065B68E /* KSCallMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuCell.m; sourceTree = "<group>"; };
-		E6008913250798E70065B68E /* KSCallMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuController.h; sourceTree = "<group>"; };
-		E6008914250798E70065B68E /* KSCallMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuController.m; sourceTree = "<group>"; };
-		E6008915250798E70065B68E /* KSCallMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuView.h; sourceTree = "<group>"; };
-		E6008916250798E70065B68E /* KSCallMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuView.m; sourceTree = "<group>"; };
-		E6008919250798E70065B68E /* KSAnswerBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAnswerBarView.h; sourceTree = "<group>"; };
-		E600891A250798E70065B68E /* KSAnswerBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAnswerBarView.m; sourceTree = "<group>"; };
-		E600891C250798E70065B68E /* KSCallBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallBarCell.h; sourceTree = "<group>"; };
-		E600891D250798E70065B68E /* KSCallBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallBarCell.m; sourceTree = "<group>"; };
-		E600891E250798E70065B68E /* KSCallBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
-		E600891F250798E70065B68E /* KSCallBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallBarView.m; sourceTree = "<group>"; };
-		E6008920250798E70065B68E /* KSFunctionalBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarCell.h; sourceTree = "<group>"; };
-		E6008921250798E70065B68E /* KSFunctionalBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarCell.m; sourceTree = "<group>"; };
-		E6008922250798E70065B68E /* KSFunctionalBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarView.h; sourceTree = "<group>"; };
-		E6008923250798E70065B68E /* KSFunctionalBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarView.m; sourceTree = "<group>"; };
-		E6008925250798E70065B68E /* KSBtnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBtnInfo.h; sourceTree = "<group>"; };
-		E6008926250798E70065B68E /* KSBtnInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSBtnInfo.m; sourceTree = "<group>"; };
-		E6008929250798E70065B68E /* KSMeetingBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingBarCell.h; sourceTree = "<group>"; };
-		E600892A250798E70065B68E /* KSMeetingBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingBarCell.m; sourceTree = "<group>"; };
-		E600892B250798E70065B68E /* KSMeetingBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingBarView.h; sourceTree = "<group>"; };
-		E600892C250798E70065B68E /* KSMeetingBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingBarView.m; sourceTree = "<group>"; };
-		E600892D250798E70065B68E /* KSMeetingThemeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingThemeView.h; sourceTree = "<group>"; };
-		E600892E250798E70065B68E /* KSMeetingThemeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingThemeView.m; sourceTree = "<group>"; };
-		E6008930250798E70065B68E /* KSProfileBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileBarView.h; sourceTree = "<group>"; };
-		E6008931250798E70065B68E /* KSProfileBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileBarView.m; sourceTree = "<group>"; };
-		E6008932250798E70065B68E /* KSProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileView.h; sourceTree = "<group>"; };
-		E6008933250798E70065B68E /* KSProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileView.m; sourceTree = "<group>"; };
-		E6008934250798E70065B68E /* KSRoundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRoundImageView.h; sourceTree = "<group>"; };
-		E6008935250798E70065B68E /* KSRoundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRoundImageView.m; sourceTree = "<group>"; };
-		E6008937250798E70065B68E /* KSProfileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileInfo.h; sourceTree = "<group>"; };
-		E6008938250798E70065B68E /* KSProfileInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileInfo.m; sourceTree = "<group>"; };
-		E600893A250798E70065B68E /* KSCoolHUB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolHUB.h; sourceTree = "<group>"; };
-		E600893B250798E70065B68E /* KSCoolHUB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolHUB.m; sourceTree = "<group>"; };
-		E600893C250798E70065B68E /* KSCoolTipsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolTipsView.h; sourceTree = "<group>"; };
-		E600893D250798E70065B68E /* KSCoolTipsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolTipsView.m; sourceTree = "<group>"; };
-		E600893F250798E70065B68E /* KSTopBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTopBarView.h; sourceTree = "<group>"; };
-		E6008940250798E70065B68E /* KSTopBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTopBarView.m; sourceTree = "<group>"; };
-		E6008943250798E70065B68E /* KSWaitingAnswersMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersMemberCell.h; sourceTree = "<group>"; };
-		E6008944250798E70065B68E /* KSWaitingAnswersMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersMemberCell.m; sourceTree = "<group>"; };
-		E6008946250798E70065B68E /* KSCellAlignmentFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCellAlignmentFlowLayout.h; sourceTree = "<group>"; };
-		E6008947250798E70065B68E /* KSCellAlignmentFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCellAlignmentFlowLayout.m; sourceTree = "<group>"; };
-		E6008948250798E70065B68E /* KSWaitingAnswersGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersGroupView.h; sourceTree = "<group>"; };
-		E6008949250798E70065B68E /* KSWaitingAnswersGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersGroupView.m; sourceTree = "<group>"; };
-		E600894A250798E70065B68E /* KSWaitingAnswersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersView.h; sourceTree = "<group>"; };
-		E600894B250798E70065B68E /* KSWaitingAnswersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersView.m; sourceTree = "<group>"; };
 		E632FECC24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		E632FECD24E9401E0049ED8A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		E6400F3024B8507F004C7060 /* KSWebRTC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KSWebRTC.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -349,6 +144,211 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E66C2AE2250A338D00153CD7 /* KSSuperController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KSSuperController+Category.h"; sourceTree = "<group>"; };
+		E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KSSuperController+Category.m"; sourceTree = "<group>"; };
+		E66C2AE4250A338D00153CD7 /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
+		E66C2AE5250A338D00153CD7 /* NSDictionary+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Category.m"; sourceTree = "<group>"; };
+		E66C2AE6250A338D00153CD7 /* NSObject+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Category.h"; sourceTree = "<group>"; };
+		E66C2AE7250A338D00153CD7 /* NSObject+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Category.m"; sourceTree = "<group>"; };
+		E66C2AE8250A338D00153CD7 /* NSString+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Category.h"; sourceTree = "<group>"; };
+		E66C2AE9250A338D00153CD7 /* NSString+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Category.m"; sourceTree = "<group>"; };
+		E66C2AEA250A338D00153CD7 /* RTCIceCandidate+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCIceCandidate+Category.h"; sourceTree = "<group>"; };
+		E66C2AEB250A338D00153CD7 /* RTCIceCandidate+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCIceCandidate+Category.m"; sourceTree = "<group>"; };
+		E66C2AEC250A338D00153CD7 /* RTCPeerConnection+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCPeerConnection+Category.h"; sourceTree = "<group>"; };
+		E66C2AED250A338D00153CD7 /* RTCPeerConnection+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCPeerConnection+Category.m"; sourceTree = "<group>"; };
+		E66C2AEE250A338D00153CD7 /* RTCSessionDescription+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RTCSessionDescription+Category.h"; sourceTree = "<group>"; };
+		E66C2AEF250A338D00153CD7 /* RTCSessionDescription+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RTCSessionDescription+Category.m"; sourceTree = "<group>"; };
+		E66C2AF0250A338D00153CD7 /* UIButton+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Category.h"; sourceTree = "<group>"; };
+		E66C2AF1250A338D00153CD7 /* UIButton+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Category.m"; sourceTree = "<group>"; };
+		E66C2AF2250A338D00153CD7 /* UIColor+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Category.h"; sourceTree = "<group>"; };
+		E66C2AF3250A338D00153CD7 /* UIColor+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Category.m"; sourceTree = "<group>"; };
+		E66C2AF4250A338D00153CD7 /* UIFont+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Category.h"; sourceTree = "<group>"; };
+		E66C2AF5250A338D00153CD7 /* UIFont+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+Category.m"; sourceTree = "<group>"; };
+		E66C2AF6250A338D00153CD7 /* UIImage+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Category.h"; sourceTree = "<group>"; };
+		E66C2AF7250A338D00153CD7 /* UIImage+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Category.m"; sourceTree = "<group>"; };
+		E66C2AF8250A338D00153CD7 /* UIImageView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Category.h"; sourceTree = "<group>"; };
+		E66C2AF9250A338D00153CD7 /* UIImageView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Category.m"; sourceTree = "<group>"; };
+		E66C2AFA250A338D00153CD7 /* UILabel+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Category.h"; sourceTree = "<group>"; };
+		E66C2AFB250A338D00153CD7 /* UILabel+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Category.m"; sourceTree = "<group>"; };
+		E66C2AFC250A338D00153CD7 /* UIView+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Category.h"; sourceTree = "<group>"; };
+		E66C2AFD250A338D00153CD7 /* UIView+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Category.m"; sourceTree = "<group>"; };
+		E66C2AFE250A338D00153CD7 /* UIViewController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Category.h"; sourceTree = "<group>"; };
+		E66C2AFF250A338D00153CD7 /* UIViewController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Category.m"; sourceTree = "<group>"; };
+		E66C2B01250A338D00153CD7 /* KSExtern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSExtern.h; sourceTree = "<group>"; };
+		E66C2B02250A338D00153CD7 /* KSExtern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSExtern.m; sourceTree = "<group>"; };
+		E66C2B03250A338D00153CD7 /* KSImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSImport.h; sourceTree = "<group>"; };
+		E66C2B04250A338D00153CD7 /* KSMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMacro.h; sourceTree = "<group>"; };
+		E66C2B05250A338D00153CD7 /* KSPrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSPrefixHeader.pch; sourceTree = "<group>"; };
+		E66C2B07250A338D00153CD7 /* KSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSButton.h; sourceTree = "<group>"; };
+		E66C2B08250A338D00153CD7 /* KSButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSButton.m; sourceTree = "<group>"; };
+		E66C2B09250A338D00153CD7 /* KSComposeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSComposeButton.h; sourceTree = "<group>"; };
+		E66C2B0A250A338D00153CD7 /* KSComposeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSComposeButton.m; sourceTree = "<group>"; };
+		E66C2B0B250A338D00153CD7 /* KSIputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSIputView.h; sourceTree = "<group>"; };
+		E66C2B0C250A338D00153CD7 /* KSIputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSIputView.m; sourceTree = "<group>"; };
+		E66C2B0D250A338D00153CD7 /* KSLayoutButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSLayoutButton.h; sourceTree = "<group>"; };
+		E66C2B0E250A338D00153CD7 /* KSLayoutButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSLayoutButton.m; sourceTree = "<group>"; };
+		E66C2B10250A338D00153CD7 /* KSWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocket.h; sourceTree = "<group>"; };
+		E66C2B11250A338D00153CD7 /* KSWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocket.m; sourceTree = "<group>"; };
+		E66C2B12250A338D00153CD7 /* KSWebSocketConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebSocketConfigure.h; sourceTree = "<group>"; };
+		E66C2B13250A338D00153CD7 /* KSWebSocketConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebSocketConfigure.m; sourceTree = "<group>"; };
+		E66C2B16250A338D00153CD7 /* KSRegex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRegex.h; sourceTree = "<group>"; };
+		E66C2B17250A338D00153CD7 /* KSRegex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRegex.m; sourceTree = "<group>"; };
+		E66C2B19250A338D00153CD7 /* KSTimekeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTimekeeper.h; sourceTree = "<group>"; };
+		E66C2B1A250A338D00153CD7 /* KSTimekeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTimekeeper.m; sourceTree = "<group>"; };
+		E66C2B1C250A338D00153CD7 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
+		E66C2B1F250A338D00153CD7 /* KSChatController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatController.h; sourceTree = "<group>"; };
+		E66C2B20250A338D00153CD7 /* KSChatController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSChatController.m; sourceTree = "<group>"; };
+		E66C2B23250A338D00153CD7 /* KSAlertController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAlertController.h; sourceTree = "<group>"; };
+		E66C2B24250A338D00153CD7 /* KSAlertController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAlertController.m; sourceTree = "<group>"; };
+		E66C2B26250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
+		E66C2B27250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
+		E66C2B29250A338D00153CD7 /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
+		E66C2B2A250A338D00153CD7 /* MJExtensionConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtensionConst.h; sourceTree = "<group>"; };
+		E66C2B2B250A338D00153CD7 /* MJExtensionConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJExtensionConst.m; sourceTree = "<group>"; };
+		E66C2B2C250A338D00153CD7 /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
+		E66C2B2D250A338D00153CD7 /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
+		E66C2B2E250A338D00153CD7 /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
+		E66C2B2F250A338D00153CD7 /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
+		E66C2B30250A338D00153CD7 /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
+		E66C2B31250A338D00153CD7 /* MJPropertyKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyKey.m; sourceTree = "<group>"; };
+		E66C2B32250A338D00153CD7 /* MJPropertyType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyType.h; sourceTree = "<group>"; };
+		E66C2B33250A338D00153CD7 /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyType.m; sourceTree = "<group>"; };
+		E66C2B34250A338D00153CD7 /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
+		E66C2B35250A338D00153CD7 /* NSObject+MJClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJClass.m"; sourceTree = "<group>"; };
+		E66C2B36250A338D00153CD7 /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
+		E66C2B37250A338D00153CD7 /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
+		E66C2B38250A338D00153CD7 /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
+		E66C2B39250A338D00153CD7 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
+		E66C2B3A250A338D00153CD7 /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
+		E66C2B3B250A338D00153CD7 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
+		E66C2B3C250A338D00153CD7 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
+		E66C2B3D250A338D00153CD7 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
+		E66C2B3F250A338D00153CD7 /* SocketRocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketRocket.h; sourceTree = "<group>"; };
+		E66C2B40250A338D00153CD7 /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		E66C2B41250A338D00153CD7 /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
+		E66C2B43250A338D00153CD7 /* SVIndefiniteAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVIndefiniteAnimatedView.h; sourceTree = "<group>"; };
+		E66C2B44250A338D00153CD7 /* SVIndefiniteAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVIndefiniteAnimatedView.m; sourceTree = "<group>"; };
+		E66C2B45250A338D00153CD7 /* SVProgressAnimatedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressAnimatedView.h; sourceTree = "<group>"; };
+		E66C2B46250A338D00153CD7 /* SVProgressAnimatedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressAnimatedView.m; sourceTree = "<group>"; };
+		E66C2B47250A338D00153CD7 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		E66C2B48250A338D00153CD7 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		E66C2B49250A338D00153CD7 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		E66C2B4A250A338D00153CD7 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		E66C2B4B250A338D00153CD7 /* SVRadialGradientLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVRadialGradientLayer.h; sourceTree = "<group>"; };
+		E66C2B4C250A338D00153CD7 /* SVRadialGradientLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVRadialGradientLayer.m; sourceTree = "<group>"; };
+		E66C2B50250A338D00153CD7 /* KSChatInterfaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSChatInterfaceController.h; sourceTree = "<group>"; };
+		E66C2B51250A338D00153CD7 /* KSChatInterfaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSChatInterfaceController.m; sourceTree = "<group>"; };
+		E66C2B54250A338D00153CD7 /* KSCoolTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolTile.h; sourceTree = "<group>"; };
+		E66C2B55250A338D00153CD7 /* KSCoolTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolTile.m; sourceTree = "<group>"; };
+		E66C2B57250A338D00153CD7 /* KSBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBlock.h; sourceTree = "<group>"; };
+		E66C2B58250A338D00153CD7 /* KSCallState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallState.h; sourceTree = "<group>"; };
+		E66C2B59250A338D00153CD7 /* KSConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSConfigure.h; sourceTree = "<group>"; };
+		E66C2B5A250A338D00153CD7 /* KSNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSNotification.h; sourceTree = "<group>"; };
+		E66C2B5B250A338D00153CD7 /* KSNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSNotification.m; sourceTree = "<group>"; };
+		E66C2B5D250A338D00153CD7 /* KSMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMessageHandler.h; sourceTree = "<group>"; };
+		E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
+		E66C2B60250A338D00153CD7 /* AckCall.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckCall.md; sourceTree = "<group>"; };
+		E66C2B61250A338D00153CD7 /* AckJoined.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckJoined.md; sourceTree = "<group>"; };
+		E66C2B62250A338D00153CD7 /* KSAckMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAckMessage.h; sourceTree = "<group>"; };
+		E66C2B63250A338D00153CD7 /* KSAckMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAckMessage.m; sourceTree = "<group>"; };
+		E66C2B64250A338D00153CD7 /* KSMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
+		E66C2B65250A338D00153CD7 /* KSMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
+		E66C2B66250A338D00153CD7 /* KSUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSUserInfo.h; sourceTree = "<group>"; };
+		E66C2B67250A338D00153CD7 /* KSUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSUserInfo.m; sourceTree = "<group>"; };
+		E66C2B6A250A338D00153CD7 /* mozart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mozart.mp3; sourceTree = "<group>"; };
+		E66C2B6C250A338D00153CD7 /* KSMediaCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaCapturer.h; sourceTree = "<group>"; };
+		E66C2B6D250A338D00153CD7 /* KSMediaCapturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaCapturer.m; sourceTree = "<group>"; };
+		E66C2B6E250A338D00153CD7 /* KSMediaConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaConnection.h; sourceTree = "<group>"; };
+		E66C2B6F250A338D00153CD7 /* KSMediaConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaConnection.m; sourceTree = "<group>"; };
+		E66C2B70250A338D00153CD7 /* KSMediaSetting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaSetting.h; sourceTree = "<group>"; };
+		E66C2B71250A338D00153CD7 /* KSMediaSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaSetting.m; sourceTree = "<group>"; };
+		E66C2B72250A338D00153CD7 /* KSMediaTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaTrack.h; sourceTree = "<group>"; };
+		E66C2B73250A338D00153CD7 /* KSMediaTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaTrack.m; sourceTree = "<group>"; };
+		E66C2B74250A338D00153CD7 /* KSRTCKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRTCKey.h; sourceTree = "<group>"; };
+		E66C2B76250A338D00153CD7 /* KSAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAudioPlayer.h; sourceTree = "<group>"; };
+		E66C2B77250A338D00153CD7 /* KSAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAudioPlayer.m; sourceTree = "<group>"; };
+		E66C2B78250A338D00153CD7 /* KSDeviceSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSDeviceSwitch.h; sourceTree = "<group>"; };
+		E66C2B79250A338D00153CD7 /* KSDeviceSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSDeviceSwitch.m; sourceTree = "<group>"; };
+		E66C2B7A250A338D00153CD7 /* KSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSSession.h; sourceTree = "<group>"; };
+		E66C2B7B250A338D00153CD7 /* KSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSSession.m; sourceTree = "<group>"; };
+		E66C2B7C250A338D00153CD7 /* KSWebRTCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWebRTCManager.h; sourceTree = "<group>"; };
+		E66C2B7D250A338D00153CD7 /* KSWebRTCManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWebRTCManager.m; sourceTree = "<group>"; };
+		E66C2B80250A338D00153CD7 /* KSCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCollectionViewCell.h; sourceTree = "<group>"; };
+		E66C2B81250A338D00153CD7 /* KSCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCollectionViewCell.m; sourceTree = "<group>"; };
+		E66C2B82250A338D00153CD7 /* KSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTableViewCell.h; sourceTree = "<group>"; };
+		E66C2B83250A338D00153CD7 /* KSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTableViewCell.m; sourceTree = "<group>"; };
+		E66C2B85250A338D00153CD7 /* KSSuperController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSSuperController.h; sourceTree = "<group>"; };
+		E66C2B86250A338D00153CD7 /* KSSuperController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSSuperController.m; sourceTree = "<group>"; };
+		E66C2B88250A338D00153CD7 /* KSAbstract.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAbstract.h; sourceTree = "<group>"; };
+		E66C2B89250A338D00153CD7 /* KSAbstract.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAbstract.m; sourceTree = "<group>"; };
+		E66C2B8A250A338D00153CD7 /* KSExecuteArgs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSExecuteArgs.h; sourceTree = "<group>"; };
+		E66C2B8B250A338D00153CD7 /* KSExecuteArgs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSExecuteArgs.m; sourceTree = "<group>"; };
+		E66C2B8D250A338D00153CD7 /* KSEventCallbackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSEventCallbackView.h; sourceTree = "<group>"; };
+		E66C2B8E250A338D00153CD7 /* KSEventCallbackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSEventCallbackView.m; sourceTree = "<group>"; };
+		E66C2B8F250A338D00153CD7 /* KSNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSNavigationBar.h; sourceTree = "<group>"; };
+		E66C2B90250A338D00153CD7 /* KSNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSNavigationBar.m; sourceTree = "<group>"; };
+		E66C2B93250A338D00153CD7 /* KSCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallView.h; sourceTree = "<group>"; };
+		E66C2B94250A338D00153CD7 /* KSCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallView.m; sourceTree = "<group>"; };
+		E66C2B95250A338D00153CD7 /* KSMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMediaView.h; sourceTree = "<group>"; };
+		E66C2B96250A338D00153CD7 /* KSMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMediaView.m; sourceTree = "<group>"; };
+		E66C2B97250A338D00153CD7 /* KSScreenMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSScreenMediaView.h; sourceTree = "<group>"; };
+		E66C2B98250A338D00153CD7 /* KSScreenMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSScreenMediaView.m; sourceTree = "<group>"; };
+		E66C2B99250A338D00153CD7 /* KSTileLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileLayout.h; sourceTree = "<group>"; };
+		E66C2B9A250A338D00153CD7 /* KSTileLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileLayout.m; sourceTree = "<group>"; };
+		E66C2B9B250A338D00153CD7 /* KSTileMediaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileMediaCell.h; sourceTree = "<group>"; };
+		E66C2B9C250A338D00153CD7 /* KSTileMediaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileMediaCell.m; sourceTree = "<group>"; };
+		E66C2B9D250A338D00153CD7 /* KSTileMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTileMediaView.h; sourceTree = "<group>"; };
+		E66C2B9E250A338D00153CD7 /* KSTileMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTileMediaView.m; sourceTree = "<group>"; };
+		E66C2B9F250A338D00153CD7 /* KSVisualEffectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSVisualEffectView.h; sourceTree = "<group>"; };
+		E66C2BA0250A338D00153CD7 /* KSVisualEffectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSVisualEffectView.m; sourceTree = "<group>"; };
+		E66C2BA2250A338D00153CD7 /* KSCallMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenu.h; sourceTree = "<group>"; };
+		E66C2BA3250A338D00153CD7 /* KSCallMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenu.m; sourceTree = "<group>"; };
+		E66C2BA4250A338D00153CD7 /* KSCallMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuCell.h; sourceTree = "<group>"; };
+		E66C2BA5250A338D00153CD7 /* KSCallMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuCell.m; sourceTree = "<group>"; };
+		E66C2BA6250A338D00153CD7 /* KSCallMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuController.h; sourceTree = "<group>"; };
+		E66C2BA7250A338D00153CD7 /* KSCallMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuController.m; sourceTree = "<group>"; };
+		E66C2BA8250A338D00153CD7 /* KSCallMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallMenuView.h; sourceTree = "<group>"; };
+		E66C2BA9250A338D00153CD7 /* KSCallMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallMenuView.m; sourceTree = "<group>"; };
+		E66C2BAC250A338D00153CD7 /* KSAnswerBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAnswerBarView.h; sourceTree = "<group>"; };
+		E66C2BAD250A338D00153CD7 /* KSAnswerBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAnswerBarView.m; sourceTree = "<group>"; };
+		E66C2BAF250A338D00153CD7 /* KSCallBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallBarCell.h; sourceTree = "<group>"; };
+		E66C2BB0250A338D00153CD7 /* KSCallBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallBarCell.m; sourceTree = "<group>"; };
+		E66C2BB1250A338D00153CD7 /* KSCallBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCallBarView.h; sourceTree = "<group>"; };
+		E66C2BB2250A338D00153CD7 /* KSCallBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCallBarView.m; sourceTree = "<group>"; };
+		E66C2BB3250A338D00153CD7 /* KSFunctionalBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarCell.h; sourceTree = "<group>"; };
+		E66C2BB4250A338D00153CD7 /* KSFunctionalBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarCell.m; sourceTree = "<group>"; };
+		E66C2BB5250A338D00153CD7 /* KSFunctionalBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSFunctionalBarView.h; sourceTree = "<group>"; };
+		E66C2BB6250A338D00153CD7 /* KSFunctionalBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSFunctionalBarView.m; sourceTree = "<group>"; };
+		E66C2BB8250A338D00153CD7 /* KSBtnInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSBtnInfo.h; sourceTree = "<group>"; };
+		E66C2BB9250A338D00153CD7 /* KSBtnInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSBtnInfo.m; sourceTree = "<group>"; };
+		E66C2BBC250A338D00153CD7 /* KSMeetingBarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingBarCell.h; sourceTree = "<group>"; };
+		E66C2BBD250A338D00153CD7 /* KSMeetingBarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingBarCell.m; sourceTree = "<group>"; };
+		E66C2BBE250A338D00153CD7 /* KSMeetingBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingBarView.h; sourceTree = "<group>"; };
+		E66C2BBF250A338D00153CD7 /* KSMeetingBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingBarView.m; sourceTree = "<group>"; };
+		E66C2BC0250A338D00153CD7 /* KSMeetingThemeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMeetingThemeView.h; sourceTree = "<group>"; };
+		E66C2BC1250A338D00153CD7 /* KSMeetingThemeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMeetingThemeView.m; sourceTree = "<group>"; };
+		E66C2BC3250A338D00153CD7 /* KSProfileBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileBarView.h; sourceTree = "<group>"; };
+		E66C2BC4250A338D00153CD7 /* KSProfileBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileBarView.m; sourceTree = "<group>"; };
+		E66C2BC5250A338D00153CD7 /* KSProfileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileView.h; sourceTree = "<group>"; };
+		E66C2BC6250A338D00153CD7 /* KSProfileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileView.m; sourceTree = "<group>"; };
+		E66C2BC7250A338D00153CD7 /* KSRoundImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSRoundImageView.h; sourceTree = "<group>"; };
+		E66C2BC8250A338D00153CD7 /* KSRoundImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSRoundImageView.m; sourceTree = "<group>"; };
+		E66C2BCA250A338D00153CD7 /* KSProfileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSProfileInfo.h; sourceTree = "<group>"; };
+		E66C2BCB250A338D00153CD7 /* KSProfileInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSProfileInfo.m; sourceTree = "<group>"; };
+		E66C2BCD250A338D00153CD7 /* KSCoolHUB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolHUB.h; sourceTree = "<group>"; };
+		E66C2BCE250A338D00153CD7 /* KSCoolHUB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolHUB.m; sourceTree = "<group>"; };
+		E66C2BCF250A338D00153CD7 /* KSCoolTipsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCoolTipsView.h; sourceTree = "<group>"; };
+		E66C2BD0250A338D00153CD7 /* KSCoolTipsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCoolTipsView.m; sourceTree = "<group>"; };
+		E66C2BD2250A338D00153CD7 /* KSTopBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSTopBarView.h; sourceTree = "<group>"; };
+		E66C2BD3250A338D00153CD7 /* KSTopBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSTopBarView.m; sourceTree = "<group>"; };
+		E66C2BD6250A338D00153CD7 /* KSWaitingAnswersMemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersMemberCell.h; sourceTree = "<group>"; };
+		E66C2BD7250A338D00153CD7 /* KSWaitingAnswersMemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersMemberCell.m; sourceTree = "<group>"; };
+		E66C2BD9250A338D00153CD7 /* KSCellAlignmentFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSCellAlignmentFlowLayout.h; sourceTree = "<group>"; };
+		E66C2BDA250A338D00153CD7 /* KSCellAlignmentFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSCellAlignmentFlowLayout.m; sourceTree = "<group>"; };
+		E66C2BDB250A338D00153CD7 /* KSWaitingAnswersGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersGroupView.h; sourceTree = "<group>"; };
+		E66C2BDC250A338D00153CD7 /* KSWaitingAnswersGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersGroupView.m; sourceTree = "<group>"; };
+		E66C2BDD250A338D00153CD7 /* KSWaitingAnswersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSWaitingAnswersView.h; sourceTree = "<group>"; };
+		E66C2BDE250A338D00153CD7 /* KSWaitingAnswersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersView.m; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6E1E6B624E9444800536FBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -358,625 +358,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E60089B025079A810065B68E /* WebRTC.framework in Frameworks */,
+				E66C2C50250A375700153CD7 /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E600884C250798E60065B68E /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				E600884D250798E60065B68E /* Custom */,
-				E6008888250798E60065B68E /* Frameworks */,
-				E600888A250798E60065B68E /* Interface */,
-				E600888E250798E60065B68E /* Library */,
-				E60088BA250798E60065B68E /* Module */,
-				E60088BF250798E60065B68E /* WebRTC */,
-			);
-			path = Chat;
-			sourceTree = "<group>";
-		};
-		E600884D250798E60065B68E /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				E600884E250798E60065B68E /* Category */,
-				E600886D250798E60065B68E /* Import */,
-				E6008873250798E60065B68E /* Kits */,
-				E600887C250798E60065B68E /* Socket */,
-				E6008881250798E60065B68E /* Utils */,
-			);
-			path = Custom;
-			sourceTree = "<group>";
-		};
-		E600884E250798E60065B68E /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				E600884F250798E60065B68E /* KSSuperController+Category.h */,
-				E6008850250798E60065B68E /* KSSuperController+Category.m */,
-				E6008851250798E60065B68E /* NSDictionary+Category.h */,
-				E6008852250798E60065B68E /* NSDictionary+Category.m */,
-				E6008853250798E60065B68E /* NSObject+Category.h */,
-				E6008854250798E60065B68E /* NSObject+Category.m */,
-				E6008855250798E60065B68E /* NSString+Category.h */,
-				E6008856250798E60065B68E /* NSString+Category.m */,
-				E6008857250798E60065B68E /* RTCIceCandidate+Category.h */,
-				E6008858250798E60065B68E /* RTCIceCandidate+Category.m */,
-				E6008859250798E60065B68E /* RTCPeerConnection+Category.h */,
-				E600885A250798E60065B68E /* RTCPeerConnection+Category.m */,
-				E600885B250798E60065B68E /* RTCSessionDescription+Category.h */,
-				E600885C250798E60065B68E /* RTCSessionDescription+Category.m */,
-				E600885D250798E60065B68E /* UIButton+Category.h */,
-				E600885E250798E60065B68E /* UIButton+Category.m */,
-				E600885F250798E60065B68E /* UIColor+Category.h */,
-				E6008860250798E60065B68E /* UIColor+Category.m */,
-				E6008861250798E60065B68E /* UIFont+Category.h */,
-				E6008862250798E60065B68E /* UIFont+Category.m */,
-				E6008863250798E60065B68E /* UIImage+Category.h */,
-				E6008864250798E60065B68E /* UIImage+Category.m */,
-				E6008865250798E60065B68E /* UIImageView+Category.h */,
-				E6008866250798E60065B68E /* UIImageView+Category.m */,
-				E6008867250798E60065B68E /* UILabel+Category.h */,
-				E6008868250798E60065B68E /* UILabel+Category.m */,
-				E6008869250798E60065B68E /* UIView+Category.h */,
-				E600886A250798E60065B68E /* UIView+Category.m */,
-				E600886B250798E60065B68E /* UIViewController+Category.h */,
-				E600886C250798E60065B68E /* UIViewController+Category.m */,
-			);
-			path = Category;
-			sourceTree = "<group>";
-		};
-		E600886D250798E60065B68E /* Import */ = {
-			isa = PBXGroup;
-			children = (
-				E600886E250798E60065B68E /* KSExtern.h */,
-				E600886F250798E60065B68E /* KSExtern.m */,
-				E6008870250798E60065B68E /* KSImport.h */,
-				E6008871250798E60065B68E /* KSMacro.h */,
-				E6008872250798E60065B68E /* KSPrefixHeader.pch */,
-			);
-			path = Import;
-			sourceTree = "<group>";
-		};
-		E6008873250798E60065B68E /* Kits */ = {
-			isa = PBXGroup;
-			children = (
-				E6008874250798E60065B68E /* KSButton.h */,
-				E6008875250798E60065B68E /* KSButton.m */,
-				E6008876250798E60065B68E /* KSComposeButton.h */,
-				E6008877250798E60065B68E /* KSComposeButton.m */,
-				E6008878250798E60065B68E /* KSIputView.h */,
-				E6008879250798E60065B68E /* KSIputView.m */,
-				E600887A250798E60065B68E /* KSLayoutButton.h */,
-				E600887B250798E60065B68E /* KSLayoutButton.m */,
-			);
-			path = Kits;
-			sourceTree = "<group>";
-		};
-		E600887C250798E60065B68E /* Socket */ = {
-			isa = PBXGroup;
-			children = (
-				E600887D250798E60065B68E /* KSWebSocket.h */,
-				E600887E250798E60065B68E /* KSWebSocket.m */,
-				E600887F250798E60065B68E /* KSWebSocketConfigure.h */,
-				E6008880250798E60065B68E /* KSWebSocketConfigure.m */,
-			);
-			path = Socket;
-			sourceTree = "<group>";
-		};
-		E6008881250798E60065B68E /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				E6008882250798E60065B68E /* Regex */,
-				E6008885250798E60065B68E /* Timekeeper */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		E6008882250798E60065B68E /* Regex */ = {
-			isa = PBXGroup;
-			children = (
-				E6008883250798E60065B68E /* KSRegex.h */,
-				E6008884250798E60065B68E /* KSRegex.m */,
-			);
-			path = Regex;
-			sourceTree = "<group>";
-		};
-		E6008885250798E60065B68E /* Timekeeper */ = {
-			isa = PBXGroup;
-			children = (
-				E6008886250798E60065B68E /* KSTimekeeper.h */,
-				E6008887250798E60065B68E /* KSTimekeeper.m */,
-			);
-			path = Timekeeper;
-			sourceTree = "<group>";
-		};
-		E6008888250798E60065B68E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E6008889250798E60065B68E /* WebRTC.framework */,
-			);
-			path = Frameworks;
-			sourceTree = "<group>";
-		};
-		E600888A250798E60065B68E /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				E600888B250798E60065B68E /* Chat */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
-		E600888B250798E60065B68E /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				E600888C250798E60065B68E /* KSChatController.h */,
-				E600888D250798E60065B68E /* KSChatController.m */,
-			);
-			path = Chat;
-			sourceTree = "<group>";
-		};
-		E600888E250798E60065B68E /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				E600888F250798E60065B68E /* Alert */,
-				E6008892250798E60065B68E /* FDFullscreenPopGesture */,
-				E6008895250798E60065B68E /* MJExtension */,
-				E60088AB250798E60065B68E /* SocketRocket */,
-				E60088AF250798E60065B68E /* SVProgressHUD */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		E600888F250798E60065B68E /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				E6008890250798E60065B68E /* KSAlertController.h */,
-				E6008891250798E60065B68E /* KSAlertController.m */,
-			);
-			path = Alert;
-			sourceTree = "<group>";
-		};
-		E6008892250798E60065B68E /* FDFullscreenPopGesture */ = {
-			isa = PBXGroup;
-			children = (
-				E6008893250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.h */,
-				E6008894250798E60065B68E /* UINavigationController+FDFullscreenPopGesture.m */,
-			);
-			path = FDFullscreenPopGesture;
-			sourceTree = "<group>";
-		};
-		E6008895250798E60065B68E /* MJExtension */ = {
-			isa = PBXGroup;
-			children = (
-				E6008896250798E60065B68E /* MJExtension.h */,
-				E6008897250798E60065B68E /* MJExtensionConst.h */,
-				E6008898250798E60065B68E /* MJExtensionConst.m */,
-				E6008899250798E60065B68E /* MJFoundation.h */,
-				E600889A250798E60065B68E /* MJFoundation.m */,
-				E600889B250798E60065B68E /* MJProperty.h */,
-				E600889C250798E60065B68E /* MJProperty.m */,
-				E600889D250798E60065B68E /* MJPropertyKey.h */,
-				E600889E250798E60065B68E /* MJPropertyKey.m */,
-				E600889F250798E60065B68E /* MJPropertyType.h */,
-				E60088A0250798E60065B68E /* MJPropertyType.m */,
-				E60088A1250798E60065B68E /* NSObject+MJClass.h */,
-				E60088A2250798E60065B68E /* NSObject+MJClass.m */,
-				E60088A3250798E60065B68E /* NSObject+MJCoding.h */,
-				E60088A4250798E60065B68E /* NSObject+MJCoding.m */,
-				E60088A5250798E60065B68E /* NSObject+MJKeyValue.h */,
-				E60088A6250798E60065B68E /* NSObject+MJKeyValue.m */,
-				E60088A7250798E60065B68E /* NSObject+MJProperty.h */,
-				E60088A8250798E60065B68E /* NSObject+MJProperty.m */,
-				E60088A9250798E60065B68E /* NSString+MJExtension.h */,
-				E60088AA250798E60065B68E /* NSString+MJExtension.m */,
-			);
-			path = MJExtension;
-			sourceTree = "<group>";
-		};
-		E60088AB250798E60065B68E /* SocketRocket */ = {
-			isa = PBXGroup;
-			children = (
-				E60088AC250798E60065B68E /* SocketRocket.h */,
-				E60088AD250798E60065B68E /* SRWebSocket.h */,
-				E60088AE250798E60065B68E /* SRWebSocket.m */,
-			);
-			path = SocketRocket;
-			sourceTree = "<group>";
-		};
-		E60088AF250798E60065B68E /* SVProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				E60088B0250798E60065B68E /* SVIndefiniteAnimatedView.h */,
-				E60088B1250798E60065B68E /* SVIndefiniteAnimatedView.m */,
-				E60088B2250798E60065B68E /* SVProgressAnimatedView.h */,
-				E60088B3250798E60065B68E /* SVProgressAnimatedView.m */,
-				E60088B4250798E60065B68E /* SVProgressHUD-Prefix.pch */,
-				E60088B5250798E60065B68E /* SVProgressHUD.bundle */,
-				E60088B6250798E60065B68E /* SVProgressHUD.h */,
-				E60088B7250798E60065B68E /* SVProgressHUD.m */,
-				E60088B8250798E60065B68E /* SVRadialGradientLayer.h */,
-				E60088B9250798E60065B68E /* SVRadialGradientLayer.m */,
-			);
-			path = SVProgressHUD;
-			sourceTree = "<group>";
-		};
-		E60088BA250798E60065B68E /* Module */ = {
-			isa = PBXGroup;
-			children = (
-				E60088BB250798E60065B68E /* Interface */,
-			);
-			path = Module;
-			sourceTree = "<group>";
-		};
-		E60088BB250798E60065B68E /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				E60088BC250798E60065B68E /* Controller */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
-		E60088BC250798E60065B68E /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E60088BD250798E60065B68E /* KSChatInterfaceController.h */,
-				E60088BE250798E60065B68E /* KSChatInterfaceController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		E60088BF250798E60065B68E /* WebRTC */ = {
-			isa = PBXGroup;
-			children = (
-				E60088C0250798E60065B68E /* CoolTile */,
-				E60088C3250798E60065B68E /* Header */,
-				E60088C9250798E60065B68E /* MessageHandler */,
-				E60088CC250798E60065B68E /* Model */,
-				E60088D5250798E60065B68E /* Resources */,
-				E60088D8250798E60065B68E /* RTC */,
-				E60088E2250798E60065B68E /* RTCManager */,
-				E60088EB250798E60065B68E /* Super */,
-				E60088FE250798E60065B68E /* View */,
-			);
-			path = WebRTC;
-			sourceTree = "<group>";
-		};
-		E60088C0250798E60065B68E /* CoolTile */ = {
-			isa = PBXGroup;
-			children = (
-				E60088C1250798E60065B68E /* KSCoolTile.h */,
-				E60088C2250798E60065B68E /* KSCoolTile.m */,
-			);
-			path = CoolTile;
-			sourceTree = "<group>";
-		};
-		E60088C3250798E60065B68E /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				E60088C4250798E60065B68E /* KSBlock.h */,
-				E60088C5250798E60065B68E /* KSCallState.h */,
-				E60088C6250798E60065B68E /* KSConfigure.h */,
-				E60088C7250798E60065B68E /* KSNotification.h */,
-				E60088C8250798E60065B68E /* KSNotification.m */,
-			);
-			path = Header;
-			sourceTree = "<group>";
-		};
-		E60088C9250798E60065B68E /* MessageHandler */ = {
-			isa = PBXGroup;
-			children = (
-				E60088CA250798E60065B68E /* KSMessageHandler.h */,
-				E60088CB250798E60065B68E /* KSMessageHandler.m */,
-			);
-			path = MessageHandler;
-			sourceTree = "<group>";
-		};
-		E60088CC250798E60065B68E /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				E60088CD250798E60065B68E /* AckCall.md */,
-				E60088CE250798E60065B68E /* AckJoined.md */,
-				E60088CF250798E60065B68E /* KSAckMessage.h */,
-				E60088D0250798E60065B68E /* KSAckMessage.m */,
-				E60088D1250798E60065B68E /* KSMsg.h */,
-				E60088D2250798E60065B68E /* KSMsg.m */,
-				E60088D3250798E60065B68E /* KSUserInfo.h */,
-				E60088D4250798E60065B68E /* KSUserInfo.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		E60088D5250798E60065B68E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E60088D6250798E60065B68E /* Mp3 */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		E60088D6250798E60065B68E /* Mp3 */ = {
-			isa = PBXGroup;
-			children = (
-				E60088D7250798E60065B68E /* mozart.mp3 */,
-			);
-			path = Mp3;
-			sourceTree = "<group>";
-		};
-		E60088D8250798E60065B68E /* RTC */ = {
-			isa = PBXGroup;
-			children = (
-				E60088D9250798E60065B68E /* KSMediaCapturer.h */,
-				E60088DA250798E60065B68E /* KSMediaCapturer.m */,
-				E60088DB250798E60065B68E /* KSMediaConnection.h */,
-				E60088DC250798E60065B68E /* KSMediaConnection.m */,
-				E60088DD250798E60065B68E /* KSMediaSetting.h */,
-				E60088DE250798E60065B68E /* KSMediaSetting.m */,
-				E60088DF250798E60065B68E /* KSMediaTrack.h */,
-				E60088E0250798E60065B68E /* KSMediaTrack.m */,
-				E60088E1250798E60065B68E /* KSRTCKey.h */,
-			);
-			path = RTC;
-			sourceTree = "<group>";
-		};
-		E60088E2250798E60065B68E /* RTCManager */ = {
-			isa = PBXGroup;
-			children = (
-				E60088E9250798E60065B68E /* KSWebRTCManager.h */,
-				E60088EA250798E60065B68E /* KSWebRTCManager.m */,
-				E60088E3250798E60065B68E /* KSAudioPlayer.h */,
-				E60088E4250798E60065B68E /* KSAudioPlayer.m */,
-				E60088E5250798E60065B68E /* KSDeviceSwitch.h */,
-				E60088E6250798E60065B68E /* KSDeviceSwitch.m */,
-				E60088E7250798E60065B68E /* KSSession.h */,
-				E60088E8250798E60065B68E /* KSSession.m */,
-			);
-			path = RTCManager;
-			sourceTree = "<group>";
-		};
-		E60088EB250798E60065B68E /* Super */ = {
-			isa = PBXGroup;
-			children = (
-				E60088EC250798E60065B68E /* Cell */,
-				E60088F1250798E60065B68E /* Controller */,
-				E60088F4250798E60065B68E /* Model */,
-				E60088F9250798E60065B68E /* View */,
-			);
-			path = Super;
-			sourceTree = "<group>";
-		};
-		E60088EC250798E60065B68E /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				E60088ED250798E60065B68E /* KSCollectionViewCell.h */,
-				E60088EE250798E60065B68E /* KSCollectionViewCell.m */,
-				E60088EF250798E60065B68E /* KSTableViewCell.h */,
-				E60088F0250798E60065B68E /* KSTableViewCell.m */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		E60088F1250798E60065B68E /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				E60088F2250798E60065B68E /* KSSuperController.h */,
-				E60088F3250798E60065B68E /* KSSuperController.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		E60088F4250798E60065B68E /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				E60088F5250798E60065B68E /* KSAbstract.h */,
-				E60088F6250798E60065B68E /* KSAbstract.m */,
-				E60088F7250798E60065B68E /* KSExecuteArgs.h */,
-				E60088F8250798E60065B68E /* KSExecuteArgs.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		E60088F9250798E60065B68E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				E60088FA250798E60065B68E /* KSEventCallbackView.h */,
-				E60088FB250798E60065B68E /* KSEventCallbackView.m */,
-				E60088FC250798E60065B68E /* KSNavigationBar.h */,
-				E60088FD250798E60065B68E /* KSNavigationBar.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		E60088FE250798E60065B68E /* View */ = {
-			isa = PBXGroup;
-			children = (
-				E60088FF250798E60065B68E /* MainView */,
-				E600890E250798E70065B68E /* Menu */,
-				E6008917250798E70065B68E /* SubView */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		E60088FF250798E60065B68E /* MainView */ = {
-			isa = PBXGroup;
-			children = (
-				E6008900250798E60065B68E /* KSCallView.h */,
-				E6008901250798E60065B68E /* KSCallView.m */,
-				E6008902250798E60065B68E /* KSMediaView.h */,
-				E6008903250798E60065B68E /* KSMediaView.m */,
-				E6008904250798E60065B68E /* KSScreenMediaView.h */,
-				E6008905250798E60065B68E /* KSScreenMediaView.m */,
-				E6008906250798E60065B68E /* KSTileLayout.h */,
-				E6008907250798E60065B68E /* KSTileLayout.m */,
-				E6008908250798E60065B68E /* KSTileMediaCell.h */,
-				E6008909250798E60065B68E /* KSTileMediaCell.m */,
-				E600890A250798E60065B68E /* KSTileMediaView.h */,
-				E600890B250798E60065B68E /* KSTileMediaView.m */,
-				E600890C250798E70065B68E /* KSVisualEffectView.h */,
-				E600890D250798E70065B68E /* KSVisualEffectView.m */,
-			);
-			path = MainView;
-			sourceTree = "<group>";
-		};
-		E600890E250798E70065B68E /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				E600890F250798E70065B68E /* KSCallMenu.h */,
-				E6008910250798E70065B68E /* KSCallMenu.m */,
-				E6008911250798E70065B68E /* KSCallMenuCell.h */,
-				E6008912250798E70065B68E /* KSCallMenuCell.m */,
-				E6008913250798E70065B68E /* KSCallMenuController.h */,
-				E6008914250798E70065B68E /* KSCallMenuController.m */,
-				E6008915250798E70065B68E /* KSCallMenuView.h */,
-				E6008916250798E70065B68E /* KSCallMenuView.m */,
-			);
-			path = Menu;
-			sourceTree = "<group>";
-		};
-		E6008917250798E70065B68E /* SubView */ = {
-			isa = PBXGroup;
-			children = (
-				E6008918250798E70065B68E /* AnswerBar */,
-				E600891B250798E70065B68E /* CallBar */,
-				E6008927250798E70065B68E /* Meeting */,
-				E600892F250798E70065B68E /* Profile */,
-				E6008939250798E70065B68E /* Tips */,
-				E600893E250798E70065B68E /* TopBar */,
-				E6008941250798E70065B68E /* WaitingAnswers */,
-			);
-			path = SubView;
-			sourceTree = "<group>";
-		};
-		E6008918250798E70065B68E /* AnswerBar */ = {
-			isa = PBXGroup;
-			children = (
-				E6008919250798E70065B68E /* KSAnswerBarView.h */,
-				E600891A250798E70065B68E /* KSAnswerBarView.m */,
-			);
-			path = AnswerBar;
-			sourceTree = "<group>";
-		};
-		E600891B250798E70065B68E /* CallBar */ = {
-			isa = PBXGroup;
-			children = (
-				E600891C250798E70065B68E /* KSCallBarCell.h */,
-				E600891D250798E70065B68E /* KSCallBarCell.m */,
-				E600891E250798E70065B68E /* KSCallBarView.h */,
-				E600891F250798E70065B68E /* KSCallBarView.m */,
-				E6008920250798E70065B68E /* KSFunctionalBarCell.h */,
-				E6008921250798E70065B68E /* KSFunctionalBarCell.m */,
-				E6008922250798E70065B68E /* KSFunctionalBarView.h */,
-				E6008923250798E70065B68E /* KSFunctionalBarView.m */,
-				E6008924250798E70065B68E /* ViewModel */,
-			);
-			path = CallBar;
-			sourceTree = "<group>";
-		};
-		E6008924250798E70065B68E /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				E6008925250798E70065B68E /* KSBtnInfo.h */,
-				E6008926250798E70065B68E /* KSBtnInfo.m */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		E6008927250798E70065B68E /* Meeting */ = {
-			isa = PBXGroup;
-			children = (
-				E6008928250798E70065B68E /* Cell */,
-				E600892B250798E70065B68E /* KSMeetingBarView.h */,
-				E600892C250798E70065B68E /* KSMeetingBarView.m */,
-				E600892D250798E70065B68E /* KSMeetingThemeView.h */,
-				E600892E250798E70065B68E /* KSMeetingThemeView.m */,
-			);
-			path = Meeting;
-			sourceTree = "<group>";
-		};
-		E6008928250798E70065B68E /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				E6008929250798E70065B68E /* KSMeetingBarCell.h */,
-				E600892A250798E70065B68E /* KSMeetingBarCell.m */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		E600892F250798E70065B68E /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				E6008930250798E70065B68E /* KSProfileBarView.h */,
-				E6008931250798E70065B68E /* KSProfileBarView.m */,
-				E6008932250798E70065B68E /* KSProfileView.h */,
-				E6008933250798E70065B68E /* KSProfileView.m */,
-				E6008934250798E70065B68E /* KSRoundImageView.h */,
-				E6008935250798E70065B68E /* KSRoundImageView.m */,
-				E6008936250798E70065B68E /* ViewModel */,
-			);
-			path = Profile;
-			sourceTree = "<group>";
-		};
-		E6008936250798E70065B68E /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				E6008937250798E70065B68E /* KSProfileInfo.h */,
-				E6008938250798E70065B68E /* KSProfileInfo.m */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		E6008939250798E70065B68E /* Tips */ = {
-			isa = PBXGroup;
-			children = (
-				E600893A250798E70065B68E /* KSCoolHUB.h */,
-				E600893B250798E70065B68E /* KSCoolHUB.m */,
-				E600893C250798E70065B68E /* KSCoolTipsView.h */,
-				E600893D250798E70065B68E /* KSCoolTipsView.m */,
-			);
-			path = Tips;
-			sourceTree = "<group>";
-		};
-		E600893E250798E70065B68E /* TopBar */ = {
-			isa = PBXGroup;
-			children = (
-				E600893F250798E70065B68E /* KSTopBarView.h */,
-				E6008940250798E70065B68E /* KSTopBarView.m */,
-			);
-			path = TopBar;
-			sourceTree = "<group>";
-		};
-		E6008941250798E70065B68E /* WaitingAnswers */ = {
-			isa = PBXGroup;
-			children = (
-				E6008942250798E70065B68E /* Cell */,
-				E6008945250798E70065B68E /* FlowLayout */,
-				E6008948250798E70065B68E /* KSWaitingAnswersGroupView.h */,
-				E6008949250798E70065B68E /* KSWaitingAnswersGroupView.m */,
-				E600894A250798E70065B68E /* KSWaitingAnswersView.h */,
-				E600894B250798E70065B68E /* KSWaitingAnswersView.m */,
-			);
-			path = WaitingAnswers;
-			sourceTree = "<group>";
-		};
-		E6008942250798E70065B68E /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				E6008943250798E70065B68E /* KSWaitingAnswersMemberCell.h */,
-				E6008944250798E70065B68E /* KSWaitingAnswersMemberCell.m */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		E6008945250798E70065B68E /* FlowLayout */ = {
-			isa = PBXGroup;
-			children = (
-				E6008946250798E70065B68E /* KSCellAlignmentFlowLayout.h */,
-				E6008947250798E70065B68E /* KSCellAlignmentFlowLayout.m */,
-			);
-			path = FlowLayout;
-			sourceTree = "<group>";
-		};
 		E632FECB24E93FFF0049ED8A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -988,7 +376,7 @@
 		E632FECE24E9402A0049ED8A /* Script */ = {
 			isa = PBXGroup;
 			children = (
-				E600884C250798E60065B68E /* Chat */,
+				E66C2ADF250A338D00153CD7 /* Chat */,
 				E632FECF24E940390049ED8A /* Main */,
 			);
 			path = Script;
@@ -1033,6 +421,618 @@
 				E6400F4224B85080004C7060 /* main.m */,
 			);
 			path = KSWebRTC;
+			sourceTree = "<group>";
+		};
+		E66C2ADF250A338D00153CD7 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2AE0250A338D00153CD7 /* Custom */,
+				E66C2B1B250A338D00153CD7 /* Frameworks */,
+				E66C2B1D250A338D00153CD7 /* Interface */,
+				E66C2B21250A338D00153CD7 /* Library */,
+				E66C2B4D250A338D00153CD7 /* Module */,
+				E66C2B52250A338D00153CD7 /* WebRTC */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E66C2AE0250A338D00153CD7 /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2AE1250A338D00153CD7 /* Category */,
+				E66C2B00250A338D00153CD7 /* Import */,
+				E66C2B06250A338D00153CD7 /* Kits */,
+				E66C2B0F250A338D00153CD7 /* Socket */,
+				E66C2B14250A338D00153CD7 /* Utils */,
+			);
+			path = Custom;
+			sourceTree = "<group>";
+		};
+		E66C2AE1250A338D00153CD7 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2AE2250A338D00153CD7 /* KSSuperController+Category.h */,
+				E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */,
+				E66C2AE4250A338D00153CD7 /* NSDictionary+Category.h */,
+				E66C2AE5250A338D00153CD7 /* NSDictionary+Category.m */,
+				E66C2AE6250A338D00153CD7 /* NSObject+Category.h */,
+				E66C2AE7250A338D00153CD7 /* NSObject+Category.m */,
+				E66C2AE8250A338D00153CD7 /* NSString+Category.h */,
+				E66C2AE9250A338D00153CD7 /* NSString+Category.m */,
+				E66C2AEA250A338D00153CD7 /* RTCIceCandidate+Category.h */,
+				E66C2AEB250A338D00153CD7 /* RTCIceCandidate+Category.m */,
+				E66C2AEC250A338D00153CD7 /* RTCPeerConnection+Category.h */,
+				E66C2AED250A338D00153CD7 /* RTCPeerConnection+Category.m */,
+				E66C2AEE250A338D00153CD7 /* RTCSessionDescription+Category.h */,
+				E66C2AEF250A338D00153CD7 /* RTCSessionDescription+Category.m */,
+				E66C2AF0250A338D00153CD7 /* UIButton+Category.h */,
+				E66C2AF1250A338D00153CD7 /* UIButton+Category.m */,
+				E66C2AF2250A338D00153CD7 /* UIColor+Category.h */,
+				E66C2AF3250A338D00153CD7 /* UIColor+Category.m */,
+				E66C2AF4250A338D00153CD7 /* UIFont+Category.h */,
+				E66C2AF5250A338D00153CD7 /* UIFont+Category.m */,
+				E66C2AF6250A338D00153CD7 /* UIImage+Category.h */,
+				E66C2AF7250A338D00153CD7 /* UIImage+Category.m */,
+				E66C2AF8250A338D00153CD7 /* UIImageView+Category.h */,
+				E66C2AF9250A338D00153CD7 /* UIImageView+Category.m */,
+				E66C2AFA250A338D00153CD7 /* UILabel+Category.h */,
+				E66C2AFB250A338D00153CD7 /* UILabel+Category.m */,
+				E66C2AFC250A338D00153CD7 /* UIView+Category.h */,
+				E66C2AFD250A338D00153CD7 /* UIView+Category.m */,
+				E66C2AFE250A338D00153CD7 /* UIViewController+Category.h */,
+				E66C2AFF250A338D00153CD7 /* UIViewController+Category.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		E66C2B00250A338D00153CD7 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B01250A338D00153CD7 /* KSExtern.h */,
+				E66C2B02250A338D00153CD7 /* KSExtern.m */,
+				E66C2B03250A338D00153CD7 /* KSImport.h */,
+				E66C2B04250A338D00153CD7 /* KSMacro.h */,
+				E66C2B05250A338D00153CD7 /* KSPrefixHeader.pch */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		E66C2B06250A338D00153CD7 /* Kits */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B07250A338D00153CD7 /* KSButton.h */,
+				E66C2B08250A338D00153CD7 /* KSButton.m */,
+				E66C2B09250A338D00153CD7 /* KSComposeButton.h */,
+				E66C2B0A250A338D00153CD7 /* KSComposeButton.m */,
+				E66C2B0B250A338D00153CD7 /* KSIputView.h */,
+				E66C2B0C250A338D00153CD7 /* KSIputView.m */,
+				E66C2B0D250A338D00153CD7 /* KSLayoutButton.h */,
+				E66C2B0E250A338D00153CD7 /* KSLayoutButton.m */,
+			);
+			path = Kits;
+			sourceTree = "<group>";
+		};
+		E66C2B0F250A338D00153CD7 /* Socket */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B10250A338D00153CD7 /* KSWebSocket.h */,
+				E66C2B11250A338D00153CD7 /* KSWebSocket.m */,
+				E66C2B12250A338D00153CD7 /* KSWebSocketConfigure.h */,
+				E66C2B13250A338D00153CD7 /* KSWebSocketConfigure.m */,
+			);
+			path = Socket;
+			sourceTree = "<group>";
+		};
+		E66C2B14250A338D00153CD7 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B15250A338D00153CD7 /* Regex */,
+				E66C2B18250A338D00153CD7 /* Timekeeper */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E66C2B15250A338D00153CD7 /* Regex */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B16250A338D00153CD7 /* KSRegex.h */,
+				E66C2B17250A338D00153CD7 /* KSRegex.m */,
+			);
+			path = Regex;
+			sourceTree = "<group>";
+		};
+		E66C2B18250A338D00153CD7 /* Timekeeper */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B19250A338D00153CD7 /* KSTimekeeper.h */,
+				E66C2B1A250A338D00153CD7 /* KSTimekeeper.m */,
+			);
+			path = Timekeeper;
+			sourceTree = "<group>";
+		};
+		E66C2B1B250A338D00153CD7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B1C250A338D00153CD7 /* WebRTC.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		E66C2B1D250A338D00153CD7 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B1E250A338D00153CD7 /* Chat */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		E66C2B1E250A338D00153CD7 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B1F250A338D00153CD7 /* KSChatController.h */,
+				E66C2B20250A338D00153CD7 /* KSChatController.m */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E66C2B21250A338D00153CD7 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B22250A338D00153CD7 /* Alert */,
+				E66C2B25250A338D00153CD7 /* FDFullscreenPopGesture */,
+				E66C2B28250A338D00153CD7 /* MJExtension */,
+				E66C2B3E250A338D00153CD7 /* SocketRocket */,
+				E66C2B42250A338D00153CD7 /* SVProgressHUD */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		E66C2B22250A338D00153CD7 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B23250A338D00153CD7 /* KSAlertController.h */,
+				E66C2B24250A338D00153CD7 /* KSAlertController.m */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		E66C2B25250A338D00153CD7 /* FDFullscreenPopGesture */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B26250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.h */,
+				E66C2B27250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.m */,
+			);
+			path = FDFullscreenPopGesture;
+			sourceTree = "<group>";
+		};
+		E66C2B28250A338D00153CD7 /* MJExtension */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B29250A338D00153CD7 /* MJExtension.h */,
+				E66C2B2A250A338D00153CD7 /* MJExtensionConst.h */,
+				E66C2B2B250A338D00153CD7 /* MJExtensionConst.m */,
+				E66C2B2C250A338D00153CD7 /* MJFoundation.h */,
+				E66C2B2D250A338D00153CD7 /* MJFoundation.m */,
+				E66C2B2E250A338D00153CD7 /* MJProperty.h */,
+				E66C2B2F250A338D00153CD7 /* MJProperty.m */,
+				E66C2B30250A338D00153CD7 /* MJPropertyKey.h */,
+				E66C2B31250A338D00153CD7 /* MJPropertyKey.m */,
+				E66C2B32250A338D00153CD7 /* MJPropertyType.h */,
+				E66C2B33250A338D00153CD7 /* MJPropertyType.m */,
+				E66C2B34250A338D00153CD7 /* NSObject+MJClass.h */,
+				E66C2B35250A338D00153CD7 /* NSObject+MJClass.m */,
+				E66C2B36250A338D00153CD7 /* NSObject+MJCoding.h */,
+				E66C2B37250A338D00153CD7 /* NSObject+MJCoding.m */,
+				E66C2B38250A338D00153CD7 /* NSObject+MJKeyValue.h */,
+				E66C2B39250A338D00153CD7 /* NSObject+MJKeyValue.m */,
+				E66C2B3A250A338D00153CD7 /* NSObject+MJProperty.h */,
+				E66C2B3B250A338D00153CD7 /* NSObject+MJProperty.m */,
+				E66C2B3C250A338D00153CD7 /* NSString+MJExtension.h */,
+				E66C2B3D250A338D00153CD7 /* NSString+MJExtension.m */,
+			);
+			path = MJExtension;
+			sourceTree = "<group>";
+		};
+		E66C2B3E250A338D00153CD7 /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B3F250A338D00153CD7 /* SocketRocket.h */,
+				E66C2B40250A338D00153CD7 /* SRWebSocket.h */,
+				E66C2B41250A338D00153CD7 /* SRWebSocket.m */,
+			);
+			path = SocketRocket;
+			sourceTree = "<group>";
+		};
+		E66C2B42250A338D00153CD7 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B43250A338D00153CD7 /* SVIndefiniteAnimatedView.h */,
+				E66C2B44250A338D00153CD7 /* SVIndefiniteAnimatedView.m */,
+				E66C2B45250A338D00153CD7 /* SVProgressAnimatedView.h */,
+				E66C2B46250A338D00153CD7 /* SVProgressAnimatedView.m */,
+				E66C2B47250A338D00153CD7 /* SVProgressHUD-Prefix.pch */,
+				E66C2B48250A338D00153CD7 /* SVProgressHUD.bundle */,
+				E66C2B49250A338D00153CD7 /* SVProgressHUD.h */,
+				E66C2B4A250A338D00153CD7 /* SVProgressHUD.m */,
+				E66C2B4B250A338D00153CD7 /* SVRadialGradientLayer.h */,
+				E66C2B4C250A338D00153CD7 /* SVRadialGradientLayer.m */,
+			);
+			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
+		E66C2B4D250A338D00153CD7 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B4E250A338D00153CD7 /* Interface */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		E66C2B4E250A338D00153CD7 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B4F250A338D00153CD7 /* Controller */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		E66C2B4F250A338D00153CD7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B50250A338D00153CD7 /* KSChatInterfaceController.h */,
+				E66C2B51250A338D00153CD7 /* KSChatInterfaceController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E66C2B52250A338D00153CD7 /* WebRTC */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B53250A338D00153CD7 /* CoolTile */,
+				E66C2B56250A338D00153CD7 /* Header */,
+				E66C2B5C250A338D00153CD7 /* MessageHandler */,
+				E66C2B5F250A338D00153CD7 /* Model */,
+				E66C2B68250A338D00153CD7 /* Resources */,
+				E66C2B6B250A338D00153CD7 /* RTC */,
+				E66C2B75250A338D00153CD7 /* RTCManager */,
+				E66C2B7E250A338D00153CD7 /* Super */,
+				E66C2B91250A338D00153CD7 /* View */,
+			);
+			path = WebRTC;
+			sourceTree = "<group>";
+		};
+		E66C2B53250A338D00153CD7 /* CoolTile */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B54250A338D00153CD7 /* KSCoolTile.h */,
+				E66C2B55250A338D00153CD7 /* KSCoolTile.m */,
+			);
+			path = CoolTile;
+			sourceTree = "<group>";
+		};
+		E66C2B56250A338D00153CD7 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B57250A338D00153CD7 /* KSBlock.h */,
+				E66C2B58250A338D00153CD7 /* KSCallState.h */,
+				E66C2B59250A338D00153CD7 /* KSConfigure.h */,
+				E66C2B5A250A338D00153CD7 /* KSNotification.h */,
+				E66C2B5B250A338D00153CD7 /* KSNotification.m */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		E66C2B5C250A338D00153CD7 /* MessageHandler */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B5D250A338D00153CD7 /* KSMessageHandler.h */,
+				E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */,
+			);
+			path = MessageHandler;
+			sourceTree = "<group>";
+		};
+		E66C2B5F250A338D00153CD7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B60250A338D00153CD7 /* AckCall.md */,
+				E66C2B61250A338D00153CD7 /* AckJoined.md */,
+				E66C2B62250A338D00153CD7 /* KSAckMessage.h */,
+				E66C2B63250A338D00153CD7 /* KSAckMessage.m */,
+				E66C2B64250A338D00153CD7 /* KSMsg.h */,
+				E66C2B65250A338D00153CD7 /* KSMsg.m */,
+				E66C2B66250A338D00153CD7 /* KSUserInfo.h */,
+				E66C2B67250A338D00153CD7 /* KSUserInfo.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E66C2B68250A338D00153CD7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B69250A338D00153CD7 /* Mp3 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E66C2B69250A338D00153CD7 /* Mp3 */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B6A250A338D00153CD7 /* mozart.mp3 */,
+			);
+			path = Mp3;
+			sourceTree = "<group>";
+		};
+		E66C2B6B250A338D00153CD7 /* RTC */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B6C250A338D00153CD7 /* KSMediaCapturer.h */,
+				E66C2B6D250A338D00153CD7 /* KSMediaCapturer.m */,
+				E66C2B6E250A338D00153CD7 /* KSMediaConnection.h */,
+				E66C2B6F250A338D00153CD7 /* KSMediaConnection.m */,
+				E66C2B70250A338D00153CD7 /* KSMediaSetting.h */,
+				E66C2B71250A338D00153CD7 /* KSMediaSetting.m */,
+				E66C2B72250A338D00153CD7 /* KSMediaTrack.h */,
+				E66C2B73250A338D00153CD7 /* KSMediaTrack.m */,
+				E66C2B74250A338D00153CD7 /* KSRTCKey.h */,
+			);
+			path = RTC;
+			sourceTree = "<group>";
+		};
+		E66C2B75250A338D00153CD7 /* RTCManager */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B76250A338D00153CD7 /* KSAudioPlayer.h */,
+				E66C2B77250A338D00153CD7 /* KSAudioPlayer.m */,
+				E66C2B78250A338D00153CD7 /* KSDeviceSwitch.h */,
+				E66C2B79250A338D00153CD7 /* KSDeviceSwitch.m */,
+				E66C2B7A250A338D00153CD7 /* KSSession.h */,
+				E66C2B7B250A338D00153CD7 /* KSSession.m */,
+				E66C2B7C250A338D00153CD7 /* KSWebRTCManager.h */,
+				E66C2B7D250A338D00153CD7 /* KSWebRTCManager.m */,
+			);
+			path = RTCManager;
+			sourceTree = "<group>";
+		};
+		E66C2B7E250A338D00153CD7 /* Super */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B7F250A338D00153CD7 /* Cell */,
+				E66C2B84250A338D00153CD7 /* Controller */,
+				E66C2B87250A338D00153CD7 /* Model */,
+				E66C2B8C250A338D00153CD7 /* View */,
+			);
+			path = Super;
+			sourceTree = "<group>";
+		};
+		E66C2B7F250A338D00153CD7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B80250A338D00153CD7 /* KSCollectionViewCell.h */,
+				E66C2B81250A338D00153CD7 /* KSCollectionViewCell.m */,
+				E66C2B82250A338D00153CD7 /* KSTableViewCell.h */,
+				E66C2B83250A338D00153CD7 /* KSTableViewCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		E66C2B84250A338D00153CD7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B85250A338D00153CD7 /* KSSuperController.h */,
+				E66C2B86250A338D00153CD7 /* KSSuperController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E66C2B87250A338D00153CD7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B88250A338D00153CD7 /* KSAbstract.h */,
+				E66C2B89250A338D00153CD7 /* KSAbstract.m */,
+				E66C2B8A250A338D00153CD7 /* KSExecuteArgs.h */,
+				E66C2B8B250A338D00153CD7 /* KSExecuteArgs.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E66C2B8C250A338D00153CD7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B8D250A338D00153CD7 /* KSEventCallbackView.h */,
+				E66C2B8E250A338D00153CD7 /* KSEventCallbackView.m */,
+				E66C2B8F250A338D00153CD7 /* KSNavigationBar.h */,
+				E66C2B90250A338D00153CD7 /* KSNavigationBar.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E66C2B91250A338D00153CD7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B92250A338D00153CD7 /* MainView */,
+				E66C2BA1250A338D00153CD7 /* Menu */,
+				E66C2BAA250A338D00153CD7 /* SubView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E66C2B92250A338D00153CD7 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2B93250A338D00153CD7 /* KSCallView.h */,
+				E66C2B94250A338D00153CD7 /* KSCallView.m */,
+				E66C2B95250A338D00153CD7 /* KSMediaView.h */,
+				E66C2B96250A338D00153CD7 /* KSMediaView.m */,
+				E66C2B97250A338D00153CD7 /* KSScreenMediaView.h */,
+				E66C2B98250A338D00153CD7 /* KSScreenMediaView.m */,
+				E66C2B99250A338D00153CD7 /* KSTileLayout.h */,
+				E66C2B9A250A338D00153CD7 /* KSTileLayout.m */,
+				E66C2B9B250A338D00153CD7 /* KSTileMediaCell.h */,
+				E66C2B9C250A338D00153CD7 /* KSTileMediaCell.m */,
+				E66C2B9D250A338D00153CD7 /* KSTileMediaView.h */,
+				E66C2B9E250A338D00153CD7 /* KSTileMediaView.m */,
+				E66C2B9F250A338D00153CD7 /* KSVisualEffectView.h */,
+				E66C2BA0250A338D00153CD7 /* KSVisualEffectView.m */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		E66C2BA1250A338D00153CD7 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BA2250A338D00153CD7 /* KSCallMenu.h */,
+				E66C2BA3250A338D00153CD7 /* KSCallMenu.m */,
+				E66C2BA4250A338D00153CD7 /* KSCallMenuCell.h */,
+				E66C2BA5250A338D00153CD7 /* KSCallMenuCell.m */,
+				E66C2BA6250A338D00153CD7 /* KSCallMenuController.h */,
+				E66C2BA7250A338D00153CD7 /* KSCallMenuController.m */,
+				E66C2BA8250A338D00153CD7 /* KSCallMenuView.h */,
+				E66C2BA9250A338D00153CD7 /* KSCallMenuView.m */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		E66C2BAA250A338D00153CD7 /* SubView */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BAB250A338D00153CD7 /* AnswerBar */,
+				E66C2BAE250A338D00153CD7 /* CallBar */,
+				E66C2BBA250A338D00153CD7 /* Meeting */,
+				E66C2BC2250A338D00153CD7 /* Profile */,
+				E66C2BCC250A338D00153CD7 /* Tips */,
+				E66C2BD1250A338D00153CD7 /* TopBar */,
+				E66C2BD4250A338D00153CD7 /* WaitingAnswers */,
+			);
+			path = SubView;
+			sourceTree = "<group>";
+		};
+		E66C2BAB250A338D00153CD7 /* AnswerBar */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BAC250A338D00153CD7 /* KSAnswerBarView.h */,
+				E66C2BAD250A338D00153CD7 /* KSAnswerBarView.m */,
+			);
+			path = AnswerBar;
+			sourceTree = "<group>";
+		};
+		E66C2BAE250A338D00153CD7 /* CallBar */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BAF250A338D00153CD7 /* KSCallBarCell.h */,
+				E66C2BB0250A338D00153CD7 /* KSCallBarCell.m */,
+				E66C2BB1250A338D00153CD7 /* KSCallBarView.h */,
+				E66C2BB2250A338D00153CD7 /* KSCallBarView.m */,
+				E66C2BB3250A338D00153CD7 /* KSFunctionalBarCell.h */,
+				E66C2BB4250A338D00153CD7 /* KSFunctionalBarCell.m */,
+				E66C2BB5250A338D00153CD7 /* KSFunctionalBarView.h */,
+				E66C2BB6250A338D00153CD7 /* KSFunctionalBarView.m */,
+				E66C2BB7250A338D00153CD7 /* ViewModel */,
+			);
+			path = CallBar;
+			sourceTree = "<group>";
+		};
+		E66C2BB7250A338D00153CD7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BB8250A338D00153CD7 /* KSBtnInfo.h */,
+				E66C2BB9250A338D00153CD7 /* KSBtnInfo.m */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E66C2BBA250A338D00153CD7 /* Meeting */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BBB250A338D00153CD7 /* Cell */,
+				E66C2BBE250A338D00153CD7 /* KSMeetingBarView.h */,
+				E66C2BBF250A338D00153CD7 /* KSMeetingBarView.m */,
+				E66C2BC0250A338D00153CD7 /* KSMeetingThemeView.h */,
+				E66C2BC1250A338D00153CD7 /* KSMeetingThemeView.m */,
+			);
+			path = Meeting;
+			sourceTree = "<group>";
+		};
+		E66C2BBB250A338D00153CD7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BBC250A338D00153CD7 /* KSMeetingBarCell.h */,
+				E66C2BBD250A338D00153CD7 /* KSMeetingBarCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		E66C2BC2250A338D00153CD7 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BC3250A338D00153CD7 /* KSProfileBarView.h */,
+				E66C2BC4250A338D00153CD7 /* KSProfileBarView.m */,
+				E66C2BC5250A338D00153CD7 /* KSProfileView.h */,
+				E66C2BC6250A338D00153CD7 /* KSProfileView.m */,
+				E66C2BC7250A338D00153CD7 /* KSRoundImageView.h */,
+				E66C2BC8250A338D00153CD7 /* KSRoundImageView.m */,
+				E66C2BC9250A338D00153CD7 /* ViewModel */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		E66C2BC9250A338D00153CD7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BCA250A338D00153CD7 /* KSProfileInfo.h */,
+				E66C2BCB250A338D00153CD7 /* KSProfileInfo.m */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E66C2BCC250A338D00153CD7 /* Tips */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BCD250A338D00153CD7 /* KSCoolHUB.h */,
+				E66C2BCE250A338D00153CD7 /* KSCoolHUB.m */,
+				E66C2BCF250A338D00153CD7 /* KSCoolTipsView.h */,
+				E66C2BD0250A338D00153CD7 /* KSCoolTipsView.m */,
+			);
+			path = Tips;
+			sourceTree = "<group>";
+		};
+		E66C2BD1250A338D00153CD7 /* TopBar */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BD2250A338D00153CD7 /* KSTopBarView.h */,
+				E66C2BD3250A338D00153CD7 /* KSTopBarView.m */,
+			);
+			path = TopBar;
+			sourceTree = "<group>";
+		};
+		E66C2BD4250A338D00153CD7 /* WaitingAnswers */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BD5250A338D00153CD7 /* Cell */,
+				E66C2BD8250A338D00153CD7 /* FlowLayout */,
+				E66C2BDB250A338D00153CD7 /* KSWaitingAnswersGroupView.h */,
+				E66C2BDC250A338D00153CD7 /* KSWaitingAnswersGroupView.m */,
+				E66C2BDD250A338D00153CD7 /* KSWaitingAnswersView.h */,
+				E66C2BDE250A338D00153CD7 /* KSWaitingAnswersView.m */,
+			);
+			path = WaitingAnswers;
+			sourceTree = "<group>";
+		};
+		E66C2BD5250A338D00153CD7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BD6250A338D00153CD7 /* KSWaitingAnswersMemberCell.h */,
+				E66C2BD7250A338D00153CD7 /* KSWaitingAnswersMemberCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		E66C2BD8250A338D00153CD7 /* FlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				E66C2BD9250A338D00153CD7 /* KSCellAlignmentFlowLayout.h */,
+				E66C2BDA250A338D00153CD7 /* KSCellAlignmentFlowLayout.m */,
+			);
+			path = FlowLayout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1094,12 +1094,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E600897C250798E70065B68E /* AckCall.md in Resources */,
-				E6008975250798E70065B68E /* SVProgressHUD.bundle in Resources */,
+				E66C2C14250A338D00153CD7 /* AckCall.md in Resources */,
+				E66C2C0D250A338D00153CD7 /* SVProgressHUD.bundle in Resources */,
 				E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */,
-				E600897D250798E70065B68E /* AckJoined.md in Resources */,
+				E66C2C15250A338D00153CD7 /* AckJoined.md in Resources */,
 				E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */,
-				E6008981250798E70065B68E /* mozart.mp3 in Resources */,
+				E66C2C19250A338D00153CD7 /* mozart.mp3 in Resources */,
 				E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */,
 				E6400F3B24B8507F004C7060 /* Main.storyboard in Resources */,
 			);
@@ -1112,104 +1112,104 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E60089A1250798E70065B68E /* KSBtnInfo.m in Sources */,
-				E6008967250798E70065B68E /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
-				E6008987250798E70065B68E /* KSDeviceSwitch.m in Sources */,
-				E600895B250798E70065B68E /* KSExtern.m in Sources */,
-				E6008990250798E70065B68E /* KSNavigationBar.m in Sources */,
-				E6008966250798E70065B68E /* KSAlertController.m in Sources */,
-				E600899B250798E70065B68E /* KSCallMenuView.m in Sources */,
-				E600898F250798E70065B68E /* KSEventCallbackView.m in Sources */,
-				E6008986250798E70065B68E /* KSAudioPlayer.m in Sources */,
-				E60089A4250798E70065B68E /* KSMeetingThemeView.m in Sources */,
-				E6008959250798E70065B68E /* UIView+Category.m in Sources */,
-				E6008970250798E70065B68E /* NSObject+MJProperty.m in Sources */,
-				E6008997250798E70065B68E /* KSVisualEffectView.m in Sources */,
-				E6008982250798E70065B68E /* KSMediaCapturer.m in Sources */,
-				E6008973250798E70065B68E /* SVIndefiniteAnimatedView.m in Sources */,
-				E600894F250798E70065B68E /* NSString+Category.m in Sources */,
-				E60089A6250798E70065B68E /* KSProfileView.m in Sources */,
-				E60089A7250798E70065B68E /* KSRoundImageView.m in Sources */,
-				E60089A2250798E70065B68E /* KSMeetingBarCell.m in Sources */,
-				E6008984250798E70065B68E /* KSMediaSetting.m in Sources */,
-				E6008998250798E70065B68E /* KSCallMenu.m in Sources */,
-				E600899F250798E70065B68E /* KSFunctionalBarCell.m in Sources */,
-				E600896C250798E70065B68E /* MJPropertyType.m in Sources */,
-				E600894D250798E70065B68E /* NSDictionary+Category.m in Sources */,
-				E6008976250798E70065B68E /* SVProgressHUD.m in Sources */,
-				E6008999250798E70065B68E /* KSCallMenuCell.m in Sources */,
-				E6008971250798E70065B68E /* NSString+MJExtension.m in Sources */,
+				E66C2C39250A338D00153CD7 /* KSBtnInfo.m in Sources */,
+				E66C2BFF250A338D00153CD7 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
+				E66C2C1F250A338D00153CD7 /* KSDeviceSwitch.m in Sources */,
+				E66C2BF3250A338D00153CD7 /* KSExtern.m in Sources */,
+				E66C2C28250A338D00153CD7 /* KSNavigationBar.m in Sources */,
+				E66C2BFE250A338D00153CD7 /* KSAlertController.m in Sources */,
+				E66C2C33250A338D00153CD7 /* KSCallMenuView.m in Sources */,
+				E66C2C27250A338D00153CD7 /* KSEventCallbackView.m in Sources */,
+				E66C2C1E250A338D00153CD7 /* KSAudioPlayer.m in Sources */,
+				E66C2C3C250A338D00153CD7 /* KSMeetingThemeView.m in Sources */,
+				E66C2BF1250A338D00153CD7 /* UIView+Category.m in Sources */,
+				E66C2C08250A338D00153CD7 /* NSObject+MJProperty.m in Sources */,
+				E66C2C2F250A338D00153CD7 /* KSVisualEffectView.m in Sources */,
+				E66C2C1A250A338D00153CD7 /* KSMediaCapturer.m in Sources */,
+				E66C2C0B250A338D00153CD7 /* SVIndefiniteAnimatedView.m in Sources */,
+				E66C2BE7250A338D00153CD7 /* NSString+Category.m in Sources */,
+				E66C2C3E250A338D00153CD7 /* KSProfileView.m in Sources */,
+				E66C2C3F250A338D00153CD7 /* KSRoundImageView.m in Sources */,
+				E66C2C3A250A338D00153CD7 /* KSMeetingBarCell.m in Sources */,
+				E66C2C1C250A338D00153CD7 /* KSMediaSetting.m in Sources */,
+				E66C2C30250A338D00153CD7 /* KSCallMenu.m in Sources */,
+				E66C2C37250A338D00153CD7 /* KSFunctionalBarCell.m in Sources */,
+				E66C2C04250A338D00153CD7 /* MJPropertyType.m in Sources */,
+				E66C2BE5250A338D00153CD7 /* NSDictionary+Category.m in Sources */,
+				E66C2C0E250A338D00153CD7 /* SVProgressHUD.m in Sources */,
+				E66C2C31250A338D00153CD7 /* KSCallMenuCell.m in Sources */,
+				E66C2C09250A338D00153CD7 /* NSString+MJExtension.m in Sources */,
 				E6400F3824B8507F004C7060 /* ViewController.m in Sources */,
-				E600895D250798E70065B68E /* KSComposeButton.m in Sources */,
-				E6008978250798E70065B68E /* KSChatInterfaceController.m in Sources */,
-				E6008991250798E70065B68E /* KSCallView.m in Sources */,
-				E600899D250798E70065B68E /* KSCallBarCell.m in Sources */,
-				E600896D250798E70065B68E /* NSObject+MJClass.m in Sources */,
-				E600895A250798E70065B68E /* UIViewController+Category.m in Sources */,
-				E60089AE250798E70065B68E /* KSWaitingAnswersGroupView.m in Sources */,
-				E600897A250798E70065B68E /* KSNotification.m in Sources */,
-				E6008961250798E70065B68E /* KSWebSocketConfigure.m in Sources */,
-				E600896A250798E70065B68E /* MJProperty.m in Sources */,
-				E600894C250798E70065B68E /* KSSuperController+Category.m in Sources */,
-				E6008993250798E70065B68E /* KSScreenMediaView.m in Sources */,
-				E6008972250798E70065B68E /* SRWebSocket.m in Sources */,
-				E600898A250798E70065B68E /* KSCollectionViewCell.m in Sources */,
-				E600899C250798E70065B68E /* KSAnswerBarView.m in Sources */,
-				E6008977250798E70065B68E /* SVRadialGradientLayer.m in Sources */,
-				E600895C250798E70065B68E /* KSButton.m in Sources */,
-				E6008995250798E70065B68E /* KSTileMediaCell.m in Sources */,
-				E6008983250798E70065B68E /* KSMediaConnection.m in Sources */,
-				E600899A250798E70065B68E /* KSCallMenuController.m in Sources */,
-				E6008958250798E70065B68E /* UILabel+Category.m in Sources */,
-				E6008962250798E70065B68E /* KSRegex.m in Sources */,
-				E6008957250798E70065B68E /* UIImageView+Category.m in Sources */,
-				E6008979250798E70065B68E /* KSCoolTile.m in Sources */,
-				E60089A0250798E70065B68E /* KSFunctionalBarView.m in Sources */,
+				E66C2BF5250A338D00153CD7 /* KSComposeButton.m in Sources */,
+				E66C2C10250A338D00153CD7 /* KSChatInterfaceController.m in Sources */,
+				E66C2C29250A338D00153CD7 /* KSCallView.m in Sources */,
+				E66C2C35250A338D00153CD7 /* KSCallBarCell.m in Sources */,
+				E66C2C05250A338D00153CD7 /* NSObject+MJClass.m in Sources */,
+				E66C2BF2250A338D00153CD7 /* UIViewController+Category.m in Sources */,
+				E66C2C46250A338D00153CD7 /* KSWaitingAnswersGroupView.m in Sources */,
+				E66C2C12250A338D00153CD7 /* KSNotification.m in Sources */,
+				E66C2BF9250A338D00153CD7 /* KSWebSocketConfigure.m in Sources */,
+				E66C2C02250A338D00153CD7 /* MJProperty.m in Sources */,
+				E66C2BE4250A338D00153CD7 /* KSSuperController+Category.m in Sources */,
+				E66C2C2B250A338D00153CD7 /* KSScreenMediaView.m in Sources */,
+				E66C2C0A250A338D00153CD7 /* SRWebSocket.m in Sources */,
+				E66C2C22250A338D00153CD7 /* KSCollectionViewCell.m in Sources */,
+				E66C2C34250A338D00153CD7 /* KSAnswerBarView.m in Sources */,
+				E66C2C0F250A338D00153CD7 /* SVRadialGradientLayer.m in Sources */,
+				E66C2BF4250A338D00153CD7 /* KSButton.m in Sources */,
+				E66C2C2D250A338D00153CD7 /* KSTileMediaCell.m in Sources */,
+				E66C2C1B250A338D00153CD7 /* KSMediaConnection.m in Sources */,
+				E66C2C32250A338D00153CD7 /* KSCallMenuController.m in Sources */,
+				E66C2BF0250A338D00153CD7 /* UILabel+Category.m in Sources */,
+				E66C2BFA250A338D00153CD7 /* KSRegex.m in Sources */,
+				E66C2BEF250A338D00153CD7 /* UIImageView+Category.m in Sources */,
+				E66C2C11250A338D00153CD7 /* KSCoolTile.m in Sources */,
+				E66C2C38250A338D00153CD7 /* KSFunctionalBarView.m in Sources */,
 				E6400F4324B85080004C7060 /* main.m in Sources */,
-				E600895E250798E70065B68E /* KSIputView.m in Sources */,
-				E60089AC250798E70065B68E /* KSWaitingAnswersMemberCell.m in Sources */,
-				E6008988250798E70065B68E /* KSSession.m in Sources */,
-				E600896F250798E70065B68E /* NSObject+MJKeyValue.m in Sources */,
-				E60089AF250798E70065B68E /* KSWaitingAnswersView.m in Sources */,
-				E6008965250798E70065B68E /* KSChatController.m in Sources */,
-				E600897E250798E70065B68E /* KSAckMessage.m in Sources */,
-				E600897B250798E70065B68E /* KSMessageHandler.m in Sources */,
-				E6008985250798E70065B68E /* KSMediaTrack.m in Sources */,
-				E6008996250798E70065B68E /* KSTileMediaView.m in Sources */,
-				E600896E250798E70065B68E /* NSObject+MJCoding.m in Sources */,
-				E60089A8250798E70065B68E /* KSProfileInfo.m in Sources */,
-				E60089A5250798E70065B68E /* KSProfileBarView.m in Sources */,
-				E6008950250798E70065B68E /* RTCIceCandidate+Category.m in Sources */,
-				E600895F250798E70065B68E /* KSLayoutButton.m in Sources */,
-				E6008994250798E70065B68E /* KSTileLayout.m in Sources */,
-				E6008955250798E70065B68E /* UIFont+Category.m in Sources */,
-				E6008951250798E70065B68E /* RTCPeerConnection+Category.m in Sources */,
-				E600898E250798E70065B68E /* KSExecuteArgs.m in Sources */,
-				E60089AB250798E70065B68E /* KSTopBarView.m in Sources */,
-				E6008992250798E70065B68E /* KSMediaView.m in Sources */,
-				E60089AD250798E70065B68E /* KSCellAlignmentFlowLayout.m in Sources */,
-				E600899E250798E70065B68E /* KSCallBarView.m in Sources */,
-				E60089AA250798E70065B68E /* KSCoolTipsView.m in Sources */,
-				E600898C250798E70065B68E /* KSSuperController.m in Sources */,
-				E600896B250798E70065B68E /* MJPropertyKey.m in Sources */,
+				E66C2BF6250A338D00153CD7 /* KSIputView.m in Sources */,
+				E66C2C44250A338D00153CD7 /* KSWaitingAnswersMemberCell.m in Sources */,
+				E66C2C20250A338D00153CD7 /* KSSession.m in Sources */,
+				E66C2C07250A338D00153CD7 /* NSObject+MJKeyValue.m in Sources */,
+				E66C2C47250A338D00153CD7 /* KSWaitingAnswersView.m in Sources */,
+				E66C2BFD250A338D00153CD7 /* KSChatController.m in Sources */,
+				E66C2C16250A338D00153CD7 /* KSAckMessage.m in Sources */,
+				E66C2C13250A338D00153CD7 /* KSMessageHandler.m in Sources */,
+				E66C2C1D250A338D00153CD7 /* KSMediaTrack.m in Sources */,
+				E66C2C2E250A338D00153CD7 /* KSTileMediaView.m in Sources */,
+				E66C2C06250A338D00153CD7 /* NSObject+MJCoding.m in Sources */,
+				E66C2C40250A338D00153CD7 /* KSProfileInfo.m in Sources */,
+				E66C2C3D250A338D00153CD7 /* KSProfileBarView.m in Sources */,
+				E66C2BE8250A338D00153CD7 /* RTCIceCandidate+Category.m in Sources */,
+				E66C2BF7250A338D00153CD7 /* KSLayoutButton.m in Sources */,
+				E66C2C2C250A338D00153CD7 /* KSTileLayout.m in Sources */,
+				E66C2BED250A338D00153CD7 /* UIFont+Category.m in Sources */,
+				E66C2BE9250A338D00153CD7 /* RTCPeerConnection+Category.m in Sources */,
+				E66C2C26250A338D00153CD7 /* KSExecuteArgs.m in Sources */,
+				E66C2C43250A338D00153CD7 /* KSTopBarView.m in Sources */,
+				E66C2C2A250A338D00153CD7 /* KSMediaView.m in Sources */,
+				E66C2C45250A338D00153CD7 /* KSCellAlignmentFlowLayout.m in Sources */,
+				E66C2C36250A338D00153CD7 /* KSCallBarView.m in Sources */,
+				E66C2C42250A338D00153CD7 /* KSCoolTipsView.m in Sources */,
+				E66C2C24250A338D00153CD7 /* KSSuperController.m in Sources */,
+				E66C2C03250A338D00153CD7 /* MJPropertyKey.m in Sources */,
 				E6400F3524B8507F004C7060 /* AppDelegate.m in Sources */,
-				E6008969250798E70065B68E /* MJFoundation.m in Sources */,
-				E60089A9250798E70065B68E /* KSCoolHUB.m in Sources */,
-				E6008956250798E70065B68E /* UIImage+Category.m in Sources */,
-				E60089A3250798E70065B68E /* KSMeetingBarView.m in Sources */,
-				E600897F250798E70065B68E /* KSMsg.m in Sources */,
-				E600898B250798E70065B68E /* KSTableViewCell.m in Sources */,
-				E6008952250798E70065B68E /* RTCSessionDescription+Category.m in Sources */,
-				E6008980250798E70065B68E /* KSUserInfo.m in Sources */,
-				E6008953250798E70065B68E /* UIButton+Category.m in Sources */,
-				E6008960250798E70065B68E /* KSWebSocket.m in Sources */,
-				E600898D250798E70065B68E /* KSAbstract.m in Sources */,
-				E600894E250798E70065B68E /* NSObject+Category.m in Sources */,
-				E6008974250798E70065B68E /* SVProgressAnimatedView.m in Sources */,
-				E6008989250798E70065B68E /* KSWebRTCManager.m in Sources */,
-				E6008963250798E70065B68E /* KSTimekeeper.m in Sources */,
-				E6008968250798E70065B68E /* MJExtensionConst.m in Sources */,
-				E6008954250798E70065B68E /* UIColor+Category.m in Sources */,
+				E66C2C01250A338D00153CD7 /* MJFoundation.m in Sources */,
+				E66C2C41250A338D00153CD7 /* KSCoolHUB.m in Sources */,
+				E66C2BEE250A338D00153CD7 /* UIImage+Category.m in Sources */,
+				E66C2C3B250A338D00153CD7 /* KSMeetingBarView.m in Sources */,
+				E66C2C17250A338D00153CD7 /* KSMsg.m in Sources */,
+				E66C2C23250A338D00153CD7 /* KSTableViewCell.m in Sources */,
+				E66C2BEA250A338D00153CD7 /* RTCSessionDescription+Category.m in Sources */,
+				E66C2C18250A338D00153CD7 /* KSUserInfo.m in Sources */,
+				E66C2BEB250A338D00153CD7 /* UIButton+Category.m in Sources */,
+				E66C2BF8250A338D00153CD7 /* KSWebSocket.m in Sources */,
+				E66C2C25250A338D00153CD7 /* KSAbstract.m in Sources */,
+				E66C2BE6250A338D00153CD7 /* NSObject+Category.m in Sources */,
+				E66C2C0C250A338D00153CD7 /* SVProgressAnimatedView.m in Sources */,
+				E66C2C21250A338D00153CD7 /* KSWebRTCManager.m in Sources */,
+				E66C2BFB250A338D00153CD7 /* KSTimekeeper.m in Sources */,
+				E66C2C00250A338D00153CD7 /* MJExtensionConst.m in Sources */,
+				E66C2BEC250A338D00153CD7 /* UIColor+Category.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1368,6 +1368,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSWebRTC/Script/Chat/Frameworks",
+					"$(PROJECT_DIR)/KSWebRTC/Script/Script/Chat/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/Import/KSPrefixHeader.pch";
@@ -1394,6 +1395,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/KSWebRTC/Script/Chat/Frameworks",
+					"$(PROJECT_DIR)/KSWebRTC/Script/Script/Chat/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${SRCROOT}/KSWebRTC/Script/Chat/Custom/Import/KSPrefixHeader.pch";

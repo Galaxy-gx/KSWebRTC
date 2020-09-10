@@ -118,24 +118,14 @@ static int const kLocalRTCSessionId = 10101024;
 //}
 
 #pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]%10000].peerConnection;
 }
 
 - (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    self.localMediaTrack.userInfo.ID = [handleId longLongValue];//%10000;
-    self.localMediaTrack.sessionId   = [handleId longLongValue];//%10000;
-    return self.localMediaTrack.peerConnection;
-    
     self.localMediaTrack.userInfo.ID = [handleId longLongValue]%10000;
     self.localMediaTrack.sessionId   = [handleId longLongValue]%10000;
     return self.localMediaTrack.peerConnection;
-}
-
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    return [self mediaTrackOfUserId:[handleId longLongValue]].peerConnection;
-    
-    return [self mediaTrackOfUserId:[handleId longLongValue]%10000].peerConnection;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
@@ -204,9 +194,9 @@ static int const kLocalRTCSessionId = 10101024;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     NSMutableDictionary *body =[NSMutableDictionary dictionary];
     if (candidate) {
-        body[@"sdp"]           = candidate.sdp;
-        body[@"sdpMid"]        = candidate.sdpMid;
-        body[@"sdpMLineIndex"] = @(candidate.sdpMLineIndex);
+        body[@"sdp"] = candidate.sdp;
+        body[@"sdpMid"] = candidate.sdpMid;
+        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
     }
     if (_isTest) {
         [_msgHandler trickleCandidate:body];

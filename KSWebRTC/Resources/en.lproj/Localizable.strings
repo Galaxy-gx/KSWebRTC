@@ -5,18 +5,34 @@
   Created by saeipi on 2020/8/16.
   Copyright © 2020 saeipi. All rights reserved.
 */
-"ks_meeting_theme_input_placeholder" = "输入你的会议主题";
-"ks_meeting_btn_start"               = "开始会议";
-"ks_meeting_btn_voice_answering"     = "语音接听";
-
-
-"ks_app_global_text_microphone"      = "麦克风";
-"ks_app_global_text_volume"          = "音量";
-"ks_app_global_text_camera"          = "相机";
-"ks_app_global_text_bluetoot"        = "蓝牙";
-"ks_app_global_text_hang_up"         = "挂断";
-"ks_app_global_text_answer"          = "接听";
-
-"ks_app_global_text_video_call"      = "拨打视频";
-"ks_app_global_text_voice_call"      = "拨打语音";
-"ks_app_global_text_cancel"          = "取消";
+"ks_meeting_theme_input_placeholder"       = "Conference subject";//输入你的会议主题";
+"ks_meeting_btn_start"                     = "Start meeting";//开始会议";
+"ks_meeting_btn_voice_answering"           = "Voice answering";//语音接听";
+"ks_app_global_text_microphone"            = "Microphone";//"麦克风";
+"ks_app_global_text_volume"                = "Volume";//音量";
+"ks_app_global_text_camera"                = "Camera";//相机";
+"ks_app_global_text_bluetoot"              = "Bluetoot";//"蓝牙";
+"ks_app_global_text_hang_up"               = "Hung up";//"挂断";
+"ks_app_global_text_answer"                = "Answer";//"接听";
+"ks_app_global_text_video_call"            = "Video chat";//"拨打视频";
+"ks_app_global_text_voice_call"            = "Voice chat";//"拨打语音";
+"ks_app_global_text_cancel"                = "Cancel";//"取消";
+"ks_app_global_text_confirml"              = "Confirml";//"确认";
+"ks_app_global_text_switch_to_voice"       = "Switch to voice";//"切换到语音";
+"ks_app_global_text_switch_to_video"       = "Switch to video";//"切换到视频";
+"ks_app_global_text_call_end"              = "Call End";//"通话结束";
+"ks_app_global_text_switch_to_voice_call"  = "Switch to voice call ";//"切换到语音通话";
+"ks_app_global_text_switch_to_video_call"  = "Switch to video call";//"切换到视频通话";
+"ks_app_global_text_subscriber_engaged"    = "Sorry! The line is busy now!";//"对方占线";
+"ks_app_global_text_there_was_no_response" = "The other party didn't respond";//"对方没有应答";
+"ks_app_global_text_look_forward_to"       = "Please look forward to";//"敬请期待";
+"ks_app_global_text_mute"                  = "Mute";//"静音";
+"ks_app_global_text_talking"               = "Talking";//"发言";
+"ks_app_global_text_invite_video_call"     = "Invite you to a video call";//"视频邀请";
+"ks_app_global_text_invite_voice_call"     = "Invite you to a voice call";//"音频邀请";
+"ks_app_global_text_calling"               = "Calling……";//"呼叫中";
+"ks_app_global_text_auth_camera"           = "Please turn on camera access.";//"相机";
+"ks_app_global_text_auth_microphone"       = "Please turn on microphone access.";//"麦克风";
+"ks_app_global_text_call_timeout"          = "Call timeout.";//"呼叫超时";
+"ks_app_global_text_user_hungup"           = "%@ hung up.";//"xx挂断电话";
+"ks_app_global_text_dropped_call"          = "Asking for is connected again.";//"通话中断";

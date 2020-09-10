@@ -10,10 +10,6 @@
 #import "KSWebRTCManager.h"
 #import "NSDictionary+Category.h"
 #import "NSString+Category.h"
-typedef NS_ENUM(NSInteger, KSRelayType) {
-    KSRelayTypeAll = 1,
-    KSRelayTypeAssigner = 2,
-};
 
 static NSString *const KMsgTypeIceCandidate       = @"IceCandidate";
 static NSString *const KMsgTypeSessionDescription = @"SessionDescription";
@@ -48,105 +44,14 @@ static int const KSRandomLength = 12;
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
         self.roomMumber      = @1234;
-        self.userId          = [NSNumber numberWithInt:[KSUserInfo myID]];
+        self.userId          = [self randomNumber];
     }
     return self;
 }
 
-//- (NSNumber *)randomNumber {
-//    int random = (arc4random() % 10000) + 10000;
-//    return [NSNumber numberWithInt:random];
-//}
-
-- (KSMediaConnection *)myPeerConnection {
-    KSMediaConnection *mc = [KSWebRTCManager shared].localMediaTrack.peerConnection;
-    return mc;
-}
-- (void)handlerMsg:(id)message {
-    NSError *error;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:message
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:&error];
-    if (!dict) {
-        return;
-    }
-    _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
-    NSLog(@"|============|\nReceived: %@\n|============|",dict);
-    if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        KSMediaConnection *mc           = [self myPeerConnection];//[[KSWebRTCManager shared] mediaTrackOfUserId:[dict[@"user_id"] intValue]].peerConnection;//[self myPeerConnection];
-        NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
-        NSDictionary *candidate         = dict[@"candidate"];
-        candidates[@"sdp"]              = candidate[@"candidate"];//兼容作用
-        candidates[@"sdpMLineIndex"]    = candidate[@"sdpMLineIndex"];
-        candidates[@"sdpMid"]           = candidate[@"sdpMid"];
-        [mc addIceCandidate:candidates];
-    }
-    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
-        if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
-            KSMediaTrack *mt             = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            KSMediaConnection *mc        = mt.peerConnection;//[self myPeerConnection];
-            [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
-            __weak typeof(self) weakSelf = self;
-            [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-                NSString *type    = [RTCSessionDescription stringForType:sdp.type];
-                NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
-                jseps[@"type"]    = type;
-                jseps[@"sdp"]     = [sdp sdp];
-                jseps[@"user_id"] = @([KSUserInfo myID]);
-                jseps[@"relay"]   = @(KSRelayTypeAssigner);
-                jseps[@"target"]  = dict[@"id"];///dict[@"payload"][@"user_id"];
-                [weakSelf sendPayload:jseps];
-            }];
-        }
-        else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
-            KSMediaTrack *mt      = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            KSMediaConnection *mc = [self myPeerConnection];//mt.peerConnection;//[self myPeerConnection];
-            [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
-        }
-    }
-    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
-        /*
-        [KSWebRTCManager shared].isRemote = YES;
-        KSMediaConnection *mc             = [self myPeerConnection];
-        __weak typeof(self) weakSelf      = self;
-        [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-            NSString *type = [RTCSessionDescription stringForType:sdp.type];
-            NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
-            jsep[@"type"]      = type;
-            jsep[@"sdp"]       = [sdp sdp];
-            jsep[@"user_id"]   = @([KSUserInfo myID]);
-            jsep[@"relay"]     = @(KSRelayTypeAssigner);
-            jsep[@"target"]   = dict[@"id"];///dict[@"payload"][@"user_id"];
-            [weakSelf sendPayload:jsep];
-        }];
-         */
-    }
-}
-
-// 观察者收到远端offer后，发送anwser
-- (void)anwserRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
-    [mc setRemoteDescriptionWithJsep:jsep];
-    
-    __weak typeof(self) weakSelf = self;
-    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-        NSString *type = [RTCSessionDescription stringForType:sdp.type];
-        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
-        jseps[@"type"]      = type;
-        jseps[@"sdp"]       = [sdp sdp];
-        jseps[@"user_id"]   = @([KSUserInfo myID]);
-        [weakSelf sendPayload:jseps];
-    }];
-}
-
-- (void)startFlag {
-    if (!_isConnect) {
-        return;
-    }
-    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
-    sendMessage[@"type"]             = KMsgTypeSessionStart;
-    sendMessage[@"relay"]            = @(KSRelayTypeAll);
-    [_socket sendMessage:sendMessage];
+- (NSNumber *)randomNumber {
+    int random = (arc4random() % 10000) + 10000;
+    return [NSNumber numberWithInt:random];
 }
 
 - (void)messageSuccess:(KSSuccess *)success {
@@ -361,7 +266,7 @@ static int const KSRandomLength = 12;
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -381,7 +286,7 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 
@@ -395,8 +300,6 @@ static int const KSRandomLength = 12;
     sendMessage[@"candidate"]        = candidate;
     sendMessage[@"handle_id"]        = handleId;
     sendMessage[@"user_id"]          = self.userId;
-    sendMessage[@"type"]             = KMsgTypeIceCandidate;
-    sendMessage[@"relay"]            = @(KSRelayTypeAll);
     [_socket sendMessage:sendMessage];
 }
 
@@ -428,25 +331,10 @@ static int const KSRandomLength = 12;
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
-    _isConnect = YES;
-    //[self startFlag];//转发服务器
-    //[self createSession];//Janus服务器
+    [self createSession];
     if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
         [self.delegate messageHandler:self socketDidOpen:socket];
     }
-    
-    [KSWebRTCManager shared].isRemote = YES;
-    KSMediaConnection *mc             = [self myPeerConnection];
-    __weak typeof(self) weakSelf      = self;
-    [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-        NSString *type = [RTCSessionDescription stringForType:sdp.type];
-        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
-        jsep[@"type"]      = type;
-        jsep[@"sdp"]       = [sdp sdp];
-        jsep[@"user_id"]   = @([KSUserInfo myID]);
-        jsep[@"relay"]     = @(KSRelayTypeAll);
-        [weakSelf sendPayload:jsep];
-    }];
 }
 
 /**
@@ -461,8 +349,7 @@ static int const KSRandomLength = 12;
  收到消息
  */
 - (void)socket:(KSWebSocket *)socket didReceivedMessage:(id)message {
-    //[self analysisMsg:message];
-    [self handlerMsg:message];
+    [self analysisMsg:message];
 }
 /**
  异常断开,且重连失败
@@ -506,25 +393,4 @@ static int const KSRandomLength = 12;
     
 }
 
-- (void)sendPayload:(NSDictionary *)payload {
-    if (!_isConnect) {
-        return;
-    }
-    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
-    sendMessage[@"type"] = KMsgTypeSessionDescription;
-    if (payload != NULL) {
-        sendMessage[@"payload"] = payload;
-    }
-    if (payload[@"relay"]) {
-        sendMessage[@"relay"] = payload[@"relay"];
-    }
-    if (payload[@"target"]) {
-        sendMessage[@"target"] = payload[@"target"];
-    }
-    [_socket sendMessage:sendMessage];
-}
-
 @end
-
-
-

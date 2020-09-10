@@ -179,7 +179,7 @@
         [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
     }
     if ([KSWebRTCManager shared].isTest) {
-        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:6080"];
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
     }
     
     [self createLocalView];

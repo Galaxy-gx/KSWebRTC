@@ -23,21 +23,12 @@
 + (KSUserInfo *)myself {
     KSUserInfo *userInfo = [[KSUserInfo alloc] init];
     userInfo.name        = @"saeipi";
-    userInfo.ID          = [self myID];
+    userInfo.ID          = 10101024;
     return userInfo;
 }
 
 + (int)myID {
-    return [self randomNumber];
+    return 10101024;
 }
 
-+ (int )randomNumber {
-    static int random = 0;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        random = (arc4random() % 10000) + 10000;
-        NSLog(@"|============| user_id : %d |============|",random);
-    });
-    return random;
-}
 @end
