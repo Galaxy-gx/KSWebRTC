@@ -73,7 +73,7 @@ static int const KSRandomLength = 12;
     _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
     NSLog(@"|============|\nReceived: %@\n|============|",dict);
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        KSMediaConnection *mc           = [[KSWebRTCManager shared] mediaTrackOfUserId:[dict[@"user_id"] intValue]].peerConnection;//[self myPeerConnection];
+        KSMediaConnection *mc           = [self myPeerConnection];//[[KSWebRTCManager shared] mediaTrackOfUserId:[dict[@"user_id"] intValue]].peerConnection;//[self myPeerConnection];
         NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
         NSDictionary *candidate         = dict[@"candidate"];
         candidates[@"sdp"]              = candidate[@"candidate"];//兼容作用
@@ -93,14 +93,14 @@ static int const KSRandomLength = 12;
                 jseps[@"type"]    = type;
                 jseps[@"sdp"]     = [sdp sdp];
                 jseps[@"user_id"] = @([KSUserInfo myID]);
-                jseps[@"relay"] = @(KSRelayTypeAssigner);
-                jseps[@"target"] = dict[@"id"];///dict[@"payload"][@"user_id"];
+                jseps[@"relay"]   = @(KSRelayTypeAssigner);
+                jseps[@"target"]  = dict[@"id"];///dict[@"payload"][@"user_id"];
                 [weakSelf sendPayload:jseps];
             }];
         }
         else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
             KSMediaTrack *mt      = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            KSMediaConnection *mc = mt.peerConnection;//[self myPeerConnection];
+            KSMediaConnection *mc = [self myPeerConnection];//mt.peerConnection;//[self myPeerConnection];
             [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
         }
     }
@@ -525,5 +525,6 @@ static int const KSRandomLength = 12;
 }
 
 @end
+
 
 
