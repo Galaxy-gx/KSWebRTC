@@ -69,45 +69,31 @@ static int const KSRandomLength = 12;
     _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
     NSLog(@"|============|\nReceived: %@\n|============|",dict);
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        //KSMediaConnection *mc = [self.delegate peerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]]];
-        KSMediaConnection *mc = [self myPeerConnection];//[self.delegate peerConnectionOfMessageHandler:self handleId: [NSNumber numberWithInt:[KSUserInfo myID]]];
+        KSMediaConnection *mc           = [self myPeerConnection];
         NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
         NSDictionary *candidate         = dict[@"candidate"];
-        candidates[@"candidate"]        = candidate[@"sdp"];//兼容作用
+        candidates[@"sdp"]              = candidate[@"candidate"];//兼容作用
         candidates[@"sdpMLineIndex"]    = candidate[@"sdpMLineIndex"];
         candidates[@"sdpMid"]           = candidate[@"sdpMid"];
-
         [mc addIceCandidate:candidates];
-        
-        //[self.delegate messageHandler:self addIceCandidate:dict[@"payload"]];
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
-            [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            
+            KSMediaTrack *mt             = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
             KSMediaConnection *mc        = [self myPeerConnection];
             [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
             __weak typeof(self) weakSelf = self;
             [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-                NSString *type = [RTCSessionDescription stringForType:sdp.type];
+                NSString *type    = [RTCSessionDescription stringForType:sdp.type];
                 NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
-                jseps[@"type"]      = type;
-                jseps[@"sdp"]       = [sdp sdp];
-                jseps[@"user_id"]   = @([KSUserInfo myID]);
+                jseps[@"type"]    = type;
+                jseps[@"sdp"]     = [sdp sdp];
+                jseps[@"user_id"] = @([KSUserInfo myID]);
                 [weakSelf sendPayload:jseps];
             }];
-            
-            //[self.delegate messageHandler:self didReceiveOffer:dict[@"payload"]];
-            //[self anwserRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
-            //[self anwserRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
         }
         else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
-            //[self.delegate messageHandler:self didReceiveAnswer:dict[@"payload"]];
-            //[self onPublisherRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
-            //[self onPublisherRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
-            
-            
-            [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
+            KSMediaTrack *mt      = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
             KSMediaConnection *mc = [self myPeerConnection];
             [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
         }
