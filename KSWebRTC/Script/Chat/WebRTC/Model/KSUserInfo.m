@@ -36,6 +36,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         random = (arc4random() % 10000) + 10000;
+        NSLog(@"|============| user_id : %d |============|",random);
     });
     return random;
 }

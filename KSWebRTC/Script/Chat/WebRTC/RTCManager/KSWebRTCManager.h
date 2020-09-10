@@ -125,4 +125,5 @@
 - (void)displayTile;
 
 - (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(int)userId;
+- (KSMediaTrack *)mediaTrackOfUserId:(int)ID;
 @end

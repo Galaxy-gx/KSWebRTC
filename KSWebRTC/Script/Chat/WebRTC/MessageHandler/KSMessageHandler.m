@@ -11,8 +11,8 @@
 #import "NSDictionary+Category.h"
 #import "NSString+Category.h"
 typedef NS_ENUM(NSInteger, KSRelayType) {
-    KSRelayTypeAll,
-    KSRelayTypeAssigner,
+    KSRelayTypeAll = 1,
+    KSRelayTypeAssigner = 2,
 };
 
 static NSString *const KMsgTypeIceCandidate       = @"IceCandidate";
@@ -48,15 +48,15 @@ static int const KSRandomLength = 12;
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
         self.roomMumber      = @1234;
-        self.userId          = [self randomNumber];
+        self.userId          = [NSNumber numberWithInt:[KSUserInfo myID]];
     }
     return self;
 }
 
-- (NSNumber *)randomNumber {
-    int random = (arc4random() % 10000) + 10000;
-    return [NSNumber numberWithInt:random];
-}
+//- (NSNumber *)randomNumber {
+//    int random = (arc4random() % 10000) + 10000;
+//    return [NSNumber numberWithInt:random];
+//}
 
 - (KSMediaConnection *)myPeerConnection {
     KSMediaConnection *mc = [KSWebRTCManager shared].localMediaTrack.peerConnection;
@@ -73,7 +73,7 @@ static int const KSRandomLength = 12;
     _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
     NSLog(@"|============|\nReceived: %@\n|============|",dict);
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        KSMediaConnection *mc           = [self myPeerConnection];
+        KSMediaConnection *mc           = [[KSWebRTCManager shared] mediaTrackOfUserId:[dict[@"user_id"] intValue]].peerConnection;//[self myPeerConnection];
         NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
         NSDictionary *candidate         = dict[@"candidate"];
         candidates[@"sdp"]              = candidate[@"candidate"];//兼容作用
@@ -84,7 +84,7 @@ static int const KSRandomLength = 12;
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
             KSMediaTrack *mt             = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            KSMediaConnection *mc        = [self myPeerConnection];
+            KSMediaConnection *mc        = mt.peerConnection;//[self myPeerConnection];
             [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
             __weak typeof(self) weakSelf = self;
             [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
@@ -94,31 +94,35 @@ static int const KSRandomLength = 12;
                 jseps[@"sdp"]     = [sdp sdp];
                 jseps[@"user_id"] = @([KSUserInfo myID]);
                 jseps[@"relay"] = @(KSRelayTypeAssigner);
-                jseps[@"target"] = dict[@"payload"][@"user_id"];
+                jseps[@"target"] = dict[@"id"];///dict[@"payload"][@"user_id"];
                 [weakSelf sendPayload:jseps];
             }];
         }
         else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
             KSMediaTrack *mt      = [[KSWebRTCManager shared] remoteMediaTrackWithSdp:dict[@"payload"][@"sdp"] userId:[dict[@"payload"][@"user_id"] intValue]];
-            KSMediaConnection *mc = [self myPeerConnection];
+            KSMediaConnection *mc = mt.peerConnection;//[self myPeerConnection];
             [mc setRemoteDescriptionWithJsep:dict[@"payload"]];
         }
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
+        /*
         [KSWebRTCManager shared].isRemote = YES;
-        KSMediaConnection *mc        = [self myPeerConnection];
-        __weak typeof(self) weakSelf = self;
+        KSMediaConnection *mc             = [self myPeerConnection];
+        __weak typeof(self) weakSelf      = self;
         [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
             NSString *type = [RTCSessionDescription stringForType:sdp.type];
             NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
             jsep[@"type"]      = type;
             jsep[@"sdp"]       = [sdp sdp];
             jsep[@"user_id"]   = @([KSUserInfo myID]);
-            jsep[@"relay"]     = @(KSRelayTypeAll);
+            jsep[@"relay"]     = @(KSRelayTypeAssigner);
+            jsep[@"target"]   = dict[@"id"];///dict[@"payload"][@"user_id"];
             [weakSelf sendPayload:jsep];
         }];
+         */
     }
 }
+
 // 观察者收到远端offer后，发送anwser
 - (void)anwserRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
     KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
@@ -140,7 +144,8 @@ static int const KSRandomLength = 12;
         return;
     }
     NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
-    sendMessage[@"type"] = KMsgTypeSessionStart;
+    sendMessage[@"type"]             = KMsgTypeSessionStart;
+    sendMessage[@"relay"]            = @(KSRelayTypeAll);
     [_socket sendMessage:sendMessage];
 }
 
@@ -424,11 +429,24 @@ static int const KSRandomLength = 12;
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
     _isConnect = YES;
-    [self startFlag];//转发服务器
+    //[self startFlag];//转发服务器
     //[self createSession];//Janus服务器
     if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
         [self.delegate messageHandler:self socketDidOpen:socket];
     }
+    
+    [KSWebRTCManager shared].isRemote = YES;
+    KSMediaConnection *mc             = [self myPeerConnection];
+    __weak typeof(self) weakSelf      = self;
+    [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+        NSString *type = [RTCSessionDescription stringForType:sdp.type];
+        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
+        jsep[@"type"]      = type;
+        jsep[@"sdp"]       = [sdp sdp];
+        jsep[@"user_id"]   = @([KSUserInfo myID]);
+        jsep[@"relay"]     = @(KSRelayTypeAll);
+        [weakSelf sendPayload:jsep];
+    }];
 }
 
 /**
@@ -497,8 +515,15 @@ static int const KSRandomLength = 12;
     if (payload != NULL) {
         sendMessage[@"payload"] = payload;
     }
+    if (payload[@"relay"]) {
+        sendMessage[@"relay"] = payload[@"relay"];
+    }
+    if (payload[@"target"]) {
+        sendMessage[@"target"] = payload[@"target"];
+    }
     [_socket sendMessage:sendMessage];
 }
 
 @end
+
 
