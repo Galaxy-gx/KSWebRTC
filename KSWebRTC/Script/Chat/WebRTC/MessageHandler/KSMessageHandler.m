@@ -65,7 +65,10 @@ static int const KSRandomLength = 12;
     _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
     NSLog(@"|============|\nReceived: %@\n|============|",dict);
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
-        [self.delegate messageHandler:self addIceCandidate:dict[@"payload"]];
+        KSMediaConnection *mc = [self.delegate peerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]]];
+        [mc addIceCandidate:dict[@"payload"]];
+        
+        //[self.delegate messageHandler:self addIceCandidate:dict[@"payload"]];
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
@@ -75,6 +78,7 @@ static int const KSRandomLength = 12;
         else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
             //[self.delegate messageHandler:self didReceiveAnswer:dict[@"payload"]];
             [self onPublisherRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
+            //[self onPublisherRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
         }
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
@@ -84,7 +88,7 @@ static int const KSRandomLength = 12;
 }
 // 观察者收到远端offer后，发送anwser
 - (void)anwserRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak typeof(self) weakSelf = self;
@@ -320,7 +324,7 @@ static int const KSRandomLength = 12;
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -340,7 +344,7 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 
@@ -463,3 +467,4 @@ static int const KSRandomLength = 12;
 }
 
 @end
+
