@@ -54,6 +54,60 @@ static int const KSRandomLength = 12;
     return [NSNumber numberWithInt:random];
 }
 
+- (void)handlerMsg:(id)message {
+    NSError *error;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:message
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:&error];
+    if (!dict) {
+        return;
+    }
+    _myHandleId = [NSNumber numberWithInt:[KSUserInfo myID]];
+    NSLog(@"|============|\nReceived: %@\n|============|",dict);
+    if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {
+        [self.delegate messageHandler:self addIceCandidate:dict[@"payload"]];
+    }
+    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
+        if ([dict[@"payload"][@"type"] isEqualToString:@"offer"]) {
+            //[self.delegate messageHandler:self didReceiveOffer:dict[@"payload"]];
+            [self anwserRemoteJsep:[NSNumber numberWithInt:[dict[@"payload"][@"user_id"] intValue]] dict:dict[@"payload"]];
+        }
+        else if ([dict[@"payload"][@"type"] isEqualToString:@"answer"]) {
+            //[self.delegate messageHandler:self didReceiveAnswer:dict[@"payload"]];
+            [self onPublisherRemoteJsep:[NSNumber numberWithInt:[KSUserInfo myID]] dict:dict[@"payload"]];
+        }
+    }
+    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionStart]) {
+        [KSWebRTCManager shared].isRemote = YES;
+        [[KSWebRTCManager shared] sendOffer];
+    }
+}
+// 观察者收到远端offer后，发送anwser
+- (void)anwserRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    [mc setRemoteDescriptionWithJsep:jsep];
+    
+    __weak typeof(self) weakSelf = self;
+    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+        NSString *type = [RTCSessionDescription stringForType:sdp.type];
+        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
+        jseps[@"type"]      = type;
+        jseps[@"sdp"]       = [sdp sdp];
+        jseps[@"user_id"]   = @([KSUserInfo myID]);
+        [weakSelf sendPayload:jseps];
+    }];
+}
+
+
+- (void)startFlag {
+    if (!_isConnect) {
+        return;
+    }
+    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
+    sendMessage[@"type"] = KMsgTypeSessionStart;
+    [_socket sendMessage:sendMessage];
+}
+
 - (void)messageSuccess:(KSSuccess *)success {
     KSActionType actionType = [_msgs[success.transaction] intValue];
     switch (actionType) {
@@ -331,7 +385,9 @@ static int const KSRandomLength = 12;
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
-    [self createSession];
+    _isConnect = YES;
+    [self startFlag];//转发服务器
+    //[self createSession];//Janus服务器
     if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
         [self.delegate messageHandler:self socketDidOpen:socket];
     }
@@ -349,7 +405,8 @@ static int const KSRandomLength = 12;
  收到消息
  */
 - (void)socket:(KSWebSocket *)socket didReceivedMessage:(id)message {
-    [self analysisMsg:message];
+    //[self analysisMsg:message];
+    [self handlerMsg:message];
 }
 /**
  异常断开,且重连失败
@@ -391,6 +448,18 @@ static int const KSRandomLength = 12;
 
 - (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type {
     
+}
+
+- (void)sendPayload:(NSDictionary *)payload {
+    if (!_isConnect) {
+        return;
+    }
+    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
+    sendMessage[@"type"] = KMsgTypeSessionDescription;
+    if (payload != NULL) {
+        sendMessage[@"payload"] = payload;
+    }
+    [_socket sendMessage:sendMessage];
 }
 
 @end
