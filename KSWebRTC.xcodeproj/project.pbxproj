@@ -426,12 +426,12 @@
 		E66C2ADF250A338D00153CD7 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				E66C2B1D250A338D00153CD7 /* Interface */,
+				E66C2B52250A338D00153CD7 /* WebRTC */,
 				E66C2AE0250A338D00153CD7 /* Custom */,
 				E66C2B1B250A338D00153CD7 /* Frameworks */,
-				E66C2B1D250A338D00153CD7 /* Interface */,
 				E66C2B21250A338D00153CD7 /* Library */,
 				E66C2B4D250A338D00153CD7 /* Module */,
-				E66C2B52250A338D00153CD7 /* WebRTC */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -688,13 +688,13 @@
 		E66C2B52250A338D00153CD7 /* WebRTC */ = {
 			isa = PBXGroup;
 			children = (
+				E66C2B75250A338D00153CD7 /* RTCManager */,
+				E66C2B5C250A338D00153CD7 /* MessageHandler */,
 				E66C2B53250A338D00153CD7 /* CoolTile */,
 				E66C2B56250A338D00153CD7 /* Header */,
-				E66C2B5C250A338D00153CD7 /* MessageHandler */,
 				E66C2B5F250A338D00153CD7 /* Model */,
 				E66C2B68250A338D00153CD7 /* Resources */,
 				E66C2B6B250A338D00153CD7 /* RTC */,
-				E66C2B75250A338D00153CD7 /* RTCManager */,
 				E66C2B7E250A338D00153CD7 /* Super */,
 				E66C2B91250A338D00153CD7 /* View */,
 			);
@@ -781,14 +781,14 @@
 		E66C2B75250A338D00153CD7 /* RTCManager */ = {
 			isa = PBXGroup;
 			children = (
+				E66C2B7C250A338D00153CD7 /* KSWebRTCManager.h */,
+				E66C2B7D250A338D00153CD7 /* KSWebRTCManager.m */,
 				E66C2B76250A338D00153CD7 /* KSAudioPlayer.h */,
 				E66C2B77250A338D00153CD7 /* KSAudioPlayer.m */,
 				E66C2B78250A338D00153CD7 /* KSDeviceSwitch.h */,
 				E66C2B79250A338D00153CD7 /* KSDeviceSwitch.m */,
 				E66C2B7A250A338D00153CD7 /* KSSession.h */,
 				E66C2B7B250A338D00153CD7 /* KSSession.m */,
-				E66C2B7C250A338D00153CD7 /* KSWebRTCManager.h */,
-				E66C2B7D250A338D00153CD7 /* KSWebRTCManager.m */,
 			);
 			path = RTCManager;
 			sourceTree = "<group>";

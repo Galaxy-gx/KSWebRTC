@@ -13,7 +13,6 @@
 @property (nonatomic,assign) int      ID;
 
 + (KSUserInfo *)userWithId:(int)Id;
-+ (NSString *)nameWithId:(int)Id;
 + (KSUserInfo *)myself;
 + (int)myID;
 

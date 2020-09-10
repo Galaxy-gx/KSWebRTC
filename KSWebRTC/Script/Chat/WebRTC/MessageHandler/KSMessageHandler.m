@@ -38,15 +38,21 @@ static int const KSRandomLength = 12;
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.socket          = [[KSWebSocket alloc] init];
-        self.socket.delegate = self;
         self.opaqueId        = [NSString stringWithFormat:@"videoroom-%@", [NSString ks_randomForLength:KSRandomLength]];
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
         self.roomMumber      = @1234;
-        self.userId          = [self randomNumber];
+        self.userId          = [NSNumber numberWithInt:[KSUserInfo myID]];
     }
     return self;
+}
+
+-(KSWebSocket *)socket {
+    if (_socket == nil) {
+        _socket          = [[KSWebSocket alloc] init];
+        _socket.delegate = self;
+    }
+    return _socket;
 }
 
 - (NSNumber *)randomNumber {
@@ -120,11 +126,11 @@ static int const KSRandomLength = 12;
     } else if (event.jsep) {
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
-            [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
+            [self subscriberHandlerRemoteJsep:event.jsep handleId:event.sender];
         }
         else if ([event.jsep[@"type"] isEqualToString:@"answer"]) {
             //WebRTC:08
-            [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
+            [self onPublisherRemoteJsep:event.jsep handleId:_myHandleId];
         }
     }
     else if ([event.plugindata.data.leaving integerValue] > 0) {//用户离开
@@ -187,22 +193,22 @@ static int const KSRandomLength = 12;
 //Send
 // 创建会话
 - (void)createSession {
-    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"janus"]       = @"create";
-    sendMessage[@"transaction"] = transaction;
-    sendMessage[@"user_id"]     = self.userId;
-    _msgs[transaction]          = [NSNumber numberWithInteger:KSActionTypeCreateSession];
-    [_socket sendMessage:sendMessage];
+    NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"janus"]       = @"create";
+    message[@"transaction"] = transaction;
+    message[@"user_id"]     = self.userId;
+    _msgs[transaction]      = [NSNumber numberWithInteger:KSActionTypeCreateSession];
+    [_socket sendMessage:message];
 }
 
 - (void)requestHangup {
     NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"request"]     = @"hangup";
-    sendMessage[@"transaction"] = transaction;
-    sendMessage[@"user_id"]     = self.userId;
-    [_socket sendMessage:sendMessage];
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"request"]     = @"hangup";
+    message[@"transaction"] = transaction;
+    message[@"user_id"]     = self.userId;
+    [_socket sendMessage:message];
 }
 
 // 插件绑定
@@ -220,12 +226,12 @@ static int const KSRandomLength = 12;
 
 // 加入房间
 - (void)joinRoom:(NSNumber *)handleId{
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"request"] = @"join";
-    sendMessage[@"room"]    = _roomMumber;
-    sendMessage[@"ptype"]   = @"publisher";
-    sendMessage[@"display"] = @"Ayumi";
-    [self sendMessage:sendMessage jsep:NULL handleId:handleId actionType:KSActionTypeJoinRoom];
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"request"] = @"join";
+    message[@"room"]    = _roomMumber;
+    message[@"ptype"]   = @"publisher";
+    message[@"display"] = @"Ayumi";
+    [self sendMessage:message jsep:NULL handleId:handleId actionType:KSActionTypeJoinRoom];
 }
 
 /*
@@ -248,7 +254,7 @@ static int const KSRandomLength = 12;
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate localpeerConnectionOfMessageHandler:self handleId:handleId];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -265,7 +271,7 @@ static int const KSRandomLength = 12;
 }
 
 // 观察者收到远端offer后，发送anwser
-- (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+- (void)subscriberHandlerRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId  {
     KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
@@ -285,44 +291,46 @@ static int const KSRandomLength = 12;
 }
 
 // 发布者收到远端媒体信息后的回调 answer
-- (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+- (void)onPublisherRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId {
     KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 
 // 发送候选者
 - (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate {
-    NSString *transaction            = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
-    sendMessage[@"janus"]            = @"trickle";
-    sendMessage[@"transaction"]      = transaction;
-    sendMessage[@"session_id"]       = _sessionId;
-    sendMessage[@"candidate"]        = candidate;
-    sendMessage[@"handle_id"]        = handleId;
-    sendMessage[@"user_id"]          = self.userId;
-    [_socket sendMessage:sendMessage];
+    NSString *transaction        = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *message = [NSMutableDictionary dictionary];
+    message[@"janus"]            = @"trickle";
+    message[@"transaction"]      = transaction;
+    message[@"session_id"]       = _sessionId;
+    message[@"candidate"]        = candidate;
+    message[@"handle_id"]        = handleId;
+    message[@"user_id"]          = self.userId;
+    [_socket sendMessage:message];
 }
 
 // 发送消息通用方法
 - (void)sendMessage:(NSDictionary *)body jsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId actionType:(KSActionType)actionType {
-    NSString *transaction            = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage = [NSMutableDictionary dictionary];
-    sendMessage[@"janus"]            = @"message";
-    sendMessage[@"transaction"]      = transaction;
-    sendMessage[@"session_id"]       = _sessionId;
-    sendMessage[@"body"]             = body;
-    sendMessage[@"handle_id"]        = handleId;
-    sendMessage[@"user_id"]          = self.userId;
+    NSString *transaction        = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *message = [NSMutableDictionary dictionary];
+    message[@"janus"]            = @"message";
+    message[@"transaction"]      = transaction;
+    message[@"session_id"]       = _sessionId;
+    message[@"body"]             = body;
+    message[@"handle_id"]        = handleId;
+    message[@"user_id"]          = self.userId;
     if (jsep != NULL) {
-        sendMessage[@"jsep"] = jsep;
+        message[@"jsep"] = jsep;
     }
     _msgs[transaction] = [NSNumber numberWithInteger:actionType];
-    [_socket sendMessage:sendMessage];
+    [_socket sendMessage:message];
 }
 
 - (void)close {
     [_socket activeClose];
     _socket = nil;
+    [_msgs removeAllObjects];
+    [_subscribers removeAllObjects];
 }
 
 //KSWebSocketDelegate
@@ -373,10 +381,6 @@ static int const KSRandomLength = 12;
 }
 
 #pragma mark - 实际业务
-- (void)callToPeerId:(int)peerId type:(KSCallType)type {
-    
-}
-
 - (void)trickleCandidate:(NSMutableDictionary *)candidate {
     NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
     candidates[@"candidate"]        = candidate[@"sdp"];//兼容作用
@@ -385,12 +389,31 @@ static int const KSRandomLength = 12;
     [self trickleCandidate:_myHandleId candidate:candidates];
 }
 
-- (void)leave {
-    
-}
-
-- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type {
-    
-}
+- (void)sendPayload:(NSDictionary *)payload{}
+- (void)sendOffer{}
+- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type{}
+// 发送候选者
+- (void)sendOfferPayload:(NSDictionary *)payload{}
+- (void)sendAnswerPayload:(NSDictionary *)payload{}
+///ice更新
+- (void)sendCandidate:(NSDictionary *)candidate{}
+///呼叫
+- (void)callToPeerId:(int)peerId type:(KSCallType)type{}
+/// 响铃
+- (void)ringed{}
+///接听
+- (void)answoerOfCallType:(KSCallType)callType{}
+/////开始通话
+- (void)start{}
+///加入聊天
+- (void)joinWithOffer:(NSString *)offer{}
+///离开
+- (void)leave{}
+- (void)didReceivedMessage:(NSDictionary *)message{}
+- (void)sendOffer:(NSDictionary *)offer{}
+- (void)sendAnswer:(NSDictionary *)answer{}
+- (void)handlerRemoteJsep:(NSDictionary *)jsep{}
+//测试
+- (void)startFlag{}
 
 @end

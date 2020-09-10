@@ -37,7 +37,7 @@
 @property (nonatomic, strong) KSConnectionSetting *setting;
 @property (nonatomic, assign) BOOL                isClose;
 @property (nonatomic, assign ) KSMediaState       mediaState;
-
+@property (nonatomic, assign ) NSInteger          handleId;
 - (instancetype)initWithSetting:(KSConnectionSetting *)setting;
 - (void)addVideoTrack;
 - (void)addIceCandidate:(NSDictionary *)candidate;

@@ -19,7 +19,7 @@
 #import "KSCoolTile.h"
 #import "KSAudioPlayer.h"
 
-static int const kLocalRTCSessionId = 10101024;
+static int const kLocalRTCIdentifier = 10101024;
 
 @interface KSRTCConnect : NSObject
 @property (nonatomic,assign) int          ID;
@@ -91,6 +91,7 @@ static int const kLocalRTCSessionId = 10101024;
 #pragma mark - KSMediaConnection
 - (void)createLocalConnection {
     KSMediaConnection *peerConnection = [self createPeerConnection];
+    peerConnection.handleId           = kLocalRTCIdentifier;
     _peerConnection                   = peerConnection;
     
     KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
@@ -100,7 +101,7 @@ static int const kLocalRTCSessionId = 10101024;
     localMediaTrack.dataSource        = self;
     localMediaTrack.isLocal           = YES;
     localMediaTrack.index             = 0;
-    localMediaTrack.sessionId         = kLocalRTCSessionId;//[self randomNumber];
+    localMediaTrack.sessionId         = kLocalRTCIdentifier;//[self randomNumber];
     localMediaTrack.userInfo          = [KSUserInfo myself];
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
@@ -112,17 +113,13 @@ static int const kLocalRTCSessionId = 10101024;
     [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapturer];
     return peerConnection;
 }
-//- (NSNumber *)randomNumber {
-//    int random = (arc4random() % 10000) + 10000;
-//    return [NSNumber numberWithInt:random];
-//}
 
 #pragma mark - KSMessageHandlerDelegate 调试
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]%10000].peerConnection;
 }
 
-- (KSMediaConnection *)localpeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
     self.localMediaTrack.userInfo.ID = [handleId longLongValue]%10000;
     self.localMediaTrack.sessionId   = [handleId longLongValue]%10000;
     return self.localMediaTrack.peerConnection;
@@ -410,24 +407,6 @@ static int const kLocalRTCSessionId = 10101024;
     return nil;
 }
 
-/*
-- (KSMediaTrack *)createMediaTrackWithHandleId:(NSString *)ID {
-    KSMediaTrack *track = [self mediaTrackOfHandleId:[ID longLongValue]];
-    if (track) {
-        return track;
-    }
-    track                = [[KSMediaTrack alloc] init];
-    track.index          = self.mediaTrackCount;
-    track.dataSource     = self;
-    track.mediaState     = KSMediaStateUnmuteAudio;
-    track.handleId       = [ID longLongValue];
-    KSUserInfo *userInfo = [[KSUserInfo alloc] init];
-    track.userInfo       = userInfo;
-    [self.mediaTracks addObject:track];//添加到数组
-    return track;
-}
- */
-
 - (KSMediaTrack *)mediaTrackOfSdp:(NSString *)sdp {
     NSArray *array = [sdp componentsSeparatedByString:@"\n"];
     if (array.count > 1) {
@@ -460,13 +439,15 @@ static int const kLocalRTCSessionId = 10101024;
     if (track) {
         return track;
     }
-    track                = [[KSMediaTrack alloc] init];
-    track.peerConnection = [self createPeerConnection];
-    track.index          = self.mediaTrackCount;
-    track.dataSource     = self;
-    track.mediaState     = KSMediaStateUnmuteAudio;
-    KSUserInfo *userInfo = [KSUserInfo userWithId:ID];
-    track.userInfo       = userInfo;
+    KSMediaConnection *peerConnection = [self createPeerConnection];
+    peerConnection.handleId           = ID;
+    track                             = [[KSMediaTrack alloc] init];
+    track.peerConnection              = peerConnection;
+    track.index                       = self.mediaTrackCount;
+    track.dataSource                  = self;
+    track.mediaState                  = KSMediaStateUnmuteAudio;
+    KSUserInfo *userInfo              = [KSUserInfo userWithId:ID];
+    track.userInfo                    = userInfo;
     [self.mediaTracks addObject:track];//添加到数组
     return track;
 }
@@ -863,10 +844,7 @@ static int const kLocalRTCSessionId = 10101024;
 
 - (void)callCountdown {
     __weak typeof(self) weakSelf = self;
-    int second = 60;
-    if (_isTest) {
-        second = 600;
-    }
+    int second = 600;
     [self.timekeeper countdownOfSecond:second callback:^(BOOL isEnd) {
         //挂断
         [weakSelf closeCall];
