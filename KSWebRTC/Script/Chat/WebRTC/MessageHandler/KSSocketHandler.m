@@ -42,8 +42,7 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"body"][@"type"] isEqualToString:@"offer"]) {//远程
-            KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
-            //[self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
+            KSMediaConnection *mc = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
             [mc setRemoteDescriptionWithJsep:dict[@"body"]];
             __weak typeof(self) weakSelf = self;
             [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
@@ -109,3 +108,4 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
 }
 
 @end
+
