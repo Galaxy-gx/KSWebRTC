@@ -81,9 +81,9 @@ static int const kLocalRTCIdentifier = 10101024;
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     _mediaSetting           = mediaSetting;
     _callType               = mediaSetting.callType;
-    
+
     [self createMediaCapturer];
-    [self createLocalConnection];
+    [self createLocalMediaTrack];
 }
 
 #pragma mark - KSMediaCapturer
@@ -98,13 +98,8 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - KSMediaConnection
-- (void)createLocalConnection {
-    KSMediaConnection *peerConnection = [self createPeerConnection];
-    peerConnection.handleId           = kLocalRTCIdentifier;
-    _peerConnection                   = peerConnection;
-    
+- (void)createLocalMediaTrack {
     KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
-    localMediaTrack.peerConnection    = peerConnection;
     localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
     localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
     localMediaTrack.dataSource        = self;
@@ -127,8 +122,15 @@ static int const kLocalRTCIdentifier = 10101024;
 - (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
 }
+
 - (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
-    return self.peerConnection;
+    if (_peerConnection == nil) {
+        KSMediaConnection *peerConnection = [self createPeerConnection];
+        peerConnection.handleId           = kLocalRTCIdentifier;
+        _peerConnection                   = peerConnection;
+        _localMediaTrack.peerConnection   = peerConnection;
+    }
+    return _peerConnection;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
