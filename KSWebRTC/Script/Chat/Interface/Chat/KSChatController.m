@@ -60,7 +60,7 @@
     [KSWebRTCManager shared].callType  = type;
     
     if (isCaller) {//主叫
-        //[KSWebRTCManager callToPeerId:peerId];
+        [KSWebRTCManager callToPeerId:peerId];
     }
     
     KSChatController *ctrl             = [[KSChatController alloc] init];

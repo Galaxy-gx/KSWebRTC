@@ -860,7 +860,7 @@ static int const kLocalRTCIdentifier = 10101024;
     [KSWebRTCManager shared].session.isCalled = NO;
     [[KSWebRTCManager shared].msgHandler callToPeerId:peerId type:[KSWebRTCManager shared].callType];
     [[KSWebRTCManager shared] callCountdown];
-    [[KSWebRTCManager shared] remoteMediaTrackOfUserId:peerId];//创建对方媒体对象01（有两处）
+    //[[KSWebRTCManager shared] remoteMediaTrackOfUserId:peerId];//创建对方媒体对象01（有两处）
     [[KSWebRTCManager shared].audioPlayer play];//播放响铃01（有两处）
 }
 
