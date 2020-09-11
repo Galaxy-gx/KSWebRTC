@@ -18,6 +18,11 @@
 #import "KSUserInfo.h"
 #import "KSDeviceSwitch.h"
 
+typedef NS_ENUM(NSInteger, KSTestType) {
+    KSTestTypeJanus      = 1,
+    KSTestTypeSignalling = 2,
+};
+
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
 @optional
@@ -60,7 +65,6 @@
 @property (nonatomic, assign          ) KSCallType             callType;
 @property (nonatomic, assign          ) BOOL                   isConnect;
 @property (nonatomic, assign          ) KSCallStateMaintenance callState;
-@property (nonatomic, assign          ) BOOL                   isTest;
 @property (nonatomic, assign          ) BOOL                   isRemote;
 @property (nonatomic, assign          ) int                    startingTime;
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *screenMediaTrack;
@@ -69,6 +73,7 @@
 @property (nonatomic, strong          ) KSSession              *session;
 @property (nonatomic, assign, readonly) int                    peerId;
 @property (nonatomic, assign, readonly) BOOL                   isCalled;
+@property (nonatomic, assign          ) KSTestType             testType;
 + (instancetype)shared;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 

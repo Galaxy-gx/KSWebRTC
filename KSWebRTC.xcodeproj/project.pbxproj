@@ -13,6 +13,7 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
+		E664594B250B2087001A81BF /* KSSocketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E664594A250B2087001A81BF /* KSSocketHandler.m */; };
 		E66C2BE4250A338D00153CD7 /* KSSuperController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */; };
 		E66C2BE5250A338D00153CD7 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE5250A338D00153CD7 /* NSDictionary+Category.m */; };
 		E66C2BE6250A338D00153CD7 /* NSObject+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE7250A338D00153CD7 /* NSObject+Category.m */; };
@@ -144,6 +145,8 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E6645949250B2087001A81BF /* KSSocketHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSSocketHandler.h; sourceTree = "<group>"; };
+		E664594A250B2087001A81BF /* KSSocketHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSSocketHandler.m; sourceTree = "<group>"; };
 		E66C2AE2250A338D00153CD7 /* KSSuperController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KSSuperController+Category.h"; sourceTree = "<group>"; };
 		E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KSSuperController+Category.m"; sourceTree = "<group>"; };
 		E66C2AE4250A338D00153CD7 /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
@@ -727,6 +730,8 @@
 			children = (
 				E66C2B5D250A338D00153CD7 /* KSMessageHandler.h */,
 				E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */,
+				E6645949250B2087001A81BF /* KSSocketHandler.h */,
+				E664594A250B2087001A81BF /* KSSocketHandler.m */,
 			);
 			path = MessageHandler;
 			sourceTree = "<group>";
@@ -1146,6 +1151,7 @@
 				E66C2C35250A338D00153CD7 /* KSCallBarCell.m in Sources */,
 				E66C2C05250A338D00153CD7 /* NSObject+MJClass.m in Sources */,
 				E66C2BF2250A338D00153CD7 /* UIViewController+Category.m in Sources */,
+				E664594B250B2087001A81BF /* KSSocketHandler.m in Sources */,
 				E66C2C46250A338D00153CD7 /* KSWaitingAnswersGroupView.m in Sources */,
 				E66C2C12250A338D00153CD7 /* KSNotification.m in Sources */,
 				E66C2BF9250A338D00153CD7 /* KSWebSocketConfigure.m in Sources */,

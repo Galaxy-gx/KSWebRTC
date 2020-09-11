@@ -11,17 +11,9 @@
 #import "NSDictionary+Category.h"
 #import "NSString+Category.h"
 
-static NSString *const KMsgTypeIceCandidate       = @"IceCandidate";
-static NSString *const KMsgTypeSessionDescription = @"SessionDescription";
-static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
-
-//测试属性
 static int const KSRandomLength = 12;
 
-@interface KSMessageHandler()<KSWebSocketDelegate>
-@property (nonatomic,strong ) KSWebSocket         *socket;
-@property (nonatomic,assign ) BOOL                isConnect;
-
+@interface KSMessageHandler()
 //测试属性
 @property (nonatomic,strong ) NSNumber            *sessionId;
 @property (nonatomic, copy  ) NSString            *opaqueId;
@@ -33,6 +25,7 @@ static int const KSRandomLength = 12;
 @end
 
 @implementation KSMessageHandler
+
 #pragma mark - Janus代码
 - (instancetype)init {
     self = [super init];
@@ -333,18 +326,21 @@ static int const KSRandomLength = 12;
 - (void)socketDidOpen:(KSWebSocket *)socket {
     //WebRTC:01
     [self createSession];
+    /*
     if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
         [self.delegate messageHandler:self socketDidOpen:socket];
     }
+     */
 }
 
 /**
  出现错误/连接失败时调用[如果设置自动重连，则不会调用]
  */
 - (void)socketDidFail:(KSWebSocket *)socket {
+    /*
     if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidFail:)]) {
         [self.delegate messageHandler:self socketDidFail:socket];
-    }
+    }*/
 }
 /**
  收到消息

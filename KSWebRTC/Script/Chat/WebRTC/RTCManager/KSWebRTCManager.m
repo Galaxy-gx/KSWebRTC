@@ -18,7 +18,7 @@
 #import "KSNotification.h"
 #import "KSCoolTile.h"
 #import "KSAudioPlayer.h"
-
+#import "KSSocketHandler.h"
 static int const kLocalRTCIdentifier = 10101024;
 
 @interface KSRTCConnect : NSObject
@@ -46,14 +46,20 @@ static int const kLocalRTCIdentifier = 10101024;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc] init];
-        instance.isTest = YES;//需要删除
+        instance.testType = KSTestTypeSignalling;
         [instance initManager];
     });
     return instance;
 }
 
 - (void)initManager {
-    _msgHandler          = [[KSMessageHandler alloc] init];
+    if (_testType == KSTestTypeSignalling) {
+        _msgHandler          = [[KSSocketHandler alloc] init];
+    }
+    else if (_testType == KSTestTypeJanus) {
+        _msgHandler          = [[KSMessageHandler alloc] init];
+    }
+    
     _msgHandler.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)
@@ -121,7 +127,6 @@ static int const kLocalRTCIdentifier = 10101024;
 - (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
 }
-
 - (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
     return self.peerConnection;
 }
@@ -210,12 +215,7 @@ static int const kLocalRTCIdentifier = 10101024;
         body[@"sdpMid"] = candidate.sdpMid;
         body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
     }
-    if (_isTest) {
-        [_msgHandler trickleCandidate:body];
-    }
-    else{
-        [_msgHandler sendCandidate:body];
-    }
+    [_msgHandler trickleCandidate:body];
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
@@ -552,9 +552,8 @@ static int const kLocalRTCIdentifier = 10101024;
     if (_audioPlayer) {
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
-    if (_isTest) {
-        [_msgHandler close];
-    }
+    
+    [_msgHandler close];
 }
 
 + (void)close {
@@ -904,15 +903,7 @@ static int const kLocalRTCIdentifier = 10101024;
         jsep[@"sdp"]       = [sdp sdp];
         jsep[@"call_type"] = @(weakSelf.callType);
         jsep[@"user_id"]   = @([KSUserInfo myID]);
-        if (weakSelf.isTest) {
-            [weakSelf.msgHandler sendPayload:jsep];
-        }
-        else{
-            //dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.msgHandler joinWithOffer:[jsep toJson]];
-            //});
-            //[weakSelf.msgHandler sendOfferPayload:jsep];
-        }
+        [weakSelf.msgHandler sendPayload:jsep];
     }];
 }
 
@@ -942,12 +933,7 @@ static int const kLocalRTCIdentifier = 10101024;
         jseps[@"sdp"]       = [sdp sdp];
         jseps[@"call_type"] = @(weakSelf.callType);
         jseps[@"user_id"]   = @([KSUserInfo myID]);
-        if (weakSelf.isTest) {
-            [weakSelf.msgHandler sendPayload:jseps];
-        }
-        else{
-            [weakSelf.msgHandler sendAnswerPayload:jseps];
-        }
+        [weakSelf.msgHandler sendPayload:jseps];
     }];
 }
 
@@ -971,10 +957,8 @@ static int const kLocalRTCIdentifier = 10101024;
 
 //5、
 + (void)answoer {
-    if ([KSWebRTCManager shared].isTest) {
-        [[KSWebRTCManager shared].msgHandler startFlag];
-        return;
-    }
+    [[KSWebRTCManager shared].msgHandler startFlag];
+    return;
     
     [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//被叫方按下接听
     [self sendOffer];

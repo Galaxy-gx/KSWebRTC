@@ -178,8 +178,11 @@
         KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:self.myType];
         [KSWebRTCManager initRTCWithMediaSetting:setting];
     }
-    if ([KSWebRTCManager shared].isTest) {
+    if ([KSWebRTCManager shared].testType == KSTestTypeJanus) {
         [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+    }
+    else if ([KSWebRTCManager shared].testType == KSTestTypeSignalling) {
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:6080"];
     }
     
     [self createLocalView];

@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     KSActionTypeStart,
 };
 
-@protocol KSMessageHandlerDelegate <NSObject>
+@protocol KSMessageHandlerDelegate
 @required
 - (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp;
 - (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler;
@@ -45,10 +45,12 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 @end
 
-@interface KSMessageHandler : NSObject
+@interface KSMessageHandler : NSObject<KSWebSocketDelegate>
 
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
-@property (nonatomic, copy) NSString *peerId;
+@property (nonatomic, copy  ) NSString    *peerId;
+@property (nonatomic,strong ) KSWebSocket *socket;
+@property (nonatomic,assign ) BOOL        isConnect;
 
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;
