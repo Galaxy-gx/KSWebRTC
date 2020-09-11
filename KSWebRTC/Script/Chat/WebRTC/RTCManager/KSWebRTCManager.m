@@ -122,9 +122,7 @@ static int const kLocalRTCIdentifier = 10101024;
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
 }
 
-- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    self.localMediaTrack.sessionId   = [handleId longLongValue];
-    self.localMediaTrack.userInfo.ID = [handleId longLongValue];
+- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
     return self.peerConnection;
 }
 

@@ -255,7 +255,7 @@ static int const KSRandomLength = 12;
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self handleId:handleId];
+    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
@@ -293,7 +293,8 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self];
+    //[self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 
