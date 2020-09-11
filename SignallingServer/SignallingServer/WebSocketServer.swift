@@ -16,7 +16,7 @@ final class WebSocketServer {
     //global线程
     private let queue = DispatchQueue.global()
     //端口
-    private let port: NWEndpoint.Port = 8080
+    private let port: NWEndpoint.Port = 6080
     //网络监听者
     private let listener: NWListener
     //用Set来存放连接进来的客户端对象
@@ -72,20 +72,50 @@ final class WebSocketServer {
         }
         //如果收到data数据, 分发给其他client
         if let data = data {
-            let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
+            //let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
             //把这个客户端发过来的数据转发给其他client
-            self.broadcast(data: data, to: otherClients)
+            //self.broadcast(data: data, to: otherClients)
+            
             //打印收到的数据
             if let str = String(data: data, encoding: .utf8) {
                 print("------------------------------------ 接收到 数据信息 ------------------------------------")
                 print(str + "\n")
             }
+            
+            var dict: [String : Any]? = nil
+            do {
+                dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
+            } catch {
+            }
+            
+            guard var _dict   = dict else { return }
+            _dict["id"]       = client.id;//谁发的消息
+            guard let relay   = _dict["relay"] else { return }//转发类型
+            guard let msgdata = self.dictToData(dict: _dict) else { return }//转data
+
+            if relay as! Int == 2 {//指定转发
+                guard let target = _dict["target"] as? String else { return }
+                let targetClient = self.connectedClients.filter { $0.id == target }
+                self.broadcast(data: msgdata, to: targetClient)
+            }
+            else{//全部转发
+                let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
+                //把这个客户端发过来的数据转发给其他client
+                self.broadcast(data: msgdata, to: otherClients)
+            }
         }
+        
         //继续接收消息
         client.connection.receiveMessage { [weak self] (data, context, isComplete, error) in
             self?.didReceiveMessage(from: client, data: data, context: context, error: error)
         }
     }
+    
+    private func dictToData(dict:[String : Any]) -> Data? {
+        let data = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+        return data
+    }
+    
     // MARK:- 发送数据给其他client
     private func broadcast(data: Data, to clients: Set<WebSocketClient>) {
         clients.forEach {

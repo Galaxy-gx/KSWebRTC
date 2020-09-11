@@ -29,20 +29,21 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
 
 - (void)analysisMsg:(id)message {
     NSError *error;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:message
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:&error];
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:message options:NSJSONReadingMutableContainers error:&error];
     if (!dict) {
         return;
     }
-    NSLog(@"|============|\nReceived: %@\n|============|",dict);
+    
+    NSLog(@"|============|\nReceived:\n%@\n|============|",dict);
+    
     if ([dict[@"type"] isEqualToString:KMsgTypeIceCandidate]) {//本地
         KSMediaConnection *mc           = [self.delegate localPeerConnectionOfMessageHandler:self];
         [mc addIceCandidate:dict[@"body"]];
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionDescription]) {
         if ([dict[@"body"][@"type"] isEqualToString:@"offer"]) {//远程
-            KSMediaConnection *mc = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
+            KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
+            //[self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
             [mc setRemoteDescriptionWithJsep:dict[@"body"]];
             __weak typeof(self) weakSelf = self;
             [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
@@ -56,17 +57,19 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
         else if ([dict[@"body"][@"type"] isEqualToString:@"answer"]) {//本地
             KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
             [mc setRemoteDescriptionWithJsep:dict[@"body"]];
-            
-            [self sendMessage:nil type:KMsgTypeSessionAttachReq relay:KSRelayTypeAssigner target:dict[@"id"]];
+            //[self sendMessage:nil type:KMsgTypeSessionAttachReq relay:KSRelayTypeAssigner target:dict[@"id"]];
         }
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionAttachReq]){
-        KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
-        [self sendMessage:[mc jseps] type:KMsgTypeSessionAttachAck relay:KSRelayTypeAssigner target:dict[@"id"]];
+        //KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
+        //[self sendMessage:[mc localDescription] type:KMsgTypeSessionAttachAck relay:KSRelayTypeAssigner target:dict[@"id"]];
     }
     else if ([dict[@"type"] isEqualToString:KMsgTypeSessionAttachAck]){
-        KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
-        [mc setRemoteDescriptionWithJsep:dict[@"body"]];
+        //KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
+        //[mc setLocalDescriptionWithJsep:dict[@"body"]];
+        //[mc setRemoteDescriptionWithJsep:dict[@"body"]];
+        //KSMediaConnection *mc = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
+        //[mc setRemoteDescriptionWithJsep:dict[@"body"]];
     }
 }
 
@@ -95,12 +98,12 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
     NSMutableDictionary *msg = [NSMutableDictionary dictionary];
     msg[@"type"]             = type;
     msg[@"relay"]            = @(relay);
+    msg[@"user_id"]          = @([KSUserInfo myID]);
     if (message) {
         msg[@"body"]         = message;
     }
-    msg[@"user_id"]          = @([KSUserInfo myID]);
     if (target) {
-        msg[@"target"] = target;
+        msg[@"target"]       = target;
     }
     [self.socket sendMessage:msg];
 }

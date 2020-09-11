@@ -222,7 +222,7 @@ static int const kLocalRTCIdentifier = 10101024;
     RTCSessionDescription *remoteDescription = peerConnection.remoteDescription;
     NSString *remoteSDP                      = remoteDescription.sdp;
     RTCMediaStreamTrack *track               = rtpReceiver.track;
-    NSLog(@"|============| didAddReceiver kind : %@ |============|",track.kind);
+    NSLog(@"|============| didAddReceiver kind : %@, handleId : %lld, myHandleId : %lld |============|",track.kind,mediaConnection.handleId,self.peerConnection.handleId);
     
     if (_callType == KSCallTypeSingleAudio || _callType == KSCallTypeManyAudio) {
         if([track.kind isEqualToString:kRTCMediaStreamTrackKindAudio]) {

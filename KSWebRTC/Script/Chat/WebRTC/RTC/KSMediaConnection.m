@@ -139,7 +139,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
     }];
 }
 
-- (NSMutableDictionary *)jseps {
+- (NSMutableDictionary *)localDescription {
     return [self.peerConnection ks_jseps];
     /*
     RTCSessionDescription *localDescription = self.peerConnection.localDescription;
@@ -156,7 +156,20 @@ static NSString *const KARDStreamId = @"ARDAMS";
      */
 }
 
-/*
+- (NSMutableDictionary *)remoteDescription {
+    RTCSessionDescription *description      = self.peerConnection.remoteDescription;
+    NSString *type                          = [RTCSessionDescription stringForType:description.type];
+    NSString *sdp                           = description.sdp;
+    if (type && sdp) {
+        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
+        jseps[@"type"] = type;
+        jseps[@"sdp"]  = sdp;
+        jseps[@"flag"] = @"flag";
+        return jseps;
+    }
+    return nil;
+}
+
 - (void)setLocalDescriptionWithJsep:(NSDictionary *)jsep {
     RTCSessionDescription *sessionDescription = [RTCSessionDescription ks_descriptionFromJSONDictionary:jsep];
     [self.peerConnection setLocalDescription:sessionDescription
@@ -166,7 +179,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
         }
     }];
 }
-*/
+
 
 /*
  在WebRTC的每一端，当创建好RTCPeerConnection对象，且调用了setLocalDescription方法后，就开始收集ICE候选者了。
@@ -187,24 +200,24 @@ static NSString *const KARDStreamId = @"ARDAMS";
     NSLog(@"|~~~~~~~~~~~~| 创建Answer |~~~~~~~~~~~~|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
-    [_peerConnection answerForConstraints:constraints
-                        completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
-                            if (error) {
-                                //NSLog(@"Failure to create local answer sdp!");
-                                NSLog(@"|============| 错误:创建Answer，生成SDP错误 \n%@ |============|",error);
-                            }
-                            else{
-                                NSLog(@"Success to create local answer sdp!");
-                            }
-                            [weakSelf.peerConnection setLocalDescription:sdp
-                                                       completionHandler:^(NSError *_Nullable error) {
-                                                           if (error) {
-                                                               NSLog(@"|============| 错误:创建Answer，设置本地SDP错误 \n%@ |============|",error);
-                                                           }
-                                                           completionHandler(sdp, error);
-                                                       }];
-                            
-                        }];
+    [_peerConnection answerForConstraints:constraints completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
+        if (error) {
+            NSLog(@"|============| 错误:创建Answer，生成SDP错误 \n%@ |============|",error);
+            return;
+        }
+        else{
+            NSLog(@"Success to create local answer sdp!");
+        }
+        
+        [weakSelf.peerConnection setLocalDescription:sdp completionHandler:^(NSError *_Nullable error) {
+            if (error) {
+                NSLog(@"|============| 错误:创建Answer，设置本地SDP错误 \n%@ |============|",error);
+                return;
+            }
+            completionHandler(sdp, error);
+        }];
+        
+    }];
 }
 
 // 创建offer 进行媒体协商
@@ -212,16 +225,16 @@ static NSString *const KARDStreamId = @"ARDAMS";
     NSLog(@"|============| 创建Offer |============|");
     RTCMediaConstraints *constraints = [self defaultMediaConstraint];
     __weak KSMediaConnection *weakSelf = self;
-    [_peerConnection offerForConstraints:constraints
-                       completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
+    [_peerConnection offerForConstraints:constraints completionHandler:^(RTCSessionDescription *_Nullable sdp, NSError *_Nullable error) {
         if(error){
             NSLog(@"|============| 错误:创建Offer， 生成SDP错误 \n%@ |============|",error);
+            return;
         }
-        [weakSelf.peerConnection setLocalDescription:sdp
-                                   completionHandler:^(NSError *_Nullable error) {
-                                       if (error) {
-                                           NSLog(@"|============| 错误:创建Offer，设置本地SDP错误 \n%@ |============|",error);
-                                       }
+        [weakSelf.peerConnection setLocalDescription:sdp completionHandler:^(NSError *_Nullable error) {
+            if (error) {
+                NSLog(@"|============| 错误:创建Offer，设置本地SDP错误 \n%@ |============|",error);
+                return;
+            }
             completionHandler(sdp, error);
         }];
     }];
@@ -317,7 +330,7 @@ static NSString *const KARDStreamId = @"ARDAMS";
         }
             break;
         case RTCIceConnectionStateDisconnected:
-            jseps = [self jseps];
+            jseps = [self localDescription];
             NSLog(@"|------| RTCIceConnectionStateDisconnected : %d |------|",(int)newState);
             break;
         case RTCIceConnectionStateClosed:

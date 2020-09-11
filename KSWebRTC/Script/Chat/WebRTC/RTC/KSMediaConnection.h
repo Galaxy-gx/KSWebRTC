@@ -47,7 +47,9 @@
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler;
 - (void)setRemoteDescriptionWithJsep:(NSDictionary *)jsep;
-- (NSMutableDictionary *)jseps;
+- (void)setLocalDescriptionWithJsep:(NSDictionary *)jsep;
+- (NSMutableDictionary *)localDescription;
+- (NSMutableDictionary *)remoteDescription;
 - (void)closeConnection;
 
 @end
