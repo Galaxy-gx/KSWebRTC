@@ -70,7 +70,7 @@
 @property (nonatomic, assign, readonly) int                    peerId;
 @property (nonatomic, assign, readonly) BOOL                   isCalled;
 + (instancetype)shared;
-- (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
++ (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
 //MediaCapture
 + (void)switchCamera;
@@ -87,21 +87,20 @@
 
 + (void)clearAllRenderer;
 
-- (void)close;
 + (void)close;
 
 //Socket
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;
 + (void)socketCreateSession;
-- (void)sendOffer;
++ (void)sendOffer;
 + (void)socketSendHangup;
 
 //Track
 + (KSMediaTrack *)mediaTrackOfIndex:(NSInteger)index;
 
 //Message
-- (void)didReceivedMessage:(NSDictionary *)message;
++ (void)didReceivedMessage:(NSDictionary *)message;
 
 //Call
 + (void)callToPeerId:(int)peerId;
@@ -122,5 +121,5 @@
 + (void)switchToVoiceCall;
 
 //显示小窗
-- (void)displayTile;
++ (void)displayTile;
 @end

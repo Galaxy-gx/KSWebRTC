@@ -69,6 +69,9 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - RTC初始化
++ (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
+    [[KSWebRTCManager shared] initRTCWithMediaSetting:mediaSetting];
+}
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     _mediaSetting           = mediaSetting;
     _callType               = mediaSetting.callType;
@@ -173,6 +176,20 @@ static int const kLocalRTCIdentifier = 10101024;
 #pragma mark - KSMediaCapturerDelegate
 - (KSCallType)callTypeOfMediaCapturer:(KSMediaCapturer *)mediaCapturer {
     return _callType;
+}
+
+- (KSScale)scaleOfMediaCapturer:(KSMediaCapturer *)mediaCapturer {
+    switch (_callType) {
+        case KSCallTypeSingleVideo:
+            return KSScaleMake(9, 16);
+            break;
+        case KSCallTypeManyVideo:
+            return KSScaleMake(3, 4);
+            break;
+        default:
+            break;
+    }
+    return KSScaleMake(9, 16);
 }
 
 #pragma mark - KSMediaConnectionDelegate
@@ -396,6 +413,7 @@ static int const kLocalRTCIdentifier = 10101024;
     return [KSWebRTCManager shared].mediaTracks[index];
 }
 
+//创建KSMediaTrack
 - (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(int)userId {
     NSArray *array = [sdp componentsSeparatedByString:@"\n"];
     if (array.count > 1) {
@@ -407,16 +425,17 @@ static int const kLocalRTCIdentifier = 10101024;
     return nil;
 }
 
+//获取KSMediaTrack
 - (KSMediaTrack *)mediaTrackOfSdp:(NSString *)sdp {
     NSArray *array = [sdp componentsSeparatedByString:@"\n"];
     if (array.count > 1) {
         NSString *ID = [KSRegex sdpSessionOfString:array[1]];
-        return [self mediaTrackOfHandleId:[ID longLongValue]];
+        return [self mediaTrackOfSessionId:[ID longLongValue]];
     }
     return nil;
 }
 
-- (KSMediaTrack *)mediaTrackOfHandleId:(long long)ID {
+- (KSMediaTrack *)mediaTrackOfSessionId:(long long)ID {
     for (KSMediaTrack *track in self.mediaTracks) {
         if (track.sessionId == ID) {
             return track;
@@ -425,7 +444,7 @@ static int const kLocalRTCIdentifier = 10101024;
     return nil;
 }
 
-- (KSMediaTrack *)mediaTrackOfUserId:(int)ID {
+- (KSMediaTrack *)mediaTrackOfUserId:(long long)ID {
     for (KSMediaTrack *track in self.mediaTracks) {
         if (track.userInfo.ID == ID) {
             return track;
@@ -434,7 +453,7 @@ static int const kLocalRTCIdentifier = 10101024;
     return nil;
 }
 
-- (KSMediaTrack *)remoteMediaTrackOfUserId:(int)ID  {
+- (KSMediaTrack *)remoteMediaTrackOfUserId:(long long)ID  {
     KSMediaTrack *track = [self mediaTrackOfUserId:ID];
     if (track) {
         return track;
@@ -594,6 +613,10 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - 消息读取
++ (void)didReceivedMessage:(NSDictionary *)message {
+    [[KSWebRTCManager shared] didReceivedMessage:message];
+}
+
 - (void)didReceivedMessage:(NSDictionary *)message {
     NSLog(@"|======Start %@ ======|\n %@ \n|======End======|",[NSThread currentThread],message);
     KSAckMessage *ack = [KSAckMessage ackWithMessage:message];
@@ -1059,7 +1082,9 @@ static int const kLocalRTCIdentifier = 10101024;
         return [self screenMediaTrack];
     }*/
 }
-
++ (void)displayTile {
+    [[KSWebRTCManager shared] displayTile];
+}
 - (void)displayTile {
     KSMediaTrack *mediaTrack = [self displayMediaTrack];
     if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.sessionId == mediaTrack.sessionId)) {

@@ -176,7 +176,7 @@
         //capturerSetting.resolution           = CGSizeMake(540, 960);
   
         KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:self.myType];
-        [[KSWebRTCManager shared] initRTCWithMediaSetting:setting];
+        [KSWebRTCManager initRTCWithMediaSetting:setting];
     }
     if ([KSWebRTCManager shared].isTest) {
         [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
@@ -563,7 +563,7 @@
     [_callView clearRender];
     [_topBarView hiddenKit];
 
-    [[KSWebRTCManager shared] displayTile];
+    [KSWebRTCManager displayTile];
 
     [self closeCtrl];
 }

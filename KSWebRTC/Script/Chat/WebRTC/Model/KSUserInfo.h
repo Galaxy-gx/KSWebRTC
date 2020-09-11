@@ -10,10 +10,10 @@
 @interface KSUserInfo : NSObject
 
 @property (nonatomic,copy  ) NSString *name;
-@property (nonatomic,assign) int      ID;
+@property (nonatomic,assign) long long  ID;
 
-+ (KSUserInfo *)userWithId:(int)Id;
++ (KSUserInfo *)userWithId:(long long)Id;
 + (KSUserInfo *)myself;
-+ (int)myID;
++ (long long)myID;
 
 @end

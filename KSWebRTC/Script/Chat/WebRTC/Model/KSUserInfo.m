@@ -8,25 +8,25 @@
 #import "KSUserInfo.h"
 @implementation KSUserInfo
 
-+ (KSUserInfo *)userWithId:(int)Id {
++ (KSUserInfo *)userWithId:(long long)Id {
     KSUserInfo *userInfo = [[KSUserInfo alloc] init];
     userInfo.ID          = Id;
-    userInfo.name        = [NSString stringWithFormat:@"saeipi_%d",userInfo.ID];
+    userInfo.name        = [NSString stringWithFormat:@"KS_%lld",userInfo.ID];
     return userInfo;
 }
 
 + (KSUserInfo *)myself {
     KSUserInfo *userInfo = [[KSUserInfo alloc] init];
     userInfo.ID          = [self myID];
-    userInfo.name        = [NSString stringWithFormat:@"saeipi_%d",userInfo.ID];
+    userInfo.name        = [NSString stringWithFormat:@"KS_%lld",userInfo.ID];
     return userInfo;
 }
 
-+ (int)myID {
++ (long long)myID {
     return [self randomNumber];
 }
 
-+ (int )randomNumber {
++ (int)randomNumber {
     static int random = 0;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
