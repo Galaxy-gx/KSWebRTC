@@ -273,7 +273,7 @@ static int const KSRandomLength = 12;
 
 // 观察者收到远端offer后，发送anwser
 - (void)subscriberHandlerRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId  {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
     
     __weak KSMessageHandler *weakSelf = self;
@@ -293,7 +293,7 @@ static int const KSRandomLength = 12;
 
 // 发布者收到远端媒体信息后的回调 answer
 - (void)onPublisherRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 

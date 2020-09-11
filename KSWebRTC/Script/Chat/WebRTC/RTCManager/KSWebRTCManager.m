@@ -118,7 +118,7 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
+- (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
     return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
 }
 
