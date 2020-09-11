@@ -321,7 +321,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
         case RTCIceConnectionStateFailed:
         {
             NSLog(@"|------| RTCIceConnectionStateFailed : %d |------|",(int)newState);
-            //jseps = [self jseps];
         }
             break;
         case RTCIceConnectionStateDisconnected:
