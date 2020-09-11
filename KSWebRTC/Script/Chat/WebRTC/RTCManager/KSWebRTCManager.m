@@ -78,6 +78,7 @@ static int const kLocalRTCIdentifier = 10101024;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     [[KSWebRTCManager shared] initRTCWithMediaSetting:mediaSetting];
 }
+
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     _mediaSetting           = mediaSetting;
     _callType               = mediaSetting.callType;
@@ -154,23 +155,15 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveOffer:(NSDictionary *)offer {
-    if (offer) {
-        KSMediaTrack *mediaTrack = [self remoteMediaTrackOfUserId:[offer[@"user_id"] intValue]];
-        [self createAnswerOfJsep:offer];
-    }
+    
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveAnswer:(NSDictionary *)answer {
-    if (answer) {
-        KSMediaTrack *mediaTrack = [self remoteMediaTrackOfUserId:[answer[@"user_id"] intValue]];
-        [self setRemoteOfJsep:answer];
-    }
+    
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate {
-    if (candidate) {
-        [self.peerConnection addIceCandidate:candidate];
-    }
+    
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler requestError:(KSRequestError *)error {
@@ -959,9 +952,6 @@ static int const kLocalRTCIdentifier = 10101024;
 
 //5、
 + (void)answoer {
-    [[KSWebRTCManager shared].msgHandler startFlag];
-    return;
-    
     [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//被叫方按下接听
     [self sendOffer];
     //[[KSWebRTCManager shared].msgHandler answoerOfCallType:[KSWebRTCManager shared].callType];
