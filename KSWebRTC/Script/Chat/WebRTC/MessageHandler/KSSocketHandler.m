@@ -18,6 +18,8 @@ typedef NS_ENUM(NSInteger, KSRelayType) {
 
 static NSString *const KMsgTypeIceCandidate       = @"IceCandidate";
 static NSString *const KMsgTypeSessionDescription = @"SessionDescription";
+static NSString *const KMsgTypeSessionAttachReq   = @"KMsgTypeSessionAttachReq";
+static NSString *const KMsgTypeSessionAttachAck   = @"KMsgTypeSessionAttachAck";
 static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
 
 @interface KSSocketHandler()
@@ -54,7 +56,17 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
         else if ([dict[@"body"][@"type"] isEqualToString:@"answer"]) {//本地
             KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
             [mc setRemoteDescriptionWithJsep:dict[@"body"]];
+            
+            [self sendMessage:nil type:KMsgTypeSessionAttachReq relay:KSRelayTypeAssigner target:dict[@"id"]];
         }
+    }
+    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionAttachReq]){
+        KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
+        [self sendMessage:[mc jseps] type:KMsgTypeSessionAttachAck relay:KSRelayTypeAssigner target:dict[@"id"]];
+    }
+    else if ([dict[@"type"] isEqualToString:KMsgTypeSessionAttachAck]){
+        KSMediaConnection *mc = [self.delegate localPeerConnectionOfMessageHandler:self];
+        [mc setRemoteDescriptionWithJsep:dict[@"body"]];
     }
 }
 
@@ -83,7 +95,9 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
     NSMutableDictionary *msg = [NSMutableDictionary dictionary];
     msg[@"type"]             = type;
     msg[@"relay"]            = @(relay);
-    msg[@"body"]             = message;
+    if (message) {
+        msg[@"body"]         = message;
+    }
     msg[@"user_id"]          = @([KSUserInfo myID]);
     if (target) {
         msg[@"target"] = target;
