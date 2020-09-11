@@ -119,12 +119,12 @@ static int const kLocalRTCIdentifier = 10101024;
 
 #pragma mark - KSMessageHandlerDelegate 调试
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
-    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]%10000].peerConnection;
+    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
 }
 
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    self.localMediaTrack.userInfo.ID = [handleId longLongValue]%10000;
-    self.localMediaTrack.sessionId   = [handleId longLongValue]%10000;
+- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    self.localMediaTrack.userInfo.ID = [handleId longLongValue];
+    self.localMediaTrack.sessionId   = [handleId longLongValue];
     return self.localMediaTrack.peerConnection;
 }
 
@@ -414,7 +414,7 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 //创建KSMediaTrack
-- (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(int)userId {
+- (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(long long)userId {
     NSArray *array = [sdp componentsSeparatedByString:@"\n"];
     if (array.count > 1) {
         NSString *ID        = [KSRegex sdpSessionOfString:array[1]];

@@ -79,8 +79,8 @@ static int const KSRandomLength = 12;
         case KSActionTypeJoinRoom:
             //WebRTC:04
             //发送offer
-            //[self configureRoom:_myHandleId];
-            [self configureRoom:_userId];
+            [self configureRoom:_myHandleId];
+            //[self configureRoom:_userId];
             break;
         case KSActionTypeConfigureRoom:
             
@@ -255,7 +255,7 @@ static int const KSRandomLength = 12;
  */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
+    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self handleId:handleId];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
