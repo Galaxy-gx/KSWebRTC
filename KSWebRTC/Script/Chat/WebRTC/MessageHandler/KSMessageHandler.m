@@ -27,7 +27,6 @@ static int const KSRandomLength = 12;
 @property (nonatomic, copy  ) NSString            *opaqueId;
 @property (nonatomic,strong ) NSNumber            *roomMumber;
 @property (nonatomic,strong ) NSNumber            *myHandleId;
-@property (nonatomic,strong ) NSNumber            *userId;
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
 
@@ -42,7 +41,6 @@ static int const KSRandomLength = 12;
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
         self.roomMumber      = @1234;
-        self.userId          = [NSNumber numberWithLongLong:[KSUserInfo myID]];
     }
     return self;
 }
@@ -80,7 +78,6 @@ static int const KSRandomLength = 12;
             //WebRTC:04
             //发送offer
             [self configureRoom:_myHandleId];
-            //[self configureRoom:_userId];
             break;
         case KSActionTypeConfigureRoom:
             
@@ -118,9 +115,8 @@ static int const KSRandomLength = 12;
             if (event.plugindata.data.private_id) {
                 item.privateId = event.plugindata.data.private_id;
             }
-            NSString *transaction = [NSString ks_randomForLength:KSRandomLength];
+            NSString *transaction         = [NSString ks_randomForLength:KSRandomLength];
             self.subscribers[transaction] = [item copy];
-            
             //WebRTC:05
             [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
         }
@@ -198,7 +194,6 @@ static int const KSRandomLength = 12;
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"janus"]       = @"create";
     message[@"transaction"] = transaction;
-    message[@"user_id"]     = self.userId;
     _msgs[transaction]      = [NSNumber numberWithInteger:KSActionTypeCreateSession];
     [_socket sendMessage:message];
 }
@@ -208,7 +203,6 @@ static int const KSRandomLength = 12;
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"request"]     = @"hangup";
     message[@"transaction"] = transaction;
-    message[@"user_id"]     = self.userId;
     [_socket sendMessage:message];
 }
 
@@ -220,7 +214,6 @@ static int const KSRandomLength = 12;
     message[@"session_id"]  = _sessionId;
     message[@"opaque_id"]   = _opaqueId;
     message[@"plugin"]      = @"janus.plugin.videoroom";
-    message[@"user_id"]     = self.userId;
     _msgs[transaction]      = [NSNumber numberWithInteger:type];
     [_socket sendMessage:message];
 }
@@ -307,7 +300,6 @@ static int const KSRandomLength = 12;
     message[@"session_id"]       = _sessionId;
     message[@"candidate"]        = candidate;
     message[@"handle_id"]        = handleId;
-    message[@"user_id"]          = self.userId;
     [_socket sendMessage:message];
 }
 
@@ -320,7 +312,6 @@ static int const KSRandomLength = 12;
     message[@"session_id"]       = _sessionId;
     message[@"body"]             = body;
     message[@"handle_id"]        = handleId;
-    message[@"user_id"]          = self.userId;
     if (jsep != NULL) {
         message[@"jsep"] = jsep;
     }
