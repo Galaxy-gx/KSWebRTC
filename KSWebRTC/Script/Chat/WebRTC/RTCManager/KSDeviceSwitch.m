@@ -20,4 +20,5 @@
     _cameraEnabled     = YES;
     _speakerEnabled    = YES;
 }
+
 @end

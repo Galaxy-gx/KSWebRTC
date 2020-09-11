@@ -42,7 +42,7 @@ static int const KSRandomLength = 12;
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
         self.roomMumber      = @1234;
-        self.userId          = [NSNumber numberWithInt:[KSUserInfo myID]];
+        self.userId          = [NSNumber numberWithLongLong:[KSUserInfo myID]];
     }
     return self;
 }
@@ -79,7 +79,8 @@ static int const KSRandomLength = 12;
         case KSActionTypeJoinRoom:
             //WebRTC:04
             //发送offer
-            [self configureRoom:_myHandleId];
+            //[self configureRoom:_myHandleId];
+            [self configureRoom:_userId];
             break;
         case KSActionTypeConfigureRoom:
             
