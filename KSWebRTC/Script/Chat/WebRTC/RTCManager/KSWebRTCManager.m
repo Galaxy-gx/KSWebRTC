@@ -78,6 +78,7 @@ static int const kLocalRTCIdentifier = 10101024;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     [[KSWebRTCManager shared] initRTCWithMediaSetting:mediaSetting];
 }
+
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     _mediaSetting           = mediaSetting;
     _callType               = mediaSetting.callType;
@@ -105,14 +106,14 @@ static int const kLocalRTCIdentifier = 10101024;
     localMediaTrack.dataSource        = self;
     localMediaTrack.isLocal           = YES;
     localMediaTrack.index             = 0;
-    localMediaTrack.sessionId         = kLocalRTCIdentifier;//[self randomNumber];
+    localMediaTrack.sessionId         = kLocalRTCIdentifier;
     localMediaTrack.userInfo          = [KSUserInfo myself];
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
 }
 
 - (KSMediaConnection *)createPeerConnection {
-    KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:_mediaSetting.connectionSetting];
+    KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:[_mediaSetting.connectionSetting mutableCopy]];
     peerConnection.delegate           = self;
     [peerConnection createPeerConnectionWithMediaCapturer:_mediaCapturer];
     return peerConnection;
@@ -216,8 +217,8 @@ static int const kLocalRTCIdentifier = 10101024;
         body[@"sdp"] = candidate.sdp;
         body[@"sdpMid"] = candidate.sdpMid;
         body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
+        [_msgHandler trickleCandidate:body];
     }
-    [_msgHandler trickleCandidate:body];
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
@@ -265,8 +266,12 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     switch (newState) {
         case RTCIceConnectionStateDisconnected:
-        //case RTCIceConnectionStateFailed:
+        case RTCIceConnectionStateFailed:
         {
+            if (self.callState != KSCallStateMaintenanceRecording) {
+                return;
+            }
+            
             [self.msgHandler sendMessage:jseps type:@"peerdesc_req"];
             __weak typeof(self) weakSelf = self;
             [self.timekeeper countdownOfSecond:5 callback:^(BOOL isEnd) {
@@ -283,6 +288,7 @@ static int const kLocalRTCIdentifier = 10101024;
         default:
             break;
     }
+    
     if ([self.delegate respondsToSelector:@selector(webRTCManager:mediaConnection:peerConnection:didChangeIceConnectionState:)]) {
         [self.delegate webRTCManager:self mediaConnection:mediaConnection peerConnection:peerConnection didChangeIceConnectionState:newState];
     }
@@ -524,19 +530,18 @@ static int const kLocalRTCIdentifier = 10101024;
 #pragma mark - 关闭
 - (void)close {
     for (KSMediaTrack *mediaTrack in _mediaTracks) {
-        mediaTrack.delegate = nil;
-        mediaTrack.dataSource = nil;
+        mediaTrack.delegate       = nil;
+        mediaTrack.dataSource     = nil;
         [mediaTrack clearRenderer];
+        [mediaTrack.peerConnection closeConnection];
+        mediaTrack.peerConnection = nil;
     }
     [_mediaTracks removeAllObjects];
     
     [self.mediaCapturer closeCapturer];
-
-    [self.peerConnection closeConnection];
+    self.mediaCapturer  = nil;
     self.peerConnection = nil;
-
     _session            = nil;
-
     _startingTime       = 0;
     
     if (_timekeeper) {
