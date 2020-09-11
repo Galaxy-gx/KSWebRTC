@@ -93,7 +93,7 @@ final class WebSocketServer {
             guard let relay   = _dict["relay"] else { return }//转发类型
             guard let msgdata = self.dictToData(dict: _dict) else { return }//转data
 
-            if relay as! Int == 2 {//指定转发
+            if (relay as! Int) == 2 {//指定转发
                 guard let target = _dict["target"] as? String else { return }
                 let targetClient = self.connectedClients.filter { $0.id == target }
                 self.broadcast(data: msgdata, to: targetClient)

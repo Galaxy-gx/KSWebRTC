@@ -47,7 +47,7 @@
 @implementation KSCapturerSetting
 -(instancetype)init {
     if (self = [super init]) {
-        _isSSL          = YES;
+        _isSSL          = NO;
         _isFront        = YES;
         _isOpenSpeaker  = YES;
         _isMuteAudio    = NO;

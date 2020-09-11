@@ -31,7 +31,7 @@ static int const kLocalRTCIdentifier = 10101024;
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
 @property (nonatomic, strong) KSMessageHandler  *msgHandler;
 @property (nonatomic, strong) KSMediaCapturer   *mediaCapturer;
-@property (nonatomic, strong) KSMediaConnection *peerConnection;
+@property (nonatomic, weak  ) KSMediaConnection *peerConnection;
 @property (nonatomic, strong) NSMutableArray    *mediaTracks;
 @property (nonatomic, strong) KSTimekeeper      *timekeeper;
 @property (nonatomic, strong) KSCoolTile        *coolTile;
