@@ -60,7 +60,7 @@
     [KSWebRTCManager shared].callType  = type;
     
     if (isCaller) {//主叫
-        [KSWebRTCManager callToPeerId:peerId];
+        //[KSWebRTCManager callToPeerId:peerId];
     }
     
     KSChatController *ctrl             = [[KSChatController alloc] init];
@@ -136,7 +136,7 @@
             if (self.isCalled) {//被叫
                 [self setAnswerState:KSAnswerStateJoin];
                 if (callState == KSCallStateMaintenanceRinger) {
-                    [KSWebRTCManager ringed];
+                    //[KSWebRTCManager ringed];
                 }
             }
             else{//主叫
@@ -679,11 +679,11 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaState:(KSMediaState)mediaState userInfo:(KSUserInfo *)userInfo {
-    NSLog(@"|============| switchType : %d, userid : %d |============|",(int)mediaState,userInfo.ID);
+    NSLog(@"|============| switchType : %d, userid : %lld |============|",(int)mediaState,userInfo.ID);
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager changeMediaType:(KSChangeMediaType)mediaType userInfo:(KSUserInfo *)userInfo {
-    NSLog(@"|============| mediaType : %d, userid : %d |============|",(int)mediaType,userInfo.ID);
+    NSLog(@"|============| mediaType : %d, userid : %lld |============|",(int)mediaType,userInfo.ID);
     switch (mediaType) {
         case KSChangeMediaTypeVoice://切换到音频
         {

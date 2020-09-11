@@ -107,17 +107,12 @@ static NSString *const KARDStreamId = @"ARDAMS";
 }
 
 - (void)addIceCandidate:(NSDictionary *)candidate {
-    NSLog(@"|~~~~~~~~~~~~|更新ICE:\n%@\n|~~~~~~~~~~~~|",candidate);
     RTCIceCandidate *ice = [RTCIceCandidate candidateFromJSONDictionary:candidate];
     if (ice == nil) {
         return;
     }
+    NSLog(@"|~~~~~~~~~~~~|更新ICE:\n%@\n|~~~~~~~~~~~~|",candidate);
     [self.peerConnection addIceCandidate:ice];
-    /*
-    if (candidate[@"sdp"] && candidate[@"sdpMLineIndex"] && candidate[@"sdpMid"]) {
-        RTCIceCandidate *ice = [[RTCIceCandidate alloc] initWithSdp:candidate[@"sdp"] sdpMLineIndex:[candidate[@"sdpMLineIndex"] intValue] sdpMid:candidate[@"sdpMid"]];
-        [self.peerConnection addIceCandidate:ice];
-    }*/
 }
 
 - (void)removeIceCandidates:(NSArray<RTCIceCandidate *> *)candidates {
