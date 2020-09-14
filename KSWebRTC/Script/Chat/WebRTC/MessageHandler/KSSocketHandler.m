@@ -44,6 +44,7 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
         if ([dict[@"body"][@"type"] isEqualToString:@"offer"]) {//远程
             KSMediaConnection *mc = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:[NSNumber numberWithInt:[dict[@"user_id"] intValue]] sdp:dict[@"body"][@"sdp"]];
             [mc setRemoteDescriptionWithJsep:dict[@"body"]];
+            
             __weak typeof(self) weakSelf = self;
             [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
                 NSString *type = [RTCSessionDescription stringForType:sdp.type];
@@ -76,6 +77,20 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
     [self sendMessage:candidate type:KMsgTypeIceCandidate relay:KSRelayTypeAll target:nil];
 }
 
+-(void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type relay:(KSRelayType)relay target:(NSString *)target {
+    NSMutableDictionary *msg = [NSMutableDictionary dictionary];
+    msg[@"type"]             = type;
+    msg[@"relay"]            = @(relay);
+    msg[@"user_id"]          = @([KSUserInfo myID]);
+    if (message) {
+        msg[@"body"]         = message;
+    }
+    if (target) {
+        msg[@"target"]       = target;
+    }
+    [self.socket sendMessage:msg];
+}
+
 //KSWebSocketDelegate
 /**
  连接成功
@@ -91,20 +106,6 @@ static NSString *const KMsgTypeSessionStart       = @"KMsgTypeSessionStart";
         jsep[@"sdp"]       = [sdp sdp];
         [weakSelf sendMessage:jsep type:KMsgTypeSessionDescription relay:KSRelayTypeAll target:nil];
     }];
-}
-
--(void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type relay:(KSRelayType)relay target:(NSString *)target {
-    NSMutableDictionary *msg = [NSMutableDictionary dictionary];
-    msg[@"type"]             = type;
-    msg[@"relay"]            = @(relay);
-    msg[@"user_id"]          = @([KSUserInfo myID]);
-    if (message) {
-        msg[@"body"]         = message;
-    }
-    if (target) {
-        msg[@"target"]       = target;
-    }
-    [self.socket sendMessage:msg];
 }
 
 @end
