@@ -70,7 +70,8 @@ static int const kLocalRTCIdentifier = 10101024;
 #pragma mark - applicationWillTerminate
 - (void)applicationWillTerminate:(UIApplication *)application {
     if (self.callState != KSCallStateMaintenanceNormal) {
-        [KSWebRTCManager leave];
+       //TODO:关闭app时，非默认状态，则发送离开消息
+        
     }
 }
 
@@ -141,14 +142,12 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket {
-    _isConnect = YES;
     if ([self.delegate respondsToSelector:@selector(webRTCManagerSocketDidOpen:)]) {
         [self.delegate webRTCManagerSocketDidOpen:self];
     }
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket {
-    _isConnect = NO;
     if ([self.delegate respondsToSelector:@selector(webRTCManagerSocketDidFail:)]) {
         [self.delegate webRTCManagerSocketDidFail:self];
     }
@@ -171,6 +170,7 @@ static int const kLocalRTCIdentifier = 10101024;
         [self.delegate webRTCManager:self requestError:error];
     }
 }
+
 #pragma mark - KSMediaCapturerDelegate
 - (KSCallType)callTypeOfMediaCapturer:(KSMediaCapturer *)mediaCapturer {
     return _callType;
@@ -324,7 +324,6 @@ static int const kLocalRTCIdentifier = 10101024;
     [self closeVideo];
     
     [[KSWebRTCManager shared].mediaCapturer muteVideo];
-    //[[KSWebRTCManager shared].mediaCapture stopCapture];
 }
 
 + (void)speakerOff {
@@ -369,8 +368,6 @@ static int const kLocalRTCIdentifier = 10101024;
 
 + (void)switchToSingleAudio {
     [[KSWebRTCManager shared] switchToSingleAudio];
-    
-    //[self switchToVoiceCall];
 }
 
 //在此之前需更新callType
@@ -552,7 +549,7 @@ static int const kLocalRTCIdentifier = 10101024;
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
     
-    [_msgHandler close];
+    //[_msgHandler close];
 }
 
 + (void)close {
@@ -893,17 +890,7 @@ static int const kLocalRTCIdentifier = 10101024;
 
 - (void)sendOffer {
     [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//04:被叫方按下接听
-    KSMediaConnection *mc        = self.peerConnection;
-    __weak typeof(self) weakSelf = self;
-    [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-        NSString *type = [RTCSessionDescription stringForType:sdp.type];
-        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
-        jsep[@"type"]      = type;
-        jsep[@"sdp"]       = [sdp sdp];
-        jsep[@"call_type"] = @(weakSelf.callType);
-        jsep[@"user_id"]   = @([KSUserInfo myID]);
-        [weakSelf.msgHandler sendPayload:jsep];
-    }];
+    [self.msgHandler sendOffer];
 }
 
 //4、
@@ -1092,5 +1079,10 @@ static int const kLocalRTCIdentifier = 10101024;
     [KSChatController callWithType:self.callType callState:self.callState isCaller:NO peerId:self.peerId target:currentCtrl];
 }
 
+#pragma mark - 测试逻辑
+//呼叫
++ (void)call {
+    
+}
 @end
 

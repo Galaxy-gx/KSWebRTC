@@ -9,5 +9,4 @@
 #import "KSMessageHandler.h"
 
 @interface KSSocketHandler : KSMessageHandler
-
 @end

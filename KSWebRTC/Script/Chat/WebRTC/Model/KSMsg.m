@@ -151,3 +151,9 @@
 
 @implementation KSDetached
 @end
+
+@implementation KSCall
+@end
+
+@implementation KSAnswer
+@end

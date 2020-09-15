@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "KSConfigure.h"
+
 typedef NS_ENUM(NSInteger, KSMessageType) {
     KSMessageTypeCreate,//创建一个janus会话命令
     KSMessageTypeSuccess,//一个命令的成功结果
@@ -134,3 +136,16 @@ typedef NS_ENUM(NSInteger, KSMessageType) {
 @interface KSDetached : KSMsg
 @property(nonatomic,strong)NSNumber *sender;
 @end
+
+@interface KSCall : NSObject
+@property (nonatomic,copy  ) NSString   *name;
+@property (nonatomic,assign) long long  ID;
+@property (nonatomic,assign) KSCallType callType;
+@end
+
+@interface KSAnswer : NSObject
+@property (nonatomic,copy  ) NSString   *name;
+@property (nonatomic,assign) long long  ID;
+@property (nonatomic,assign) KSCallType callType;
+@end
+

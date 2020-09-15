@@ -46,6 +46,13 @@ static int const KSRandomLength = 12;
     return _socket;
 }
 
+-(KSUserInfo *)user {
+    if (_user == nil) {
+        _user = [KSUserInfo myself];
+    }
+    return _user;
+}
+
 - (NSNumber *)randomNumber {
     int random = (arc4random() % 10000) + 10000;
     return [NSNumber numberWithInt:random];
@@ -404,5 +411,13 @@ static int const KSRandomLength = 12;
 - (void)handlerRemoteJsep:(NSDictionary *)jsep{}
 //测试
 - (void)startFlag{}
+
+//新的逻辑
+- (void)callToUserid:(long long)userid{}
+- (void)answerToUserid:(long long)userid{}
+
+-(KSCallType)myType {
+    return [self.delegate callTypeOfMessageHandler:self];
+}
 
 @end

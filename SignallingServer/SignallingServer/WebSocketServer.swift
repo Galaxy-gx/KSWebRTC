@@ -70,38 +70,36 @@ final class WebSocketServer {
             self.didDisconnect(client: client)//断开连接
             return
         }
+        
         //如果收到data数据, 分发给其他client
         if let data = data {
-            //let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
-            //把这个客户端发过来的数据转发给其他client
-            //self.broadcast(data: data, to: otherClients)
-            
-            //打印收到的数据
-            if let str = String(data: data, encoding: .utf8) {
-                print("------------------------------------ 接收到 数据信息 ------------------------------------")
-                print(str + "\n")
-            }
-            
-            var dict: [String : Any]? = nil
+            var message: [String : Any]?
             do {
-                dict = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
+                message = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any]
             } catch {
             }
             
-            guard var _dict   = dict else { return }
-            _dict["id"]       = client.id;//谁发的消息
-            guard let relay   = _dict["relay"] else { return }//转发类型
-            guard let msgdata = self.dictToData(dict: _dict) else { return }//转data
-
-            if (relay as! Int) == 2 {//指定转发
-                guard let target = _dict["target"] as? String else { return }
-                let targetClient = self.connectedClients.filter { $0.id == target }
-                self.broadcast(data: msgdata, to: targetClient)
+            guard let _message = message else { return }
+            if (_message["register"] as? String) != nil {
+                //客户端连接成功后进行注册
+                client.user_id = (_message["user_id"] as? Int) ?? 0
             }
-            else{//全部转发
+            
+            var relay: Int = 0;
+            if let _relay  = _message["relay"] as? Int {
+                relay = _relay;
+            }
+            
+            if relay == 2 {//指定转发
+                if let user_id = _message["user_id"] as? Int {
+                    let targets = self.connectedClients.filter { $0.user_id == user_id }
+                    self.broadcast(data: data, to: targets)
+                }
+            }
+            else if relay == 1 {//全部转发
                 let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
                 //把这个客户端发过来的数据转发给其他client
-                self.broadcast(data: msgdata, to: otherClients)
+                self.broadcast(data: data, to: otherClients)
             }
         }
         

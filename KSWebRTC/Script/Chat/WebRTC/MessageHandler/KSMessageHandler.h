@@ -13,6 +13,8 @@
 #import "KSWebSocket.h"
 #import "KSAckMessage.h"
 #import "KSMediaTrack.h"
+#import "KSUserInfo.h"
+#import "KSMsg.h"
 
 @class KSMsg;
 @class KSMessageHandler;
@@ -30,10 +32,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     KSActionTypeStart,
 };
 
-@protocol KSMessageHandlerDelegate
+@protocol KSMessageHandlerDelegate<NSObject>
 @required
 - (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp;
 - (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler;
+- (KSCallType)callTypeOfMessageHandler:(KSMessageHandler *)messageHandler;
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
@@ -43,6 +46,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate;
 - (void)messageHandler:(KSMessageHandler *)messageHandler requestError:(KSRequestError *)error;
 
+- (void)messageHandler:(KSMessageHandler *)messageHandler call:(KSCall *)call;
+- (void)messageHandler:(KSMessageHandler *)messageHandler answer:(KSAnswer *)answer;
 @end
 
 @interface KSMessageHandler : NSObject<KSWebSocketDelegate>
@@ -51,6 +56,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 @property (nonatomic, copy  ) NSString    *peerId;
 @property (nonatomic,strong ) KSWebSocket *socket;
 @property (nonatomic,assign ) BOOL        isConnect;
+@property (nonatomic,strong ) KSUserInfo  *user;
+@property (nonatomic,assign ) KSCallType  myType;
 
 - (void)connectServer:(NSString *)url;
 - (void)analysisMsg:(id)message;
@@ -63,6 +70,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)sendOffer;
 
 - (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
+- (void)callToPeerId:(int)peerId type:(KSCallType)type;
 // 发送候选者
 - (void)sendOfferPayload:(NSDictionary *)payload;
 - (void)sendAnswerPayload:(NSDictionary *)payload;
@@ -71,8 +79,8 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 - (void)close;
 
-///呼叫
-- (void)callToPeerId:(int)peerId type:(KSCallType)type;
+
+
 
 /// 响铃
 - (void)ringed;
@@ -95,4 +103,9 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 //测试
 - (void)startFlag;
+
+//新的逻辑
+- (void)callToUserid:(long long)userid;
+- (void)answerToUserid:(long long)userid;
+
 @end

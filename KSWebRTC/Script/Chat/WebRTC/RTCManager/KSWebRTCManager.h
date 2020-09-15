@@ -63,7 +63,6 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 @property (nonatomic, assign, readonly) int                    mediaTrackCount;
 @property (nonatomic, strong          ) KSMediaSetting         *mediaSetting;
 @property (nonatomic, assign          ) KSCallType             callType;
-@property (nonatomic, assign          ) BOOL                   isConnect;
 @property (nonatomic, assign          ) KSCallStateMaintenance callState;
 @property (nonatomic, assign          ) BOOL                   isRemote;
 @property (nonatomic, assign          ) int                    startingTime;

@@ -87,6 +87,13 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     UIBarButtonItem *addBarItem             = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(onAddClick)];
     UIBarButtonItem *deleteBarItem          = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteClick)];
     self.navigationItem.rightBarButtonItems = @[addBarItem,deleteBarItem];
+    
+    if ([KSWebRTCManager shared].testType == KSTestTypeJanus) {
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+    }
+    else if ([KSWebRTCManager shared].testType == KSTestTypeSignalling) {
+        [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:6080"];
+    }
 }
 
 -(KSCoolHUB *)coolHUB {

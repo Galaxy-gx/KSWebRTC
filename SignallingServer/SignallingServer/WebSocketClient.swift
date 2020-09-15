@@ -15,8 +15,8 @@ final class WebSocketClient: Hashable, Equatable {//继承哈希协议, 才能�
     
     let id: String
     let connection: NWConnection
-    
-    
+    var user_id: Int = 0
+        
     init(connection: NWConnection) {
         self.connection = connection
         //获取随机UUID
