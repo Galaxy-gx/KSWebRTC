@@ -528,7 +528,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
     
-    //[_msgHandler close];
+    [_msgHandler leave];
 }
 
 + (void)close {

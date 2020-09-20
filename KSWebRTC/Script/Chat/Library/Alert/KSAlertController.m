@@ -13,10 +13,10 @@
 -(instancetype)initWithType:(KSAlertType)type title:(NSString *)title message:(NSString *)message cancel:(NSString *)cancel confirml:(NSString *)confirml target:(UIViewController *)target {
     if (self = [super init]) {
         _popType  = type;
-        _title    = title;
-        _message  = message;
-        _cancel   = cancel;
-        _confirml = confirml;
+        _title    = title.localizde;
+        _message  = message.localizde;
+        _cancel   = cancel.localizde;
+        _confirml = confirml.localizde;
         _target   = target;
         
     }
@@ -34,10 +34,10 @@
     if (info == nil || callback == nil) {
         return;
     }
-    NSString *title               = info.title ? info.title.localizde : nil;
-    NSString *message             = info.message ? info.message.localizde : nil;
-    NSString *cancelButtonTitle   = info.cancel ? info.cancel.localizde : nil;
-    NSString *confirmlButtonTitle = info.confirml ? info.confirml.localizde : nil;
+    NSString *title               = info.title ? info.title : nil;
+    NSString *message             = info.message ? info.message : nil;
+    NSString *cancelButtonTitle   = info.cancel ? info.cancel : nil;
+    NSString *confirmlButtonTitle = info.confirml ? info.confirml : nil;
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     

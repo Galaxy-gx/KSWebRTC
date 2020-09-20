@@ -169,12 +169,12 @@ static int const KSRandomLength = 12;
 //Send
 //01 REQ 创建会话
 -(void)createSession {
-    NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
-    sendMessage[@"janus"]       = @"create";
-    sendMessage[@"transaction"] = transaction;
-    _msgs[transaction] = [NSNumber numberWithInteger:KSActionTypeCreateSession];
-    [_socket sendMessage:sendMessage];
+    NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"janus"]       = @"create";
+    message[@"transaction"] = transaction;
+    _msgs[transaction]      = [NSNumber numberWithInteger:KSActionTypeCreateSession];
+    [_socket sendMessage:message];
 }
 
 //02 REQ 插件绑定
@@ -192,11 +192,13 @@ static int const KSRandomLength = 12;
 //03 REQ 创建房间
 - (void)createRoom:(int)room {
     _roomMumber             = room;
+    NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"request"]     = @"create";
     message[@"room"]        = @(_roomMumber);
     message[@"description"] = @"MyRoom";
     message[@"is_private"]  = @(YES);
+    message[@"transaction"] = transaction;
     [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
 }
 
@@ -211,6 +213,12 @@ static int const KSRandomLength = 12;
     [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
 }
 
+- (void)leave {
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"request"] = @"leave";
+    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
+}
+
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
     KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
@@ -219,13 +227,13 @@ static int const KSRandomLength = 12;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"configure";
-        body[@"audio"] = @YES;
-        body[@"video"] = @YES;
-        
-        NSString *type = [RTCSessionDescription stringForType:sdp.type];
+        body[@"audio"]   = @YES;
+        body[@"video"]   = @YES;
+
+        NSString *type   = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
-        jsep[@"type"] = type;
-        jsep[@"sdp"] = [sdp sdp];
+        jsep[@"type"]    = type;
+        jsep[@"sdp"]     = [sdp sdp];
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
     }];
 }

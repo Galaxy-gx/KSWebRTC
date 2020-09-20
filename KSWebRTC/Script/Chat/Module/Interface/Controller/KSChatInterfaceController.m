@@ -24,6 +24,7 @@
 #import "KSTableViewCell.h"
 #import "KSCollectionViewCell.h"
 #import "KSChatController.h"
+#import "KSAlertController.h"
 @interface KSChatMenu : NSObject
 @property(nonatomic,assign)KSCallType callType;
 @property(nonatomic,copy)NSString *title;
@@ -210,7 +211,16 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 - (void)callWithType:(KSCallType)type {
-    [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:YES room:88888 target:self];
+    int room = 88888;
+    KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
+                                                    title:nil
+                                                  message:[NSString stringWithFormat:@"创建或者进入房间:%d",room]
+                                                   cancel:@"创建"
+                                                 confirml:@"进入"
+                                                   target:self];
+    [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
+        [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:actionType == KSAlertTypeCancel room:room target:self];
+    }];
 }
 
 @end
