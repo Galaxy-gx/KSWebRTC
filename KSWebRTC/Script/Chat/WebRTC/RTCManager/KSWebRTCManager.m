@@ -94,7 +94,17 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 #pragma mark - KSMediaConnection
 
 - (void)createLocalMediaTrack {
-    self.localMediaTrack.index = 0;
+    KSMediaConnection *peerConnection = [self createPeerConnection];
+    KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
+    localMediaTrack.peerConnection    = peerConnection;
+    localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
+    localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
+    localMediaTrack.dataSource        = self;
+    localMediaTrack.isLocal           = YES;
+    localMediaTrack.index             = 0;
+    localMediaTrack.userInfo          = [KSUserInfo myself];
+    _localMediaTrack                  = localMediaTrack;
+    [self.mediaTracks insertObject:localMediaTrack atIndex:0];
 }
 
 - (KSMediaConnection *)createPeerConnection {
@@ -525,45 +535,28 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     return _mediaTracks;
 }
 
--(KSMediaTrack *)localMediaTrack {
-    if (_localMediaTrack == nil) {
-        KSMediaConnection *peerConnection = [self createPeerConnection];
-        KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
-        localMediaTrack.peerConnection    = peerConnection;
-        localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
-        localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
-        localMediaTrack.dataSource        = self;
-        localMediaTrack.isLocal           = YES;
-        localMediaTrack.index             = 0;
-        localMediaTrack.userInfo          = [KSUserInfo myself];
-        _localMediaTrack                  = localMediaTrack;
-        [self.mediaTracks insertObject:localMediaTrack atIndex:0];
-    }
-    return _localMediaTrack;
-}
-
--(KSSession *)session {
+- (KSSession *)session {
     if (_session == nil) {
         _session = [[KSSession alloc] init];
     }
     return _session;
 }
 
--(KSTimekeeper *)timekeeper {
+- (KSTimekeeper *)timekeeper {
     if (_timekeeper == nil) {
         _timekeeper = [[KSTimekeeper alloc] init];
     }
     return _timekeeper;
 }
 
--(KSDeviceSwitch *)deviceSwitch {
+- (KSDeviceSwitch *)deviceSwitch {
     if (_deviceSwitch == nil) {
         _deviceSwitch = [[KSDeviceSwitch alloc] init];
     }
     return _deviceSwitch;
 }
 
--(KSCoolTile *)coolTile {
+- (KSCoolTile *)coolTile {
     if (_coolTile == nil) {
         CGFloat tile_width   = 99;
         CGFloat tile_height  = 176;

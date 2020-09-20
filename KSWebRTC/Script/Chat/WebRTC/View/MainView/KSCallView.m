@@ -19,7 +19,7 @@
 
 @interface KSCallView()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,KSCallBarViewDataSource>
 
-@property (nonatomic,weak  ) UIScrollView        *scrollView;
+@property (nonatomic,weak  ) UIView              *mediaView;
 @property (nonatomic,weak  ) KSScreenMediaView   *screenMediaView;//全屏
 @property (nonatomic,weak  ) KSTileMediaView     *tileMediaView;//小窗
 @property (nonatomic,weak  ) KSAnswerBarView     *answerBarView;
@@ -50,7 +50,7 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            [self initScrollView];
+            [self initMediaView ];
             if (_tileLayout.isCalled) {
                 [self initSwitch];
             }
@@ -58,16 +58,17 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
             break;
         case KSCallTypeManyAudio:
         case KSCallTypeManyVideo:
+            [self initCollectionView];
             break;
         default:
             break;
     }
 }
 
-- (void)initScrollView {
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-    _scrollView              = scrollView;
-    [self addSubview:scrollView];
+- (void)initMediaView  {
+    UIView *mediaView = [[UIView alloc] initWithFrame:self.bounds];
+    _mediaView        = mediaView;
+    [self addSubview:mediaView];
 }
 
 - (void)initSwitch {
@@ -85,6 +86,31 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
     _switchButton                = switchButton;
     [switchButton addTarget:self action:@selector(onSwitchClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:switchButton];
+}
+
+- (void)initCollectionView {
+    CGFloat cell_w                         = _tileLayout.layout.width;
+    CGFloat cell_h                         = _tileLayout.layout.height;
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
+    flowLayout.minimumLineSpacing          = KS_Extern_Point10;
+    flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
+    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
+    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
+    
+    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0,
+                                                                                                _tileLayout.topPadding,
+                                                                                                self.frame.size.width,
+                                                                                                self.bounds.size.height - _tileLayout.topPadding)
+                                                                collectionViewLayout:flowLayout];
+    collectionView.backgroundColor         = [UIColor clearColor];
+    
+    collectionView.dataSource              = self;
+    collectionView.delegate                = self;
+    _collectionView                        = collectionView;
+    [collectionView registerClass:[KSTileMediaCell class] forCellWithReuseIdentifier:tileCellIdentifier];
+    
+    [self addSubview:collectionView];
 }
 
 - (void)updateSwitchOfCalltype:(KSCallType)callType {
@@ -135,7 +161,7 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
 }
 
 - (void)localToFront {
-    [self.scrollView bringSubviewToFront:self.screenMediaView];
+    [self.mediaView bringSubviewToFront:self.screenMediaView];
 }
 
 - (void)panSwipeGesture:(UIGestureRecognizer *)gestureRecognizer {
@@ -348,7 +374,7 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
     if (_screenMediaView == nil) {
         KSScreenMediaView *screenMediaView = [[KSScreenMediaView alloc] initWithFrame:self.bounds];
         _screenMediaView                   = screenMediaView;
-        [self.scrollView addSubview:screenMediaView];
+        [self.mediaView addSubview:screenMediaView];
     }
     return _screenMediaView;
 }
@@ -361,36 +387,12 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
                                                     _tileLayout.layout.height);
         KSTileMediaView *tileMediaView = [[KSTileMediaView alloc] initWithFrame:rect];
         _tileMediaView                 = tileMediaView;
-        [self.scrollView addSubview:tileMediaView];
+        [self.mediaView addSubview:tileMediaView];
         tileMediaView.hidden         = YES;
     }
     return _tileMediaView;
 }
 
--(UICollectionView *)collectionView {
-    if (_collectionView == nil) {
-        CGFloat cell_w                         = _tileLayout.layout.width;
-        CGFloat cell_h                         = _tileLayout.layout.height;
-        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
-        flowLayout.minimumLineSpacing          = KS_Extern_Point10;
-        flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
-        flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
-        flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
-        
-        UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _tileLayout.topPadding, self.frame.size.width, self.bounds.size.height - _tileLayout.topPadding)
-                                                                    collectionViewLayout:flowLayout];
-        collectionView.backgroundColor         = [UIColor clearColor];
-        
-        collectionView.dataSource              = self;
-        collectionView.delegate                = self;
-        _collectionView                        = collectionView;
-        [collectionView registerClass:[KSTileMediaCell class] forCellWithReuseIdentifier:tileCellIdentifier];
-
-        [self addSubview:collectionView];
-    }
-    return _collectionView;
-}
 @end
 
 @implementation KSMediaSwitch

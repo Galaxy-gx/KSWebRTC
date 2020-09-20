@@ -62,8 +62,33 @@
 /// @param room 房间号
 /// @param target 跳转控制器
 + (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller room:(int)room target:(UIViewController *)target {
+    //01 更新状态
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
+    
+    //02 创建控制器
+    KSChatController *ctrl             = [[KSChatController alloc] init];
+    ctrl.isSuperBar                    = YES;
+    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
+    
+    //03 配置
+    KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
+    connectionSetting.iceServer            = [[KSIceServer alloc] init];
+    
+    KSAuthorizationCallback authCallback   = ^(KSDeviceType deviceType, AVAuthorizationStatus authStatus) {
+        NSLog(@"|============| deviceType:%d, authStatus:%d |============|",(int)deviceType,(int)authStatus);
+        [ctrl deviceAuthorization:authStatus deviceType:deviceType];
+    };
+    
+    KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
+    capturerSetting.isFront                = YES;
+    capturerSetting.authCallback           = authCallback;
+    //capturerSetting.resolution           = CGSizeMake(540, 960);
+    
+    KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:type];
+    [KSWebRTCManager initRTCWithMediaSetting:setting];
     
     /*
     if (isCaller) {//主叫
@@ -72,13 +97,9 @@
     else{
         [KSWebRTCManager joinRoom:room];
     }*/
+    //04 加入房间
     [KSWebRTCManager joinRoom:room];
     
-    KSChatController *ctrl             = [[KSChatController alloc] init];
-    ctrl.isSuperBar                    = YES;
-    ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
@@ -138,7 +159,7 @@
         case KSCallStateMaintenanceCaller://拨打界面（挂断）
         {
             [self setAnswerState:KSAnswerStateAwait];
-            [self initWebRTC];
+            [self createLocalView];
         }
             break;
         case KSCallStateMaintenanceRinger://被叫界面（挂断/接听）
@@ -154,7 +175,7 @@
                 [self setAnswerState:KSAnswerStateAwait];
             }
             
-            [self initWebRTC];
+            [self createLocalView];
         }
             break;
         case KSCallStateMaintenanceAnswoer:
@@ -169,29 +190,7 @@
     }
 }
 
-#pragma mark - RTC初始化
-- (void)initWebRTC {
-    if ([KSWebRTCManager shared].localMediaTrack == nil) {
-        KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
-        connectionSetting.iceServer            = [[KSIceServer alloc] init];
-        
-        __weak typeof(self) weakSelf = self;
-        KSAuthorizationCallback authCallback   = ^(KSDeviceType deviceType, AVAuthorizationStatus authStatus) {
-            NSLog(@"|============| deviceType:%d, authStatus:%d |============|",(int)deviceType,(int)authStatus);
-            [weakSelf deviceAuthorization:authStatus deviceType:deviceType];
-        };
-        
-        KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
-        capturerSetting.isFront                = YES;
-        capturerSetting.authCallback           = authCallback;
-        //capturerSetting.resolution           = CGSizeMake(540, 960);
-  
-        KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:self.myType];
-        [KSWebRTCManager initRTCWithMediaSetting:setting];
-    }
-    [self createLocalView];
-}
-
+#pragma mark - 授权
 - (void)deviceAuthorization:(AVAuthorizationStatus)authStatus deviceType:(KSDeviceType)deviceType {
     if (authStatus == AVAuthorizationStatusDenied) {
         NSString *message = nil;
@@ -216,6 +215,7 @@
     }
 }
 
+#pragma mark - 更新UI
 - (void)updateProfileInfo:(KSProfileInfo *)profileInfo {
     [self.callView setProfileInfo:profileInfo];
 }
