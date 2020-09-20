@@ -113,11 +113,12 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 #pragma mark - KSMessageHandlerDelegate 调试
+- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    _localMediaTrack.peerConnection.handleId = [handleId longLongValue];
+    return _localMediaTrack.peerConnection;
+}
+
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    if (self.mediaTracks.count == 1) {
-        _localMediaTrack.peerConnection.handleId = [handleId longLongValue];
-        return _localMediaTrack.peerConnection;
-    }
     return [self mediaTrackOfHandleId:[handleId longLongValue]].peerConnection;
 }
 
