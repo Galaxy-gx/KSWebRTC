@@ -44,10 +44,6 @@
     [self kitLogic];
 }
 
--(void)dealloc {
-    [KSWebRTCManager close];
-}
-
 /// 进入通话页面
 /// @param type 通话类型
 /// @param callState 通话状态
