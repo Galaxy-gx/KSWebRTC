@@ -190,6 +190,7 @@ static int const KSRandomLength = 12;
 }
 
 //03 REQ 创建房间
+/*
 - (void)createRoom:(int)room {
     _roomMumber             = room;
     NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
@@ -199,8 +200,9 @@ static int const KSRandomLength = 12;
     message[@"description"] = @"MyRoom";
     message[@"is_private"]  = @(YES);
     message[@"transaction"] = transaction;
-    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
+    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeCreateRoom];
 }
+*/
 
 //03 REQ  加入房间
 - (void)joinRoom:(int)room {
@@ -265,7 +267,7 @@ static int const KSRandomLength = 12;
 }
 
 // 发送候选者
-- (void)sendCandidate:(NSDictionary *)candidate {
+- (void)sendCandidate:(NSMutableDictionary *)candidate {
     NSString *transaction        = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *message = [NSMutableDictionary dictionary];
     message[@"janus"]            = @"trickle";

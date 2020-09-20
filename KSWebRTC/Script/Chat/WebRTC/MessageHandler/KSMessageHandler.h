@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
     KSActionTypeCreateSession,
     KSActionTypePluginBinding,
     KSActionTypePluginBindingSubscriber,
+    KSActionTypeCreateRoom,
     KSActionTypeJoinRoom,
     KSActionTypeConfigureRoom,
     KSActionTypeSubscriber,
@@ -49,11 +50,11 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 
 //创建会话
 - (void)createSession;
-- (void)createRoom:(int)room;
+//- (void)createRoom:(int)room;
 - (void)joinRoom:(int)room;
 - (void)leave;
 - (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
-- (void)sendCandidate:(NSDictionary *)candidate;
+- (void)sendCandidate:(NSMutableDictionary *)candidate;
 - (void)close;
 
 @end

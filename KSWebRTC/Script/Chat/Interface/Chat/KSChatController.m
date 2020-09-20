@@ -65,12 +65,14 @@
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
     
+    /*
     if (isCaller) {//主叫
         [KSWebRTCManager createRoom:room];
     }
     else{
         [KSWebRTCManager joinRoom:room];
-    }
+    }*/
+    [KSWebRTCManager joinRoom:room];
     
     KSChatController *ctrl             = [[KSChatController alloc] init];
     ctrl.isSuperBar                    = YES;

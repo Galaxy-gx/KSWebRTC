@@ -11,13 +11,13 @@ static NSString const *kRTCICECandidateTypeValue     = @"candidate";
 static NSString const *kRTCICECandidateMidKey        = @"sdpMid";
 static NSString const *kRTCICECandidateMLineIndexKey = @"sdpMLineIndex";
 static NSString const *kRTCICECandidateSdpKey        = @"sdp";
-//static NSString const *kRTCICECandidatesTypeKey      = @"candidates";
+static NSString const *kRTCICECandidatesTypeKey      = @"candidates";
 
 @implementation RTCIceCandidate (Category)
 
 + (RTCIceCandidate *)candidateFromJSONDictionary:(NSDictionary *)dictionary {
     NSString *mid = dictionary[kRTCICECandidateMidKey];
-    NSString *sdp = dictionary[kRTCICECandidateSdpKey];
+    NSString *sdp = dictionary[kRTCICECandidatesTypeKey];
     NSNumber *num = dictionary[kRTCICECandidateMLineIndexKey];
     if (mid == nil || sdp == nil || num == nil) {
         return nil;

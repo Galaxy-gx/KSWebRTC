@@ -169,9 +169,9 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     NSMutableDictionary *body =[NSMutableDictionary dictionary];
     if (candidate) {
-        body[@"sdp"] = candidate.sdp;
-        body[@"sdpMid"] = candidate.sdpMid;
-        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
+        body[@"candidate"]     = candidate.sdp;
+        body[@"sdpMid"]        = candidate.sdpMid;
+        body[@"sdpMLineIndex"] = @(candidate.sdpMLineIndex);
         [_msgHandler sendCandidate:body];
     }
 }
@@ -402,7 +402,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 + (void)createRoom:(int)room {
-    [[KSWebRTCManager shared].msgHandler createRoom:room];
+    //[[KSWebRTCManager shared].msgHandler createRoom:room];
 }
 
 #pragma mark - KSMediaTrack管理
