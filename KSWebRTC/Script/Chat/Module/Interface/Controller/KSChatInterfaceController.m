@@ -211,7 +211,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 - (void)callWithType:(KSCallType)type {
-    int room = 88888;
+    int room = 1234;
     KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
                                                     title:nil
                                                   message:[NSString stringWithFormat:@"创建或者进入房间:%d",room]

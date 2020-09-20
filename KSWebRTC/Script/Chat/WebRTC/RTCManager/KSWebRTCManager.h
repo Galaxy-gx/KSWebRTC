@@ -41,7 +41,7 @@
 
 @property (nonatomic, weak)id<KSWebRTCManagerDelegate>         delegate;
 @property (nonatomic, weak, readonly  ) AVCaptureSession       *captureSession;
-@property (nonatomic, weak, readonly  ) KSMediaTrack           *localMediaTrack;
+@property (nonatomic, weak            ) KSMediaTrack           *localMediaTrack;
 @property (nonatomic, assign, readonly) int                    mediaTrackCount;
 @property (nonatomic, strong          ) KSMediaSetting         *mediaSetting;
 @property (nonatomic, assign          ) KSCallType             callType;

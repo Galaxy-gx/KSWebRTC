@@ -28,7 +28,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
 @property (nonatomic, strong) KSMessageHandler   *msgHandler;
 @property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
-@property (nonatomic, weak  ) KSMediaTrack       *myMediaTrack;
 @property (nonatomic, strong) NSMutableArray     *mediaTracks;
 @property (nonatomic, strong) KSTimekeeper       *timekeeper;
 @property (nonatomic, strong) KSCoolTile         *coolTile;
@@ -78,6 +77,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     _callType               = mediaSetting.callType;
     
     [self createMediaCapturer];
+    [self createLocalMediaTrack];
 }
 
 #pragma mark - KSMediaCapturer
@@ -92,7 +92,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 #pragma mark - KSMediaConnection
-/*
+
 - (void)createLocalMediaTrack {
     KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
     localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
@@ -104,7 +104,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
 }
- */
 
 - (KSMediaConnection *)createPeerConnection {
     KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:[_mediaSetting.connectionSetting mutableCopy]];
@@ -115,6 +114,10 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 #pragma mark - KSMessageHandlerDelegate 调试
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    if (self.mediaTracks.count == 1) {
+        _localMediaTrack.peerConnection.handleId = [handleId longLongValue];
+        return _localMediaTrack.peerConnection;
+    }
     return [self mediaTrackOfHandleId:[handleId longLongValue]].peerConnection;
 }
 
@@ -248,18 +251,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     return self.session.isCalled;
 }
 
--(KSMediaTrack *)localMediaTrack {
-    if (_myMediaTrack) {
-        return _myMediaTrack;
-    }
-    for (KSMediaTrack *mediaTrack in self.mediaTracks) {
-        if (mediaTrack.isLocal) {
-            _myMediaTrack = mediaTrack;
-            return mediaTrack;
-        }
-    }
-    return nil;
-}
 #pragma mark - 设备操作
 //MediaCapture
 + (void)switchCamera {
@@ -504,12 +495,12 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     [_mediaTracks removeAllObjects];
     
     [_mediaCapturer closeCapturer];
-    _mediaCapturer = nil;
+    _mediaCapturer   = nil;
 
-    _myMediaTrack  = nil;
+    _localMediaTrack = nil;
 
-    _session       = nil;
-    _startingTime  = 0;
+    _session         = nil;
+    _startingTime    = 0;
 
     
     if (_timekeeper) {
