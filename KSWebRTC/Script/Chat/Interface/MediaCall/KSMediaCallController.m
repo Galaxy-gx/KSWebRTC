@@ -33,7 +33,7 @@
 @property (nonatomic, strong) KSProfileInfo *profileInfo;
 
 @property (nonatomic, assign, readonly) KSCallType myType;
-@property (nonatomic, assign, readonly ) int       peerId;//对方ID
+@property (nonatomic, assign, readonly ) long long peerId;//对方ID
 @property (nonatomic, assign, readonly ) BOOL      isCalled;//是否是被叫
 @end
 
@@ -41,6 +41,10 @@
 
 -(void)dealloc {
     [KSRTCManager close];
+}
+
+- (void)closeCtrl {
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 + (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller peerId:(long long)peerId target:(UIViewController *)target {
@@ -94,7 +98,7 @@
         NSLog(@"|------| eventType: %d |------|",(int)eventType);
         [weakSelf triggerEvent:eventType info:info];
     };
-
+    
     KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:_tileLayout deviceSwitch:[KSRTCManager shared].deviceSwitch];
     callView.dataSource             = self;
     [callView initKits];//设置数据源后调用
@@ -102,12 +106,11 @@
     [callView setEventCallback:callback];
     [self.view addSubview:callView];
     
-    //if (self.myType == KSCallTypeSingleVideo) {//测试
-        UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
-        arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
-        [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
-        self.superBar.backBarButtonItem = arrowBtn;
-    //}
+    UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
+    arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
+    //[arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
+    self.superBar.backBarButtonItem = arrowBtn;
+    
     [self.superBar toFront];
 }
 
@@ -290,6 +293,91 @@
     [self.callView setProfileInfo:profileInfo];
 }
 
+#pragma mark - KSCallViewDataSource
+- (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {
+    return [KSRTCManager shared].mediaTrackCount;
+}
+
+- (KSMediaTrack *)callView:(KSCallView *)callView itemAtIndexPath:(NSIndexPath *)indexPath {
+    return [KSRTCManager mediaTrackOfIndex:indexPath.item];
+}
+
+- (KSCallType)callTypeOfCallView:(KSCallView *)callView {
+    return self.myType;
+}
+
+//懒加载
+-(KSTopBarView *)topBarView {
+    if (_topBarView == nil) {
+        KSTopBarView *topBarView = [[KSTopBarView alloc] initWithFrame:self.superBar.bounds];
+        topBarView.dataSource    = self;
+        topBarView.delegate      = self;
+        [self.superBar addSubview:topBarView];
+        _topBarView              = topBarView;
+        //[topBarView.identifierBtn addTarget:self action:@selector(onIdentifierClick) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _topBarView;
+}
+
+#pragma mark - Get
+-(KSCallType)myType {
+    return [KSRTCManager shared].callType;
+}
+
+-(long long)peerId {
+    return [KSRTCManager shared].peerId;
+}
+-(void)setPeerId:(int)inId {
+}
+
+-(BOOL)isCalled {
+    return [KSRTCManager shared].isCalled;
+}
+-(void)setIsCalled:(BOOL)isInCalled {
+}
+
+#pragma mark - KSTopBarViewDataSource
+- (NSMutableArray *)menuDatasOfTopBarView:(KSTopBarView *)topBarView {
+    if (self.myType == KSCallTypeSingleAudio) {
+        return [KSBtnInfo topAudioBarBtns];
+    }
+    if (self.myType == KSCallTypeSingleVideo) {
+        return [KSBtnInfo topVideoBarBtns];
+    }
+    return [NSMutableArray array];
+}
+
+- (NSString *)sessionIDOfTopBarView:(KSTopBarView *)topBarView {
+    return [[KSRTCManager shared].session.room uppercaseString];
+}
+
+#pragma mark - KSTopBarViewDelegate
+- (void)topBarView:(KSTopBarView *)topBarView btnInfo:(KSBtnInfo *)btnInfo {
+    switch (btnInfo.btnType) {
+        case KSCallBarBtnTypeSwitchCamera:
+            [KSRTCManager switchCamera];
+            break;
+        case KSCallBarBtnTypeAddMember:
+            [self showMessage:@"ks_app_global_text_look_forward_to"];
+            break;
+        case KSCallBarBtnTypeZoomOut:
+            [self tileWindow];
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - 小窗
+- (void)tileWindow {
+    [_callView clearRender];
+    [_topBarView hiddenKit];
+
+    [KSRTCManager displayTile];
+
+    [self closeCtrl];
+}
+
 #pragma mark - KSRTCManagerDelegate
 - (void)rtcManager:(KSRTCManager *)rtcManager didAddMediaTrack:(KSMediaTrack *)mediaTrack {
     switch (self.myType) {
@@ -314,6 +402,15 @@
         default:
             break;
     }
+}
+
+- (void)rtcManager:(KSRTCManager *)rtcManager answer:(KSAnswer *)answer {
+    
+}
+
+#pragma mark - Message
+- (void)showMessage:(NSString *)message {
+    [SVProgressHUD showSuccessWithStatus:message.localizde];
 }
 
 @end

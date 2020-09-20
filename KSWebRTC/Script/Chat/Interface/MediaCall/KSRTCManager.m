@@ -11,7 +11,6 @@
 #import "NSDictionary+Category.h"
 #import "NSString+Category.h"
 #import "UIViewController+Category.h"
-#import "KSChatController.h"
 #import "KSUserInfo.h"
 #import "KSRegex.h"
 #import "KSTimekeeper.h"
@@ -19,6 +18,7 @@
 #import "KSCoolTile.h"
 #import "KSAudioPlayer.h"
 #import "KSSocketHandler.h"
+#import "KSMediaCallController.h"
 static int const kLocalRTCIdentifier = 10101024;
 
 @interface KSRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
@@ -29,7 +29,6 @@ static int const kLocalRTCIdentifier = 10101024;
 @property (nonatomic, strong) KSTimekeeper      *timekeeper;
 @property (nonatomic, strong) KSCoolTile        *coolTile;
 @property (nonatomic, strong) KSAudioPlayer     *audioPlayer;
-
 @end
 
 @implementation KSRTCManager
@@ -106,36 +105,6 @@ static int const kLocalRTCIdentifier = 10101024;
     return peerConnection;
 }
 
-#pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
-    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
-}
-
-- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
-    if (_peerConnection == nil) {
-        KSMediaConnection *peerConnection = [self createPeerConnection];
-        peerConnection.handleId           = kLocalRTCIdentifier;
-        _peerConnection                   = peerConnection;
-        _localMediaTrack.peerConnection   = peerConnection;
-    }
-    return _peerConnection;
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler call:(KSCall *)call {
-    [self.audioPlayer play];//播放响铃02（有两处）
-    [KSRTCManager shared].callState = KSCallStateMaintenanceRinger;//02:被叫方收到Call准备响铃
-    self.callType                      = call.callType;
-    //记录
-    self.session.peerId                = call.ID;//对方ID更新02（有两处）
-    self.session.isCalled              = YES;//设置为被叫
-
-    [self enterChat];
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler answer:(KSAnswer *)answer {
-    
-}
-
 #pragma mark - KSMediaCapturerDelegate
 - (KSCallType)callTypeOfMediaCapturer:(KSMediaCapturer *)mediaCapturer {
     return _callType;
@@ -171,9 +140,9 @@ static int const kLocalRTCIdentifier = 10101024;
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didGenerateIceCandidate:(RTCIceCandidate *)candidate {
     NSMutableDictionary *body =[NSMutableDictionary dictionary];
     if (candidate) {
-        body[@"sdp"] = candidate.sdp;
-        body[@"sdpMid"] = candidate.sdpMid;
-        body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
+        body[@"sdp"]           = candidate.sdp;
+        body[@"sdpMid"]        = candidate.sdpMid;
+        body[@"sdpMLineIndex"] = @(candidate.sdpMLineIndex);
         [_msgHandler trickleCandidate:body];
     }
 }
@@ -230,7 +199,7 @@ static int const kLocalRTCIdentifier = 10101024;
             }
             
             [self.msgHandler sendMessage:jseps type:@"peerdesc_req"];
-            __weak typeof(self) weakSelf = self;
+            //__weak typeof(self) weakSelf = self;
             [self.timekeeper countdownOfSecond:5 callback:^(BOOL isEnd) {
                 //未及时收到响应
             }];
@@ -388,17 +357,12 @@ static int const kLocalRTCIdentifier = 10101024;
         return [self tileMediaTrack];
     }
     return [self screenMediaTrack];
-    /*
-    if (self.callState == KSCallStateMaintenanceRecording) {
-        return [self screenMediaTrack];
-    }
-    else{
-        return [self screenMediaTrack];
-    }*/
 }
+
 + (void)displayTile {
     [[KSRTCManager shared] displayTile];
 }
+
 - (void)displayTile {
     KSMediaTrack *mediaTrack = [self displayMediaTrack];
     if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.sessionId == mediaTrack.sessionId)) {
@@ -425,7 +389,53 @@ static int const kLocalRTCIdentifier = 10101024;
 #pragma mark - 进入通话页面
 - (void)enterChat {
     UIViewController *currentCtrl = [UIViewController currentViewController];
-    [KSChatController callWithType:self.callType callState:self.callState isCaller:NO peerId:self.peerId target:currentCtrl];
+    [KSMediaCallController callWithType:self.callType callState:self.callState isCaller:NO peerId:self.peerId target:currentCtrl];
+}
+
+#pragma mark - Scoekt
++ (void)callToUserid:(long long)userid {
+    [[KSRTCManager shared].msgHandler callToUserid:userid];
+    
+    [KSRTCManager shared].callState        = KSCallStateMaintenanceCaller;//01:主叫方发起Call
+    [KSRTCManager shared].session.peerId   = userid;//对方ID更新01（有两处）
+    [KSRTCManager shared].session.isCalled = NO;
+    [[KSRTCManager shared].audioPlayer play];//播放响铃01（有两处）
+}
+
++ (void)answerToUserid:(long long)userid {
+    [[KSRTCManager shared].msgHandler answerToUserid:userid];
+}
+
+#pragma mark - KSMessageHandlerDelegate 调试
+- (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
+    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
+}
+
+- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
+    if (_peerConnection == nil) {
+        KSMediaConnection *peerConnection = [self createPeerConnection];
+        peerConnection.handleId           = kLocalRTCIdentifier;
+        _peerConnection                   = peerConnection;
+        _localMediaTrack.peerConnection   = peerConnection;
+    }
+    return _peerConnection;
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler call:(KSCall *)call {
+    [self.audioPlayer play];//播放响铃02（有两处）
+    [KSRTCManager shared].callState = KSCallStateMaintenanceRinger;//02:被叫方收到Call准备响铃
+    self.callType                   = call.callType;
+    //记录
+    self.session.peerId             = call.ID;//对方ID更新02（有两处）
+    self.session.isCalled           = YES;//设置为被叫
+
+    [self enterChat];
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler answer:(KSAnswer *)answer {
+    if ([self.delegate respondsToSelector:@selector(rtcManager:answer:)]) {
+        [self.delegate rtcManager:self answer:answer];
+    }
 }
 
 @end

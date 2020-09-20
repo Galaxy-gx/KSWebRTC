@@ -21,7 +21,8 @@
 
 @protocol KSRTCManagerDelegate <NSObject>
 - (void)rtcManager:(KSRTCManager *)rtcManager didAddMediaTrack:(KSMediaTrack *)mediaTrack;
-
+- (void)rtcManager:(KSRTCManager *)rtcManager call:(KSCall *)call;
+- (void)rtcManager:(KSRTCManager *)rtcManager answer:(KSAnswer *)answer;
 @end
 
 @interface KSRTCManager : NSObject
@@ -44,6 +45,11 @@
 + (instancetype)shared;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 + (void)close;
+
++ (void)switchCamera;
+//显示小窗
++ (void)displayTile;
+
 //Scoekt
 + (void)callToUserid:(long long)userid;
 + (void)answerToUserid:(long long)userid;
