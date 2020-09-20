@@ -109,9 +109,6 @@ static int const KSRandomLength = 12;
             [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
         }
     }
-    else if ([event.plugindata.data.leaving integerValue] > 0) {//用户离开
-        
-    }
 }
 
 - (void)messageDetached:(KSDetached *)detached {
@@ -186,21 +183,6 @@ static int const KSRandomLength = 12;
     _msgs[transaction]      = [NSNumber numberWithInteger:type];
     [_socket sendMessage:message];
 }
-
-//03 REQ 创建房间
-/*
-- (void)createRoom:(int)room {
-    _roomMumber             = room;
-    NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *message =[NSMutableDictionary dictionary];
-    message[@"request"]     = @"create";
-    message[@"room"]        = @(_roomMumber);
-    message[@"description"] = @"MyRoom";
-    message[@"is_private"]  = @(YES);
-    message[@"transaction"] = transaction;
-    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeCreateRoom];
-}
-*/
 
 //03 REQ  加入房间
 - (void)joinRoom:(int)room {

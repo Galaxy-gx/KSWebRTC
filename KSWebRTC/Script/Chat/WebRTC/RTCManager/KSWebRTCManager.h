@@ -83,13 +83,9 @@
 //Socket
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;
-+ (void)socketCreateSession;
-+ (void)sendOffer;
-+ (void)socketSendHangup;
-
++ (void)requestLeave;
 //业务消息
 + (void)joinRoom:(int)room;
-+ (void)createRoom:(int)room;
 
 //显示小窗
 + (void)displayTile;

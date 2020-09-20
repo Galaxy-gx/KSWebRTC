@@ -7,22 +7,15 @@
 
 #import "KSChatController.h"
 #import <WebRTC/RTCAudioSession.h>
+#import "KSWebRTCManager.h"
 #import "KSMsg.h"
 #import "UIButton+Category.h"
 #import "KSCallView.h"
-#import "KSProfileView.h"
 #import "KSTopBarView.h"
 #import "KSCallState.h"
-#import "KSWebRTCManager.h"
-#import "KSCallBarView.h"
-#import "UIFont+Category.h"
 #import "KSSuperController+Category.h"
-#import "KSMessageHandler.h"
-#import "UILabel+Category.h"
 #import "SVProgressHUD.h"
 #import "NSString+Category.h"
-#import "KSBtnInfo.h"
-#import "KSCoolTile.h"
 #import "KSAlertController.h"
 
 @interface KSChatController()<KSWebRTCManagerDelegate,KSCallViewDataSource,KSTopBarViewDataSource,KSTopBarViewDelegate>
@@ -73,7 +66,7 @@
     UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     
-    //03 配置
+    //03 配置信息
     KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
     connectionSetting.iceServer            = [[KSIceServer alloc] init];
     
@@ -99,7 +92,7 @@
     }*/
     //04 加入房间
     [KSWebRTCManager joinRoom:room];
-    
+    //05 进入通话页面
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
@@ -126,7 +119,7 @@
         NSLog(@"|------| eventType: %d |------|",(int)eventType);
         [weakSelf triggerEvent:eventType info:info];
     };
-
+    
     KSCallView *callView            = [[KSCallView alloc] initWithFrame:self.view.bounds tileLayout:_tileLayout deviceSwitch:[KSWebRTCManager shared].deviceSwitch];
     callView.dataSource             = self;
     [callView initKits];//设置数据源后调用
@@ -134,12 +127,11 @@
     [callView setEventCallback:callback];
     [self.view addSubview:callView];
     
-    //if (self.myType == KSCallTypeSingleVideo) {//测试
-        UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
-        arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
-        [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
-        self.superBar.backBarButtonItem = arrowBtn;
-    //}
+    UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
+    arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
+    [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
+    self.superBar.backBarButtonItem = arrowBtn;
+    
     [self.superBar toFront];
 }
 
@@ -168,13 +160,12 @@
             if (self.isCalled) {//被叫
                 [self setAnswerState:KSAnswerStateJoin];
                 if (callState == KSCallStateMaintenanceRinger) {
-                    //[KSWebRTCManager ringed];
+                    //响铃
                 }
             }
             else{//主叫
                 [self setAnswerState:KSAnswerStateAwait];
             }
-            
             [self createLocalView];
         }
             break;
@@ -234,10 +225,7 @@
         case KSCallTypeSingleAudio:
         case KSCallTypeSingleVideo:
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //[self.callView setScreenMediaTrack:[KSWebRTCManager shared].localMediaTrack];
-                [self.callView setScreenMediaTrack:[KSWebRTCManager shared].screenMediaTrack];
-            });
+            [self.callView setScreenMediaTrack:[KSWebRTCManager shared].screenMediaTrack];
         }
             break;
         case KSCallTypeManyAudio:
@@ -273,7 +261,6 @@
         case KSCallTypeManyVideo:
         {
             [self.callView reloadCollectionView];
-            
             /*
             KSWebRTCManager *manager = [KSWebRTCManager shared];
             for (KSMediaConnection *mediaConnection in manager.mediaConnections) {
@@ -364,6 +351,8 @@
 - (void)onSwitchCameraClick {
     //[KSWebRTCManager switchCamera];
     NSLog(@"%s",__FUNCTION__);
+    return;
+    //测试
     [KSWebRTCManager clearAllRenderer];
     [KSWebRTCManager shared].callState = KSCallStateMaintenanceRecording;
     KSChatController *ctrl             = [[KSChatController alloc] init];
@@ -376,12 +365,6 @@
 
 - (void)onAddMemberClick {
     NSLog(@"%s",__FUNCTION__);
-//    KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
-//    connectionSetting.callType             = KSCallTypeManyVideo;
-//    connectionSetting.iceServer            = [[KSIceServer alloc] init];
-//    KSMediaConnection *mc = [[KSMediaConnection alloc] initWithSetting:connectionSetting];
-//    [[KSWebRTCManager shared].mediaConnections addObject:mc];
-//    [self.callView insertItemsAtIndex:[KSWebRTCManager shared].connectCount-1];
 }
 
 - (void)onScaleDownClick {
@@ -398,7 +381,7 @@
 }
 
 - (void)closeRTC {
-    //[KSWebRTCManager leave];
+    [KSWebRTCManager requestLeave];
     [KSWebRTCManager close];
     [self closeCtrl];
 }
@@ -588,8 +571,6 @@
                 
             }
             else{
-                //[self.callView setScreenMediaTrack:mediaTrack];
-                //[self.callView setTileMediaTrack:[KSWebRTCManager shared].localMediaTrack];
                 [self.callView setScreenMediaTrack:[KSWebRTCManager shared].screenMediaTrack];
                 [self.callView setTileMediaTrack:[KSWebRTCManager shared].tileMediaTrack];
             }
@@ -608,28 +589,6 @@
 }
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-    switch (newState) {
-        case RTCIceConnectionStateNew:
-            break;
-        case RTCIceConnectionStateChecking:
-            break;
-        case RTCIceConnectionStateConnected:
-            break;
-        case RTCIceConnectionStateCompleted:
-            break;
-        case RTCIceConnectionStateFailed:
-            break;
-        case RTCIceConnectionStateDisconnected:
-            //[self showMessage:@"通话断开"];
-            break;
-        case RTCIceConnectionStateClosed:
-            //[self showMessage:@"通话关闭"];
-            break;
-        case RTCIceConnectionStateCount:
-            break;
-        default:
-            break;
-    }
 }
 
 #pragma mark - Message

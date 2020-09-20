@@ -50,8 +50,7 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)connectServer:(NSString *)url;
 
 //创建会话
-- (void)createSession;
-//- (void)createRoom:(int)room;
+//- (void)createSession;
 - (void)joinRoom:(int)room;
 - (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
 - (void)sendCandidate:(NSMutableDictionary *)candidate;

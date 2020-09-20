@@ -378,26 +378,14 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     [[KSWebRTCManager shared].msgHandler close];
 }
 
-+ (void)socketCreateSession {
-    [[KSWebRTCManager shared].msgHandler createSession];
-}
-
-+ (void)sendOffer {
-    
-}
-
-+ (void)socketSendHangup {
-    //[[KSWebRTCManager shared].msgHandler requestHangup];
++ (void)requestLeave {
+    //离开逻辑
 }
 
 //业务消息
 + (void)joinRoom:(int)room {
     [KSWebRTCManager shared].session.room = room;
     [[KSWebRTCManager shared].msgHandler joinRoom:room];
-}
-
-+ (void)createRoom:(int)room {
-    //[[KSWebRTCManager shared].msgHandler createRoom:room];
 }
 
 #pragma mark - KSMediaTrack管理
