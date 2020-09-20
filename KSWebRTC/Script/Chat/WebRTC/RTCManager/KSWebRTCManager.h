@@ -70,7 +70,7 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *tileMediaTrack;
 @property (nonatomic, strong          ) KSDeviceSwitch         *deviceSwitch;
 @property (nonatomic, strong          ) KSSession              *session;
-@property (nonatomic, assign, readonly) int                    peerId;
+@property (nonatomic, assign, readonly) long long              peerId;
 @property (nonatomic, assign, readonly) BOOL                   isCalled;
 @property (nonatomic, assign          ) KSTestType             testType;
 + (instancetype)shared;
@@ -88,9 +88,12 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 
 + (void)switchToSingleVideo;//功能设置
 + (void)switchToSingleAudio;
++ (void)switchToVideoCall;//切换同步
++ (void)switchToVoiceCall;
 
 + (void)clearAllRenderer;
-
+//Track
++ (KSMediaTrack *)mediaTrackOfIndex:(NSInteger)index;
 + (void)close;
 
 //Socket
@@ -100,30 +103,10 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 + (void)sendOffer;
 + (void)socketSendHangup;
 
-//Track
-+ (KSMediaTrack *)mediaTrackOfIndex:(NSInteger)index;
-
 //Message
 + (void)didReceivedMessage:(NSDictionary *)message;
 
-//Call
-+ (void)callToPeerId:(int)peerId;
-+ (void)ringed;
-+ (void)answoer;
-+ (void)updateStartingTime;
-+ (void)leave;
-//开启语音
-+ (void)openVoice;
-//关闭语音
-+ (void)closeVoice;
-//开启视频
-+ (void)openVideo;
-//关闭视频
-+ (void)closeVideo;
-
-+ (void)switchToVideoCall;//发送消息
-+ (void)switchToVoiceCall;
-
 //显示小窗
 + (void)displayTile;
+
 @end

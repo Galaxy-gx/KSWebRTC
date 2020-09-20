@@ -45,7 +45,7 @@ static int const kLocalRTCIdentifier = 10101024;
     static KSWebRTCManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
+        instance          = [[self alloc] init];
         instance.testType = KSTestTypeSignalling;
         [instance initManager];
     });
@@ -259,24 +259,7 @@ static int const kLocalRTCIdentifier = 10101024;
     switch (newState) {
         case RTCIceConnectionStateDisconnected:
         case RTCIceConnectionStateFailed:
-        {
-            if (self.callState != KSCallStateMaintenanceRecording) {
-                return;
-            }
-            
-            [self.msgHandler sendMessage:jseps type:@"peerdesc_req"];
-            __weak typeof(self) weakSelf = self;
-            [self.timekeeper countdownOfSecond:5 callback:^(BOOL isEnd) {
-                //未及时响应则挂断
-                [weakSelf closeCall];
-                //通话中断回调
-                if ([weakSelf.delegate respondsToSelector:@selector(webRTCManagerDisconnected:)]) {
-                    [weakSelf.delegate webRTCManagerDisconnected:self];
-                }
-            }];
-        }
             break;
-            
         default:
             break;
     }
@@ -296,7 +279,7 @@ static int const kLocalRTCIdentifier = 10101024;
     return self.mediaCapturer.capturer.captureSession;
 }
 
-- (int)peerId {
+- (long long)peerId {
     return self.session.peerId;
 }
 
@@ -320,10 +303,24 @@ static int const kLocalRTCIdentifier = 10101024;
     [[KSWebRTCManager shared].mediaCapturer unmuteVideo];
 }
 
+//开启视频
++ (void)openVideo {
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"switch_type"]      = @(KSMediaStateUnmuteVideo);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+}
+
 + (void)stopCapture {
     [self closeVideo];
     
     [[KSWebRTCManager shared].mediaCapturer muteVideo];
+}
+
+//关闭视频
++ (void)closeVideo {
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"switch_type"]      = @(KSMediaStateMuteVideo);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
 }
 
 + (void)speakerOff {
@@ -340,16 +337,28 @@ static int const kLocalRTCIdentifier = 10101024;
     [[KSWebRTCManager shared].mediaCapturer muteAudio];
 }
 
+//关闭语音
++ (void)closeVoice {
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"switch_type"]      = @(KSMediaStateMuteAudio);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+}
+
 + (void)unmuteAudio {
      [self openVoice];
     
     [[KSWebRTCManager shared].mediaCapturer unmuteAudio];
 }
 
+//开启语音
++ (void)openVoice {
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"switch_type"]      = @(KSMediaStateUnmuteAudio);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+}
+
 + (void)switchToSingleVideo {
     [[KSWebRTCManager shared] switchToSingleVideo];
-    
-    //[self switchToVideoCall];
 }
 
 //在此之前需更新callType
@@ -377,6 +386,15 @@ static int const kLocalRTCIdentifier = 10101024;
     }
 }
 
+//切换同步
++ (void)switchToVideoCall {
+    
+}
+
++ (void)switchToVoiceCall {
+    
+}
+
 #pragma mark - Socket测试
 + (void)socketConnectServer:(NSString *)server {
     [[KSWebRTCManager shared].msgHandler connectServer:server];
@@ -388,6 +406,10 @@ static int const kLocalRTCIdentifier = 10101024;
 
 + (void)socketCreateSession {
     [[KSWebRTCManager shared].msgHandler createSession];
+}
+
++ (void)sendOffer {
+    
 }
 
 + (void)socketSendHangup {
@@ -605,432 +627,9 @@ static int const kLocalRTCIdentifier = 10101024;
     return _audioPlayer;
 }
 
-#pragma mark - 消息读取
-+ (void)didReceivedMessage:(NSDictionary *)message {
-    [[KSWebRTCManager shared] didReceivedMessage:message];
-}
-
-- (void)didReceivedMessage:(NSDictionary *)message {
-    NSLog(@"|======Start %@ ======|\n %@ \n|======End======|",[NSThread currentThread],message);
-    KSAckMessage *ack = [KSAckMessage ackWithMessage:message];
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf handleThreadOfAck:ack];
-    });
-}
-
-- (void)handleThreadOfAck:(KSAckMessage *)ack {
-    switch (ack.ackType) {
-        case KSAckTypeCall:
-        {
-            [self receivedCall:(KSAckCall *)ack];
-        }
-            break;
-        case KSAckTypeJoined:
-            [self receivedJoined:(KSAckJoined *)ack];
-            break;
-        case KSAckTypeAnswer:
-            //[self receivedAnswer:(KSAckAnswer *)ack];
-            break;
-        case KSAckTypeCurrentMessage:
-            [self receivedCurrentMessage:(KSAckCurrentMessage *)ack];
-            break;
-        case KSAckTypeStart:
-            [self receivedStart:(KSAckStart *)ack];
-            break;
-        case KSAckTypeRing:
-            [self receivedRing:(KSAckRing *)ack];
-            break;
-        case KSAckTypeLeft:
-            [self receivedLeft:(KSAckLeft *)ack];
-            break;
-        case KSAckTypeDecline:
-            [self receivedDecline:(KSAckDecline *)ack];
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)receivedCall:(KSAckCall *)call {
-    if (_callState != KSCallStateMaintenanceNormal) {//正在通话中
-        if (call.user_id == self.peerId) {//之前双方正在通话，中途故障
-            [self resetSession];
-        }
-        else{//与其他用户通话中
-            [KSWebRTCManager lineBusy];
-        }
-        return;
-    }
-    
-    [self.audioPlayer play];//播放响铃02（有两处）
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceRinger;//02:被叫方收到Call准备响铃
-
-    self.callType                      = call.callType;
-    self.msgHandler.peerId             = [NSString stringWithFormat:@"%d",call.from];
-
-    //记录
-    self.session.peerId                = call.from;//对方ID更新02（有两处）
-    self.session.isCalled              = YES;//设置为被叫
-    self.session.session_id            = call.session_id;
-    self.session.room                  = call.room;
-    
-    [[KSWebRTCManager shared] remoteMediaTrackOfUserId:self.peerId];//创建对方媒体对象02（有两处）
-    
-    [self enterChat];
-}
-
-- (void)receivedJoined:(KSAckJoined *)joined {
-    if ((joined.isMe == NO) && joined.payload && [joined.payload[@"type"] isEqualToString:@"offer"]) {
-        [self createAnswerOfJoined:joined];
-        
-        [self.timekeeper invalidate];//取消倒计时
-        [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
-        self.session.room = joined.room;
-        //一对一语音倒计时
-        [KSWebRTCManager start];
-        if ([self.delegate respondsToSelector:@selector(webRTCManager:ackJoined:)]) {
-            [self.delegate webRTCManager:self ackJoined:joined];
-        }
-        [[KSWebRTCManager shared].audioPlayer stop];//关闭响铃02（有3处）
-    }
-}
-
-/*
-- (void)receivedAnswer:(KSAckAnswer *)answer {
-    if (answer == nil) {
-        return;
-    }
-    [self.timekeeper invalidate];//取消倒计时
-    [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
-    
-    self.session.room = answer.room;
-    self.callType     = answer.call_type;
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:ackAnswer:)]) {
-        [self.delegate webRTCManager:self ackAnswer:answer];
-    }
-}
-*/
 + (void)updateStartingTime {
     NSDate *startDate                     = [NSDate dateWithTimeIntervalSinceNow:0];
     [KSWebRTCManager shared].startingTime = (int)[startDate timeIntervalSince1970];
-}
-
-#pragma mark - 通用消息处理
-- (void)receivedCurrentMessage:(KSAckCurrentMessage *)message {
-    switch (message.messageType) {
-        case KSCurrentMessageTypeOffer://弃用
-            //[self createAnswerOfJsep:message.jsep];
-            break;
-        case KSCurrentMessageTypeAnswer:
-            [self setRemoteOfMessage:message];
-            //[self setRemoteJsep:message.jsep];
-            break;
-        case KSCurrentMessageTypeCandidate:
-        {
-            [self.peerConnection addIceCandidate:message.jsep];
-            
-        }
-            break;
-        case KSCurrentMessageTypePeerdescReq:
-        {
-            KSMediaConnection *mc = self.peerConnection;
-            [mc setRemoteDescriptionWithJsep:message.jsep];
-            //消息应答
-            [self peerdescAck];
-            
-        }
-            break;
-        case KSCurrentMessageTypePeerdescAck:
-        {
-            [_timekeeper invalidate];
-        }
-            break;
-        case KSCurrentMessageTypeSwitch:
-        {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfUserId:message.user_id];
-            if (mediaTrack) {
-                mediaTrack.mediaState = message.switchType;
-            }
-            if ([self.delegate respondsToSelector:@selector(webRTCManager:mediaState:userInfo:)]) {
-                [self.delegate webRTCManager:self mediaState:message.switchType userInfo:[self getUserinfoWithMessage:message]];
-            }
-        }
-            break;
-        case KSCurrentMessageTypeChangeMedia:
-        {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfUserId:message.user_id];
-            if (mediaTrack) {
-                mediaTrack.mediaState = message.switchType;
-            }
-            if (self.callType == KSCallTypeSingleVideo && message.mediaType == KSChangeMediaTypeVoice) {
-                //切换到单人音频
-                self.callType = KSCallTypeSingleAudio;
-            }
-            if (self.callType == KSCallTypeSingleAudio && message.mediaType == KSChangeMediaTypeVideo) {
-                //切换到单人视频
-                self.callType = KSCallTypeSingleVideo;
-            }
-            if ([self.delegate respondsToSelector:@selector(webRTCManager:changeMediaType:userInfo:)]) {
-                [self.delegate webRTCManager:self changeMediaType:message.mediaType userInfo:[self getUserinfoWithMessage:message]];
-            }
-        }
-            break;
-        case KSCurrentMessageTypeLineBusy:
-        {
-            if ([self.delegate respondsToSelector:@selector(webRTCManagerLineBusy:userInfo:)]) {
-                [self.delegate webRTCManagerLineBusy:self userInfo:[self getUserinfoWithMessage:message]];
-            }
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-- (KSUserInfo *)getUserinfoWithMessage:(KSAckCurrentMessage *)message {
-    KSUserInfo *info = [[KSUserInfo alloc] init];
-    info.name        = message.user_name;
-    info.ID          = message.user_id;
-    return info;
-}
-
-- (void)receivedLeft:(KSAckLeft *)left {
-    //对方挂断
-    if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceNormal) {
-        NSLog(@"|============| 对方挂断 |============|");
-        return;
-    }
-    
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceNormal;
-    
-    KSMediaTrack *mediaTrack = [self mediaTrackOfUserId:left.user_id];
-    if (mediaTrack == nil) {
-        NSLog(@"|============| 未接听挂断 |============|");
-        [self callLeft:left mediaTrack:mediaTrack];
-        [self endDetection];
-        return;
-    }
-    [self removeMediaTrack:mediaTrack];
-    
-    [self callLeft:left mediaTrack:mediaTrack];
-    [self endDetection];
-}
-
-- (void)callLeft:(KSAckLeft *)left mediaTrack:(KSMediaTrack *)mediaTrack {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:ackLeft:mediaTrack:)]) {
-        [self.delegate webRTCManager:self ackLeft:left mediaTrack:mediaTrack];
-    }
-}
-- (void)endDetection {
-    if (self.mediaTracks.count == 1) {//只剩下自己
-        //离开与关闭
-        [self closeCall];
-        
-        if ([self.delegate respondsToSelector:@selector(webRTCManagerHandlerEnd:)]) {
-            [self.delegate webRTCManagerHandlerEnd:self];
-        }
-    }
-}
-
-- (void)receivedDecline:(KSAckDecline *)decline {
-}
-
-- (void)receivedStart:(KSAckStart *)start {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:ackStart:)]) {
-        [self.delegate webRTCManager:self ackStart:start];
-    }
-}
-
-- (void)receivedRing:(KSAckRing *)ring {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceRinged;//03:主叫方收到响铃（此时等待被叫方接听）
-}
-
-#pragma mark - 消息发送
-//1、call
-+ (void)callToPeerId:(int)peerId {
-    [KSWebRTCManager shared].callState        = KSCallStateMaintenanceCaller;//01:主叫方发起Call
-    [KSWebRTCManager shared].session.peerId   = peerId;//对方ID更新01（有两处）
-    [KSWebRTCManager shared].session.isCalled = NO;
-    [[KSWebRTCManager shared].msgHandler callToPeerId:peerId type:[KSWebRTCManager shared].callType];
-    [[KSWebRTCManager shared] callCountdown];
-    //[[KSWebRTCManager shared] remoteMediaTrackOfUserId:peerId];//创建对方媒体对象01（有两处）
-    [[KSWebRTCManager shared].audioPlayer play];//播放响铃01（有两处）
-}
-
-- (void)callCountdown {
-    __weak typeof(self) weakSelf = self;
-    int second = 600;
-    [self.timekeeper countdownOfSecond:second callback:^(BOOL isEnd) {
-        //挂断
-        [weakSelf closeCall];
-
-        if ([weakSelf.delegate respondsToSelector:@selector(webRTCManagerCallTimeout:)]) {
-            [weakSelf.delegate webRTCManagerCallTimeout:self];
-        }
-    }];
-}
-
-- (void)closeCall {
-    [KSWebRTCManager leave];
-    [KSWebRTCManager close];
-}
-
-//2、响铃
-+ (void)ringed {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceRinged;//03:被叫方发送响铃
-    [[KSWebRTCManager shared].msgHandler ringed];
-    //[self sendOffer];
-}
-
-//3、
-+ (void)sendOffer {
-    [[KSWebRTCManager shared] sendOffer];
-}
-
-- (void)sendOffer {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//04:被叫方按下接听
-    [self.msgHandler sendOffer];
-}
-
-//4、
-- (void)createAnswerOfJoined:(KSAckJoined *)joined {
-    //NSLog(@"|============| 此处不会调用 |============|");
-    //return;
-    //创建媒体
-    KSMediaTrack *mediaTrack = [self remoteMediaTrackWithSdp:joined.payload[@"sdp"] userId:joined.user_id];
-    //mediaTrack.userInfo.ID   = joined.user_id;
-    //mediaTrack.userInfo.name = joined.user_name;
-    [self createAnswerOfJsep:joined.payload];
-}
-
-// 观察者收到远端offer后，发送anwser
-- (void)createAnswerOfJsep:(NSDictionary *)jsep {
-    self.callType                      = [jsep[@"call_type"] intValue];
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//主叫方收到接听
-    KSMediaConnection *mc              = self.peerConnection;
-    [mc setRemoteDescriptionWithJsep:jsep];
-    
-    __weak typeof(self) weakSelf = self;
-    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-        NSString *type = [RTCSessionDescription stringForType:sdp.type];
-        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
-        jseps[@"type"]      = type;
-        jseps[@"sdp"]       = [sdp sdp];
-        jseps[@"call_type"] = @(weakSelf.callType);
-        jseps[@"user_id"]   = @([KSUserInfo myID]);
-        [weakSelf.msgHandler sendPayload:jseps];
-    }];
-}
-
-- (void)setRemoteOfMessage:(KSAckCurrentMessage *)message {
-    //创建媒体
-    KSMediaTrack *mediaTrack = [self remoteMediaTrackWithSdp:message.jsep[@"sdp"] userId:[message.payload[@"user_id"] intValue]];
-    //mediaTrack.userInfo.name = message.payload[@"user_name"];
-    [self setRemoteOfJsep:message.jsep];
-}
-
-// 发布者收到远端媒体信息后的回调 answer
-- (void)setRemoteOfJsep:(NSDictionary *)jsep {
-    if (jsep[@"flag"]) {
-        //RTC错误时回调
-        [self receivedStart:nil];
-    }
-    //self.callType         = [jsep[@"call_type"] intValue];
-    KSMediaConnection *mc = self.peerConnection;
-    [mc setRemoteDescriptionWithJsep:jsep];
-}
-
-//5、
-+ (void)answoer {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceAnswoer;//被叫方按下接听
-    [self sendOffer];
-    //[[KSWebRTCManager shared].msgHandler answoerOfCallType:[KSWebRTCManager shared].callType];
-    [self start];
-    [[KSWebRTCManager shared].audioPlayer stop];//关闭响铃01（有3处）
-}
-
-//6、
-+ (void)start {
-    NSLog(@"|============| 发送开始消息 |============|");
-    //语音倒计时
-    [[KSWebRTCManager shared].msgHandler start];
-}
-//7、
-+ (void)leave {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceNormal;
-    [[KSWebRTCManager shared].msgHandler leave];
-}
-
-//8、切换到视频通话
-+ (void)switchToVideoCall {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"media_type"]       = @(KSChangeMediaTypeVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
-}
-
-//9、切换到语音通话
-+ (void)switchToVoiceCall {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"media_type"]       = @(KSChangeMediaTypeVoice);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
-}
-
-//开启语音
-+ (void)openVoice {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"switch_type"]      = @(KSMediaStateUnmuteAudio);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
-}
-
-//关闭语音
-+ (void)closeVoice {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"switch_type"]      = @(KSMediaStateMuteAudio);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
-}
-
-//开启视频
-+ (void)openVideo {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"switch_type"]      = @(KSMediaStateUnmuteVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
-}
-
-//关闭视频
-+ (void)closeVideo {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    media[@"switch_type"]      = @(KSMediaStateMuteVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
-}
-
-//占线
-+ (void)lineBusy {
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"line_busy"];
-}
-
-
-- (void)peerdescAck {
-    if (self.callState != KSCallStateMaintenanceRecording) {
-        return;
-    }
-    NSMutableDictionary *media = [NSMutableDictionary dictionary];
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"peerdesc_ack"];
-}
-
-//重置会话
-- (void)resetSession {
-    if (self.callType == KSCallTypeSingleAudio || self.callType == KSCallTypeSingleVideo) {
-        // 逆序遍历
-        for (KSMediaTrack *mediaTrack in [self.mediaTracks reverseObjectEnumerator]) {
-            if (mediaTrack.isLocal == NO) {
-                [mediaTrack clearRenderer];
-                [self.mediaTracks removeObject:mediaTrack];
-            }
-        }
-        [KSWebRTCManager answoer];
-    }
 }
 
 #pragma mark - KSCoolTile
@@ -1050,6 +649,7 @@ static int const kLocalRTCIdentifier = 10101024;
 + (void)displayTile {
     [[KSWebRTCManager shared] displayTile];
 }
+
 - (void)displayTile {
     KSMediaTrack *mediaTrack = [self displayMediaTrack];
     if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.sessionId == mediaTrack.sessionId)) {

@@ -55,12 +55,12 @@
     [KSWebRTCManager close];
 }
 
-+ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller peerId:(int)peerId target:(UIViewController *)target {
++ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller peerId:(long long)peerId target:(UIViewController *)target {
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
     
     if (isCaller) {//主叫
-        [KSWebRTCManager callToPeerId:peerId];
+        //[KSWebRTCManager callToPeerId:peerId];
     }
     
     KSChatController *ctrl             = [[KSChatController alloc] init];
@@ -386,7 +386,7 @@
 }
 
 - (void)closeRTC {
-    [KSWebRTCManager leave];
+    //[KSWebRTCManager leave];
     [KSWebRTCManager close];
     [self closeCtrl];
 }
@@ -400,8 +400,8 @@
 #pragma mark - 被叫方接听
 -(void)calleeAnswer {
     NSLog(@"%s",__FUNCTION__);
-    [KSWebRTCManager answoer];
-    [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
+    //[KSWebRTCManager answoer];
+    //[KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
     [self updateCalleeAnswerKit];
 }
 
