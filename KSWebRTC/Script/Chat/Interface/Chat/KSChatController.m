@@ -33,7 +33,7 @@
 @property (nonatomic, strong) KSProfileInfo *profileInfo;
 
 @property (nonatomic, assign, readonly) KSCallType myType;
-@property (nonatomic, assign, readonly ) int       peerId;//对方ID
+@property (nonatomic, assign, readonly ) long long callerId;//呼叫者ID
 @property (nonatomic, assign, readonly ) BOOL      isCalled;//是否是被叫
 
 @end
@@ -55,12 +55,21 @@
     [KSWebRTCManager close];
 }
 
-+ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller peerId:(long long)peerId target:(UIViewController *)target {
+/// 进入通话页面
+/// @param type 通话类型
+/// @param callState 通话状态
+/// @param isCaller 是否创建呼叫（主叫）
+/// @param room 房间号
+/// @param target 跳转控制器
++ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller room:(int)room target:(UIViewController *)target {
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
     
     if (isCaller) {//主叫
-        //[KSWebRTCManager callToPeerId:peerId];
+        [KSWebRTCManager createRoom:room];
+    }
+    else{
+        [KSWebRTCManager joinRoom:room];
     }
     
     KSChatController *ctrl             = [[KSChatController alloc] init];
@@ -118,7 +127,7 @@
 }
 
 - (void)kitLogic {
-    KSUserInfo *userInfo = [KSUserInfo userWithId:self.peerId];
+    KSUserInfo *userInfo = [KSUserInfo userWithId:self.callerId];
     _profileInfo         = [self profileWithTitle:userInfo.name];
     [self updateProfileInfo:_profileInfo];
     
@@ -534,7 +543,7 @@
 }
 
 - (NSString *)sessionIDOfTopBarView:(KSTopBarView *)topBarView {
-    return [[KSWebRTCManager shared].session.room uppercaseString];
+    return [NSString stringWithFormat:@"%d",[KSWebRTCManager shared].session.room];
 }
 
 #pragma mark - KSTopBarViewDelegate
@@ -683,8 +692,8 @@
     return [KSWebRTCManager shared].callType;
 }
 
--(int)peerId {
-    return [KSWebRTCManager shared].peerId;
+-(long long)callerId {
+    return [KSWebRTCManager shared].callerId;
 }
 -(void)setPeerId:(int)inId {
 }

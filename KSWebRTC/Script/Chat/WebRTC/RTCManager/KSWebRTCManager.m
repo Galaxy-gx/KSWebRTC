@@ -244,10 +244,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     return self.mediaCapturer.capturer.captureSession;
 }
 
-- (long long)peerId {
-    return self.session.peerId;
-}
-
 -(BOOL)isCalled {
     return self.session.isCalled;
 }
@@ -379,7 +375,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 
-#pragma mark - Socket测试
+#pragma mark - Socket消息
 + (void)socketConnectServer:(NSString *)server {
     [[KSWebRTCManager shared].msgHandler connectServer:server];
 }
@@ -398,6 +394,15 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 + (void)socketSendHangup {
     //[[KSWebRTCManager shared].msgHandler requestHangup];
+}
+
+//业务消息
++ (void)joinRoom:(int)room {
+    [[KSWebRTCManager shared].msgHandler joinRoom:room];
+}
+
++ (void)createRoom:(int)room {
+    [[KSWebRTCManager shared].msgHandler createRoom:room];
 }
 
 #pragma mark - KSMediaTrack管理
@@ -624,8 +629,8 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 #pragma mark - 进入通话页面
 - (void)enterChat {
-    UIViewController *currentCtrl = [UIViewController currentViewController];
-    [KSChatController callWithType:self.callType callState:self.callState isCaller:NO peerId:self.peerId target:currentCtrl];
+    UIViewController *targetCtrl = [UIViewController currentViewController];
+    [KSChatController callWithType:self.callType callState:self.callState isCaller:NO room:self.session.room target:targetCtrl];
 }
 
 @end

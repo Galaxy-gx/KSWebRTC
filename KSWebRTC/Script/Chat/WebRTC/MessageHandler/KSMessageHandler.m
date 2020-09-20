@@ -15,10 +15,10 @@
 static int const KSRandomLength = 12;
 
 @interface KSMessageHandler()<KSWebSocketDelegate>
-@property(nonatomic, strong)NSNumber *sessionId;
-@property (nonatomic, copy) NSString *opaqueId;
-@property(nonatomic, strong)NSNumber *roomMumber;
-@property(nonatomic, strong)NSNumber *myHandleId;
+@property (nonatomic, strong) NSNumber            *sessionId;
+@property (nonatomic, copy  ) NSString            *opaqueId;
+@property (nonatomic, assign) int                 roomMumber;
+@property (nonatomic, strong) NSNumber            *myHandleId;
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
 @end
@@ -71,7 +71,7 @@ static int const KSRandomLength = 12;
             //WebRTC:06
             NSMutableDictionary *body = [NSMutableDictionary dictionary];
             body[@"request"]          = @"join";
-            body[@"room"]             = _roomMumber;
+            body[@"room"]             = @(_roomMumber);
             body[@"ptype"]            = @"subscriber";
             body[@"feed"]             = member.ID;
             if (member.privateId) {
@@ -189,12 +189,23 @@ static int const KSRandomLength = 12;
     [_socket sendMessage:message];
 }
 
+//03 REQ 创建房间
+- (void)createRoom:(int)room {
+    _roomMumber             = room;
+    NSMutableDictionary *message =[NSMutableDictionary dictionary];
+    message[@"request"]     = @"create";
+    message[@"room"]        = @(_roomMumber);
+    message[@"description"] = @"MyRoom";
+    message[@"is_private"]  = @(YES);
+    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
+}
+
 //03 REQ  加入房间
-- (void)joinRoom:(NSNumber *)room {
+- (void)joinRoom:(int)room {
     _roomMumber         = room;
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"request"] = @"join";
-    message[@"room"]    = _roomMumber;
+    message[@"room"]    = @(_roomMumber);
     message[@"ptype"]   = @"publisher";
     message[@"display"] = @"Ayumi";
     [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
@@ -228,7 +239,7 @@ static int const KSRandomLength = 12;
     [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"start";
-        body[@"room"]    = weakSelf.roomMumber;
+        body[@"room"]    = @(weakSelf.roomMumber);
         //body[@"video"]   = @YES;
         
         NSString *type   = [RTCSessionDescription stringForType:sdp.type];
@@ -282,15 +293,19 @@ static int const KSRandomLength = 12;
  连接成功
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
+    NSLog(@"连接socket服务器成功");
     [self.delegate messageHandler:self socketDidOpen:_socket];
+    [self createSession];
 }
 
 /**
  出现错误/连接失败时调用[如果设置自动重连，则不会调用]
  */
 - (void)socketDidFail:(KSWebSocket *)socket {
+    NSLog(@"socket发生错误");
     [self.delegate messageHandler:self socketDidFail:_socket];
 }
+
 /**
  收到消息
  */

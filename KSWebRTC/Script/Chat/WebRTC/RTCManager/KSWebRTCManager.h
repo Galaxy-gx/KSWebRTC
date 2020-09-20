@@ -52,8 +52,8 @@
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *tileMediaTrack;
 @property (nonatomic, strong          ) KSDeviceSwitch         *deviceSwitch;
 @property (nonatomic, strong          ) KSSession              *session;
-@property (nonatomic, assign, readonly) long long              peerId;
 @property (nonatomic, assign, readonly) BOOL                   isCalled;
+@property (nonatomic, assign          ) long long              callerId;
 + (instancetype)shared;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
@@ -83,6 +83,10 @@
 + (void)socketCreateSession;
 + (void)sendOffer;
 + (void)socketSendHangup;
+
+//业务消息
++ (void)joinRoom:(int)room;
++ (void)createRoom:(int)room;
 
 //显示小窗
 + (void)displayTile;

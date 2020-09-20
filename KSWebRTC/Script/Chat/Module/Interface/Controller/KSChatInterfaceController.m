@@ -210,8 +210,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 - (void)callWithType:(KSCallType)type {
-    _peerId = 100;
-    [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:YES peerId:(int)_peerId target:self];
+    [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:YES room:88888 target:self];
 }
 
 @end
