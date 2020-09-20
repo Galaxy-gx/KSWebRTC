@@ -212,6 +212,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)callWithType:(KSCallType)type {
     int room = 1234;
+    [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:YES room:room target:self];
+    /*
     KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
                                                     title:nil
                                                   message:[NSString stringWithFormat:@"创建或者进入房间:%d",room]
@@ -221,6 +223,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
         [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:actionType == KSAlertTypeCancel room:room target:self];
     }];
+     */
 }
 
 @end

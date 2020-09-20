@@ -213,12 +213,6 @@ static int const KSRandomLength = 12;
     [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
 }
 
-- (void)leave {
-    NSMutableDictionary *message =[NSMutableDictionary dictionary];
-    message[@"request"] = @"leave";
-    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
-}
-
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
     KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self handleId:handleId];

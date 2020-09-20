@@ -94,15 +94,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 #pragma mark - KSMediaConnection
 
 - (void)createLocalMediaTrack {
-    KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
-    localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
-    localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
-    localMediaTrack.dataSource        = self;
-    localMediaTrack.isLocal           = YES;
-    localMediaTrack.index             = 0;
-    localMediaTrack.userInfo          = [KSUserInfo myself];
-    _localMediaTrack                  = localMediaTrack;
-    [self.mediaTracks insertObject:localMediaTrack atIndex:0];
+    self.localMediaTrack.index = 0;
 }
 
 - (KSMediaConnection *)createPeerConnection {
@@ -114,8 +106,8 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 #pragma mark - KSMessageHandlerDelegate 调试
 - (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
-    _localMediaTrack.peerConnection.handleId = [handleId longLongValue];
-    return _localMediaTrack.peerConnection;
+    self.localMediaTrack.peerConnection.handleId = [handleId longLongValue];
+    return self.localMediaTrack.peerConnection;
 }
 
 - (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
@@ -519,8 +511,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     if (_audioPlayer) {
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
-    
-    [_msgHandler leave];
 }
 
 + (void)close {
@@ -533,6 +523,23 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
         _mediaTracks = [NSMutableArray array];
     }
     return _mediaTracks;
+}
+
+-(KSMediaTrack *)localMediaTrack {
+    if (_localMediaTrack == nil) {
+        KSMediaConnection *peerConnection = [self createPeerConnection];
+        KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
+        localMediaTrack.peerConnection    = peerConnection;
+        localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
+        localMediaTrack.audioTrack        = _mediaCapturer.audioTrack;
+        localMediaTrack.dataSource        = self;
+        localMediaTrack.isLocal           = YES;
+        localMediaTrack.index             = 0;
+        localMediaTrack.userInfo          = [KSUserInfo myself];
+        _localMediaTrack                  = localMediaTrack;
+        [self.mediaTracks insertObject:localMediaTrack atIndex:0];
+    }
+    return _localMediaTrack;
 }
 
 -(KSSession *)session {

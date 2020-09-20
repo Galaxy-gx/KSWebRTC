@@ -53,7 +53,6 @@ typedef NS_ENUM(NSInteger, KSActionType) {
 - (void)createSession;
 //- (void)createRoom:(int)room;
 - (void)joinRoom:(int)room;
-- (void)leave;
 - (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
 - (void)sendCandidate:(NSMutableDictionary *)candidate;
 - (void)close;
