@@ -34,7 +34,6 @@
 @property (nonatomic, assign ) BOOL              isLocal;
 @property (nonatomic, assign ) int               index;
 @property (nonatomic, strong ) KSUserInfo        *userInfo;
-@property (nonatomic, assign ) long long         sessionId;
 
 - (void)addRenderer:(UIView<RTCVideoRenderer> *)renderer;
 - (void)clearRenderer;

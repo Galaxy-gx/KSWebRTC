@@ -13,7 +13,6 @@
 		E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3C24B85080004C7060 /* Assets.xcassets */; };
 		E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6400F3E24B85080004C7060 /* LaunchScreen.storyboard */; };
 		E6400F4324B85080004C7060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E6400F4224B85080004C7060 /* main.m */; };
-		E664594B250B2087001A81BF /* KSSocketHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E664594A250B2087001A81BF /* KSSocketHandler.m */; };
 		E66C2BE4250A338D00153CD7 /* KSSuperController+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */; };
 		E66C2BE5250A338D00153CD7 /* NSDictionary+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE5250A338D00153CD7 /* NSDictionary+Category.m */; };
 		E66C2BE6250A338D00153CD7 /* NSObject+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2AE7250A338D00153CD7 /* NSObject+Category.m */; };
@@ -63,7 +62,6 @@
 		E66C2C13250A338D00153CD7 /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */; };
 		E66C2C14250A338D00153CD7 /* AckCall.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B60250A338D00153CD7 /* AckCall.md */; };
 		E66C2C15250A338D00153CD7 /* AckJoined.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B61250A338D00153CD7 /* AckJoined.md */; };
-		E66C2C16250A338D00153CD7 /* KSAckMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B63250A338D00153CD7 /* KSAckMessage.m */; };
 		E66C2C17250A338D00153CD7 /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B65250A338D00153CD7 /* KSMsg.m */; };
 		E66C2C18250A338D00153CD7 /* KSUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B67250A338D00153CD7 /* KSUserInfo.m */; };
 		E66C2C19250A338D00153CD7 /* mozart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B6A250A338D00153CD7 /* mozart.mp3 */; };
@@ -116,8 +114,6 @@
 		E66C2C50250A375700153CD7 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E66C2B1C250A338D00153CD7 /* WebRTC.framework */; };
 		E66C2C51250A375700153CD7 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E66C2B1C250A338D00153CD7 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E6E1E6B524E9444300536FBB /* Localizable.strings */; };
-		E6F0365225106C8C00A1EE0C /* KSMediaCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F0365125106C8C00A1EE0C /* KSMediaCallController.m */; };
-		E6F036552510ABF800A1EE0C /* KSRTCManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E6F036542510ABF800A1EE0C /* KSRTCManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -147,8 +143,6 @@
 		E6400F3F24B85080004C7060 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E6400F4124B85080004C7060 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E6400F4224B85080004C7060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E6645949250B2087001A81BF /* KSSocketHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSSocketHandler.h; sourceTree = "<group>"; };
-		E664594A250B2087001A81BF /* KSSocketHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSSocketHandler.m; sourceTree = "<group>"; };
 		E66C2AE2250A338D00153CD7 /* KSSuperController+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KSSuperController+Category.h"; sourceTree = "<group>"; };
 		E66C2AE3250A338D00153CD7 /* KSSuperController+Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KSSuperController+Category.m"; sourceTree = "<group>"; };
 		E66C2AE4250A338D00153CD7 /* NSDictionary+Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Category.h"; sourceTree = "<group>"; };
@@ -254,8 +248,6 @@
 		E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
 		E66C2B60250A338D00153CD7 /* AckCall.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckCall.md; sourceTree = "<group>"; };
 		E66C2B61250A338D00153CD7 /* AckJoined.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckJoined.md; sourceTree = "<group>"; };
-		E66C2B62250A338D00153CD7 /* KSAckMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSAckMessage.h; sourceTree = "<group>"; };
-		E66C2B63250A338D00153CD7 /* KSAckMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSAckMessage.m; sourceTree = "<group>"; };
 		E66C2B64250A338D00153CD7 /* KSMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
 		E66C2B65250A338D00153CD7 /* KSMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
 		E66C2B66250A338D00153CD7 /* KSUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSUserInfo.h; sourceTree = "<group>"; };
@@ -356,10 +348,6 @@
 		E66C2BDE250A338D00153CD7 /* KSWaitingAnswersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSWaitingAnswersView.m; sourceTree = "<group>"; };
 		E6E1E6B424E9444300536FBB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E6E1E6B624E9444800536FBB /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E6F0365025106C8C00A1EE0C /* KSMediaCallController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSMediaCallController.h; sourceTree = "<group>"; };
-		E6F0365125106C8C00A1EE0C /* KSMediaCallController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSMediaCallController.m; sourceTree = "<group>"; };
-		E6F036532510ABF800A1EE0C /* KSRTCManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KSRTCManager.h; sourceTree = "<group>"; };
-		E6F036542510ABF800A1EE0C /* KSRTCManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KSRTCManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -570,7 +558,6 @@
 		E66C2B1D250A338D00153CD7 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				E6F0364F25106C6B00A1EE0C /* MediaCall */,
 				E66C2B1E250A338D00153CD7 /* Chat */,
 			);
 			path = Interface;
@@ -737,8 +724,6 @@
 			children = (
 				E66C2B5D250A338D00153CD7 /* KSMessageHandler.h */,
 				E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */,
-				E6645949250B2087001A81BF /* KSSocketHandler.h */,
-				E664594A250B2087001A81BF /* KSSocketHandler.m */,
 			);
 			path = MessageHandler;
 			sourceTree = "<group>";
@@ -748,8 +733,6 @@
 			children = (
 				E66C2B60250A338D00153CD7 /* AckCall.md */,
 				E66C2B61250A338D00153CD7 /* AckJoined.md */,
-				E66C2B62250A338D00153CD7 /* KSAckMessage.h */,
-				E66C2B63250A338D00153CD7 /* KSAckMessage.m */,
 				E66C2B64250A338D00153CD7 /* KSMsg.h */,
 				E66C2B65250A338D00153CD7 /* KSMsg.m */,
 				E66C2B66250A338D00153CD7 /* KSUserInfo.h */,
@@ -1047,17 +1030,6 @@
 			path = FlowLayout;
 			sourceTree = "<group>";
 		};
-		E6F0364F25106C6B00A1EE0C /* MediaCall */ = {
-			isa = PBXGroup;
-			children = (
-				E6F0365025106C8C00A1EE0C /* KSMediaCallController.h */,
-				E6F0365125106C8C00A1EE0C /* KSMediaCallController.m */,
-				E6F036532510ABF800A1EE0C /* KSRTCManager.h */,
-				E6F036542510ABF800A1EE0C /* KSRTCManager.m */,
-			);
-			path = MediaCall;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1169,7 +1141,6 @@
 				E66C2C35250A338D00153CD7 /* KSCallBarCell.m in Sources */,
 				E66C2C05250A338D00153CD7 /* NSObject+MJClass.m in Sources */,
 				E66C2BF2250A338D00153CD7 /* UIViewController+Category.m in Sources */,
-				E664594B250B2087001A81BF /* KSSocketHandler.m in Sources */,
 				E66C2C46250A338D00153CD7 /* KSWaitingAnswersGroupView.m in Sources */,
 				E66C2C12250A338D00153CD7 /* KSNotification.m in Sources */,
 				E66C2BF9250A338D00153CD7 /* KSWebSocketConfigure.m in Sources */,
@@ -1196,14 +1167,12 @@
 				E66C2C07250A338D00153CD7 /* NSObject+MJKeyValue.m in Sources */,
 				E66C2C47250A338D00153CD7 /* KSWaitingAnswersView.m in Sources */,
 				E66C2BFD250A338D00153CD7 /* KSChatController.m in Sources */,
-				E66C2C16250A338D00153CD7 /* KSAckMessage.m in Sources */,
 				E66C2C13250A338D00153CD7 /* KSMessageHandler.m in Sources */,
 				E66C2C1D250A338D00153CD7 /* KSMediaTrack.m in Sources */,
 				E66C2C2E250A338D00153CD7 /* KSTileMediaView.m in Sources */,
 				E66C2C06250A338D00153CD7 /* NSObject+MJCoding.m in Sources */,
 				E66C2C40250A338D00153CD7 /* KSProfileInfo.m in Sources */,
 				E66C2C3D250A338D00153CD7 /* KSProfileBarView.m in Sources */,
-				E6F0365225106C8C00A1EE0C /* KSMediaCallController.m in Sources */,
 				E66C2BE8250A338D00153CD7 /* RTCIceCandidate+Category.m in Sources */,
 				E66C2BF7250A338D00153CD7 /* KSLayoutButton.m in Sources */,
 				E66C2C2C250A338D00153CD7 /* KSTileLayout.m in Sources */,
@@ -1229,7 +1198,6 @@
 				E66C2BEB250A338D00153CD7 /* UIButton+Category.m in Sources */,
 				E66C2BF8250A338D00153CD7 /* KSWebSocket.m in Sources */,
 				E66C2C25250A338D00153CD7 /* KSAbstract.m in Sources */,
-				E6F036552510ABF800A1EE0C /* KSRTCManager.m in Sources */,
 				E66C2BE6250A338D00153CD7 /* NSObject+Category.m in Sources */,
 				E66C2C0C250A338D00153CD7 /* SVProgressAnimatedView.m in Sources */,
 				E66C2C21250A338D00153CD7 /* KSWebRTCManager.m in Sources */,

@@ -18,25 +18,21 @@
 #import "KSNotification.h"
 #import "KSCoolTile.h"
 #import "KSAudioPlayer.h"
-#import "KSSocketHandler.h"
-static int const kLocalRTCIdentifier = 10101024;
 
-@interface KSRTCConnect : NSObject
-@property (nonatomic,assign) int          ID;
-@property (nonatomic,strong) NSDictionary *jsep;
-@end
-@implementation KSRTCConnect
-@end
+typedef NS_ENUM(NSInteger, KSChangeMediaType) {
+    KSChangeMediaTypeUnknown = 0,
+    KSChangeMediaTypeVoice   = 1,
+    KSChangeMediaTypeVideo   = 2,
+};
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
-@property (nonatomic, strong) KSMessageHandler  *msgHandler;
-@property (nonatomic, strong) KSMediaCapturer   *mediaCapturer;
-@property (nonatomic, weak  ) KSMediaConnection *peerConnection;
-@property (nonatomic, strong) NSMutableArray    *mediaTracks;
-@property (nonatomic, strong) KSTimekeeper      *timekeeper;
-@property (nonatomic, strong) KSCoolTile        *coolTile;
-@property (nonatomic, strong) KSAudioPlayer     *audioPlayer;
-
+@property (nonatomic, strong) KSMessageHandler   *msgHandler;
+@property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
+@property (nonatomic, weak  ) KSMediaTrack       *myMediaTrack;
+@property (nonatomic, strong) NSMutableArray     *mediaTracks;
+@property (nonatomic, strong) KSTimekeeper       *timekeeper;
+@property (nonatomic, strong) KSCoolTile         *coolTile;
+@property (nonatomic, strong) KSAudioPlayer      *audioPlayer;
 @end
 
 @implementation KSWebRTCManager
@@ -46,20 +42,13 @@ static int const kLocalRTCIdentifier = 10101024;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance          = [[self alloc] init];
-        instance.testType = KSTestTypeSignalling;
         [instance initManager];
     });
     return instance;
 }
 
 - (void)initManager {
-    if (_testType == KSTestTypeSignalling) {
-        _msgHandler          = [[KSSocketHandler alloc] init];
-    }
-    else if (_testType == KSTestTypeJanus) {
-        _msgHandler          = [[KSMessageHandler alloc] init];
-    }
-    
+    _msgHandler          = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)
@@ -67,10 +56,14 @@ static int const kLocalRTCIdentifier = 10101024;
                                                object:nil];
 }
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - applicationWillTerminate
 - (void)applicationWillTerminate:(UIApplication *)application {
     if (self.callState != KSCallStateMaintenanceNormal) {
-       //TODO:关闭app时，非默认状态，则发送离开消息
+        //TODO:关闭app时，非默认状态，则发送离开消息
         
     }
 }
@@ -83,9 +76,8 @@ static int const kLocalRTCIdentifier = 10101024;
 - (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting {
     _mediaSetting           = mediaSetting;
     _callType               = mediaSetting.callType;
-
+    
     [self createMediaCapturer];
-    [self createLocalMediaTrack];
 }
 
 #pragma mark - KSMediaCapturer
@@ -100,6 +92,7 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - KSMediaConnection
+/*
 - (void)createLocalMediaTrack {
     KSMediaTrack *localMediaTrack     = [[KSMediaTrack alloc] init];
     localMediaTrack.videoTrack        = _mediaCapturer.videoTrack;
@@ -107,11 +100,11 @@ static int const kLocalRTCIdentifier = 10101024;
     localMediaTrack.dataSource        = self;
     localMediaTrack.isLocal           = YES;
     localMediaTrack.index             = 0;
-    localMediaTrack.sessionId         = kLocalRTCIdentifier;
     localMediaTrack.userInfo          = [KSUserInfo myself];
     _localMediaTrack                  = localMediaTrack;
     [self.mediaTracks insertObject:localMediaTrack atIndex:0];
 }
+ */
 
 - (KSMediaConnection *)createPeerConnection {
     KSMediaConnection *peerConnection = [[KSMediaConnection alloc] initWithSetting:[_mediaSetting.connectionSetting mutableCopy]];
@@ -121,24 +114,12 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 #pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)remotePeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId sdp:(NSString *)sdp {
-    return [self remoteMediaTrackWithSdp:sdp userId:[handleId longLongValue]].peerConnection;
+- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+    return [self mediaTrackOfHandleId:[handleId longLongValue]].peerConnection;
 }
 
-- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler {
-    if (_peerConnection == nil) {
-        KSMediaConnection *peerConnection = [self createPeerConnection];
-        peerConnection.handleId           = kLocalRTCIdentifier;
-        _peerConnection                   = peerConnection;
-        _localMediaTrack.peerConnection   = peerConnection;
-    }
-    return _peerConnection;
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSMsg *)message {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:didReceivedMessage:)]) {
-        [self.delegate webRTCManager:self didReceivedMessage:message];
-    }
+- (KSCallType)callTypeOfMessageHandler:(KSMessageHandler *)messageHandler {
+    return _callType;
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket {
@@ -150,24 +131,6 @@ static int const kLocalRTCIdentifier = 10101024;
 - (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket {
     if ([self.delegate respondsToSelector:@selector(webRTCManagerSocketDidFail:)]) {
         [self.delegate webRTCManagerSocketDidFail:self];
-    }
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveOffer:(NSDictionary *)offer {
-    
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler didReceiveAnswer:(NSDictionary *)answer {
-    
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler addIceCandidate:(NSDictionary *)candidate {
-    
-}
-
-- (void)messageHandler:(KSMessageHandler *)messageHandler requestError:(KSRequestError *)error {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:requestError:)]) {
-        [self.delegate webRTCManager:self requestError:error];
     }
 }
 
@@ -209,19 +172,21 @@ static int const kLocalRTCIdentifier = 10101024;
         body[@"sdp"] = candidate.sdp;
         body[@"sdpMid"] = candidate.sdpMid;
         body[@"sdpMLineIndex"]  = @(candidate.sdpMLineIndex);
-        [_msgHandler trickleCandidate:body];
+        [_msgHandler sendCandidate:body];
     }
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didAddReceiver:(RTCRtpReceiver *)rtpReceiver streams:(NSArray<RTCMediaStream *> *)mediaStreams {
-    RTCSessionDescription *remoteDescription = peerConnection.remoteDescription;
-    NSString *remoteSDP                      = remoteDescription.sdp;
+    /*
+     RTCSessionDescription *remoteDescription = peerConnection.remoteDescription;
+     NSString *remoteSDP                      = remoteDescription.sdp;
+     */
     RTCMediaStreamTrack *track               = rtpReceiver.track;
-    NSLog(@"|============| didAddReceiver kind : %@, handleId : %lld, myHandleId : %lld |============|",track.kind,mediaConnection.handleId,self.peerConnection.handleId);
+    NSLog(@"|============| didAddReceiver kind : %@, handleId : %lld, myHandleId : %lld |============|",track.kind,mediaConnection.handleId,self.localMediaTrack.peerConnection.handleId);
     
     if (_callType == KSCallTypeSingleAudio || _callType == KSCallTypeManyAudio) {
         if([track.kind isEqualToString:kRTCMediaStreamTrackKindAudio]) {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfSdp:remoteSDP];
+            KSMediaTrack *mediaTrack = [self mediaTrackOfHandleId:mediaConnection.handleId];
             __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
                 RTCAudioTrack *remoteAudioTrack = (RTCAudioTrack*)track;
@@ -232,7 +197,7 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     else if (_callType == KSCallTypeSingleVideo || _callType == KSCallTypeManyVideo) {
         if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfSdp:remoteSDP];
+            KSMediaTrack *mediaTrack = [self mediaTrackOfHandleId:mediaConnection.handleId];
             __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
                 RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
@@ -287,6 +252,18 @@ static int const kLocalRTCIdentifier = 10101024;
     return self.session.isCalled;
 }
 
+-(KSMediaTrack *)localMediaTrack {
+    if (_myMediaTrack) {
+        return _myMediaTrack;
+    }
+    for (KSMediaTrack *mediaTrack in self.mediaTracks) {
+        if (mediaTrack.isLocal) {
+            _myMediaTrack = mediaTrack;
+            return mediaTrack;
+        }
+    }
+    return nil;
+}
 #pragma mark - 设备操作
 //MediaCapture
 + (void)switchCamera {
@@ -345,7 +322,7 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 + (void)unmuteAudio {
-     [self openVoice];
+    [self openVoice];
     
     [[KSWebRTCManager shared].mediaCapturer unmuteAudio];
 }
@@ -365,9 +342,9 @@ static int const kLocalRTCIdentifier = 10101024;
 - (void)switchToSingleVideo {
     if (_callType == KSCallTypeSingleVideo) {
         if (_mediaCapturer.videoTrack == nil) {
-            [_peerConnection addVideoTrack];
+            [self.localMediaTrack.peerConnection addVideoTrack];
             [_mediaCapturer startCapture];
-            _localMediaTrack.videoTrack = _mediaCapturer.videoTrack;
+            self.localMediaTrack.videoTrack = _mediaCapturer.videoTrack;
         }
         else{
             [_mediaCapturer unmuteVideo];
@@ -387,13 +364,20 @@ static int const kLocalRTCIdentifier = 10101024;
 }
 
 //切换同步
+//切换到视频通话
 + (void)switchToVideoCall {
-    
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"media_type"]       = @(KSChangeMediaTypeVideo);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
 }
 
+//切换到语音通话
 + (void)switchToVoiceCall {
-    
+    NSMutableDictionary *media = [NSMutableDictionary dictionary];
+    media[@"media_type"]       = @(KSChangeMediaTypeVoice);
+    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
 }
+
 
 #pragma mark - Socket测试
 + (void)socketConnectServer:(NSString *)server {
@@ -430,64 +414,6 @@ static int const kLocalRTCIdentifier = 10101024;
     return [KSWebRTCManager shared].mediaTracks[index];
 }
 
-//创建KSMediaTrack
-- (KSMediaTrack *)remoteMediaTrackWithSdp:(NSString *)sdp userId:(long long)userId {
-    NSArray *array = [sdp componentsSeparatedByString:@"\n"];
-    if (array.count > 1) {
-        NSString *ID        = [KSRegex sdpSessionOfString:array[1]];
-        KSMediaTrack *track = [self remoteMediaTrackOfUserId:userId];
-        track.sessionId     = [ID longLongValue];
-        return track;
-    }
-    return nil;
-}
-
-//获取KSMediaTrack
-- (KSMediaTrack *)mediaTrackOfSdp:(NSString *)sdp {
-    NSArray *array = [sdp componentsSeparatedByString:@"\n"];
-    if (array.count > 1) {
-        NSString *ID = [KSRegex sdpSessionOfString:array[1]];
-        return [self mediaTrackOfSessionId:[ID longLongValue]];
-    }
-    return nil;
-}
-
-- (KSMediaTrack *)mediaTrackOfSessionId:(long long)ID {
-    for (KSMediaTrack *track in self.mediaTracks) {
-        if (track.sessionId == ID) {
-            return track;
-        }
-    }
-    return nil;
-}
-
-- (KSMediaTrack *)mediaTrackOfUserId:(long long)ID {
-    for (KSMediaTrack *track in self.mediaTracks) {
-        if (track.userInfo.ID == ID) {
-            return track;
-        }
-    }
-    return nil;
-}
-
-- (KSMediaTrack *)remoteMediaTrackOfUserId:(long long)ID  {
-    KSMediaTrack *track = [self mediaTrackOfUserId:ID];
-    if (track) {
-        return track;
-    }
-    KSMediaConnection *peerConnection = [self createPeerConnection];
-    peerConnection.handleId           = ID;
-    track                             = [[KSMediaTrack alloc] init];
-    track.peerConnection              = peerConnection;
-    track.index                       = self.mediaTrackCount;
-    track.dataSource                  = self;
-    track.mediaState                  = KSMediaStateUnmuteAudio;
-    KSUserInfo *userInfo              = [KSUserInfo userWithId:ID];
-    track.userInfo                    = userInfo;
-    [self.mediaTracks addObject:track];//添加到数组
-    return track;
-}
-
 + (NSInteger)mediaTrackCount {
     return [KSWebRTCManager shared].mediaTracks.count;
 }
@@ -496,10 +422,11 @@ static int const kLocalRTCIdentifier = 10101024;
     if (index >= (int)[KSWebRTCManager shared].mediaTracks.count) {
         return;
     }
-    KSMediaTrack *videoTrack = [KSWebRTCManager shared].mediaTracks[index];
+    KSMediaTrack *mediaTrack = [KSWebRTCManager shared].mediaTracks[index];
     [[KSWebRTCManager shared].mediaTracks removeObjectAtIndex:index];
-    [videoTrack clearRenderer];
-    videoTrack               = nil;
+    [mediaTrack clearRenderer];
+    [mediaTrack.peerConnection closeConnection];
+    mediaTrack               = nil;
 }
 
 - (void)removeMediaTrack:(KSMediaTrack *)mediaTrack {
@@ -508,6 +435,28 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     [self.mediaTracks removeObject:mediaTrack];
     [mediaTrack clearRenderer];
+    [mediaTrack.peerConnection closeConnection];
+}
+
+
+- (KSMediaTrack *)mediaTrackOfHandleId:(long long)handleId {
+    for (KSMediaTrack *mediaTrack in self.mediaTracks) {
+        if (mediaTrack.peerConnection.handleId == handleId) {
+            return mediaTrack;
+        }
+    }
+    KSMediaConnection *peerConnection = [self createPeerConnection];
+    peerConnection.handleId           = handleId;
+    
+    KSMediaTrack *track               = [[KSMediaTrack alloc] init];
+    track.peerConnection              = peerConnection;
+    track.index                       = self.mediaTrackCount;
+    track.dataSource                  = self;
+    track.mediaState                  = KSMediaStateUnmuteAudio;
+    KSUserInfo *userInfo              = [KSUserInfo userWithId:handleId];
+    track.userInfo                    = userInfo;
+    [self.mediaTracks addObject:track];//添加到数组
+    return track;
 }
 
 - (int)mediaTrackCount {
@@ -533,7 +482,7 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     
     if (self.callState == KSCallStateMaintenanceRecording) {
-         return self.mediaTracks.firstObject;
+        return self.mediaTracks.firstObject;
     }
     return nil;
 }
@@ -549,11 +498,14 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     [_mediaTracks removeAllObjects];
     
-    [self.mediaCapturer closeCapturer];
-    self.mediaCapturer  = nil;
-    self.peerConnection = nil;
-    _session            = nil;
-    _startingTime       = 0;
+    [_mediaCapturer closeCapturer];
+    _mediaCapturer = nil;
+
+    _myMediaTrack  = nil;
+
+    _session       = nil;
+    _startingTime  = 0;
+
     
     if (_timekeeper) {
         [_timekeeper invalidate];
@@ -639,12 +591,12 @@ static int const kLocalRTCIdentifier = 10101024;
     }
     return [self screenMediaTrack];
     /*
-    if (self.callState == KSCallStateMaintenanceRecording) {
-        return [self screenMediaTrack];
-    }
-    else{
-        return [self screenMediaTrack];
-    }*/
+     if (self.callState == KSCallStateMaintenanceRecording) {
+     return [self screenMediaTrack];
+     }
+     else{
+     return [self screenMediaTrack];
+     }*/
 }
 + (void)displayTile {
     [[KSWebRTCManager shared] displayTile];
@@ -652,9 +604,6 @@ static int const kLocalRTCIdentifier = 10101024;
 
 - (void)displayTile {
     KSMediaTrack *mediaTrack = [self displayMediaTrack];
-    if (self.coolTile.isDisplay && (self.coolTile.mediaTrack.sessionId == mediaTrack.sessionId)) {
-        return;
-    }
     [self.coolTile showMediaTrack:mediaTrack];
 }
 
@@ -679,10 +628,5 @@ static int const kLocalRTCIdentifier = 10101024;
     [KSChatController callWithType:self.callType callState:self.callState isCaller:NO peerId:self.peerId target:currentCtrl];
 }
 
-#pragma mark - 测试逻辑
-//呼叫
-+ (void)call {
-    
-}
 @end
 

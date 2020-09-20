@@ -7,76 +7,56 @@
 //
 
 #import "KSMessageHandler.h"
-#import "KSWebRTCManager.h"
-#import "NSDictionary+Category.h"
+#import "KSMsg.h"
+#import "KSWebSocket.h"
+#import "KSMediaConnection.h"
 #import "NSString+Category.h"
-
+#import "RTCSessionDescription+Category.h"
 static int const KSRandomLength = 12;
 
-@interface KSMessageHandler()
-//测试属性
-@property (nonatomic,strong ) NSNumber            *sessionId;
-@property (nonatomic, copy  ) NSString            *opaqueId;
-@property (nonatomic,strong ) NSNumber            *roomMumber;
-@property (nonatomic,strong ) NSNumber            *myHandleId;
+@interface KSMessageHandler()<KSWebSocketDelegate>
+@property(nonatomic, strong)NSNumber *sessionId;
+@property (nonatomic, copy) NSString *opaqueId;
+@property(nonatomic, strong)NSNumber *roomMumber;
+@property(nonatomic, strong)NSNumber *myHandleId;
 @property (nonatomic, strong) NSMutableDictionary *msgs;
 @property (nonatomic, strong) NSMutableDictionary *subscribers;
-
 @end
-
 @implementation KSMessageHandler
 
-#pragma mark - Janus代码
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.socket          = [[KSWebSocket alloc] init];
+        self.socket.delegate = self;
         self.opaqueId        = [NSString stringWithFormat:@"videoroom-%@", [NSString ks_randomForLength:KSRandomLength]];
         self.msgs            = [NSMutableDictionary dictionary];
         self.subscribers     = [NSMutableDictionary dictionary];
-        self.roomMumber      = @1234;
     }
     return self;
 }
 
--(KSWebSocket *)socket {
-    if (_socket == nil) {
-        _socket          = [[KSWebSocket alloc] init];
-        _socket.delegate = self;
-    }
-    return _socket;
-}
-
--(KSUserInfo *)user {
-    if (_user == nil) {
-        _user = [KSUserInfo myself];
-    }
-    return _user;
-}
-
-- (NSNumber *)randomNumber {
-    int random = (arc4random() % 10000) + 10000;
-    return [NSNumber numberWithInt:random];
-}
-
+#pragma mark - 消息处理
 - (void)messageSuccess:(KSSuccess *)success {
     KSActionType actionType = [_msgs[success.transaction] intValue];
     switch (actionType) {
         case KSActionTypeCreateSession:
+            //01 ACK 创建会话
             _sessionId                  = success.data.ID;
-            _socket.configure.sessionId = _sessionId;//房间会话ID
+            _socket.configure.sessionId = _sessionId;
             _socket.configure.isSession = true;
-
             //WebRTC:02
             [self pluginBinding:KSActionTypePluginBinding transaction:[NSString ks_randomForLength:KSRandomLength]];
             break;
         case KSActionTypePluginBinding:
+            //02 ACK 插件绑定(等待用户加入房间)
             _myHandleId = success.data.ID;
             //WebRTC:03
-            [self joinRoom:success.data.ID];
+            //[self joinRoom:success.data.ID];
             break;
         case KSActionTypeJoinRoom:
             //WebRTC:04
-            //发送offer
+            //创建本地PeerConnection
             [self configureRoom:_myHandleId];
             break;
         case KSActionTypeConfigureRoom:
@@ -89,11 +69,11 @@ static int const KSRandomLength = 12;
                 return;
             }
             //WebRTC:06
-            NSMutableDictionary *body =[NSMutableDictionary dictionary];
-            body[@"request"] = @"join";
-            body[@"room"]    = _roomMumber;
-            body[@"ptype"]   = @"subscriber";
-            body[@"feed"]    = member.ID;
+            NSMutableDictionary *body = [NSMutableDictionary dictionary];
+            body[@"request"]          = @"join";
+            body[@"room"]             = _roomMumber;
+            body[@"ptype"]            = @"subscriber";
+            body[@"feed"]             = member.ID;
             if (member.privateId) {
                 body[@"private_id"] = member.privateId;
             }
@@ -103,7 +83,7 @@ static int const KSRandomLength = 12;
         case KSActionTypeSubscriber:
             
             break;
-        
+            
         default:
             break;
     }
@@ -115,19 +95,20 @@ static int const KSRandomLength = 12;
             if (event.plugindata.data.private_id) {
                 item.privateId = event.plugindata.data.private_id;
             }
-            NSString *transaction         = [NSString ks_randomForLength:KSRandomLength];
+            NSString *transaction = [NSString ks_randomForLength:KSRandomLength];
             self.subscribers[transaction] = [item copy];
+            
             //WebRTC:05
             [self pluginBinding:KSActionTypePluginBindingSubscriber transaction:transaction];
         }
     } else if (event.jsep) {
         if ([event.jsep[@"type"] isEqualToString:@"offer"]) {
             //WebRTC:07
-            [self subscriberHandlerRemoteJsep:event.jsep handleId:event.sender];
+            [self subscriberHandlerRemoteJsep:event.sender dict:event.jsep];
         }
         else if ([event.jsep[@"type"] isEqualToString:@"answer"]) {
             //WebRTC:08
-            [self onPublisherRemoteJsep:event.jsep handleId:_myHandleId];
+            [self onPublisherRemoteJsep:_myHandleId dict:event.jsep];
         }
     }
     else if ([event.plugindata.data.leaving integerValue] > 0) {//用户离开
@@ -136,15 +117,11 @@ static int const KSRandomLength = 12;
 }
 
 - (void)messageDetached:(KSDetached *)detached {
-    /*
-    if ([self.delegate respondsToSelector:@selector(messageHandler:leaveOfHandleId:)]) {
-        [self.delegate messageHandler:self leaveOfHandleId:detached.sender];
-    }
-     */
+    
 }
 
 - (void)analysisMsg:(id)message {
-    NSData *jsonData   = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *jsonData = [message dataUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData
                                                          options:NSJSONReadingMutableContainers
@@ -182,31 +159,25 @@ static int const KSRandomLength = 12;
     }
 }
 
+#pragma mark - 消息发送
+//创建连接
 - (void)connectServer:(NSString *)url {
     [self.socket configureServer:url isAutoConnect:true];
     [self.socket startConnect];
 }
 
 //Send
-// 创建会话
-- (void)createSession {
-    NSString *transaction   = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *message =[NSMutableDictionary dictionary];
-    message[@"janus"]       = @"create";
-    message[@"transaction"] = transaction;
-    _msgs[transaction]      = [NSNumber numberWithInteger:KSActionTypeCreateSession];
-    [_socket sendMessage:message];
-}
-
-- (void)requestHangup {
+//01 REQ 创建会话
+-(void)createSession {
     NSString *transaction       = [NSString ks_randomForLength:KSRandomLength];
-    NSMutableDictionary *message =[NSMutableDictionary dictionary];
-    message[@"request"]     = @"hangup";
-    message[@"transaction"] = transaction;
-    [_socket sendMessage:message];
+    NSMutableDictionary *sendMessage =[NSMutableDictionary dictionary];
+    sendMessage[@"janus"]       = @"create";
+    sendMessage[@"transaction"] = transaction;
+    _msgs[transaction] = [NSNumber numberWithInteger:KSActionTypeCreateSession];
+    [_socket sendMessage:sendMessage];
 }
 
-// 插件绑定
+//02 REQ 插件绑定
 - (void)pluginBinding:(KSActionType)type transaction:(NSString *)transaction {
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"janus"]       = @"attach";
@@ -218,88 +189,71 @@ static int const KSRandomLength = 12;
     [_socket sendMessage:message];
 }
 
-// 加入房间
-- (void)joinRoom:(NSNumber *)handleId{
+//03 REQ  加入房间
+- (void)joinRoom:(NSNumber *)room {
+    _roomMumber         = room;
     NSMutableDictionary *message =[NSMutableDictionary dictionary];
     message[@"request"] = @"join";
     message[@"room"]    = _roomMumber;
     message[@"ptype"]   = @"publisher";
     message[@"display"] = @"Ayumi";
-    [self sendMessage:message jsep:NULL handleId:handleId actionType:KSActionTypeJoinRoom];
+    [self sendMessage:message jsep:NULL handleId:_myHandleId actionType:KSActionTypeJoinRoom];
 }
 
-/*
- https://webrtc.org.cn/webrtc-tutorial-2-signaling-stun-turn/
- WebRTC 媒体协商的过种。
- 
- Amy:remote Bob:Local
- 
- 第一步，Amy 调用 createOffer 方法创建 offer 消息。offer 消息中的内容是 Amy 的 SDP 信息。
- 第二步，Amy 调用 setLocalDescription 方法，将本端的 SDP 信息保存起来。
- 第三步，Amy 将 offer 消息通过信令服务器传给 Bob。
- 
- 第四步，Bob 收到 offer 消息后，调用 setRemoteDescription 方法将其存储起来。
- 第五步，Bob 调用 createAnswer 方法创建 answer 消息， 同样，answer 消息中的内容是 Bob 的 SDP 信息。
- 第六步，Bob 调用 setLocalDescription 方法，将本端的 SDP 信息保存起来。
- 第七步，Bob 将 anwser 消息通过信令服务器传给 Amy。
- 第八步，Amy 收到 anwser 消息后，调用 setRemoteDescription 方法，将其保存起来。
- 
- 通过以上步骤就完成了通信双方媒体能力的交换。
- */
 // 配置房间(发布者加入房间成功后创建offer)
 - (void)configureRoom:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self];
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
+    mc.handleId                       = [handleId longLongValue];
     __weak KSMessageHandler *weakSelf = self;
     [mc createOfferWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
         NSMutableDictionary *body =[NSMutableDictionary dictionary];
         body[@"request"] = @"configure";
-        body[@"audio"]   = @(YES);
-        body[@"video"]   = @(YES);
-
-        NSString *type   = [RTCSessionDescription stringForType:sdp.type];
-        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
-        jsep[@"type"]    = type;
-        jsep[@"sdp"]     = [sdp sdp];
-        [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
-    }];
-}
-
-// 观察者收到远端offer后，发送anwser
-- (void)subscriberHandlerRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId  {
-    KSMediaConnection *mc             = [self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
-    [mc setRemoteDescriptionWithJsep:jsep];
-    
-    __weak KSMessageHandler *weakSelf = self;
-    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
-        NSMutableDictionary *body =[NSMutableDictionary dictionary];
-        body[@"request"] = @"start";
-        body[@"room"] = weakSelf.roomMumber;
+        body[@"audio"] = @YES;
         body[@"video"] = @YES;
         
         NSString *type = [RTCSessionDescription stringForType:sdp.type];
         NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
         jsep[@"type"] = type;
         jsep[@"sdp"] = [sdp sdp];
+        [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeConfigureRoom];
+    }];
+}
+
+// 观察者收到远端offer后，发送anwser
+- (void)subscriberHandlerRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+    KSMediaConnection *mc             = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
+    [mc setRemoteDescriptionWithJsep:jsep];
+
+    __weak KSMessageHandler *weakSelf = self;
+    [mc createAnswerWithCompletionHandler:^(RTCSessionDescription *sdp, NSError *error) {
+        NSMutableDictionary *body =[NSMutableDictionary dictionary];
+        body[@"request"] = @"start";
+        body[@"room"]    = weakSelf.roomMumber;
+        //body[@"video"]   = @YES;
+        
+        NSString *type   = [RTCSessionDescription stringForType:sdp.type];
+        NSMutableDictionary *jsep =[NSMutableDictionary dictionary];
+        jsep[@"type"]    = type;
+        jsep[@"sdp"]     = [sdp sdp];
         [weakSelf sendMessage:body jsep:jsep handleId:handleId actionType:KSActionTypeStart];
     }];
 }
 
 // 发布者收到远端媒体信息后的回调 answer
-- (void)onPublisherRemoteJsep:(NSDictionary *)jsep handleId:(NSNumber *)handleId {
-    KSMediaConnection *mc             = [self.delegate localPeerConnectionOfMessageHandler:self];
-    //[self.delegate remotePeerConnectionOfMessageHandler:self handleId:handleId sdp:jsep[@"sdp"]];
+- (void)onPublisherRemoteJsep:(NSNumber *)handleId dict:(NSDictionary *)jsep {
+    KSMediaConnection *mc = [self.delegate peerConnectionOfMessageHandler:self handleId:handleId];
     [mc setRemoteDescriptionWithJsep:jsep];
 }
 
 // 发送候选者
-- (void)trickleCandidate:(NSNumber *)handleId candidate:(NSMutableDictionary *)candidate {
+- (void)sendCandidate:(NSDictionary *)candidate {
     NSString *transaction        = [NSString ks_randomForLength:KSRandomLength];
     NSMutableDictionary *message = [NSMutableDictionary dictionary];
     message[@"janus"]            = @"trickle";
     message[@"transaction"]      = transaction;
     message[@"session_id"]       = _sessionId;
     message[@"candidate"]        = candidate;
-    message[@"handle_id"]        = handleId;
+    message[@"handle_id"]        = _myHandleId;
     [_socket sendMessage:message];
 }
 
@@ -319,11 +273,8 @@ static int const KSRandomLength = 12;
     [_socket sendMessage:message];
 }
 
-- (void)close {
-    [_socket activeClose];
-    _socket = nil;
-    [_msgs removeAllObjects];
-    [_subscribers removeAllObjects];
+- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type {
+    
 }
 
 //KSWebSocketDelegate
@@ -331,23 +282,14 @@ static int const KSRandomLength = 12;
  连接成功
  */
 - (void)socketDidOpen:(KSWebSocket *)socket {
-    //WebRTC:01
-    [self createSession];
-    /*
-    if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidOpen:)]) {
-        [self.delegate messageHandler:self socketDidOpen:socket];
-    }
-     */
+    [self.delegate messageHandler:self socketDidOpen:_socket];
 }
 
 /**
  出现错误/连接失败时调用[如果设置自动重连，则不会调用]
  */
 - (void)socketDidFail:(KSWebSocket *)socket {
-    /*
-    if ([self.delegate respondsToSelector:@selector(messageHandler:socketDidFail:)]) {
-        [self.delegate messageHandler:self socketDidFail:socket];
-    }*/
+    [self.delegate messageHandler:self socketDidFail:_socket];
 }
 /**
  收到消息
@@ -361,14 +303,12 @@ static int const KSRandomLength = 12;
 - (void)socketReconnectionFailure:(KSWebSocket *)socket {
     
 }
-
 /**
  服务端断开
  */
 - (void)socketDidClose:(KSWebSocket *)socket {
     
 }
-
 /**
  网络变化回调
  */
@@ -376,48 +316,8 @@ static int const KSRandomLength = 12;
     
 }
 
-#pragma mark - 实际业务
-- (void)trickleCandidate:(NSMutableDictionary *)candidate {
-    NSMutableDictionary *candidates = [NSMutableDictionary dictionary];
-    candidates[@"candidate"]        = candidate[@"sdp"];//兼容作用
-    candidates[@"sdpMLineIndex"]    = candidate[@"sdpMLineIndex"];
-    candidates[@"sdpMid"]           = candidate[@"sdpMid"];
-    [self trickleCandidate:_myHandleId candidate:candidates];
-}
-
-- (void)sendPayload:(NSDictionary *)payload{}
-- (void)sendOffer{}
-- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type{}
-// 发送候选者
-- (void)sendOfferPayload:(NSDictionary *)payload{}
-- (void)sendAnswerPayload:(NSDictionary *)payload{}
-///ice更新
-- (void)sendCandidate:(NSDictionary *)candidate{}
-///呼叫
-- (void)callToPeerId:(int)peerId type:(KSCallType)type{}
-/// 响铃
-- (void)ringed{}
-///接听
-- (void)answoerOfCallType:(KSCallType)callType{}
-/////开始通话
-- (void)start{}
-///加入聊天
-- (void)joinWithOffer:(NSString *)offer{}
-///离开
-- (void)leave{}
-- (void)didReceivedMessage:(NSDictionary *)message{}
-- (void)sendOffer:(NSDictionary *)offer{}
-- (void)sendAnswer:(NSDictionary *)answer{}
-- (void)handlerRemoteJsep:(NSDictionary *)jsep{}
-//测试
-- (void)startFlag{}
-
-//新的逻辑
-- (void)callToUserid:(long long)userid{}
-- (void)answerToUserid:(long long)userid{}
-
--(KSCallType)myType {
-    return [self.delegate callTypeOfMessageHandler:self];
+- (void)close {
+    
 }
 
 @end

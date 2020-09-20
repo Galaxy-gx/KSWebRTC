@@ -625,9 +625,6 @@
     [SVProgressHUD showSuccessWithStatus:message.localizde];
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackCall:(KSAckCall *)ackCall {
-}
-
 - (void)webRTCManagerCallTimeout :(KSWebRTCManager *)webRTCManager {
     [self showMessage:@"ks_app_global_text_call_timeout"];
     [self closeCtrl];
@@ -643,114 +640,16 @@
     [self closeCtrl];
 }
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackJoined:(KSAckJoined *)ackJoined {
-    [self.topBarView showKitOfStartingTime:[KSWebRTCManager shared].startingTime];
-    [self.callView displayCallBar];
-}
 
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackStart:(KSAckStart *)ackStart {
-}
-
-//有人离开
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackLeft:(KSAckLeft *)ackLeft mediaTrack:(KSMediaTrack *)mediaTrack {
-    NSString *msg = [NSString ks_localizde:@"ks_app_global_text_user_hungup"];
-    [self showMessage:[NSString stringWithFormat:msg,[KSUserInfo userWithId:ackLeft.user_id].name]];
-    switch (self.myType) {
-        case KSCallTypeSingleVideo:
-        case KSCallTypeManyVideo:
-            [self.callView deleteItemsAtIndex:mediaTrack.index];
-            break;
-        default:
-            break;
-    }
-}
-
-//对方接听 弃用
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackAnswer:(KSAckAnswer *)answer {
-    //[self.topBarView showKitOfStartingTime:[KSWebRTCManager shared].startingTime];
-    //[self.callView displayCallBar];
-}
 
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaState:(KSMediaState)mediaState userInfo:(KSUserInfo *)userInfo {
     NSLog(@"|============| switchType : %d, userid : %lld |============|",(int)mediaState,userInfo.ID);
-}
-
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager changeMediaType:(KSChangeMediaType)mediaType userInfo:(KSUserInfo *)userInfo {
-    NSLog(@"|============| mediaType : %d, userid : %lld |============|",(int)mediaType,userInfo.ID);
-    switch (mediaType) {
-        case KSChangeMediaTypeVoice://切换到音频
-        {
-            [KSWebRTCManager switchToSingleAudio];
-            [self.callView updateSwitchOfCalltype:self.myType];
-            [self showMessage:@"ks_app_global_text_switch_to_voice_call"];
-        }
-            break;
-        case KSChangeMediaTypeVideo://切换到视频
-        {
-            [KSWebRTCManager switchToSingleVideo];
-            [self.callView updateSwitchOfCalltype:self.myType];
-            [self showMessage:@"ks_app_global_text_switch_to_video_call"];
-            //[self.callView setScreenMediaTrack:[KSWebRTCManager shared].localMediaTrack];
-            [self.callView setScreenMediaTrack:[KSWebRTCManager shared].screenMediaTrack];
-        }
-            break;
-        default:
-            break;
-    }
-    //更新
-    [_profileInfo updateDescOfCallType:self.myType isCalled:self.isCalled];
-    [self updateProfileInfo:_profileInfo];
 }
 
 //占线
 - (void)webRTCManagerLineBusy:(KSWebRTCManager *)webRTCManager userInfo:(KSUserInfo *)userInfo {
     [self showMessage:@"ks_app_global_text_subscriber_engaged"];
     [self closeRTC];
-}
-
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager requestError:(KSRequestError *)error {
-    NSLog(@"|============| 错误: %@ |============|",error.errorInfo);
-    [SVProgressHUD showErrorWithStatus:error.errorInfo];
-    [self closeRTC];
-    return;
-    
-    switch (error.type) {
-        case KSRequestTypeUnknown:
-            
-            break;
-        case KSRequestTypeNewCall:
-            
-            break;
-        case KSRequestTypeCandidate:
-            
-            break;
-        case KSRequestTypeAnswoer:
-            
-            break;
-        case KSRequestTypeRinged:
-            
-            break;
-        case KSRequestTypeStart:
-            
-            break;
-        case KSRequestTypeSendOffer:
-            
-            break;
-        case KSRequestTypeSendAnswer:
-            
-            break;
-        case KSRequestTypeLeave:
-            
-            break;
-        case KSRequestTypeRTCInfo:
-            
-            break;
-        case KSRequestTypeJoinOffer:
-            
-            break;
-        default:
-            break;
-    }
 }
 
 #pragma mark - KSCallViewDataSource

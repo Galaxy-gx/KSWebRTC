@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KSAckMessage.h"
 
 @interface KSSession : NSObject
 

@@ -13,15 +13,9 @@
 #import "KSMsg.h"
 #import "KSMessageHandler.h"
 #import "KSMediaTrack.h"
-#import "KSAckMessage.h"
 #import "KSSession.h"
 #import "KSUserInfo.h"
 #import "KSDeviceSwitch.h"
-
-typedef NS_ENUM(NSInteger, KSTestType) {
-    KSTestTypeJanus      = 1,
-    KSTestTypeSignalling = 2,
-};
 
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
@@ -36,22 +30,10 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaTrack:(KSMediaTrack *)mediaTrack;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState;
 
-//Message
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackCall:(KSAckCall *)ackCall;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackJoined:(KSAckJoined *)ackJoined;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackStart:(KSAckStart *)ackStart;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackAnswer:(KSAckAnswer *)answer;
+
 - (void)webRTCManagerCallTimeout:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManagerHandlerEnd:(KSWebRTCManager *)webRTCManager;
 - (void)webRTCManagerDisconnected:(KSWebRTCManager *)webRTCManager;
-
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackLeft:(KSAckLeft *)ackLeft mediaTrack:(KSMediaTrack *)mediaTrack;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaState:(KSMediaState)mediaState userInfo:(KSUserInfo *)userInfo;
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager changeMediaType:(KSChangeMediaType)mediaType userInfo:(KSUserInfo *)userInfo;//调用代理前修改callType
-- (void)webRTCManagerLineBusy:(KSWebRTCManager *)webRTCManager userInfo:(KSUserInfo *)userInfo;//通话中
-
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager requestError:(KSRequestError *)error;
-//- (void)webRTCManager:(KSWebRTCManager *)webRTCManager ackDecline:(KSAckDecline *)ackDecline;
 
 @end
 
@@ -72,7 +54,6 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 @property (nonatomic, strong          ) KSSession              *session;
 @property (nonatomic, assign, readonly) long long              peerId;
 @property (nonatomic, assign, readonly) BOOL                   isCalled;
-@property (nonatomic, assign          ) KSTestType             testType;
 + (instancetype)shared;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
 
@@ -102,9 +83,6 @@ typedef NS_ENUM(NSInteger, KSTestType) {
 + (void)socketCreateSession;
 + (void)sendOffer;
 + (void)socketSendHangup;
-
-//Message
-+ (void)didReceivedMessage:(NSDictionary *)message;
 
 //显示小窗
 + (void)displayTile;
