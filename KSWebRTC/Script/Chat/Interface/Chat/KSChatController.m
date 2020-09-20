@@ -181,6 +181,7 @@
         case KSCallStateMaintenanceAnswoer:
         case KSCallStateMaintenanceRecording://通话中
         {
+            [KSWebRTCManager updateStartingTime];//测试用
             [self updateCalleeAnswerKit];
             [self callLayout];
         }

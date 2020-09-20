@@ -392,6 +392,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 //业务消息
 + (void)joinRoom:(int)room {
+    [KSWebRTCManager shared].session.room = room;
     [[KSWebRTCManager shared].msgHandler joinRoom:room];
 }
 

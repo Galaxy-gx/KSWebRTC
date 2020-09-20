@@ -60,8 +60,6 @@
 		E66C2C11250A338D00153CD7 /* KSCoolTile.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B55250A338D00153CD7 /* KSCoolTile.m */; };
 		E66C2C12250A338D00153CD7 /* KSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B5B250A338D00153CD7 /* KSNotification.m */; };
 		E66C2C13250A338D00153CD7 /* KSMessageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */; };
-		E66C2C14250A338D00153CD7 /* AckCall.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B60250A338D00153CD7 /* AckCall.md */; };
-		E66C2C15250A338D00153CD7 /* AckJoined.md in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B61250A338D00153CD7 /* AckJoined.md */; };
 		E66C2C17250A338D00153CD7 /* KSMsg.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B65250A338D00153CD7 /* KSMsg.m */; };
 		E66C2C18250A338D00153CD7 /* KSUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E66C2B67250A338D00153CD7 /* KSUserInfo.m */; };
 		E66C2C19250A338D00153CD7 /* mozart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E66C2B6A250A338D00153CD7 /* mozart.mp3 */; };
@@ -246,8 +244,6 @@
 		E66C2B5B250A338D00153CD7 /* KSNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSNotification.m; sourceTree = "<group>"; };
 		E66C2B5D250A338D00153CD7 /* KSMessageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMessageHandler.h; sourceTree = "<group>"; };
 		E66C2B5E250A338D00153CD7 /* KSMessageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMessageHandler.m; sourceTree = "<group>"; };
-		E66C2B60250A338D00153CD7 /* AckCall.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckCall.md; sourceTree = "<group>"; };
-		E66C2B61250A338D00153CD7 /* AckJoined.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = AckJoined.md; sourceTree = "<group>"; };
 		E66C2B64250A338D00153CD7 /* KSMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSMsg.h; sourceTree = "<group>"; };
 		E66C2B65250A338D00153CD7 /* KSMsg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSMsg.m; sourceTree = "<group>"; };
 		E66C2B66250A338D00153CD7 /* KSUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSUserInfo.h; sourceTree = "<group>"; };
@@ -731,8 +727,6 @@
 		E66C2B5F250A338D00153CD7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E66C2B60250A338D00153CD7 /* AckCall.md */,
-				E66C2B61250A338D00153CD7 /* AckJoined.md */,
 				E66C2B64250A338D00153CD7 /* KSMsg.h */,
 				E66C2B65250A338D00153CD7 /* KSMsg.m */,
 				E66C2B66250A338D00153CD7 /* KSUserInfo.h */,
@@ -1089,10 +1083,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66C2C14250A338D00153CD7 /* AckCall.md in Resources */,
 				E66C2C0D250A338D00153CD7 /* SVProgressHUD.bundle in Resources */,
 				E6400F4024B85080004C7060 /* LaunchScreen.storyboard in Resources */,
-				E66C2C15250A338D00153CD7 /* AckJoined.md in Resources */,
 				E6E1E6B324E9444300536FBB /* Localizable.strings in Resources */,
 				E66C2C19250A338D00153CD7 /* mozart.mp3 in Resources */,
 				E6400F3D24B85080004C7060 /* Assets.xcassets in Resources */,

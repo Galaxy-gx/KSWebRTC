@@ -77,6 +77,9 @@
 + (KSMediaTrack *)mediaTrackOfIndex:(NSInteger)index;
 + (void)close;
 
+//Other
++ (void)updateStartingTime;
+
 //Socket
 + (void)socketConnectServer:(NSString *)server;
 + (void)socketClose;

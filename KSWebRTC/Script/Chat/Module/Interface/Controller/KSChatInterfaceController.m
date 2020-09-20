@@ -212,7 +212,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)callWithType:(KSCallType)type {
     int room = 1234;
-    [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:YES room:room target:self];
+    [KSChatController callWithType:type callState:KSCallStateMaintenanceRecording isCaller:YES room:room target:self];
     /*
     KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
                                                     title:nil
