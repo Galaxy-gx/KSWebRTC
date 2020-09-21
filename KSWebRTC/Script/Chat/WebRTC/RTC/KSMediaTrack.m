@@ -35,14 +35,24 @@
     }
 }
 
--(KSCallType)myType {
+- (void)close {
+    [self clearRenderer];
+    _dataSource     = nil;
+    _delegate       = nil;
+    _videoTrack     = nil;
+    _audioTrack     = nil;
+    [_peerConnection closeConnection];
+    _peerConnection = nil;
+}
+
+- (KSCallType)myType {
     if ([self.dataSource respondsToSelector:@selector(callTypeOfMediaTrack:)]) {
         return [self.dataSource callTypeOfMediaTrack:self];
     }
     return KSCallTypeSingleVideo;
 }
 
--(void)setMyType:(KSCallType)myType {
+- (void)setMyType:(KSCallType)myType {
 }
 
 @end

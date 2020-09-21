@@ -26,12 +26,14 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 };
 
 @interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
-@property (nonatomic, strong) KSMessageHandler   *msgHandler;
-@property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
-@property (nonatomic, strong) NSMutableArray     *mediaTracks;
-@property (nonatomic, strong) KSTimekeeper       *timekeeper;
-@property (nonatomic, strong) KSCoolTile         *coolTile;
-@property (nonatomic, strong) KSAudioPlayer      *audioPlayer;
+@property (nonatomic, strong) KSMessageHandler *msgHandler;
+@property (nonatomic, strong) KSMediaCapturer  *mediaCapturer;
+@property (nonatomic, weak  ) KSMediaTrack     *localMediaTrack;
+@property (nonatomic, strong) KSMediaSetting   *mediaSetting;
+@property (nonatomic, strong) NSMutableArray   *mediaTracks;
+@property (nonatomic, strong) KSTimekeeper     *timekeeper;
+@property (nonatomic, strong) KSCoolTile       *coolTile;
+@property (nonatomic, strong) KSAudioPlayer    *audioPlayer;
 @end
 
 @implementation KSWebRTCManager
@@ -49,6 +51,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 - (void)initManager {
     _msgHandler          = [[KSMessageHandler alloc] init];
     _msgHandler.delegate = self;
+    //程序退出
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)
                                                  name:KS_NotificationName_ApplicationWillTerminate
@@ -192,22 +195,22 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     
     if (_callType == KSCallTypeSingleAudio || _callType == KSCallTypeManyAudio) {
         if([track.kind isEqualToString:kRTCMediaStreamTrackKindAudio]) {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfHandleId:mediaConnection.handleId];
-            __weak typeof(self) weakSelf = self;
+            KSMediaTrack *mediaTrack        = [self mediaTrackOfHandleId:mediaConnection.handleId];
+            RTCAudioTrack *remoteAudioTrack = (RTCAudioTrack*)track;
+            mediaTrack.audioTrack           = remoteAudioTrack;
+            __weak typeof(self) weakSelf    = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                RTCAudioTrack *remoteAudioTrack = (RTCAudioTrack*)track;
-                mediaTrack.audioTrack           = remoteAudioTrack;
                 [weakSelf callbackMediaTrack:mediaTrack];
             });
         }
     }
     else if (_callType == KSCallTypeSingleVideo || _callType == KSCallTypeManyVideo) {
         if([track.kind isEqualToString:kRTCMediaStreamTrackKindVideo]) {
-            KSMediaTrack *mediaTrack = [self mediaTrackOfHandleId:mediaConnection.handleId];
-            __weak typeof(self) weakSelf = self;
+            KSMediaTrack *mediaTrack        = [self mediaTrackOfHandleId:mediaConnection.handleId];
+            RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
+            mediaTrack.videoTrack           = remoteVideoTrack;
+            __weak typeof(self) weakSelf    = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                RTCVideoTrack *remoteVideoTrack = (RTCVideoTrack*)track;
-                mediaTrack.videoTrack           = remoteVideoTrack;
                 [weakSelf callbackMediaTrack:mediaTrack];
             });
         }
@@ -224,7 +227,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 - (void)mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState jseps:(NSMutableDictionary *)jseps {
-    if ([KSWebRTCManager shared].callState != KSCallStateMaintenanceRecording) {//非连接状态不处理
+    if ([KSWebRTCManager shared].callState != KSCallStateMaintenanceRecording) {//非通话状态不处理
         return;
     }
     switch (newState) {
@@ -246,10 +249,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 #pragma mark - Get
-- (AVCaptureSession *)captureSession {
-    return self.mediaCapturer.capturer.captureSession;
-}
-
 -(BOOL)isCalled {
     return self.session.isCalled;
 }
@@ -478,11 +477,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 #pragma mark - 关闭
 - (void)close {
     for (KSMediaTrack *mediaTrack in _mediaTracks) {
-        mediaTrack.delegate       = nil;
-        mediaTrack.dataSource     = nil;
-        [mediaTrack clearRenderer];
-        [mediaTrack.peerConnection closeConnection];
-        mediaTrack.peerConnection = nil;
+        [mediaTrack close];
     }
     [_mediaTracks removeAllObjects];
     

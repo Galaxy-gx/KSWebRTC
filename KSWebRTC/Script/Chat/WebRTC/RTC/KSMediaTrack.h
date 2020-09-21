@@ -37,6 +37,6 @@
 
 - (void)addRenderer:(UIView<RTCVideoRenderer> *)renderer;
 - (void)clearRenderer;
-
+- (void)close;
 @end
 

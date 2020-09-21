@@ -11,7 +11,6 @@
 //Configure
 #import "KSConfigure.h"
 #import "KSBlock.h"
-
 //ViewModel
 #import "KSTileLayout.h"
 #import "KSProfileInfo.h"
@@ -19,7 +18,6 @@
 //Kit
 #import "KSTileMediaView.h"
 #import "KSMediaTrack.h"
-
 
 @class KSCallView;
 @protocol KSCallViewDataSource <NSObject>

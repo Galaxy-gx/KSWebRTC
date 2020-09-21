@@ -40,13 +40,9 @@
 @interface KSWebRTCManager : NSObject
 
 @property (nonatomic, weak)id<KSWebRTCManagerDelegate>         delegate;
-@property (nonatomic, weak, readonly  ) AVCaptureSession       *captureSession;
-@property (nonatomic, weak            ) KSMediaTrack           *localMediaTrack;
 @property (nonatomic, assign, readonly) int                    mediaTrackCount;
-@property (nonatomic, strong          ) KSMediaSetting         *mediaSetting;
 @property (nonatomic, assign          ) KSCallType             callType;
 @property (nonatomic, assign          ) KSCallStateMaintenance callState;
-@property (nonatomic, assign          ) BOOL                   isRemote;
 @property (nonatomic, assign          ) int                    startingTime;
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *screenMediaTrack;
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *tileMediaTrack;

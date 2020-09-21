@@ -9,8 +9,4 @@
 
 @implementation KSSession
 
-//-(NSString *)to {
-//    return [NSString stringWithFormat:@"%lld",_peerId];
-//}
-
 @end
