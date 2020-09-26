@@ -59,3 +59,5 @@ UIKIT_EXTERN int const KS_Extern_Point120;
 UIKIT_EXTERN int const KS_Extern_Point150;
 UIKIT_EXTERN int const KS_Extern_Point200;
 
+UIKIT_EXTERN NSString *const KS_Extern_Signaling_Server;
+UIKIT_EXTERN NSString *const KS_Extern_Message_Server;

@@ -1,5 +1,8 @@
 # KSWebRTC
 iOS 音视频通讯项目
 
-第一阶段：
-iOS客户端采用WebRTC.framework实现多人音视频通讯功能
+服务端采用Janus + KSMessageServer
+1、Janus负责信令交互
+2、KSMessageServer负责逻辑消息处理
+
+Janus MAC服务端搭建 参考官网或https://www.jianshu.com/p/c3b3b817d31b

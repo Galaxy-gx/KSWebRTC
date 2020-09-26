@@ -25,15 +25,16 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     KSChangeMediaTypeVideo   = 2,
 };
 
-@interface KSWebRTCManager()<KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
-@property (nonatomic, strong) KSMessageHandler *msgHandler;
-@property (nonatomic, strong) KSMediaCapturer  *mediaCapturer;
-@property (nonatomic, weak  ) KSMediaTrack     *localMediaTrack;
-@property (nonatomic, strong) KSMediaSetting   *mediaSetting;
-@property (nonatomic, strong) NSMutableArray   *mediaTracks;
-@property (nonatomic, strong) KSTimekeeper     *timekeeper;
-@property (nonatomic, strong) KSCoolTile       *coolTile;
-@property (nonatomic, strong) KSAudioPlayer    *audioPlayer;
+@interface KSWebRTCManager()<KSSignalingHandlerDelegate,KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
+@property (nonatomic, strong) KSSignalingHandler *signalingHandler;
+@property (nonatomic, strong) KSMessageHandler   *messageHandler;
+@property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
+@property (nonatomic, weak  ) KSMediaTrack       *localMediaTrack;
+@property (nonatomic, strong) KSMediaSetting     *mediaSetting;
+@property (nonatomic, strong) NSMutableArray     *mediaTracks;
+@property (nonatomic, strong) KSTimekeeper       *timekeeper;
+@property (nonatomic, strong) KSCoolTile         *coolTile;
+@property (nonatomic, strong) KSAudioPlayer      *audioPlayer;
 @end
 
 @implementation KSWebRTCManager
@@ -49,8 +50,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 - (void)initManager {
-    _msgHandler          = [[KSMessageHandler alloc] init];
-    _msgHandler.delegate = self;
     //程序退出
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillTerminate:)
@@ -117,30 +116,70 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     return peerConnection;
 }
 
-#pragma mark - KSMessageHandlerDelegate 调试
-- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+#pragma mark - KSSignalingHandlerDelegate
+- (KSMediaConnection *)localPeerConnectionOfSignalingHandler:(KSSignalingHandler *)signalingHandler handleId:(NSNumber *)handleId {
     self.localMediaTrack.peerConnection.handleId = [handleId longLongValue];
     return self.localMediaTrack.peerConnection;
 }
 
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId {
+- (KSMediaConnection *)peerConnectionOfSignalingHandler:(KSSignalingHandler *)signalingHandler handleId:(NSNumber *)handleId {
     return [self mediaTrackOfHandleId:[handleId longLongValue]].peerConnection;
 }
 
+- (KSCallType)callTypeOfSignalingHandler:(KSSignalingHandler *)signalingHandler {
+    return _callType;
+}
+
+- (void)signalingHandler:(KSSignalingHandler *)signalingHandler socketDidOpen:(KSWebSocket *)socket {
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:signalingHandler:socketDidOpen:)]) {
+        [self.delegate webRTCManager:self signalingHandler:signalingHandler socketDidOpen:socket];
+    }
+}
+
+- (void)signalingHandler:(KSSignalingHandler *)signalingHandler socketDidFail:(KSWebSocket *)socket {
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:signalingHandler:socketDidFail:)]) {
+        [self.delegate webRTCManager:self signalingHandler:signalingHandler socketDidFail:socket];
+    }
+}
+
+- (void)signalingHandler:(KSSignalingHandler *)signalingHandler requestError:(KSMsg *)message {
+    //错误处理
+}
+#pragma mark - KSMessageHandlerDelegate
 - (KSCallType)callTypeOfMessageHandler:(KSMessageHandler *)messageHandler {
     return _callType;
 }
 
-- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket {
-    if ([self.delegate respondsToSelector:@selector(webRTCManagerSocketDidOpen:)]) {
-        [self.delegate webRTCManagerSocketDidOpen:self];
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message {
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:messageHandler:didReceivedMessage:)]) {
+        [self.delegate webRTCManager:self messageHandler:messageHandler didReceivedMessage:message];
+    }
+    switch (message.type) {
+        case KSMsgTypeCall:
+        {
+            KSCall *call          = ((KSCall *)message);
+            self.callState        = KSCallStateMaintenanceRinger;
+            self.callType         = call.callType;
+            self.session.isCalled = YES;
+            self.session.room     = call.body.room;
+            [self enterChat];
+        }
+            break;
+        case KSMsgTypeAnswer:
+            
+            break;
+            
+        default:
+            break;
     }
 }
 
-- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket {
-    if ([self.delegate respondsToSelector:@selector(webRTCManagerSocketDidFail:)]) {
-        [self.delegate webRTCManagerSocketDidFail:self];
-    }
+- (void)messageHandler:(KSMessageHandler *)messageHandler call:(KSCall *)call {
+    
+}
+
+- (void)messageHandler:(KSMessageHandler *)messageHandler answer:(KSAnswer *)answer {
+    
 }
 
 #pragma mark - KSMediaCapturerDelegate
@@ -181,7 +220,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
         body[@"candidate"]     = candidate.sdp;
         body[@"sdpMid"]        = candidate.sdpMid;
         body[@"sdpMLineIndex"] = @(candidate.sdpMLineIndex);
-        [_msgHandler sendCandidate:body];
+        [_signalingHandler sendCandidate:body];
     }
 }
 
@@ -273,7 +312,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)openVideo {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"switch_type"]      = @(KSMediaStateUnmuteVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"switch"];
 }
 
 + (void)stopCapture {
@@ -286,7 +325,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)closeVideo {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"switch_type"]      = @(KSMediaStateMuteVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"switch"];
 }
 
 + (void)speakerOff {
@@ -307,7 +346,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)closeVoice {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"switch_type"]      = @(KSMediaStateMuteAudio);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"switch"];
 }
 
 + (void)unmuteAudio {
@@ -320,7 +359,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)openVoice {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"switch_type"]      = @(KSMediaStateUnmuteAudio);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"switch"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"switch"];
 }
 
 + (void)switchToSingleVideo {
@@ -357,36 +396,52 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)switchToVideoCall {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"media_type"]       = @(KSChangeMediaTypeVideo);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"change_media"];
 }
 
 //切换到语音通话
 + (void)switchToVoiceCall {
     NSMutableDictionary *media = [NSMutableDictionary dictionary];
     media[@"media_type"]       = @(KSChangeMediaTypeVoice);
-    [[KSWebRTCManager shared].msgHandler sendMessage:media type:@"change_media"];
+    [[KSWebRTCManager shared].signalingHandler sendMessage:media type:@"change_media"];
 }
 
+#pragma mark - KSSignalingHandler
+- (void)createSignalingHandler {
+    _signalingHandler          = [[KSSignalingHandler alloc] init];
+    _signalingHandler.delegate = self;
+}
 
-#pragma mark - Socket消息
-+ (void)socketConnectServer:(NSString *)server {
-    [[KSWebRTCManager shared].msgHandler connectServer:server];
++ (void)connectToSignalingServer:(NSString *)server room:(int)room {
+    [[KSWebRTCManager shared] createSignalingHandler];
+
+    [KSWebRTCManager shared].session.room     = room;
+    [[KSWebRTCManager shared].signalingHandler setRoomMumber:room];
+    [[KSWebRTCManager shared].signalingHandler connectServer:server];
 }
 
 + (void)socketClose {
-    [[KSWebRTCManager shared].msgHandler close];
+    [[KSWebRTCManager shared].signalingHandler close];
 }
 
 + (void)requestLeave {
     //离开逻辑
 }
-
-//业务消息
-+ (void)joinRoom:(int)room {
-    [KSWebRTCManager shared].session.room = room;
-    [[KSWebRTCManager shared].msgHandler joinRoom:room];
+#pragma mark - KSMessageHandler
+- (void)createMessageHandler {
+    _messageHandler          = [[KSMessageHandler alloc] init];
+    _messageHandler.delegate = self;
 }
 
++ (void)connectToMessageServer:(NSString *)server user:(KSUserInfo *)user {
+    [[KSWebRTCManager shared] createMessageHandler];
+    [KSWebRTCManager shared].messageHandler.user = user;
+    [[KSWebRTCManager shared].messageHandler connectServer:server];
+}
+
++ (void)callToUserId:(long long)userId room:(int)room {
+    [[KSWebRTCManager shared].messageHandler callToUserId:userId room:room];
+}
 #pragma mark - KSMediaTrack管理
 + (void)clearAllRenderer {
     for (KSMediaTrack *videoTrack in [KSWebRTCManager shared].mediaTracks) {
@@ -606,7 +661,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 #pragma mark - 进入通话页面
 - (void)enterChat {
     UIViewController *targetCtrl = [UIViewController currentViewController];
-    [KSChatController callWithType:self.callType callState:self.callState isCaller:NO room:self.session.room target:targetCtrl];
+    [KSChatController callWithType:self.callType callState:self.callState isCalled:self.session.isCalled room:self.session.room target:targetCtrl];
 }
 
 @end

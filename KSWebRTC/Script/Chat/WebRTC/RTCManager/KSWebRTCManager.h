@@ -11,30 +11,28 @@
 #import "KSMediaConnection.h"
 #import "KSCallState.h"
 #import "KSMsg.h"
+#import "KSSignalingHandler.h"
 #import "KSMessageHandler.h"
 #import "KSMediaTrack.h"
 #import "KSSession.h"
 #import "KSUserInfo.h"
 #import "KSDeviceSwitch.h"
-
+#import "KSLogicMsg.h"
 @class KSWebRTCManager;
 @protocol KSWebRTCManagerDelegate <NSObject>
 @optional
+//KSSignalingHandler
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler socketDidOpen:(KSWebSocket *)socket;
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler socketDidFail:(KSWebSocket *)socket;
+//- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler requestError:(KSMsg *)message;
+//- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler didReceivedMessage:(KSMsg *)message;
 
-//测试
-- (void)webRTCManager:(KSWebRTCManager *)webRTCManager didReceivedMessage:(KSMsg *)message;
-- (void)webRTCManagerSocketDidOpen:(KSWebRTCManager *)webRTCManager;
-- (void)webRTCManagerSocketDidFail:(KSWebRTCManager *)webRTCManager;
+//KSMessageHandler
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message;
 
 //KSMediaConnection
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaTrack:(KSMediaTrack *)mediaTrack;
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState;
-
-
-- (void)webRTCManagerCallTimeout:(KSWebRTCManager *)webRTCManager;
-- (void)webRTCManagerHandlerEnd:(KSWebRTCManager *)webRTCManager;
-- (void)webRTCManagerDisconnected:(KSWebRTCManager *)webRTCManager;
-
 @end
 
 @interface KSWebRTCManager : NSObject
@@ -48,7 +46,7 @@
 @property (nonatomic, weak, readonly  ) KSMediaTrack           *tileMediaTrack;
 @property (nonatomic, strong          ) KSDeviceSwitch         *deviceSwitch;
 @property (nonatomic, strong          ) KSSession              *session;
-@property (nonatomic, assign, readonly) BOOL                   isCalled;
+@property (nonatomic, assign, readonly) BOOL                   isCalled;//是否是被叫
 @property (nonatomic, assign          ) long long              callerId;
 + (instancetype)shared;
 + (void)initRTCWithMediaSetting:(KSMediaSetting *)mediaSetting;
@@ -76,13 +74,13 @@
 //Other
 + (void)updateStartingTime;
 
-//Socket
-+ (void)socketConnectServer:(NSString *)server;
-+ (void)socketClose;
+//Signaling Socket
++ (void)connectToSignalingServer:(NSString *)server room:(int)room;
 + (void)requestLeave;
-//业务消息
-+ (void)joinRoom:(int)room;
 
+//Message Socket
++ (void)connectToMessageServer:(NSString *)server user:(KSUserInfo *)user;
++ (void)callToUserId:(long long)userId room:(int)room;
 //显示小窗
 + (void)displayTile;
 

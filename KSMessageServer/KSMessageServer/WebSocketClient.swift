@@ -1,12 +1,10 @@
 //
 //  WebSocketClient.swift
-//  SignalingServer
+//  KSMessageServer
 //
-//  Created by Sam on 2020/5/11.
-//  Copyright © 2020 AP-EC. All rights reserved.
+//  Created by saeipi on 2020/9/26.
+//  Copyright © 2020 saeipi. All rights reserved.
 //
-
-//检测到的客户端的对象
 
 import Foundation
 import Network
@@ -16,6 +14,7 @@ final class WebSocketClient: Hashable, Equatable {//继承哈希协议, 才能�
     let id: String
     let connection: NWConnection
     var user_id: Int = 0
+    var user_name: String = ""
         
     init(connection: NWConnection) {
         self.connection = connection

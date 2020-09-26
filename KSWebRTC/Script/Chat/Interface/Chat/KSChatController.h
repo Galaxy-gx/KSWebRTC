@@ -14,9 +14,9 @@
 /// 进入通话页面
 /// @param type 通话类型
 /// @param callState 通话状态
-/// @param isCaller 是否创建呼叫（主叫）
+/// @param isCalled 是否是(被叫)
 /// @param room 房间号
-/// @param target 跳转控制器
-+ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller room:(int)room target:(UIViewController *)target;
+/// @param target  跳转控制器
++ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCalled:(BOOL)isCalled room:(int)room target:(UIViewController *)target;
 
 @end

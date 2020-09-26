@@ -27,7 +27,7 @@
 
 @property (nonatomic, assign, readonly) KSCallType myType;
 @property (nonatomic, assign, readonly ) long long callerId;//呼叫者ID
-@property (nonatomic, assign, readonly ) BOOL      isCalled;//是否是被叫
+@property (nonatomic, assign, readonly ) BOOL      isCalled;//是否是主叫
 
 @end
 
@@ -44,13 +44,13 @@
     [self kitLogic];
 }
 
-/// 进入通话页面
-/// @param type 通话类型
-/// @param callState 通话状态
-/// @param isCaller 是否创建呼叫（主叫）
-/// @param room 房间号
-/// @param target 跳转控制器
-+ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCaller:(BOOL)isCaller room:(int)room target:(UIViewController *)target {
+ /// 进入通话页面
+ /// @param type 通话类型
+ /// @param callState 通话状态
+ /// @param isCalled 是否是(被叫)
+ /// @param room 房间号
+ /// @param target  跳转控制器
+ + (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCalled:(BOOL)isCalled room:(int)room target:(UIViewController *)target {
     //01 更新状态
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
@@ -87,7 +87,7 @@
         [KSWebRTCManager joinRoom:room];
     }*/
     //04 加入房间
-    [KSWebRTCManager joinRoom:room];
+    [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
     //05 进入通话页面
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
@@ -607,8 +607,6 @@
     [self closeCtrl];
 }
 
-
-
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaState:(KSMediaState)mediaState userInfo:(KSUserInfo *)userInfo {
     NSLog(@"|============| switchType : %d, userid : %lld |============|",(int)mediaState,userInfo.ID);
 }
@@ -618,6 +616,22 @@
     [self showMessage:@"ks_app_global_text_subscriber_engaged"];
     [self closeRTC];
 }
+
+#pragma mark - KSMessageHandler Message
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message {
+    switch (message.type) {
+        case KSMsgTypeCall:
+            
+            break;
+        case KSMsgTypeAnswer:
+            
+            break;
+            
+        default:
+            break;
+    }
+}
+
 
 #pragma mark - KSCallViewDataSource
 - (NSInteger)callView:(KSCallView *)callView numberOfItemsInSection:(NSInteger)section {

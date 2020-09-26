@@ -2,58 +2,29 @@
 //  KSMessageHandler.h
 //  KSWebRTC
 //
-//  Created by saeipi on 2020/7/10.
+//  Created by saeipi on 2020/9/26.
 //  Copyright © 2020 saeipi. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <WebRTC/WebRTC.h>
-#import "KSCallState.h"
-#import "KSMediaConnection.h"
 #import "KSWebSocket.h"
-#import "KSMediaTrack.h"
+#import "KSLogicMsg.h"
 #import "KSUserInfo.h"
-#import "KSMsg.h"
-
-@class KSMsg;
 @class KSMessageHandler;
-@class KSMediaCapturer;
-@class KSDetached;
-
-typedef NS_ENUM(NSInteger, KSActionType) {
-    KSActionTypeUnknown,
-    KSActionTypeCreateSession,
-    KSActionTypePluginBinding,
-    KSActionTypePluginBindingSubscriber,
-    KSActionTypeCreateRoom,
-    KSActionTypeJoinRoom,
-    KSActionTypeConfigureRoom,
-    KSActionTypeSubscriber,
-    KSActionTypeStart,
-};
-
 @protocol KSMessageHandlerDelegate<NSObject>
-@required
-- (KSMediaConnection *)localPeerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
-- (KSMediaConnection *)peerConnectionOfMessageHandler:(KSMessageHandler *)messageHandler handleId:(NSNumber *)handleId;
 - (KSCallType)callTypeOfMessageHandler:(KSMessageHandler *)messageHandler;
-- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidOpen:(KSWebSocket *)socket;
-- (void)messageHandler:(KSMessageHandler *)messageHandler socketDidFail:(KSWebSocket *)socket;
+@optional
+- (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message;
 @end
 
-@interface KSMessageHandler : NSObject<KSWebSocketDelegate>
-
+@interface KSMessageHandler : NSObject
 @property (nonatomic, weak)id<KSMessageHandlerDelegate> delegate;
 @property (nonatomic,strong ) KSWebSocket *socket;
 @property (nonatomic,assign ) KSCallType  myType;
+@property (nonatomic,strong ) KSUserInfo  *user;
 
 - (void)connectServer:(NSString *)url;
-
-//创建会话
-//- (void)createSession;
-- (void)joinRoom:(int)room;
-- (void)sendMessage:(NSMutableDictionary *)message type:(NSString *)type;
-- (void)sendCandidate:(NSMutableDictionary *)candidate;
-- (void)close;
+- (void)callToUserId:(long long)userId room:(int)room;
+- (void)answerToUserId:(long long)userId;
 
 @end

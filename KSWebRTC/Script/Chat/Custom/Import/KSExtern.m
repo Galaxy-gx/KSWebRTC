@@ -56,3 +56,7 @@ int const KS_Extern_Point100                         = 100;
 int const KS_Extern_Point120                         = 120;
 int const KS_Extern_Point150                         = 150;
 int const KS_Extern_Point200                         = 200;
+
+
+NSString *const KS_Extern_Signaling_Server = @"ws://10.0.115.144:8188";
+NSString *const KS_Extern_Message_Server   = @"ws://10.0.115.144:6080";

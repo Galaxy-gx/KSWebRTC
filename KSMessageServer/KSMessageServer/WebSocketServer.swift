@@ -1,12 +1,10 @@
 //
 //  WebSocketServer.swift
-//  SignalingServer
+//  KSMessageServer
 //
-//  Created by Sam on 2020/5/11.
-//  Copyright © 2020 AP-EC. All rights reserved.
+//  Created by saeipi on 2020/9/26.
+//  Copyright © 2020 saeipi. All rights reserved.
 //
-
-//本机开启的服务器对象
 
 import Foundation
 import Network
@@ -37,7 +35,7 @@ final class WebSocketServer {
         self.listener.newConnectionHandler = self.newConnectionHandler
         //开启后台服务监听
         self.listener.start(queue: queue)
-        print("信令服务器开始监听端口 \(self.port)")
+        print("消息服务器开始监听端口 \(self.port)")
     }
     
     // MARK:- 接收到一个新的client的处理方法
@@ -79,30 +77,40 @@ final class WebSocketServer {
             } catch {
             }
             
-            guard let _message = message else { return }
+            guard var _message = message else { return }
             if (_message["register"] as? String) != nil {
                 //客户端连接成功后进行注册
-                client.user_id = (_message["user_id"] as? Int) ?? 0
+                client.user_id   = (_message["user_id"] as? Int) ?? 0
+                client.user_name = (_message["user_name"] as? String) ?? ""
+                var users:[[String : Any]] = [[String : Any]]()
+                for item in self.connectedClients {
+                    let user = ["user_id":item.user_id,"user_name":item.user_name] as [String : Any]
+                    users.append(user);
+                }
+                _message["users"] = users;
             }
-            
             var relay: Int = 0;
             if let _relay  = _message["relay"] as? Int {
                 relay = _relay;
             }
             
-            if relay == 2 {//指定转发
-                if let user_id = _message["user_id"] as? Int {
-                    let targets = self.connectedClients.filter { $0.user_id == user_id }
-                    self.broadcast(data: data, to: targets)
-                }
-            }
-            else if relay == 1 {//全部转发
+            if relay == 1 {//广播（自己当前客户端）
                 let otherClients = self.connectedClients.filter { $0 != client }//能用这个语法是因为实现了equal协议
                 //把这个客户端发过来的数据转发给其他client
                 self.broadcast(data: data, to: otherClients)
             }
+            else if relay == 2 {//指定转发
+                if let user_id = _message["target"] as? Int {
+                    let targets = self.connectedClients.filter { $0.user_id == user_id }
+                    self.broadcast(data: data, to: targets)
+                }
+            }
+            else if relay == 3 {//全部
+                if let msg_data = try? JSONSerialization.data(withJSONObject: _message, options: []) {
+                    self.broadcast(data: msg_data, to: self.connectedClients)
+                }
+            }
         }
-        
         //继续接收消息
         client.connection.receiveMessage { [weak self] (data, context, isComplete, error) in
             self?.didReceiveMessage(from: client, data: data, context: context, error: error)

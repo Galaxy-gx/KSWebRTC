@@ -7,67 +7,23 @@
 //
 
 #import "KSChatInterfaceController.h"
-#import "KSCallBarView.h"
-#import "KSTopBarView.h"
-#import "KSAnswerBarView.h"
-#import "KSProfileView.h"
-#import "KSMeetingThemeView.h"
-#import "KSTileMediaView.h"
-#import "KSWaitingAnswersGroupView.h"
-#import "KSLayoutButton.h"
-#import "KSCoolHUB.h"
-#import "KSSuperController+Category.h"
-#import "UIButton+Category.h"
-#import "UIColor+Category.h"
-#import "UIFont+Category.h"
 #import "KSWebRTCManager.h"
 #import "KSTableViewCell.h"
-#import "KSCollectionViewCell.h"
 #import "KSChatController.h"
 #import "KSAlertController.h"
-@interface KSChatMenu : NSObject
-@property(nonatomic,assign)KSCallType callType;
-@property(nonatomic,copy)NSString *title;
-+ (NSMutableArray *)chatMenus;
-@end
-
-@implementation KSChatMenu
-+ (NSMutableArray *)chatMenus {
-    NSMutableArray *array = [NSMutableArray array];
-    KSChatMenu *cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeSingleAudio;
-    cm.title = @"KSCallTypeSingleAudio";
-    [array addObject:cm];
-    
-    cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeManyAudio;
-    cm.title = @"KSCallTypeManyAudio";
-    [array addObject:cm];
-    
-    cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeSingleVideo;
-    cm.title = @"KSCallTypeSingleVideo";
-    [array addObject:cm];
-    
-    cm = [[KSChatMenu alloc] init];
-    cm.callType = KSCallTypeManyVideo;
-    cm.title = @"KSCallTypeManyVideo";
-    [array addObject:cm];
-    return array;
-}
-@end
-
-@interface KSChatInterfaceController ()<UITableViewDelegate,
+#import "KSLogicMsg.h"
+#import "UILabel+Category.h"
+#import "UIColor+Category.h"
+#import "UIFont+Category.h"
+@interface KSChatInterfaceController ()<
+UITableViewDelegate,
 UITableViewDataSource,
-UICollectionViewDataSource,
-UICollectionViewDelegate>
+KSWebRTCManagerDelegate>
 
-@property (nonatomic,weak  ) KSCoolHUB        *coolHUB;
-@property (nonatomic,strong) NSMutableArray   *chatMenus;
-@property (nonatomic,weak  ) UITableView      *tableView;
-@property (nonatomic,weak  ) UICollectionView *collectionView;
-@property (nonatomic,assign) BOOL             isCollection;
-
+@property (nonatomic,strong) NSMutableArray *users;
+@property (nonatomic,weak  ) UITableView    *tableView;
+@property (nonatomic,weak  ) UILabel        *titleLabel;
+@property (nonatomic,strong) KSUserInfo     *mySelf;
 @end
 
 static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
@@ -75,56 +31,26 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor               = [UIColor whiteColor];
-    _chatMenus                              = [KSChatMenu chatMenus];
-    _isCollection                           = YES;
-    if (_isCollection) {
-        [self initCollectionView];
-    }
-    else{
-        [self initTableView];
-    }
-
-    UIBarButtonItem *addBarItem             = [[UIBarButtonItem alloc] initWithTitle:@"添加" style:UIBarButtonItemStylePlain target:self action:@selector(onAddClick)];
-    UIBarButtonItem *deleteBarItem          = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteClick)];
-    self.navigationItem.rightBarButtonItems = @[addBarItem,deleteBarItem];
-
-    [KSWebRTCManager socketConnectServer:@"ws://10.0.115.144:8188"];
+    self.view.backgroundColor         = [UIColor whiteColor];
+    [self initKits];
+    
+    _mySelf                           = [KSUserInfo myself];
+    [KSWebRTCManager shared].delegate = self;
+    [KSWebRTCManager connectToMessageServer:KS_Extern_Message_Server user:_mySelf];
 }
 
--(KSCoolHUB *)coolHUB {
-    if (_coolHUB == NULL) {
-        KSCoolHUB *coolHUB = [[KSCoolHUB alloc] initWithFrame:self.view.bounds];
-        [self.view addSubview:coolHUB];
-        _coolHUB = coolHUB;
-    }
-    return _coolHUB;
-}
+-(void)initKits {
+    self.title             = @"在线用户列表";
+    CGFloat statusHeight   = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat navHeight      = self.navigationController.navigationBar.bounds.size.height;
+    CGFloat title_h        = 40;
+    UILabel *titleLabel    = [UILabel ks_labelWithText:@"可通话用户数量:0" textColor:[UIColor ks_grayBar] font:[UIFont ks_fontMediumOfSize:16] alignment:NSTextAlignmentCenter];
+    titleLabel.frame       = CGRectMake(0, statusHeight+navHeight, self.view.bounds.size.width, title_h);
+    _titleLabel            = titleLabel;
+    [self.view addSubview:titleLabel];
 
-- (void)initCollectionView {
-    CGFloat cell_w                         = self.view.bounds.size.width - KS_Extern_Point10;
-    CGFloat cell_h                         = KS_Extern_Point40;
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize                    = CGSizeMake(cell_w, cell_h);
-    flowLayout.minimumLineSpacing          = KS_Extern_Point10;
-    flowLayout.minimumInteritemSpacing     = KS_Extern_Point04;
-    flowLayout.sectionInset                = UIEdgeInsetsMake(0, 0, 0, 0);
-    flowLayout.scrollDirection             = UICollectionViewScrollDirectionVertical;
-    
-    UICollectionView *collectionView       = [[UICollectionView alloc] initWithFrame:self.view.bounds
-                                                                collectionViewLayout:flowLayout];
-    collectionView.backgroundColor         = [UIColor whiteColor];
-    
-    collectionView.dataSource              = self;
-    collectionView.delegate                = self;
-    _collectionView                        = collectionView;
-    [collectionView registerClass:[KSCollectionViewCell class] forCellWithReuseIdentifier:collectionViewCellIdentifier];
-    
-    [self.view addSubview:collectionView];
-}
-
--(void)initTableView {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.frame        = CGRectMake(0, CGRectGetMaxY(titleLabel.frame), self.view.bounds.size.width, self.view.bounds.size.height - CGRectGetMaxY(titleLabel.frame));
     tableView.delegate     = self;
     tableView.dataSource   = self;
     _tableView             = tableView;
@@ -133,98 +59,66 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _chatMenus.count;
+    return self.users.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    KSChatMenu *cm = _chatMenus[indexPath.row];
+    KSUserInfo *user      = self.users[indexPath.row];
     KSTableViewCell *cell = [KSTableViewCell initWithTableView:tableView];
-    cell.textLabel.text = cm.title;
+    if (user.ID == _mySelf.ID) {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@(自己)",user.name];
+    }
+    else{
+        cell.textLabel.text = user.name;
+    }
+    
     return cell;
 }
-
+#pragma mark - UICollectionViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    KSChatMenu *cm                     = _chatMenus[indexPath.row];
-
-    [self callWithType:cm.callType];
+    KSUserInfo *user = self.users[indexPath.row];
+    [self callToUser:user];
 }
 
-#pragma mark - UICollectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _chatMenus.count;
-}
-
-- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    KSChatMenu *cm             = _chatMenus[indexPath.item];
-    KSCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:collectionViewCellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text        = cm.title;
-    return cell;
-}
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    KSChatMenu *cm                     = _chatMenus[indexPath.item];
-    [self callWithType:cm.callType];
-}
-
-//更新cell前，先更新数据
-- (void)onAddClick {
-    KSChatMenu *cm = [[KSChatMenu alloc] init];
-    cm.callType    = KSCallTypeManyVideo;
-    cm.title       = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
-    [_chatMenus addObject:cm];
-    
-//    cm = [[KSChatMenu alloc] init];
-//    cm.callType = KSCallTypeSingleVideo;
-//    cm.title = [NSString stringWithFormat:@"KSCallTypeManyVideo %lu",(unsigned long)_chatMenus.count];
-//    [_chatMenus addObject:cm];
-    
-    [self insertItemsAtIndex:(int)_chatMenus.count-1];
-}
-
-- (void)onDeleteClick {
-    int index = (int)_chatMenus.count - 2;//-1删除最后一个，-2删除倒数第二个
-    if (index < 0) {
+-(void)callToUser:(KSUserInfo *)user {
+    if (user.ID == _mySelf.ID) {
         return;
     }
-    [_chatMenus removeObjectAtIndex:index];
-    [self deleteItemsAtIndex:index];
-}
-
-- (void)insertItemsAtIndex:(int)index {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    if (_isCollection) {
-        [_collectionView insertItemsAtIndexPaths:@[indexPath]];
-    }
-    else{
-        [_tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)deleteItemsAtIndex:(int)index {
-    //int index = (int)_chatMenus.count;
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-    if (_isCollection) {
-        [_collectionView deleteItemsAtIndexPaths:@[indexPath]];
-    }
-    else{
-        [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)callWithType:(KSCallType)type {
-    int room = 1234;
-    [KSChatController callWithType:type callState:KSCallStateMaintenanceRecording isCaller:YES room:room target:self];
-    /*
+    int room     = 1234;
     KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
                                                     title:nil
-                                                  message:[NSString stringWithFormat:@"创建或者进入房间:%d",room]
-                                                   cancel:@"创建"
-                                                 confirml:@"进入"
+                                                  message:[NSString stringWithFormat:@"向%@发起通话请求",user.name]
+                                                   cancel:@"视频聊天"
+                                                 confirml:@"语音聊天"
                                                    target:self];
     [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
-        [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCaller:actionType == KSAlertTypeCancel room:room target:self];
+        KSCallType type = (actionType == KSAlertTypeCancel) ? KSCallTypeSingleAudio : KSCallTypeSingleVideo;
+        [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCalled:NO room:room target:self];
+        [KSWebRTCManager callToUserId:user.ID room:room];
     }];
-     */
 }
 
+//KSWebRTCManagerDelegate
+- (void)webRTCManager:(KSWebRTCManager *)webRTCManager messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message {
+    switch (message.type) {
+        case KSMsgTypeRegistert:
+        {
+            KSRegistert *registert = (KSRegistert *)message;
+            _users                 = registert.users;
+            self.titleLabel.text = [NSString stringWithFormat:@"可通话用户数量:%lu",(unsigned long)_users.count];
+            [self.tableView reloadData];
+        }
+        default:
+            break;
+    }
+}
+
+#pragma mark - 懒加载
+-(NSMutableArray *)users {
+    if (_users == nil) {
+        _users = [NSMutableArray array];
+    }
+    return _users;
+}
 @end
 

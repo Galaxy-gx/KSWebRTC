@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D31C00424694B1400336AE4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D31C00324694B1400336AE4 /* main.swift */; };
-		3D31C00C246A8C7D00336AE4 /* WebSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D31C00A246A8C7D00336AE4 /* WebSocketServer.swift */; };
-		3D31C00D246A8C7D00336AE4 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D31C00B246A8C7D00336AE4 /* WebSocketClient.swift */; };
+		E6B87741251F24140045062D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B87740251F24140045062D /* main.swift */; };
+		E6B87748251F24390045062D /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B87747251F24390045062D /* WebSocketClient.swift */; };
+		E6B8774A251F244F0045062D /* WebSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B87749251F244F0045062D /* WebSocketServer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		3D31BFFE24694B1400336AE4 /* CopyFiles */ = {
+		E6B8773B251F24140045062D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -25,14 +25,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3D31C00024694B1400336AE4 /* SignallingServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SignallingServer; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D31C00324694B1400336AE4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		3D31C00A246A8C7D00336AE4 /* WebSocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketServer.swift; sourceTree = "<group>"; };
-		3D31C00B246A8C7D00336AE4 /* WebSocketClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
+		E6B8773D251F24140045062D /* KSMessageServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = KSMessageServer; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6B87740251F24140045062D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		E6B87747251F24390045062D /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
+		E6B87749251F244F0045062D /* WebSocketServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3D31BFFD24694B1400336AE4 /* Frameworks */ = {
+		E6B8773A251F24140045062D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,68 +42,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D31BFF724694B1400336AE4 = {
+		E6B87734251F24140045062D = {
 			isa = PBXGroup;
 			children = (
-				3D31C00224694B1400336AE4 /* SignallingServer */,
-				3D31C00124694B1400336AE4 /* Products */,
+				E6B8773F251F24140045062D /* KSMessageServer */,
+				E6B8773E251F24140045062D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		3D31C00124694B1400336AE4 /* Products */ = {
+		E6B8773E251F24140045062D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3D31C00024694B1400336AE4 /* SignallingServer */,
+				E6B8773D251F24140045062D /* KSMessageServer */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3D31C00224694B1400336AE4 /* SignallingServer */ = {
+		E6B8773F251F24140045062D /* KSMessageServer */ = {
 			isa = PBXGroup;
 			children = (
-				3D31C00324694B1400336AE4 /* main.swift */,
-				3D31C00B246A8C7D00336AE4 /* WebSocketClient.swift */,
-				3D31C00A246A8C7D00336AE4 /* WebSocketServer.swift */,
+				E6B87740251F24140045062D /* main.swift */,
+				E6B87747251F24390045062D /* WebSocketClient.swift */,
+				E6B87749251F244F0045062D /* WebSocketServer.swift */,
 			);
-			path = SignallingServer;
+			path = KSMessageServer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3D31BFFF24694B1400336AE4 /* SignallingServer */ = {
+		E6B8773C251F24140045062D /* KSMessageServer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3D31C00724694B1400336AE4 /* Build configuration list for PBXNativeTarget "SignallingServer" */;
+			buildConfigurationList = E6B87744251F24140045062D /* Build configuration list for PBXNativeTarget "KSMessageServer" */;
 			buildPhases = (
-				3D31BFFC24694B1400336AE4 /* Sources */,
-				3D31BFFD24694B1400336AE4 /* Frameworks */,
-				3D31BFFE24694B1400336AE4 /* CopyFiles */,
+				E6B87739251F24140045062D /* Sources */,
+				E6B8773A251F24140045062D /* Frameworks */,
+				E6B8773B251F24140045062D /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = SignallingServer;
-			productName = SignallingServer;
-			productReference = 3D31C00024694B1400336AE4 /* SignallingServer */;
+			name = KSMessageServer;
+			productName = KSMessageServer;
+			productReference = E6B8773D251F24140045062D /* KSMessageServer */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		3D31BFF824694B1400336AE4 /* Project object */ = {
+		E6B87735251F24140045062D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
-				ORGANIZATIONNAME = "AP-EC";
+				LastSwiftUpdateCheck = 1160;
+				LastUpgradeCheck = 1160;
+				ORGANIZATIONNAME = saeipi;
 				TargetAttributes = {
-					3D31BFFF24694B1400336AE4 = {
-						CreatedOnToolsVersion = 11.4.1;
+					E6B8773C251F24140045062D = {
+						CreatedOnToolsVersion = 11.6;
 					};
 				};
 			};
-			buildConfigurationList = 3D31BFFB24694B1400336AE4 /* Build configuration list for PBXProject "SignallingServer" */;
+			buildConfigurationList = E6B87738251F24140045062D /* Build configuration list for PBXProject "KSMessageServer" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -111,31 +111,31 @@
 				en,
 				Base,
 			);
-			mainGroup = 3D31BFF724694B1400336AE4;
-			productRefGroup = 3D31C00124694B1400336AE4 /* Products */;
+			mainGroup = E6B87734251F24140045062D;
+			productRefGroup = E6B8773E251F24140045062D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3D31BFFF24694B1400336AE4 /* SignallingServer */,
+				E6B8773C251F24140045062D /* KSMessageServer */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3D31BFFC24694B1400336AE4 /* Sources */ = {
+		E6B87739251F24140045062D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D31C00C246A8C7D00336AE4 /* WebSocketServer.swift in Sources */,
-				3D31C00424694B1400336AE4 /* main.swift in Sources */,
-				3D31C00D246A8C7D00336AE4 /* WebSocketClient.swift in Sources */,
+				E6B8774A251F244F0045062D /* WebSocketServer.swift in Sources */,
+				E6B87748251F24390045062D /* WebSocketClient.swift in Sources */,
+				E6B87741251F24140045062D /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		3D31C00524694B1400336AE4 /* Debug */ = {
+		E6B87742251F24140045062D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -195,7 +195,7 @@
 			};
 			name = Debug;
 		};
-		3D31C00624694B1400336AE4 /* Release */ = {
+		E6B87743251F24140045062D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -248,25 +248,19 @@
 			};
 			name = Release;
 		};
-		3D31C00824694B1400336AE4 /* Debug */ = {
+		E6B87745251F24140045062D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TW8WRSRZ44;
-				ENABLE_HARDENED_RUNTIME = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
-		3D31C00924694B1400336AE4 /* Release */ = {
+		E6B87746251F24140045062D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TW8WRSRZ44;
-				ENABLE_HARDENED_RUNTIME = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.saeipi.server;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -275,25 +269,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3D31BFFB24694B1400336AE4 /* Build configuration list for PBXProject "SignallingServer" */ = {
+		E6B87738251F24140045062D /* Build configuration list for PBXProject "KSMessageServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3D31C00524694B1400336AE4 /* Debug */,
-				3D31C00624694B1400336AE4 /* Release */,
+				E6B87742251F24140045062D /* Debug */,
+				E6B87743251F24140045062D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D31C00724694B1400336AE4 /* Build configuration list for PBXNativeTarget "SignallingServer" */ = {
+		E6B87744251F24140045062D /* Build configuration list for PBXNativeTarget "KSMessageServer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3D31C00824694B1400336AE4 /* Debug */,
-				3D31C00924694B1400336AE4 /* Release */,
+				E6B87745251F24140045062D /* Debug */,
+				E6B87746251F24140045062D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 3D31BFF824694B1400336AE4 /* Project object */;
+	rootObject = E6B87735251F24140045062D /* Project object */;
 }

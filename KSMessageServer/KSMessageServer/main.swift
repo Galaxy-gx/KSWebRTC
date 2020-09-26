@@ -1,9 +1,9 @@
 //
 //  main.swift
-//  SignallingServer
+//  KSMessageServer
 //
-//  Created by Sam on 2020/5/11.
-//  Copyright © 2020 AP-EC. All rights reserved.
+//  Created by saeipi on 2020/9/26.
+//  Copyright © 2020 saeipi. All rights reserved.
 //
 
 import Foundation

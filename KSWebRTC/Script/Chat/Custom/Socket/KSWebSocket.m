@@ -193,12 +193,13 @@ static NSString *KS_Notification_NetworkChange       = @"KS_Notification_Network
     if (!_configure.isSession) {
         return;
     }
-    NSString *transaction = [NSString ks_randomForLength:12];
-    NSMutableDictionary *msg = [@{
-        @"janus" : @"keepalive",
-        @"session_id" : _configure.sessionId,
-        @"transaction" : transaction
-    } mutableCopy];
+    NSString *transaction    = [NSString ks_randomForLength:12];
+    NSMutableDictionary *msg = [NSMutableDictionary dictionary];
+    msg[@"janus"]            = @"keepalive";
+    msg[@"transaction"]      = transaction;
+    if (_configure.sessionId) {
+        msg[@"session_id"]   = _configure.sessionId;
+    }
     [self sendMessage:msg];
 }
 

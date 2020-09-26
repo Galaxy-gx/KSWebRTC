@@ -36,4 +36,8 @@
     return random;
 }
 
++ (NSDictionary *)mj_replacedKeyFromPropertyName {
+    return @{@"ID":@"user_id",@"name":@"user_name"};
+}
+
 @end
