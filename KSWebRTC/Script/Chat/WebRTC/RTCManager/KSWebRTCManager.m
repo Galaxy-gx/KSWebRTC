@@ -151,27 +151,27 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message {
-    if ([self.delegate respondsToSelector:@selector(webRTCManager:messageHandler:didReceivedMessage:)]) {
-        [self.delegate webRTCManager:self messageHandler:messageHandler didReceivedMessage:message];
-    }
     switch (message.type) {
         case KSMsgTypeCall:
         {
             KSCall *call          = ((KSCall *)message);
             self.callState        = KSCallStateMaintenanceRinger;
-            self.callType         = call.callType;
+            self.callType         = call.call_type;
             self.session.isCalled = YES;
             self.session.room     = call.body.room;
             [self enterChat];
         }
             break;
         case KSMsgTypeAnswer:
-            
             break;
             
         default:
             break;
     }
+    if ([self.delegate respondsToSelector:@selector(webRTCManager:messageHandler:didReceivedMessage:)]) {
+        [self.delegate webRTCManager:self messageHandler:messageHandler didReceivedMessage:message];
+    }
+    
 }
 
 - (void)messageHandler:(KSMessageHandler *)messageHandler call:(KSCall *)call {
@@ -442,6 +442,12 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)callToUserId:(long long)userId room:(int)room {
     [[KSWebRTCManager shared].messageHandler callToUserId:userId room:room];
 }
+
++ (void)answoer {
+    [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:[KSWebRTCManager shared].session.room];
+    [[KSWebRTCManager shared].messageHandler answer];
+}
+
 #pragma mark - KSMediaTrack管理
 + (void)clearAllRenderer {
     for (KSMediaTrack *videoTrack in [KSWebRTCManager shared].mediaTracks) {

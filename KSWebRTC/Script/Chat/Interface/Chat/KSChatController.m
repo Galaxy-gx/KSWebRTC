@@ -50,7 +50,7 @@
  /// @param isCalled 是否是(被叫)
  /// @param room 房间号
  /// @param target  跳转控制器
- + (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCalled:(BOOL)isCalled room:(int)room target:(UIViewController *)target {
++ (void)callWithType:(KSCallType)type callState:(KSCallStateMaintenance)callState isCalled:(BOOL)isCalled room:(int)room target:(UIViewController *)target {
     //01 更新状态
     [KSWebRTCManager shared].callState = callState;
     [KSWebRTCManager shared].callType  = type;
@@ -79,15 +79,12 @@
     KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:type];
     [KSWebRTCManager initRTCWithMediaSetting:setting];
     
-    /*
-    if (isCaller) {//主叫
-        [KSWebRTCManager createRoom:room];
+    if (isCalled == NO) {//主叫
+        //04 连接信令服务器
+        if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceNormal) {
+            [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
+        }
     }
-    else{
-        [KSWebRTCManager joinRoom:room];
-    }*/
-    //04 加入房间
-    [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
     //05 进入通话页面
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
@@ -391,8 +388,8 @@
 #pragma mark - 被叫方接听
 -(void)calleeAnswer {
     NSLog(@"%s",__FUNCTION__);
-    //[KSWebRTCManager answoer];
-    //[KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
+    [KSWebRTCManager answoer];
+    [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
     [self updateCalleeAnswerKit];
 }
 
@@ -621,12 +618,13 @@
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message {
     switch (message.type) {
         case KSMsgTypeCall:
-            
             break;
         case KSMsgTypeAnswer:
-            
+        {
+            [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
+            [self updateCalleeAnswerKit];
+        }
             break;
-            
         default:
             break;
     }

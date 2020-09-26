@@ -44,7 +44,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     CGFloat statusHeight   = [[UIApplication sharedApplication] statusBarFrame].size.height;
     CGFloat navHeight      = self.navigationController.navigationBar.bounds.size.height;
     CGFloat title_h        = 40;
-    UILabel *titleLabel    = [UILabel ks_labelWithText:@"可通话用户数量:0" textColor:[UIColor ks_grayBar] font:[UIFont ks_fontMediumOfSize:16] alignment:NSTextAlignmentCenter];
+    UILabel *titleLabel    = [UILabel ks_labelWithText:@"在线用户列表数量:0" textColor:[UIColor ks_grayBar] font:[UIFont ks_fontMediumOfSize:16] alignment:NSTextAlignmentCenter];
     titleLabel.frame       = CGRectMake(0, statusHeight+navHeight, self.view.bounds.size.width, title_h);
     _titleLabel            = titleLabel;
     [self.view addSubview:titleLabel];
@@ -92,8 +92,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
                                                  confirml:@"语音聊天"
                                                    target:self];
     [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
-        KSCallType type = (actionType == KSAlertTypeCancel) ? KSCallTypeSingleAudio : KSCallTypeSingleVideo;
-        [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCalled:NO room:room target:self];
+        KSCallType type = (actionType == KSAlertTypeCancel) ? KSCallTypeSingleVideo : KSCallTypeSingleAudio;
+        [KSChatController callWithType:type callState:KSCallStateMaintenanceNormal isCalled:NO room:room target:self];
         [KSWebRTCManager callToUserId:user.ID room:room];
     }];
 }
@@ -105,7 +105,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
         {
             KSRegistert *registert = (KSRegistert *)message;
             _users                 = registert.users;
-            self.titleLabel.text = [NSString stringWithFormat:@"可通话用户数量:%lu",(unsigned long)_users.count];
+            self.titleLabel.text = [NSString stringWithFormat:@"在线用户列表数量:%lu",(unsigned long)_users.count];
             [self.tableView reloadData];
         }
         default:

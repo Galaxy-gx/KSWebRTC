@@ -8,10 +8,10 @@
 
 #import "KSMessageHandler.h"
 typedef NS_ENUM(NSInteger, KSRelayType) {
-    KSRelayBroadcast    = 1,//广播（自己除外）
-    KSRelayTypeAssigner = 2,//指定
-    KSRelayAll          = 3,//全部
-    KSRelayTypeNone     = 4,//给服务器的消息
+    KSRelayTypeBroadcast = 1,//广播（自己除外）
+    KSRelayTypeAssigner  = 2,//指定
+    KSRelayTypeAll       = 3,//全部
+    KSRelayTypeNone      = 4,//给服务器的消息
 };
 
 @interface KSMessageHandler()<KSWebSocketDelegate>
@@ -116,7 +116,7 @@ typedef NS_ENUM(NSInteger, KSRelayType) {
 - (void)registert {
     NSMutableDictionary *msg = [NSMutableDictionary dictionary];
     msg[@"type"]             = @(KSMsgTypeRegistert);
-    msg[@"relay"]            = @(KSRelayAll);
+    msg[@"relay"]            = @(KSRelayTypeAll);
     msg[@"user_id"]          = @(self.user.ID);
     msg[@"user_name"]        = self.user.name;
     msg[@"register"]         = @"register";
@@ -130,10 +130,10 @@ typedef NS_ENUM(NSInteger, KSRelayType) {
     [self sendMessage:message type:KSMsgTypeCall relay:relayType target:userId];
 }
 
-- (void)answerToUserId:(long long)userId {
+- (void)answer {
     NSMutableDictionary *message = [NSMutableDictionary dictionary];
-    KSRelayType relayType        = KSRelayTypeAssigner;
-    [self sendMessage:message type:KSMsgTypeCall relay:relayType target:userId];
+    KSRelayType relayType        = KSRelayTypeBroadcast;
+    [self sendMessage:message type:KSMsgTypeAnswer relay:relayType target:0];
 }
 
 #pragma mark - Get

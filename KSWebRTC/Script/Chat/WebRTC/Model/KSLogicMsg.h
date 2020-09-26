@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
 @property (nonatomic,assign) KSMsgType  type;
 @property (nonatomic,copy  ) NSString   *name;
 @property (nonatomic,assign) long long  ID;
-@property (nonatomic,assign) KSCallType callType;
+@property (nonatomic,assign) KSCallType call_type;
 
 + (KSLogicMsg *)deserializeForMsg:(NSDictionary *)msg;
 @end
