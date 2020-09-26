@@ -55,7 +55,7 @@ static int const KSRandomLength = 12;
         case KSActionTypePluginBinding:
             //02 ACK 插件绑定(等待用户加入房间)
             _myHandleId = success.data.ID;
-            [self joinRoom:1234];
+            [self joinRoom:_roomMumber];
             break;
         case KSActionTypeJoinRoom:
             //WebRTC:04
