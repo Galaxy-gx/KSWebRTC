@@ -15,6 +15,7 @@
 - (KSCallType)callTypeOfMessageHandler:(KSMessageHandler *)messageHandler;
 @optional
 - (void)messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message;
+
 @end
 
 @interface KSMessageHandler : NSObject

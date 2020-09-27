@@ -22,7 +22,6 @@ KSWebRTCManagerDelegate>
 
 @property (nonatomic,strong) NSMutableArray *users;
 @property (nonatomic,weak  ) UITableView    *tableView;
-@property (nonatomic,weak  ) UILabel        *titleLabel;
 @property (nonatomic,strong) KSUserInfo     *mySelf;
 @end
 
@@ -40,17 +39,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 -(void)initKits {
-    self.title             = @"用户列表";
-    CGFloat statusHeight   = [[UIApplication sharedApplication] statusBarFrame].size.height;
-    CGFloat navHeight      = self.navigationController.navigationBar.bounds.size.height;
-    CGFloat title_h        = 40;
-    UILabel *titleLabel    = [UILabel ks_labelWithText:@"在线用户数量:0" textColor:[UIColor ks_grayBar] font:[UIFont ks_fontMediumOfSize:16] alignment:NSTextAlignmentCenter];
-    titleLabel.frame       = CGRectMake(0, statusHeight+navHeight, self.view.bounds.size.width, title_h);
-    _titleLabel            = titleLabel;
-    [self.view addSubview:titleLabel];
-
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    tableView.frame        = CGRectMake(0, CGRectGetMaxY(titleLabel.frame), self.view.bounds.size.width, self.view.bounds.size.height - CGRectGetMaxY(titleLabel.frame));
+    self.title             = @"在线用户数量:0";
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.delegate     = self;
     tableView.dataSource   = self;
     _tableView             = tableView;
@@ -105,7 +95,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
         {
             KSRegistert *registert = (KSRegistert *)message;
             _users                 = registert.users;
-            self.titleLabel.text = [NSString stringWithFormat:@"在线用户数量:%lu",(unsigned long)_users.count];
+            self.title             = [NSString stringWithFormat:@"在线用户数量:%lu",(unsigned long)_users.count];
             [self.tableView reloadData];
         }
         default:
