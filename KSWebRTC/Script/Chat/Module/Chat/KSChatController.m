@@ -26,8 +26,8 @@
 @property (nonatomic, strong) KSProfileInfo *profileInfo;
 
 @property (nonatomic, assign, readonly) KSCallType myType;
-@property (nonatomic, assign, readonly ) long long callerId;//呼叫者ID
-@property (nonatomic, assign, readonly ) BOOL      isCalled;//是否是主叫
+@property (nonatomic, assign, readonly) long long  callerId;//呼叫者ID
+@property (nonatomic, assign, readonly) BOOL       isCalled;//是否是被叫
 
 @end
 
