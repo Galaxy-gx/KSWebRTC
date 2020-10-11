@@ -51,16 +51,23 @@
     UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     
-    if ([KSWebRTCManager shared].mediaSetting == nil) {
-        [ctrl callWithType:type isCalled:isCalled room:room];
+    if (callState == KSCallStateMaintenanceCaller || callState == KSCallStateMaintenanceRinger) {
+         //03 配置信息
+        [ctrl mediaSettingWithType:type];
+    }
+    
+    if (isCalled == NO) {//主叫
+        //04 连接信令服务器
+        if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceCaller) {
+            [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
+        }
     }
     
     //05 进入通话页面
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
-- (void)callWithType:(KSCallType)type isCalled:(BOOL)isCalled room:(int)room {
-    //03 配置信息
+- (void)mediaSettingWithType:(KSCallType)type {
     KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
     connectionSetting.iceServer            = [[KSIceServer alloc] init];
     __weak typeof(self) weakSelf = self;
@@ -76,13 +83,6 @@
     
     KSMediaSetting *setting                = [[KSMediaSetting alloc] initWithConnectionSetting:connectionSetting capturerSetting:capturerSetting callType:type];
     [KSWebRTCManager initRTCWithMediaSetting:setting];
-    
-    if (isCalled == NO) {//主叫
-        //04 连接信令服务器
-        if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceCaller) {
-            [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
-        }
-    }
 }
 
 - (void)viewDidLoad {

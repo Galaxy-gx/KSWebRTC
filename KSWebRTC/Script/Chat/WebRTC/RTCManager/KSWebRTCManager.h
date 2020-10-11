@@ -37,7 +37,6 @@
 @interface KSWebRTCManager : NSObject
 
 @property (nonatomic, weak)id<KSWebRTCManagerDelegate>         delegate;
-@property (nonatomic, strong) KSMediaSetting                   *mediaSetting;
 @property (nonatomic, assign, readonly) int                    mediaTrackCount;
 @property (nonatomic, assign          ) KSCallType             callType;
 @property (nonatomic, assign          ) KSCallStateMaintenance callState;

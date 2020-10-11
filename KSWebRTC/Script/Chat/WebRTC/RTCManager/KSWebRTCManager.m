@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 };
 
 @interface KSWebRTCManager()<KSSignalingHandlerDelegate,KSMessageHandlerDelegate,KSMediaConnectionDelegate,KSMediaCapturerDelegate,KSMediaTrackDataSource,KSCoolTileDelegate>
+@property (nonatomic, strong) KSMediaSetting     *mediaSetting;
 @property (nonatomic, strong) KSSignalingHandler *signalingHandler;
 @property (nonatomic, strong) KSMessageHandler   *messageHandler;
 @property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
