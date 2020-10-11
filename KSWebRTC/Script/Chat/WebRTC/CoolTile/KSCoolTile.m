@@ -108,6 +108,7 @@
     [self updateViewHierarchy];
     self.isDisplay  = YES;
     self.mediaTrack = mediaTrack;
+    [self hiddenBar];
 }
 
 @end

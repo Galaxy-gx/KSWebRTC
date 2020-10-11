@@ -87,6 +87,9 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     if (user.ID == _mySelf.ID) {
         return;
     }
+    if ([KSWebRTCManager shared].callState != KSCallStateMaintenanceNormal) {
+        return;
+    }
     [KSWebRTCManager shared].callerId = user.ID;
     int room                          = 1234;
     KSAlertInfo *info                 = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity

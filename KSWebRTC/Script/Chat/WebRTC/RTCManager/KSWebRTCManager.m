@@ -564,6 +564,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
     _session         = nil;
     _startingTime    = 0;
+    _callState       = KSCallStateMaintenanceNormal;
 
     if (_timekeeper) {
         [_timekeeper invalidate];
