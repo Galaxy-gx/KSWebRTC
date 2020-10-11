@@ -30,7 +30,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 @property (nonatomic, strong) KSMessageHandler   *messageHandler;
 @property (nonatomic, strong) KSMediaCapturer    *mediaCapturer;
 @property (nonatomic, weak  ) KSMediaTrack       *localMediaTrack;
-@property (nonatomic, strong) KSMediaSetting     *mediaSetting;
 @property (nonatomic, strong) NSMutableArray     *mediaTracks;
 @property (nonatomic, strong) KSTimekeeper       *timekeeper;
 @property (nonatomic, strong) KSCoolTile         *coolTile;

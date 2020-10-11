@@ -51,13 +51,22 @@
     UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
     navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     
+    if ([KSWebRTCManager shared].mediaSetting == nil) {
+        [ctrl callWithType:type isCalled:isCalled room:room];
+    }
+    
+    //05 进入通话页面
+    [target presentViewController:navCtrl animated:NO completion:nil];
+}
+
+- (void)callWithType:(KSCallType)type isCalled:(BOOL)isCalled room:(int)room {
     //03 配置信息
     KSConnectionSetting *connectionSetting = [[KSConnectionSetting alloc] init];
     connectionSetting.iceServer            = [[KSIceServer alloc] init];
-    
+    __weak typeof(self) weakSelf = self;
     KSAuthorizationCallback authCallback   = ^(KSDeviceType deviceType, AVAuthorizationStatus authStatus) {
         NSLog(@"|============| deviceType:%d, authStatus:%d |============|",(int)deviceType,(int)authStatus);
-        [ctrl deviceAuthorization:authStatus deviceType:deviceType];
+        [weakSelf deviceAuthorization:authStatus deviceType:deviceType];
     };
     
     KSCapturerSetting *capturerSetting     = [[KSCapturerSetting alloc] init];
@@ -74,8 +83,6 @@
             [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
         }
     }
-    //05 进入通话页面
-    [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
 - (void)viewDidLoad {
