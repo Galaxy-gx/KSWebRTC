@@ -452,9 +452,10 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     [[KSWebRTCManager shared].messageHandler callToUserId:userId room:room];
 }
 
-+ (void)answoer {
++ (void)answoerOfTime:(int)time {
     [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:[KSWebRTCManager shared].session.room];
-    [[KSWebRTCManager shared].messageHandler answerOfTime:(int)[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
+    [KSWebRTCManager shared].startingTime = time;
+    [[KSWebRTCManager shared].messageHandler answerOfTime:time];
 }
 
 + (void)leave {

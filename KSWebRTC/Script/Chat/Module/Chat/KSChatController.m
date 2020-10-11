@@ -401,7 +401,7 @@
 #pragma mark - 被叫方接听
 -(void)calleeAnswer {
     NSLog(@"%s",__FUNCTION__);
-    [KSWebRTCManager answoer];
+    [KSWebRTCManager answoerOfTime:(int)[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
     [self updateCalleeAnswerKit];
 }
 
