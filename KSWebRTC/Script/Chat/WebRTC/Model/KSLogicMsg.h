@@ -13,13 +13,12 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
     KSMsgTypeCall      = 2,
     KSMsgTypeAnswer    = 3,
     KSMsgTypeLeave     = 4
-    
 };
 
 @interface KSLogicMsg : NSObject
 @property (nonatomic,assign) KSMsgType  type;
-@property (nonatomic,copy  ) NSString   *name;
-@property (nonatomic,assign) long long  ID;
+@property (nonatomic,copy  ) NSString   *user_name;
+@property (nonatomic,assign) long long  user_id;
 @property (nonatomic,assign) KSCallType call_type;
 
 + (KSLogicMsg *)deserializeForMsg:(NSDictionary *)msg;

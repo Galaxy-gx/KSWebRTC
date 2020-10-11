@@ -159,6 +159,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
             self.callType         = call.call_type;
             self.session.isCalled = YES;
             self.session.room     = call.body.room;
+            self.callerId         = call.user_id;
             [self enterChat];
         }
             break;

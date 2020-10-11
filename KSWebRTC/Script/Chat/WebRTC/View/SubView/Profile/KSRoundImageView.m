@@ -58,9 +58,11 @@
 }
 
 -(void)updateTitle:(NSString *)title {
+    /*
     if ([title length] > 3) {
         title = [title substringToIndex:2];
     }
+    */
     _titleLabel.text = title;
 }
 

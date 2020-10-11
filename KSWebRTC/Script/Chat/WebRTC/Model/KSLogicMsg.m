@@ -28,6 +28,7 @@
         case KSMsgTypeAnswer:
         {
             KSAnswer *obj = [KSAnswer mj_objectWithKeyValues:msg];
+            obj.time      = [msg[@"body"][@"time"] intValue];
             return obj;
         }
             break;

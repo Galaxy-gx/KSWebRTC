@@ -66,7 +66,7 @@
     if (_profileInfo.title) {
         _titleLabel.text = _profileInfo.title;
         //_titleLabel.font = _profileInfo.titleFont;
-        [_iconView updateTitle:_profileInfo.title];
+        [_iconView updateTitle:@"Super"];
     }
     if (_profileInfo.desc) {
         _descLabel.text = _profileInfo.desc;

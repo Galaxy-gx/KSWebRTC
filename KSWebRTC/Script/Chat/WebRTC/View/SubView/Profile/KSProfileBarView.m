@@ -70,9 +70,11 @@
     else{
         _imageview.hidden = YES;
     }
+    /*
     if ([desc length] > 10) {
         desc = [desc substringToIndex:9];
     }
+     */
     _descLabel.text = desc;
     CGSize size = [_descLabel ks_textSize];
     _descLabel.frame = CGRectMake(x, y, size.width, self.bounds.size.height);

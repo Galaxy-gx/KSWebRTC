@@ -52,7 +52,7 @@ static NSString *const tileCellIdentifier  = @"tileCellIdentifier";
         {
             [self initMediaView ];
             if (_tileLayout.isCalled) {
-                [self initSwitch];
+                //[self initSwitch];
             }
         }
             break;

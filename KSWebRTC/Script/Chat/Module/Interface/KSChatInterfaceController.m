@@ -34,8 +34,12 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     [self initKits];
     
     _mySelf                           = [KSUserInfo myself];
-    [KSWebRTCManager shared].delegate = self;
     [KSWebRTCManager connectToMessageServer:KS_Extern_Message_Server user:_mySelf];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [KSWebRTCManager shared].delegate = self;
 }
 
 -(void)initKits {
@@ -72,7 +76,8 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     
     return cell;
 }
-#pragma mark - UICollectionViewDelegate
+
+#pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     KSUserInfo *user = self.users[indexPath.row];
     [self callToUser:user];
@@ -82,13 +87,14 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     if (user.ID == _mySelf.ID) {
         return;
     }
-    int room     = 1234;
-    KSAlertInfo *info = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
-                                                    title:nil
-                                                  message:[NSString stringWithFormat:@"向%@发起通话请求",user.name]
-                                                   cancel:@"视频聊天"
-                                                 confirml:@"语音聊天"
-                                                   target:self];
+    [KSWebRTCManager shared].callerId = user.ID;
+    int room                          = 1234;
+    KSAlertInfo *info                 = [[KSAlertInfo alloc] initWithType:KSAlertTypeIntegrity
+                                                                    title:nil
+                                                                  message:[NSString stringWithFormat:@"向%@发起通话请求",user.name]
+                                                                   cancel:@"视频聊天"
+                                                                 confirml:@"语音聊天"
+                                                                   target:self];
     [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
         KSCallType type = (actionType == KSAlertTypeCancel) ? KSCallTypeSingleVideo : KSCallTypeSingleAudio;
         [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCalled:NO room:room target:self];
