@@ -164,7 +164,11 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
             break;
         case KSMsgTypeAnswer:
             break;
-            
+        case KSMsgTypeLeave:
+        {
+            [self close];
+        }
+            break;
         default:
             break;
     }
@@ -413,7 +417,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 + (void)connectToSignalingServer:(NSString *)server room:(int)room {
-    //[KSWebRTCManager shared].callState = KSCallStateMaintenanceCalled;
     [[KSWebRTCManager shared] createSignalingHandler];
 
     [KSWebRTCManager shared].session.room     = room;
@@ -428,6 +431,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)requestLeave {
     //离开逻辑
 }
+
 #pragma mark - KSMessageHandler
 - (void)createMessageHandler {
     _messageHandler          = [[KSMessageHandler alloc] init];
@@ -447,6 +451,10 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 + (void)answoer {
     [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:[KSWebRTCManager shared].session.room];
     [[KSWebRTCManager shared].messageHandler answer];
+}
+
++ (void)leave {
+    [[KSWebRTCManager shared].messageHandler leave];
 }
 
 #pragma mark - KSMediaTrack管理

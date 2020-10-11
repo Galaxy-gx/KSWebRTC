@@ -81,6 +81,7 @@
 + (void)connectToMessageServer:(NSString *)server user:(KSUserInfo *)user;
 + (void)callToUserId:(long long)userId room:(int)room;
 + (void)answoer;
++ (void)leave;
 //显示小窗
 + (void)displayTile;
 

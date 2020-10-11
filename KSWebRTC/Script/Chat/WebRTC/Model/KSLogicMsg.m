@@ -31,6 +31,12 @@
             return obj;
         }
             break;
+        case KSMsgTypeLeave:
+        {
+            KSLeave *obj = [KSLeave mj_objectWithKeyValues:msg];
+            return obj;
+        }
+            break;
         default:
             break;
     }
@@ -56,4 +62,7 @@
 @end
 
 @implementation KSAnswer
+@end
+
+@implementation KSLeave
 @end

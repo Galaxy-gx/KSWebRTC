@@ -123,6 +123,10 @@ typedef NS_ENUM(NSInteger, KSRelayType) {
     [self.socket sendMessage:msg];
 }
 
+- (void)leave {
+    [self sendMessage:nil type:KSMsgTypeLeave relay:KSRelayTypeBroadcast target:0];
+}
+
 - (void)callToUserId:(long long)userId room:(int)room {
     NSMutableDictionary *message = [NSMutableDictionary dictionary];
     message[@"room"]             = @(room);

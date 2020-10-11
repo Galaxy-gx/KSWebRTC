@@ -42,7 +42,6 @@ typedef NS_ENUM(NSInteger, KSCallEndType) {
 typedef NS_ENUM(NSInteger, KSCallStateMaintenance) {
     KSCallStateMaintenanceNormal = 0,//初始状态
     KSCallStateMaintenanceCaller,//主叫方发起Call
-    //KSCallStateMaintenanceCalled,//主叫方完成Call信令发送
     KSCallStateMaintenanceRinger,//被叫方收到Call准备响铃
     KSCallStateMaintenanceRinged,//被叫方发送响铃/主叫方收到响铃（此时等待被叫方接听）
     KSCallStateMaintenanceAnswoer,//主叫方收到接听/被叫方按下接听

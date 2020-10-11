@@ -48,9 +48,7 @@
     KSChatController *ctrl             = [[KSChatController alloc] init];
     ctrl.isSuperBar                    = YES;
     ctrl.displayFlag                   = KSDisplayFlagAnimatedFirst;
-    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
-    
+   
     if (callState == KSCallStateMaintenanceCaller || callState == KSCallStateMaintenanceRinger) {
          //03 配置信息
         [ctrl mediaSettingWithType:type];
@@ -64,6 +62,8 @@
     }
     
     //05 进入通话页面
+    UINavigationController *navCtrl    = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    navCtrl.modalPresentationStyle     = UIModalPresentationFullScreen;
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
@@ -155,7 +155,6 @@
     KSCallStateMaintenance callState = [KSWebRTCManager shared].callState;
     switch (callState) {
         case KSCallStateMaintenanceCaller://拨打界面（挂断）
-        //case KSCallStateMaintenanceCalled:
         {
             [self setAnswerState:KSAnswerStateAwait];
             [self createLocalView];
@@ -396,6 +395,7 @@
 #pragma mark - 挂断
 - (void)callHangup {
     NSLog(@"%s",__FUNCTION__);
+    [KSWebRTCManager leave];
     [self closeRTC];
 }
 
@@ -639,6 +639,11 @@
             [self updateCalleeAnswerKit];
         }
             break;
+        case KSMsgTypeLeave:
+        {
+            [self closeCtrl];
+        }
+        break;
         default:
             break;
     }

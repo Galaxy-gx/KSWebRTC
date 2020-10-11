@@ -12,6 +12,8 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
     KSMsgTypeRegistert = 1,
     KSMsgTypeCall      = 2,
     KSMsgTypeAnswer    = 3,
+    KSMsgTypeLeave     = 4
+    
 };
 
 @interface KSLogicMsg : NSObject
@@ -36,5 +38,8 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
 @end
 
 @interface KSAnswer : KSLogicMsg
-
 @end
+
+@interface KSLeave : KSLogicMsg
+@end
+
