@@ -160,11 +160,15 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
             self.session.isCalled = YES;
             self.session.room     = call.body.room;
             self.callerId         = call.user_id;
+            
+            [self.audioPlayer play];//播放铃声02
+            
             [self enterChat];
         }
             break;
         case KSMsgTypeAnswer:
         {
+            [self.audioPlayer stop];//关闭响铃02（有3处）
             KSAnswer *answer = (KSAnswer *)message;
             _startingTime    = answer.time;
         }
@@ -423,6 +427,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 + (void)connectToSignalingServer:(NSString *)server room:(int)room {
     [[KSWebRTCManager shared] createSignalingHandler];
+    [[KSWebRTCManager shared].audioPlayer play];//播放铃声01
 
     [KSWebRTCManager shared].session.room     = room;
     [[KSWebRTCManager shared].signalingHandler setRoomMumber:room];
@@ -454,6 +459,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 + (void)answoerOfTime:(int)time {
+    [[KSWebRTCManager shared].audioPlayer stop];//关闭响铃01（有3处）
     [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:[KSWebRTCManager shared].session.room];
     [KSWebRTCManager shared].startingTime = time;
     [[KSWebRTCManager shared].messageHandler answerOfTime:time];
