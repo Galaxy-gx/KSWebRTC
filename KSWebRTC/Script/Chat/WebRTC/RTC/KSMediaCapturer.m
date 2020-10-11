@@ -15,7 +15,6 @@ static int const kFramerateLimit         = 25.0;
 
 @interface KSMediaCapturer()
 @property (nonatomic,weak  ) RTCAudioSession            *rtcAudioSession;
-@property (nonatomic,assign) AVAudioSessionPortOverride portOverride;
 @property (nonatomic,assign,readonly) KSCallType        myType;
 @end
 
@@ -25,10 +24,15 @@ static int const kFramerateLimit         = 25.0;
     if(self = [super init]) {
         _setting         = setting;
         [self createPeerConnectionFactory];
-        _rtcAudioSession = [RTCAudioSession sharedInstance];
-        [self outputAudioPortChange];
+        [self initAudioSession];
     }
     return self;
+}
+
+- (void)initAudioSession {
+    _rtcAudioSession = [RTCAudioSession sharedInstance];
+    [_rtcAudioSession setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+    [self resetAudioSessionPort];
 }
 
 - (void)createPeerConnectionFactory {
@@ -156,33 +160,34 @@ static int const kFramerateLimit         = 25.0;
     _videoTrack.isEnabled = YES;
 }
 
-- (void)outputAudioPortChange {
+- (void)changeOutputAudioPort:(AVAudioSessionPortOverride)portOverride {
     __weak typeof(self) weakSelf = self;
-    AVAudioSessionPortOverride override = AVAudioSessionPortOverrideNone;
-    if (_portOverride == AVAudioSessionPortOverrideNone) {
-      override = AVAudioSessionPortOverrideSpeaker;
-    }
     [RTCDispatcher dispatchAsyncOnType:RTCDispatcherTypeAudioSession block:^{
         [weakSelf.rtcAudioSession lockForConfiguration];
-        NSError *error = nil;
-        if ([weakSelf.rtcAudioSession overrideOutputAudioPort:override error:&error]) {
-            weakSelf.portOverride = override;
-        }
-        else {
-            RTCLog(@"Error overriding output port: %@", error.localizedDescription);
-        }
+        [weakSelf.rtcAudioSession overrideOutputAudioPort:portOverride error:nil];
         [weakSelf.rtcAudioSession unlockForConfiguration];
     }];
 }
 
+- (AVAudioSessionMode)audioSessionMode {
+    if (self.myType == KSCallTypeManyVideo || self.myType == KSCallTypeSingleVideo) {
+        return AVAudioSessionModeVideoChat;//视频通话
+    }
+    return AVAudioSessionModeVoiceChat;//VoIP
+}
+
 //关闭扬声器至默认播放设备
 - (void)speakerOff {
-    [self outputAudioPortChange];
+    [self changeOutputAudioPort:AVAudioSessionPortOverrideNone];
 }
 
 //开启扬声器
 - (void)speakerOn {
-    [self outputAudioPortChange];
+    [self changeOutputAudioPort:AVAudioSessionPortOverrideSpeaker];
+}
+
+- (void)resetAudioSessionPort {
+    [self speakerOn];
 }
 
 - (void)switchTalkMode {
