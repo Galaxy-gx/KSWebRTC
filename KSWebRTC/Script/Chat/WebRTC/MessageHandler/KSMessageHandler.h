@@ -26,6 +26,6 @@
 
 - (void)connectServer:(NSString *)url;
 - (void)callToUserId:(long long)userId room:(int)room;
-- (void)answer;
+- (void)answerOfTime:(int)time;
 - (void)leave;
 @end

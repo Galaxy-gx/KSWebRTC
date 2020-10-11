@@ -134,8 +134,9 @@ typedef NS_ENUM(NSInteger, KSRelayType) {
     [self sendMessage:message type:KSMsgTypeCall relay:relayType target:userId];
 }
 
-- (void)answer {
+- (void)answerOfTime:(int)time {
     NSMutableDictionary *message = [NSMutableDictionary dictionary];
+    message[@"time"]             = @(time);
     KSRelayType relayType        = KSRelayTypeBroadcast;
     [self sendMessage:message type:KSMsgTypeAnswer relay:relayType target:0];
 }

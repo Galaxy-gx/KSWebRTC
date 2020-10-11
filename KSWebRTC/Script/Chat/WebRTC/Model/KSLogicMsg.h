@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
 @end
 
 @interface KSRoom : NSObject
-@property (nonatomic,assign) int  room;
+@property (nonatomic,assign) int room;
 @end
 
 @interface KSCall : KSLogicMsg
@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, KSMsgType) {
 @end
 
 @interface KSAnswer : KSLogicMsg
+@property (nonatomic,assign) int time;
 @end
 
 @interface KSLeave : KSLogicMsg

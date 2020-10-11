@@ -163,6 +163,10 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
         }
             break;
         case KSMsgTypeAnswer:
+        {
+            KSAnswer *answer = (KSAnswer *)message;
+            _startingTime    = answer.time;
+        }
             break;
         case KSMsgTypeLeave:
         {
@@ -450,7 +454,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 
 + (void)answoer {
     [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:[KSWebRTCManager shared].session.room];
-    [[KSWebRTCManager shared].messageHandler answer];
+    [[KSWebRTCManager shared].messageHandler answerOfTime:(int)[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
 }
 
 + (void)leave {
@@ -628,11 +632,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
         _audioPlayer = [[KSAudioPlayer alloc] init];
     }
     return _audioPlayer;
-}
-
-+ (void)updateStartingTime {
-    NSDate *startDate                     = [NSDate dateWithTimeIntervalSinceNow:0];
-    [KSWebRTCManager shared].startingTime = (int)[startDate timeIntervalSince1970];
 }
 
 #pragma mark - KSCoolTile

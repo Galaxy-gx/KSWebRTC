@@ -178,7 +178,6 @@
         case KSCallStateMaintenanceAnswoer:
         case KSCallStateMaintenanceRecording://通话中
         {
-            [KSWebRTCManager updateStartingTime];//测试用
             [self updateCalleeAnswerKit];
             [self callLayout];
         }
@@ -403,7 +402,6 @@
 -(void)calleeAnswer {
     NSLog(@"%s",__FUNCTION__);
     [KSWebRTCManager answoer];
-    [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
     [self updateCalleeAnswerKit];
 }
 
@@ -635,7 +633,6 @@
             break;
         case KSMsgTypeAnswer:
         {
-            [KSWebRTCManager updateStartingTime];//更新倒计时开始时间(点击接听和收到接听两处更新)
             [self updateCalleeAnswerKit];
         }
             break;

@@ -70,9 +70,6 @@
 + (KSMediaTrack *)mediaTrackOfIndex:(NSInteger)index;
 + (void)close;
 
-//Other
-+ (void)updateStartingTime;
-
 //Signaling Socket
 + (void)connectToSignalingServer:(NSString *)server room:(int)room;
 + (void)requestLeave;
