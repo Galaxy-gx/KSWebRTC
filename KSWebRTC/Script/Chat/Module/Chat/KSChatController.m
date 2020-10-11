@@ -32,17 +32,6 @@
 @end
 
 @implementation KSChatController
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    //初始化布局
-    [self initTileLayout];
-    //初始化页面
-    [self initKit];
-    //更新代理
-    [KSWebRTCManager shared].delegate = self;
-    //页面逻辑
-    [self kitLogic];
-}
 
  /// 进入通话页面
  /// @param type 通话类型
@@ -89,6 +78,18 @@
     [target presentViewController:navCtrl animated:NO completion:nil];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //初始化布局
+    [self initTileLayout];
+    //初始化页面
+    [self initKit];
+    //更新代理
+    [KSWebRTCManager shared].delegate = self;
+    //页面逻辑
+    [self kitLogic];
+}
+
 - (void)initTileLayout {
     KSTileLayout *tileLayout   = [KSTileLayout layoutWithCallType:self.myType];
     CGFloat statusHeight       = [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -124,7 +125,6 @@
     arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
     self.superBar.backBarButtonItem = arrowBtn;
-    
     [self.superBar toFront];
 }
 
