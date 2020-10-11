@@ -413,7 +413,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
 }
 
 + (void)connectToSignalingServer:(NSString *)server room:(int)room {
-    [KSWebRTCManager shared].callState = KSCallStateMaintenanceCalled;
+    //[KSWebRTCManager shared].callState = KSCallStateMaintenanceCalled;
     [[KSWebRTCManager shared] createSignalingHandler];
 
     [KSWebRTCManager shared].session.room     = room;

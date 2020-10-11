@@ -121,10 +121,12 @@
     [callView setEventCallback:callback];
     [self.view addSubview:callView];
     
+    /*
     UIButton *arrowBtn              = [UIButton ks_buttonWithNormalImg:@"icon_bar_double_arrow_white"];
     arrowBtn.frame                  = CGRectMake(0, 0, KS_Extern_Point24, KS_Extern_Point24);
     [arrowBtn addTarget:self action:@selector(onArrowClick) forControlEvents:UIControlEventTouchUpInside];
     self.superBar.backBarButtonItem = arrowBtn;
+    */
     [self.superBar toFront];
 }
 
@@ -142,6 +144,7 @@
     KSCallStateMaintenance callState = [KSWebRTCManager shared].callState;
     switch (callState) {
         case KSCallStateMaintenanceCaller://拨打界面（挂断）
+        //case KSCallStateMaintenanceCalled:
         {
             [self setAnswerState:KSAnswerStateAwait];
             [self createLocalView];

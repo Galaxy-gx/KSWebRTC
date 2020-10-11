@@ -39,12 +39,20 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
 }
 
 -(void)initKits {
-    self.title             = @"在线用户数量:0";
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    tableView.delegate     = self;
-    tableView.dataSource   = self;
-    _tableView             = tableView;
+    self.title                             = @"在线用户数量:0";
+    UITableView *tableView                 = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    tableView.delegate                     = self;
+    tableView.dataSource                   = self;
+    _tableView                             = tableView;
     [self.view addSubview:tableView];
+    /*
+    UIBarButtonItem *refreshBarItem        = [[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(onRefreshClick)];
+    self.navigationItem.rightBarButtonItem = refreshBarItem;
+     */
+}
+
+-(void)onRefreshClick {
+    
 }
 
 #pragma mark - UITableViewDataSource
