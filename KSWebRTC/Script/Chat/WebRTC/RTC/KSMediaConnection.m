@@ -27,21 +27,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
     return self;
 }
 
-/*
- 要想从远端获取数据，我们就必须创建 PeerConnection 对象。该对象的用处就是与远端建立联接，并最终为双方通讯提供网络通道。
- 
- 当 PeerConnection 对象创建好后，我们应该将本地的音视频轨添加进去，这样 WebRTC 才能帮我们生成包含相应媒体信息的 SDP，以便于后面做媒体能力协商使用。
- //---------- !!! ----------
- 以 PeerConnection 对象的创建为例，该在什么时候创建 PeerConnection 对象呢？最好的时机当然是在用户加入房间之后了 。
- 
- 客户端收到 joined 消息后，就要创建 RTCPeerConnection 了，也就是要建立一条与远端通话的音视频数据传输通道。
- 
- 对于 iOS 的 RTCPeerConnection 对象有三个参数：
-    第一个，是 RTCConfiguration 类型的对象，该对象中最重要的一个字段是 iceservers。它里边存放了 stun/turn 服务器地址。其主要作用是用于NAT穿越。
-    第二个参数，是 RTCMediaConstraints 类型对象，也就是对 RTCPeerConnection 的限制。如，是否接收视频数据？是否接收音频数据？如果要与浏览器互通还要开启 DtlsSrtpKeyAgreement 选项。
-    第三个参数，是委拖类型。相当于给 RTCPeerConnection 设置一个观察者。这样RTCPeerConnection 可以将一个状态/信息通过它通知给观察者。
-    RTCPeerConnection 对象创建好后，接下来，最重要的一部分知识，那就是 媒体协商。
- */
 - (RTCPeerConnection *)createPeerConnectionWithMediaCapturer:(KSMediaCapturer *)capturer {
     // 媒体约束
     RTCMediaConstraints *constraints  = [self defaultMediaConstraint];
@@ -136,19 +121,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
 
 - (NSMutableDictionary *)localDescription {
     return [self.peerConnection ks_jseps];
-    /*
-    RTCSessionDescription *localDescription = self.peerConnection.localDescription;
-    NSString *type                          = [RTCSessionDescription stringForType:localDescription.type];
-    NSString *sdp                           = localDescription.sdp;
-    if (type && sdp) {
-        NSMutableDictionary *jseps =[NSMutableDictionary dictionary];
-        jseps[@"type"] = type;
-        jseps[@"sdp"]  = sdp;
-        jseps[@"flag"] = @"flag";
-        return jseps;
-    }
-    return nil;
-     */
 }
 
 - (NSMutableDictionary *)remoteDescription {
@@ -175,21 +147,6 @@ static NSString *const KARDStreamId = @"ARDAMS";
     }];
 }
 
-
-/*
- 在WebRTC的每一端，当创建好RTCPeerConnection对象，且调用了setLocalDescription方法后，就开始收集ICE候选者了。
- 
- 在WebRTC中有三种类型的候选者，它们分别是：
- 主机候选者
- 反射候选者
- 中继候选者
- 
- 主机候选者，表示的是本地局域网内的 IP 地址及端口。它是三个候选者中优先级最高的，也就是说在 WebRTC 底层，首先会偿试本地局域网内建立连接。
- 反射候选者，表示的是获取 NAT 内主机的外网IP地址和端口。其优先级低于 主机候选者。也就是说当WebRTC偿试本地连接不通时，会偿试通过反射候选者获得的 IP地址和端口进行连接。
- 中继候选者，表示的是中继服务器的IP地址与端口，即通过服务器中转媒体数据。当WebRTC客户端通信双方无法穿越 P2P NAT 时，为了保证双方可以正常通讯，此时只能通过服务器中转来保证服务质量了。
- 
- 所以 中继候选者的优先级是最低的，只有上述两种候选者都无法进行连接时，才会使用它。
- */
 // 创建answer
 - (void)createAnswerWithCompletionHandler:(void (^)(RTCSessionDescription *sdp, NSError *error))completionHandler {
     NSLog(@"|~~~~~~~~~~~~| 创建Answer |~~~~~~~~~~~~|");

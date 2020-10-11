@@ -18,7 +18,7 @@
 - (void)resetSwitch {
     _microphoneEnabled = YES;
     _cameraEnabled     = YES;
-    _speakerEnabled    = YES;
+    _speakerEnabled    = NO;
 }
 
 @end

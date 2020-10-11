@@ -18,7 +18,10 @@
 #import "NSString+Category.h"
 #import "KSAlertController.h"
 
-@interface KSChatController()<KSWebRTCManagerDelegate,KSCallViewDataSource,KSTopBarViewDataSource,KSTopBarViewDelegate>
+@interface KSChatController()<KSWebRTCManagerDelegate,
+KSCallViewDataSource,
+KSTopBarViewDataSource,
+KSTopBarViewDelegate>
 
 @property (nonatomic, weak  ) KSCallView    *callView;
 @property (nonatomic, weak  ) KSTopBarView  *topBarView;
