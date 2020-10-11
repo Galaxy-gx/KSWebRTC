@@ -30,7 +30,7 @@
             [_videoTrack removeRenderer:_videoView];
             //_videoTrack = nil;//需要复用。不用置空
         }
-        [_videoView renderFrame:nil];
+        //[_videoView renderFrame:nil];
         _videoView    = nil;
     }
 }

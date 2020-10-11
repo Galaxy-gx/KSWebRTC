@@ -90,6 +90,10 @@
     [self kitLogic];
 }
 
+-(void)dealloc {
+    
+}
+
 - (void)initTileLayout {
     KSTileLayout *tileLayout   = [KSTileLayout layoutWithCallType:self.myType];
     CGFloat statusHeight       = [[UIApplication sharedApplication] statusBarFrame].size.height;
@@ -301,30 +305,30 @@
         case KSEventTypeInConversationBluetoothClose:
             [self inConversationBluetoothClose];
             break;
-        case KSEventTypeMeetingThemeMicrophoneOpen:
-            [self meetingThemeMicrophoneOpen];
-            break;
-        case KSEventTypeMeetingThemeMicrophoneClose:
-            [self meetingThemeMicrophoneClose];
-            break;
-        case KSEventTypeMeetingThemeVolumeOpen:
-            [self meetingThemeVolumeOpen];
-            break;
-        case KSEventTypeMeetingThemeVolumeClose:
-            [self meetingThemeVolumeClose];
-            break;
-        case KSEventTypeMeetingThemeCameraOpen:
-            [self meetingThemeCameraOpen];
-            break;
-        case KSEventTypeMeetingThemeCameraClose:
-            [self meetingThemeCameraClose];
-            break;
-        case KSEventTypeMeetingThemeBluetoothOpen:
-            [self meetingThemeBluetoothOpen];
-            break;
-        case KSEventTypeMeetingThemeBluetoothClose:
-            [self meetingThemeBluetoothClose];
-            break;
+//        case KSEventTypeMeetingThemeMicrophoneOpen:
+//            [self meetingThemeMicrophoneOpen];
+//            break;
+//        case KSEventTypeMeetingThemeMicrophoneClose:
+//            [self meetingThemeMicrophoneClose];
+//            break;
+//        case KSEventTypeMeetingThemeVolumeOpen:
+//            [self meetingThemeVolumeOpen];
+//            break;
+//        case KSEventTypeMeetingThemeVolumeClose:
+//            [self meetingThemeVolumeClose];
+//            break;
+//        case KSEventTypeMeetingThemeCameraOpen:
+//            [self meetingThemeCameraOpen];
+//            break;
+//        case KSEventTypeMeetingThemeCameraClose:
+//            [self meetingThemeCameraClose];
+//            break;
+//        case KSEventTypeMeetingThemeBluetoothOpen:
+//            [self meetingThemeBluetoothOpen];
+//            break;
+//        case KSEventTypeMeetingThemeBluetoothClose:
+//            [self meetingThemeBluetoothClose];
+//            break;
         case KSEventTypeStartMeeting:
             [self startMeeting];
             break;
@@ -341,7 +345,7 @@
 // 按钮操作
 - (void)onArrowClick {
     NSLog(@"%s",__FUNCTION__);
-    [self tileWindow];
+    //[self tileWindow];
 }
 
 - (void)onSwitchCameraClick {
