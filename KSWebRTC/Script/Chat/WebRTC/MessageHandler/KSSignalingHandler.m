@@ -321,7 +321,7 @@ static int const KSRandomLength = 12;
 }
 
 - (void)close {
-    
+    [_socket activeClose];
 }
 
 @end

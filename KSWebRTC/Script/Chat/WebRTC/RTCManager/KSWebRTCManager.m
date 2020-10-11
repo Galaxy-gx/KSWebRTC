@@ -551,7 +551,6 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     _session         = nil;
     _startingTime    = 0;
 
-    
     if (_timekeeper) {
         [_timekeeper invalidate];
     }
@@ -567,6 +566,7 @@ typedef NS_ENUM(NSInteger, KSChangeMediaType) {
     if (_audioPlayer) {
         [_audioPlayer stop];//关闭响铃03（有3处）
     }
+    [_signalingHandler close];
 }
 
 + (void)close {
