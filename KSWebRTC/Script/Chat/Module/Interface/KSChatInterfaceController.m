@@ -83,7 +83,7 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
                                                    target:self];
     [KSAlertController showInfo:info callback:^(KSAlertType actionType) {
         KSCallType type = (actionType == KSAlertTypeCancel) ? KSCallTypeSingleVideo : KSCallTypeSingleAudio;
-        [KSChatController callWithType:type callState:KSCallStateMaintenanceNormal isCalled:NO room:room target:self];
+        [KSChatController callWithType:type callState:KSCallStateMaintenanceCaller isCalled:NO room:room target:self];
         [KSWebRTCManager callToUserId:user.ID room:room];
     }];
 }

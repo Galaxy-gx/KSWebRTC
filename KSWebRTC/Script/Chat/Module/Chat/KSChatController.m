@@ -70,7 +70,7 @@
     
     if (isCalled == NO) {//主叫
         //04 连接信令服务器
-        if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceNormal) {
+        if ([KSWebRTCManager shared].callState == KSCallStateMaintenanceCaller) {
             [KSWebRTCManager connectToSignalingServer:KS_Extern_Signaling_Server room:room];
         }
     }
