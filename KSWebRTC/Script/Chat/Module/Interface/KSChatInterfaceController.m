@@ -49,14 +49,13 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     tableView.dataSource                   = self;
     _tableView                             = tableView;
     [self.view addSubview:tableView];
-    /*
+    
     UIBarButtonItem *refreshBarItem        = [[UIBarButtonItem alloc] initWithTitle:@"刷新" style:UIBarButtonItemStylePlain target:self action:@selector(onRefreshClick)];
     self.navigationItem.rightBarButtonItem = refreshBarItem;
-     */
 }
 
 -(void)onRefreshClick {
-    
+    [KSWebRTCManager refreshAddressBook];
 }
 
 #pragma mark - UITableViewDataSource
@@ -127,5 +126,6 @@ static NSString *const collectionViewCellIdentifier = @"KSCollectionViewCell";
     }
     return _users;
 }
+
 @end
 

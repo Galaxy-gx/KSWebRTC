@@ -25,6 +25,7 @@
 @property (nonatomic,strong ) KSUserInfo  *user;
 
 - (void)connectServer:(NSString *)url;
+- (void)registert;
 - (void)callToUserId:(long long)userId room:(int)room;
 - (void)answerOfTime:(int)time;
 - (void)leave;

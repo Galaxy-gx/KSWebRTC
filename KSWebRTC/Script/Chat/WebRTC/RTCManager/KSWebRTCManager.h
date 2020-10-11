@@ -26,6 +26,7 @@
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler socketDidFail:(KSWebSocket *)socket;
 //- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler requestError:(KSMsg *)message;
 //- (void)webRTCManager:(KSWebRTCManager *)webRTCManager signalingHandler:(KSSignalingHandler *)signalingHandler didReceivedMessage:(KSMsg *)message;
+- (CGFloat)tileYOfWebRTCManager:(KSWebRTCManager *)webRTCManager;
 
 //KSMessageHandler
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager messageHandler:(KSMessageHandler *)messageHandler didReceivedMessage:(KSLogicMsg *)message;
@@ -76,6 +77,7 @@
 
 //Message Socket
 + (void)connectToMessageServer:(NSString *)server user:(KSUserInfo *)user;
++ (void)refreshAddressBook;
 + (void)callToUserId:(long long)userId room:(int)room;
 + (void)answoerOfTime:(int)time;
 + (void)leave;

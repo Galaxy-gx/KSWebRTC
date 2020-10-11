@@ -568,8 +568,7 @@ KSTopBarViewDelegate>
 }
 
 #pragma mark - RTC回调
-//KSWebRTCManagerDelegate
-#pragma mark - KSMediaConnection
+#pragma mark - KSWebRTCManagerDelegate
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager didAddMediaTrack:(KSMediaTrack *)mediaTrack {
     switch (self.myType) {
         case KSCallTypeSingleAudio:
@@ -599,6 +598,11 @@ KSTopBarViewDelegate>
 - (void)webRTCManager:(KSWebRTCManager *)webRTCManager mediaConnection:(KSMediaConnection *)mediaConnection peerConnection:(RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
 }
 
+- (CGFloat)tileYOfWebRTCManager:(KSWebRTCManager *)webRTCManager {
+    CGFloat statusHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    CGFloat navHeight    = self.navigationController.navigationBar.bounds.size.height;
+    return statusHeight + navHeight;
+}
 #pragma mark - Message
 - (void)showMessage:(NSString *)message {
     [SVProgressHUD showSuccessWithStatus:message.localizde];

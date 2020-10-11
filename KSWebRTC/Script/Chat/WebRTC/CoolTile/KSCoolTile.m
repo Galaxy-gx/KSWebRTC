@@ -12,10 +12,18 @@
 @property (assign, nonatomic  ) UIWindowLevel maxSupportedWindowLevel;
 @property (nonatomic, readonly) UIWindow      *frontWindow;
 @property (nonatomic,assign   ) CGPoint       tilePoint;
-
+@property (nonatomic,assign   ) CGFloat       offset;
 @end
 
 @implementation KSCoolTile
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        [self initKit];
+        self.offset = frame.origin.y;
+    }
+    return self;
+}
 
 - (void)callEnded {
     if (_isDisplay) {
@@ -51,8 +59,8 @@
         tileView.center = _tilePoint;
     }
     else if(sender.state == UIGestureRecognizerStateEnded) {
-        CGFloat hpadding = 10;
-        CGFloat vpadding = 64;
+        CGFloat hpadding = 0;
+        //CGFloat vpadding = 64;
         CGFloat x        = _tilePoint.x - tileView.frame.size.width/2;
         CGFloat y        = _tilePoint.y - tileView.frame.size.height/2;
         if (_tilePoint.x > screen_w/2) {
@@ -62,12 +70,12 @@
             x = hpadding;
         }
         
-        if (_tilePoint.y > (screen_h - tileView.frame.size.height/2 - vpadding)) {
-            y = screen_h - tileView.frame.size.height - vpadding;
+        if (_tilePoint.y > (screen_h - tileView.frame.size.height/2 - self.offset)) {
+            y = screen_h - tileView.frame.size.height - self.offset;
         }
         
-        if (y < vpadding) {
-            y = vpadding;
+        if (y < self.offset) {
+            y = self.offset;
         }
         //NSLog(@"-----x:%f, y:%f vx:%f, vy:%f----",x,y,tileView.frame.origin.x,tileView.frame.origin.y);
         [UIView animateWithDuration: 0.2 animations:^{

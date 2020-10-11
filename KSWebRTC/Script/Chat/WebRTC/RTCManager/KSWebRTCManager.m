@@ -458,6 +458,10 @@ KSCoolTileDelegate>
     [[KSWebRTCManager shared].messageHandler connectServer:server];
 }
 
++ (void)refreshAddressBook {
+    [[KSWebRTCManager shared].messageHandler registert];
+}
+
 + (void)callToUserId:(long long)userId room:(int)room {
     [[KSWebRTCManager shared].messageHandler callToUserId:userId room:room];
 }
@@ -631,9 +635,12 @@ KSCoolTileDelegate>
     if (_coolTile == nil) {
         CGFloat tile_width   = 99;
         CGFloat tile_height  = 176;
-        CGFloat tile_padding = 10;
-        CGFloat tile_x       = [UIScreen mainScreen].bounds.size.width - tile_width - tile_padding;
-        CGRect rect          = CGRectMake(tile_x, 64, tile_width, tile_height);
+        CGFloat tile_x       = [UIScreen mainScreen].bounds.size.width - tile_width;
+        CGFloat tile_y       = 64;
+        if ([self.delegate respondsToSelector:@selector(tileYOfWebRTCManager:)]) {
+            tile_y = [self.delegate tileYOfWebRTCManager:self];
+        }
+        CGRect rect          = CGRectMake(tile_x, tile_y, tile_width, tile_height);
         _coolTile            = [[KSCoolTile alloc] initWithFrame:rect];
         _coolTile.delegate   = self;
     }
